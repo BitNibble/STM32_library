@@ -15,13 +15,22 @@ Comment:
 #include <inttypes.h>
 /***Constant & Macro***/
 /***Global Variable***/
+typedef struct{
+	uint8_t HC595_datapin;
+	uint8_t HC595_clkpin;
+	uint8_t HC595_outpin;
+	volatile uint32_t *hc595_DDR;
+	volatile uint32_t *hc595_PORT;
+}hc595parameter;
+
 typedef struct
 {
+	hc595parameter par;
 	/******/
-	void (*bit)(uint8_t bool);
-	void (*ibyte)(uint8_t byte);
-	void (*byte)(uint8_t byte);
-	void (*out)(void);
+	void (*bit)(hc595parameter* par, uint8_t bool);
+	void (*ibyte)(hc595parameter* par, uint8_t byte);
+	void (*byte)(hc595parameter* par, uint8_t byte);
+	void (*out)(hc595parameter* par);
 }HC595;
 /***Header***/
 HC595 HC595enable(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin);

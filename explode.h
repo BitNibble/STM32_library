@@ -17,20 +17,20 @@ Comment:
 /*** GloablConstant & Macro ***/
 
 /*** Global Variable ***/
-struct expldparam{
+typedef struct {
 	uint32_t XI;
 	uint32_t XF;
-};
-
-typedef struct expld{
-	/***Variable***/
-	struct expldparam par;
 	uint32_t HH;
 	uint32_t LL;
 	uint32_t LH;
 	uint32_t HL;
+}explodesignal;
+
+typedef struct {
+	/***Variable***/
+	explodesignal sig;
 	// PROTOTYPES VTABLE
-	void (*update)(struct expld* self, uint32_t x);
+	void (*update)(explodesignal* sig, uint32_t x);
 }EXPLODE;
 
 /*** Global Header ***/
