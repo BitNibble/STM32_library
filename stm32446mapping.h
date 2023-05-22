@@ -4,7 +4,7 @@ Author: Sergio Manuel Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 07062022 inic
+Date: 20052023
 Comment:
 	manual um1724, m0390, pm0056, pm0214, and other sources.
 	Virtual Image STM32-446, mapping.
@@ -16,9 +16,13 @@ Comment:
 
 /*** Global Libraries ***/
 #include <inttypes.h>
+// SELECTION OF CHIP (CMSIS Access to its libraries)
+#ifndef STM32F446xx
+	#define STM32F446xx
+#endif
 #include "stm32f4xx.h"
-#include "stm32f446xx.h"
-#include "core_cm4.h"
+
+/***Global Define and Macros***/
 
 /*** Global Variable ***/
 // Low Byte High Byte
@@ -35,7 +39,16 @@ typedef struct
 //	uint16_t L;
 //}STM32446HighLowWord;
 
-// STM32446 OBJECTS
+/*** STM32446 ***/
+
+/*** CORE ***/
+// SCB
+typedef struct
+{
+	SCB_Type* reg;
+}STM32446SCBobj;
+
+/*** MCU ***/
 // FLASH
 typedef struct
 {
@@ -307,7 +320,9 @@ typedef struct
 // STM32446 IMAGE Linker
 typedef struct
 {
-	// STM32446
+	// CORE
+	STM32446SCBobj scb;
+	// MCU
 	STM32446FLASHobj flash;
 	STM32446CRCobj crc;
 	STM32446PWRobj pwr;

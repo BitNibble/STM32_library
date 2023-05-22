@@ -20,6 +20,7 @@ Comment:
 #include <math.h>
 
 /*** File Constant & Macros ***/
+#define STM32446_SCB_BASE ((0xE000E000UL) + 0x0D00UL))
 
 /*** File Variable ***/
 static STM32446 ret;
@@ -199,6 +200,9 @@ STM32446 STM32446enable(void){
 	mem[0] = 0;
 	nen[0] = 0;
 	STM32446temperature = 0;
+	// CORE
+	// Coprocessor Access Control Register
+	ret.scb.reg = ((SCB_Type*) STM32446_SCB_BASE;
 	// STM32446 OBJECTS
 	// FLASH
 	ret.flash.reg = (FLASH_TypeDef*) FLASH_R_BASE;
@@ -1314,7 +1318,7 @@ void STM32446Adc1VBAT(void) // vbat overrides temperature
 
 void STM32446Adc1TEMP(void)
 {
-	// Temperature (in ºC) = {(VSENSE V25) / Avg_Slope} + 25
+	// Temperature (in ï¿½C) = {(VSENSE V25) / Avg_Slope} + 25
 	ret.adc1.common.reg->CCR |= (1 << 23); // TSVREFE: Temperature sensor and VREFINT enable
 }
 
