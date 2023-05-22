@@ -102,6 +102,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	void (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -114,6 +115,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	void (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -126,6 +128,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	void (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -138,6 +141,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	void (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -150,6 +154,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	void (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -174,6 +179,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	void (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -288,8 +294,14 @@ typedef struct
 // INIC
 typedef struct
 {
-	uint8_t (*peripheral)(void);
-}STM32446inic;
+	uint8_t (*rcc)(void);
+}STM32446_inic;
+
+// INIC
+typedef struct
+{
+	void (*template)(void);
+}STM32446_enable;
 
 // FUNC
 typedef struct
@@ -315,7 +327,7 @@ typedef struct
 	char* (*ftoa)(double num, char* res, uint8_t afterpoint);
 	char* (*print)( char* str, uint8_t size_str, const char* format, ... );
 	void (*test)(void);
-}STM32446function;
+}STM32446_function;
 
 // STM32446 IMAGE Linker
 typedef struct
@@ -346,9 +358,11 @@ typedef struct
 	STM32446USART1obj usart1;
 	
 	// INIC
-	STM32446inic inic;
+	STM32446_inic inic;
+	// ENABLES
+	STM32446_enable enable;
 	//FUNCTION
-	STM32446function func;
+	STM32446_function func;
 }STM32446;
 
 /*** Global Procedure & Function ***/

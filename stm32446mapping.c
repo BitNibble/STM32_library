@@ -53,7 +53,7 @@ static struct PLLparameters
 void SystickInic(void);
 
 // INIC
-uint8_t STM32446PeripheralInic(void);
+uint8_t STM32446RccInic(void);
 
 // FUNC
 // RCC
@@ -71,6 +71,7 @@ void STM32446RccPLLI2SEnable(void);
 void STM32446RccPLLSAIEnable(void);
 
 // GPIOA
+void STM32446GpioAenable( void );
 void STM32446GpioAmoder( unsigned int data, unsigned int pin );
 void STM32446GpioAospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioApupdr( unsigned int data, unsigned int pin );
@@ -79,6 +80,7 @@ void STM32446GpioAset( unsigned int data );
 void STM32446GpioAafr( unsigned int data, unsigned int pin );
 
 // GPIOB
+void STM32446GpioBenable( void );
 void STM32446GpioBmoder( unsigned int data, unsigned int pin );
 void STM32446GpioBospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioBpupdr( unsigned int data, unsigned int pin );
@@ -87,6 +89,7 @@ void STM32446GpioBset( unsigned int data );
 void STM32446GpioBafr( unsigned int data, unsigned int pin );
 
 // GPIOC
+void STM32446GpioCenable( void );
 void STM32446GpioCmoder( unsigned int data, unsigned int pin );
 void STM32446GpioCospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioCpupdr( unsigned int data, unsigned int pin );
@@ -95,6 +98,7 @@ void STM32446GpioCset( unsigned int data );
 void STM32446GpioCafr( unsigned int data, unsigned int pin );
 
 // GPIOD
+void STM32446GpioDenable( void );
 void STM32446GpioDmoder( unsigned int data, unsigned int pin );
 void STM32446GpioDospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioDpupdr( unsigned int data, unsigned int pin );
@@ -103,6 +107,7 @@ void STM32446GpioDset( unsigned int data );
 void STM32446GpioDafr( unsigned int data, unsigned int pin );
 
 // GPIOE
+void STM32446GpioEenable( void );
 void STM32446GpioEmoder( unsigned int data, unsigned int pin );
 void STM32446GpioEospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioEpupdr( unsigned int data, unsigned int pin );
@@ -111,6 +116,7 @@ void STM32446GpioEset( unsigned int data );
 void STM32446GpioEafr( unsigned int data, unsigned int pin );
 
 // GPIOH
+void STM32446GpioHenable( void );
 void STM32446GpioHmoder( unsigned int data, unsigned int pin );
 void STM32446GpioHospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioHpupdr( unsigned int data, unsigned int pin );
@@ -229,6 +235,7 @@ STM32446 STM32446enable(void){
 	
 	// GPIOA
 	ret.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
+	ret.gpioa.enable = STM32446GpioAenable;
 	ret.gpioa.moder = STM32446GpioAmoder;
 	ret.gpioa.ospeedr = STM32446GpioAospeedr;
 	ret.gpioa.pupdr = STM32446GpioApupdr;
@@ -238,6 +245,7 @@ STM32446 STM32446enable(void){
 	
 	// GPIOB
 	ret.gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
+	ret.gpiob.enable = STM32446GpioBenable;
 	ret.gpiob.moder = STM32446GpioBmoder;
 	ret.gpiob.ospeedr = STM32446GpioBospeedr;
 	ret.gpiob.pupdr = STM32446GpioBpupdr;
@@ -247,6 +255,7 @@ STM32446 STM32446enable(void){
 	
 	// GPIOC
 	ret.gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
+	ret.gpioc.enable = STM32446GpioCenable;
 	ret.gpioc.moder = STM32446GpioCmoder;
 	ret.gpioc.ospeedr = STM32446GpioCospeedr;
 	ret.gpioc.pupdr = STM32446GpioCpupdr;
@@ -256,6 +265,7 @@ STM32446 STM32446enable(void){
 	
 	// GPIOD
 	ret.gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
+	ret.gpiod.enable = STM32446GpioDenable;
 	ret.gpiod.moder = STM32446GpioDmoder;
 	ret.gpiod.ospeedr = STM32446GpioDospeedr;
 	ret.gpiod.pupdr = STM32446GpioDpupdr;
@@ -265,6 +275,7 @@ STM32446 STM32446enable(void){
 
 	// GPIOE
 	ret.gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
+	ret.gpioe.enable = STM32446GpioEenable;
 	ret.gpioe.moder = STM32446GpioEmoder;
 	ret.gpioe.ospeedr = STM32446GpioEospeedr;
 	ret.gpioe.pupdr = STM32446GpioEpupdr;
@@ -274,6 +285,7 @@ STM32446 STM32446enable(void){
 
 	// GPIOH
 	ret.gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
+	ret.gpioh.enable = STM32446GpioHenable;
 	ret.gpioh.moder = STM32446GpioHmoder;
 	ret.gpioh.ospeedr = STM32446GpioHospeedr;
 	ret.gpioh.pupdr = STM32446GpioHpupdr;
@@ -341,8 +353,10 @@ STM32446 STM32446enable(void){
 	ret.usart1.stop = STM32446Usart1Stop;
 	
 	// INICS
-	ret.inic.peripheral = STM32446PeripheralInic;
+	ret.inic.rcc = STM32446RccInic;
 	
+	// ENABLES
+
 	// FUNCS
 	ret.func.bcd2dec = STM32446bcd2dec;
 	ret.func.dec2bcd = STM32446dec2bcd;
@@ -374,7 +388,7 @@ STM32446 STM32446enable(void){
 
 // INICS
 // peripheral
-uint8_t STM32446PeripheralInic(void)
+uint8_t STM32446RccInic(void)
 {
 	uint8_t clkused; // First turn it on then select it or enable it.
 	// Setup PLL
@@ -777,6 +791,10 @@ void STM32446PinBlock( volatile uint32_t* dest, uint32_t size_block, uint32_t da
 
 //generic
 // GPIOA
+void STM32446GpioAenable( void )
+{
+	ret.rcc.reg->AHB1ENR |= (1 << 0);
+}
 void STM32446GpioAmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -828,6 +846,10 @@ void STM32446GpioAafr( unsigned int data, unsigned int pin )
 }
 
 // GPIOB
+void STM32446GpioBenable( void )
+{
+	ret.rcc.reg->AHB1ENR |= (1 << 1);
+}
 void STM32446GpioBmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -879,6 +901,10 @@ void STM32446GpioBafr( unsigned int data, unsigned int pin )
 }
 
 // GPIOC
+void STM32446GpioCenable( void )
+{
+	ret.rcc.reg->AHB1ENR |= (1 << 2);
+}
 void STM32446GpioCmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -930,6 +956,10 @@ void STM32446GpioCafr( unsigned int data, unsigned int pin )
 }
 
 // GPIOD
+void STM32446GpioDenable( void )
+{
+	ret.rcc.reg->AHB1ENR |= (1 << 3);
+}
 void STM32446GpioDmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -981,6 +1011,10 @@ void STM32446GpioDafr( unsigned int data, unsigned int pin )
 }
 
 // GPIOE
+void STM32446GpioEenable( void )
+{
+	ret.rcc.reg->AHB1ENR |= (1 << 4);
+}
 void STM32446GpioEmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -1032,6 +1066,10 @@ void STM32446GpioEafr( unsigned int data, unsigned int pin )
 }
 
 // GPIOH
+void STM32446GpioHenable( void )
+{
+	ret.rcc.reg->AHB1ENR |= (1 << 7);
+}
 void STM32446GpioHmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
