@@ -6,7 +6,7 @@ License: GNU General Public License
 Hardware: all
 Date: 12112022
 Comment:
-	Tested Atemga128 16Mhz and Atmega328 8Mhz and STM32F446RE
+	STM32F446RE
 ************************************************************************/
 #ifndef _LCD_H_
 	#define _LCD_H_

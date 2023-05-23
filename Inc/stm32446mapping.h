@@ -87,6 +87,7 @@ typedef struct
 typedef struct
 {
 	RCC_TypeDef* reg;
+	uint8_t (*inic)(void);
 	void (*henable)(unsigned int hclock);
 	uint8_t (*hselect)(uint8_t sysclk);
 	void (*lenable)(unsigned int lclock);
@@ -192,6 +193,7 @@ typedef struct
 typedef struct
 {
 	RTC_TypeDef* reg;
+	void (*enable)(void);
 	uint8_t (*inic)(uint8_t clock);
 	void (*Day)(uint8_t day);
 	void (*Month)(uint8_t month);
@@ -209,6 +211,7 @@ typedef struct
 typedef struct
 {
 	SYSCFG_TypeDef* reg;
+	void (*enable)(void);
 }STM32446SYSCFGobj;
 
 // DMA
@@ -251,6 +254,7 @@ typedef struct
 typedef struct
 {
 	TIM_TypeDef* reg;
+	void (*enable)(void);
 }STM32446TIM9obj;
 
 // ADC COMMON
@@ -276,6 +280,7 @@ typedef struct
 typedef struct
 {
 	ADC_TypeDef* reg;
+	void (*enable)(void);
 	STM32446ADCCOMMONobj common;
 	STM32446ADC1single single;
 }STM32446ADC1obj;
@@ -284,6 +289,7 @@ typedef struct
 typedef struct
 {
 	USART_TypeDef* reg;
+	void (*enable)(void);
 	void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 	void (*transmit)(void);
 	void (*receive)(void);
@@ -294,10 +300,10 @@ typedef struct
 // INIC
 typedef struct
 {
-	uint8_t (*rcc)(void);
+	void (*template)(void);
 }STM32446_inic;
 
-// INIC
+// ENABLE
 typedef struct
 {
 	void (*template)(void);
@@ -359,7 +365,7 @@ typedef struct
 	
 	// INIC
 	STM32446_inic inic;
-	// ENABLES
+	// ENABLE
 	STM32446_enable enable;
 	//FUNCTION
 	STM32446_function func;

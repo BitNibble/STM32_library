@@ -24,13 +24,13 @@ typedef struct {
 	uint32_t LL;
 	uint32_t LH;
 	uint32_t HL;
-}explodesignal;
+}explodeparameter;
 
 typedef struct {
 	/***Variable***/
-	explodesignal sig;
+	explodeparameter par;
 	// PROTOTYPES VTABLE
-	void (*update)(explodesignal* sig, uint32_t x);
+	void (*update)(explodeparameter* par, uint32_t x);
 }EXPLODE;
 
 /*** Global Header ***/

@@ -51,7 +51,6 @@ static struct PLLparameters
 /*** File Header ***/
 // SysTick
 void SystickInic(void);
-
 // INIC
 uint8_t STM32446RccInic(void);
 
@@ -125,6 +124,7 @@ void STM32446GpioHset( unsigned int data );
 void STM32446GpioHafr( unsigned int data, unsigned int pin );
 
 // RTC
+void STM32446RtcEnable(void);
 uint8_t STM32446RtcInic(uint8_t clock);
 void STM32446RtcDay(uint8_t day);
 void STM32446RtcMonth(uint8_t month);
@@ -137,7 +137,11 @@ void STM32446Rtcdr2vec(char* vect);
 void STM32446Rtctr2vec(char* vect);
 void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
 
+// SYSCFG
+void STM32446SyscfgEnable(void);
+
 // ADC1
+void STM32446Adc1Enable(void);
 void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);
 void STM32446Adc1TEMP(void);
@@ -146,7 +150,11 @@ double STM32446Adc1Read(void);
 void STM32446Adc1Restart(void);
 void STM32446Adc1Stop(void);
 
+// TIM9
+void STM32446Tim9Enable(void);
+
 // USART1
+void STM32446Usart1Enable(void);
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 void STM32446Usart1Transmit(void);
 void STM32446Usart1Receive(void);
@@ -209,6 +217,7 @@ STM32446 STM32446enable(void){
 	// CORE
 	// Coprocessor Access Control Register
 	ret.scb.reg = ((SCB_Type*) STM32446_SCB_BASE;
+
 	// STM32446 OBJECTS
 	// FLASH
 	ret.flash.reg = (FLASH_TypeDef*) FLASH_R_BASE;
@@ -221,12 +230,14 @@ STM32446 STM32446enable(void){
 	
 	// RCC
 	ret.rcc.reg = (RCC_TypeDef*) RCC_BASE;
+	ret.rcc.inic = STM32446RccInic;
 	ret.rcc.henable = STM32446RccHEnable;
 	ret.rcc.hselect = STM32446RccHSelect;
 	ret.rcc.lenable = STM32446RccLEnable;
 	ret.rcc.lselect = STM32446RccLSelect;
 	ret.rcc.prescaler = STM32446Prescaler;
 	ret.rcc.systemclock = SystemClock;
+
 	// PLL
 	ret.rcc.pll.division = STM32446PLLDivision;
 	ret.rcc.pll.enable = STM32446RccPLLCLKEnable;
@@ -295,6 +306,7 @@ STM32446 STM32446enable(void){
 	
 	// RTC
 	ret.rtc.reg = (RTC_TypeDef*) RTC_BASE;
+	ret.rtc.enable = STM32446RtcEnable;
 	ret.rtc.inic = STM32446RtcInic;
 	ret.rtc.Day = STM32446RtcDay;
 	ret.rtc.Month = STM32446RtcMonth;
@@ -309,6 +321,7 @@ STM32446 STM32446enable(void){
 	
 	// SYSCFG
 	ret.syscfg.reg = (SYSCFG_TypeDef*) SYSCFG_BASE;
+	ret.syscfg.enable = STM32446SyscfgEnable;
 	
 	// DMA1
 	ret.dma1.reg = (DMA_TypeDef*) DMA1_BASE;
@@ -329,11 +342,9 @@ STM32446 STM32446enable(void){
 	
 	// random order
 	
-	// TIM9
-	ret.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
-	
 	// ADC1
 	ret.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
+	ret.adc1.enable = STM32446Adc1Enable;
 	ret.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
 	// single
 	ret.adc1.single.inic = STM32446Adc1Inic;
@@ -344,8 +355,13 @@ STM32446 STM32446enable(void){
 	ret.adc1.single.restart = STM32446Adc1Restart;
 	ret.adc1.single.stop = STM32446Adc1Stop;
 	
+	// TIM9
+	ret.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
+	ret.tim9.enable = STM32446Tim9Enable;
+
 	// USART1
 	ret.usart1.reg = (USART_TypeDef*) USART1_BASE;
+	ret.usart1.enable = STM32446Usart1Enable;
 	ret.usart1.inic = STM32446Usart1Inic;
 	ret.usart1.transmit = STM32446Usart1Transmit;
 	ret.usart1.receive = STM32446Usart1Receive;
@@ -353,7 +369,6 @@ STM32446 STM32446enable(void){
 	ret.usart1.stop = STM32446Usart1Stop;
 	
 	// INICS
-	ret.inic.rcc = STM32446RccInic;
 	
 	// ENABLES
 
@@ -590,7 +605,6 @@ void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppr
 }
 
 // PLL
-
 void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr)
 {
 	const unsigned int mask = 0x7F437FFF;
@@ -672,7 +686,7 @@ void STM32446RccPLLSAIEnable(void)
 		//ret.rcc.reg->CR &= (unsigned int) ~(1 << 28);
 }
 
-uint32_t SystemClock(void)
+uint32_t SystemClock(void) // Query
 {
 	uint32_t sysclk;
 	switch((ret.rcc.reg->CFGR >> 2) & 3) // SWS[2]: System clock switch status
@@ -789,12 +803,12 @@ void STM32446PinBlock( volatile uint32_t* dest, uint32_t size_block, uint32_t da
 	*dest |= (data << pin);
 }
 
-//generic
 // GPIOA
 void STM32446GpioAenable( void )
 {
 	ret.rcc.reg->AHB1ENR |= (1 << 0);
 }
+
 void STM32446GpioAmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -850,6 +864,7 @@ void STM32446GpioBenable( void )
 {
 	ret.rcc.reg->AHB1ENR |= (1 << 1);
 }
+
 void STM32446GpioBmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -905,6 +920,7 @@ void STM32446GpioCenable( void )
 {
 	ret.rcc.reg->AHB1ENR |= (1 << 2);
 }
+
 void STM32446GpioCmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -960,6 +976,7 @@ void STM32446GpioDenable( void )
 {
 	ret.rcc.reg->AHB1ENR |= (1 << 3);
 }
+
 void STM32446GpioDmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -1015,6 +1032,7 @@ void STM32446GpioEenable( void )
 {
 	ret.rcc.reg->AHB1ENR |= (1 << 4);
 }
+
 void STM32446GpioEmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -1070,6 +1088,7 @@ void STM32446GpioHenable( void )
 {
 	ret.rcc.reg->AHB1ENR |= (1 << 7);
 }
+
 void STM32446GpioHmoder( unsigned int data, unsigned int pin )
 {
 	const unsigned int blocksize = 2;
@@ -1121,6 +1140,11 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 }
 
 // RTC
+void STM32446RtcEnable(void)
+{
+	ret.rcc.reg->BDCR |= (1 << 15); // RTCEN: RTC clock enable
+}
+
 uint8_t STM32446RtcInic(uint8_t clock)
 { // slow
 	uint8_t status = 255;
@@ -1134,7 +1158,8 @@ uint8_t STM32446RtcInic(uint8_t clock)
 	//ret.rcc.reg->CFGR &= (uint32_t) ~((1 << 20) | (1 << 19) | (1 << 18) | (1 << 17) | (1 << 16)); // RCC_CFGR RTCPRE[4:0] 00010: HSE/2 Bits 20:16
 	//ret.rcc.reg->CFGR |= (uint32_t) (1 << 17); // RCC_CFGR RTCPRE[4:0] 00010: HSE/2 Bits
 	
-	ret.rcc.reg->BDCR |= (1 << 15); // RTCEN: RTC clock enable
+	ret.rtc.enable();
+	//ret.rcc.reg->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 	
 	// 5 - Enter the "key" to unlock write protection
 	ret.rtc.reg->WPR |= 0xCA;
@@ -1335,12 +1360,24 @@ void STM32446Rtctr2vec(char* vect)
 	}
 }
 
+// SYSCFG
+void STM32446SyscfgEnable(void)
+{
+	ret.rcc.reg->APB2ENR |= (1 << 14); //syscfg clock enable
+}
+
 // ADC1
+void STM32446Adc1Enable(void)
+{
+	ret.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
+}
+
 void STM32446Adc1Inic(void)
 {
 	// ADC Clock
 	// ret.rcc.reg->APB1ENR |= (1 << 29); // DACEN: DAC interface clock enable
-	ret.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
+	ret.adc1.enable();
+	//ret.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 	// ADC CONFIG
 	ret.adc1.reg->CR2 |= (1 << 10); // EOCS: End of conversion selection
 	ret.adc1.common.reg->CCR |= (3 << 16); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
@@ -1391,11 +1428,23 @@ void STM32446Adc1Stop(void)
 	ret.adc1.reg->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
 }
 
+// TIM9
+void STM32446Tim9Enable(void)
+{
+	ret.rcc.reg->APB2ENR |= (1 << 16); //timer 9 clock enabled
+}
+
 // USART1
+void STM32446Usart1Enable(void)
+{
+	ret.rcc.reg->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
+}
+
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 {
 	// RCC
-	ret.rcc.reg->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
+	ret.usart1.enable();
+	// ret.rcc.reg->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
 	// Choose GPIO
 	// PA9 - TX		PA10 - RX
 	// PA11 - CTS		PA12 - RTS
@@ -1708,7 +1757,6 @@ uint8_t STM32446RtcAccess(uint8_t clock)
 	return status;
 }
 
-
 // SRAM
 void STM32446SramAccess(void)
 {
@@ -1818,3 +1866,9 @@ void SysTick_Handler(void)
 
 /***EOF***/
 
+/***
+ *
+ * Start separating modules into libraries to be appended, instead of clustered here.
+ *
+ *
+ * */

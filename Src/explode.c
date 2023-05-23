@@ -17,11 +17,11 @@ Comment:
 /*** File Variable ***/
 
 /*** File Header ***/
-void EXPLODEupdate(explodesignal* sig, uint32_t x);
-uint32_t EXPLODEhh(explodesignal* sig);
-uint32_t EXPLODEll(explodesignal* sig);
-uint32_t EXPLODElh(explodesignal* sig);
-uint32_t EXPLODEhl(explodesignal* sig);
+void EXPLODEupdate(explodeparameter* par, uint32_t x);
+uint32_t EXPLODEhh(explodeparameter* par);
+uint32_t EXPLODEll(explodeparameter* par);
+uint32_t EXPLODElh(explodeparameter* par);
+uint32_t EXPLODEhl(explodeparameter* par);
 
 /*** Procedure & Function ***/
 EXPLODE EXPLODEenable( void )
@@ -29,46 +29,46 @@ EXPLODE EXPLODEenable( void )
 	// struct object
 	EXPLODE explode;
 	// inic VAR
-	explode.sig.XI = 0;
-	explode.sig.XF = 0;
+	explode.par.XI = 0;
+	explode.par.XF = 0;
 	// function pointers
 	explode.update = EXPLODEupdate;
 	return explode;
 }
 // boot
-void EXPLODEupdate(explodesignal* sig, uint32_t x)
+void EXPLODEupdate(explodeparameter* par, uint32_t x)
 {
-	sig->XI = sig->XF;
-	sig->XF = x;
-	sig->HH = EXPLODEhh(sig);
-	sig->LL = EXPLODEll(sig);
-	sig->LH = EXPLODElh(sig);
-	sig->HL = EXPLODEhl(sig);
+	par->XI = par->XF;
+	par->XF = x;
+	par->HH = EXPLODEhh(par);
+	par->LL = EXPLODEll(par);
+	par->LH = EXPLODElh(par);
+	par->HL = EXPLODEhl(par);
 }
 // hh
-uint32_t EXPLODEhh(explodesignal* sig)
+uint32_t EXPLODEhh(explodeparameter* par)
 {
-	return (sig->XI & sig->XF);
+	return (par->XI & par->XF);
 }
 // ll
-uint32_t EXPLODEll(explodesignal* sig)
+uint32_t EXPLODEll(explodeparameter* par)
 {
-	return ~(sig->XI | sig->XF);
+	return ~(par->XI | par->XF);
 }
 // lh
-uint32_t EXPLODElh(explodesignal* sig)
+uint32_t EXPLODElh(explodeparameter* par)
 {
 	uint32_t i;
-	i = sig->XI ^ sig->XF;
-	i &= sig->XF;
+	i = par->XI ^ par->XF;
+	i &= par->XF;
 	return i;
 }
 // hl
-uint32_t EXPLODEhl(explodesignal* sig)
+uint32_t EXPLODEhl(explodeparameter* par)
 {
 	uint32_t i;
-	i = sig->XF ^ sig->XI;
-	i &= sig->XI;
+	i = par->XF ^ par->XI;
+	i &= par->XI;
 	return i;
 }
 
