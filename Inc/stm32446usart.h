@@ -1,5 +1,5 @@
 /******************************************************************************
-	STM32 446 USART1
+	STM32 446 USART
 Author: Sergio Santos 
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License

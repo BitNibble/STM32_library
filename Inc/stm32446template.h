@@ -18,11 +18,12 @@ Comment:
 
 /*** Variable ***/
 typedef struct{
-	void (*inic)(void);
-}STM32446TEMPLATE;
+	void (*inic)( uint8_t parameter );
+	
+}STM32446TEMPLATE1;
 
 /*** Global Header ***/
-STM32446TEMPLATE STM32446TEMPLATEenable(void);
+STM32446TEMPLATE1 STM32446TEMPLATE1enable(void);
 
 #endif
 /*** EOF ***/

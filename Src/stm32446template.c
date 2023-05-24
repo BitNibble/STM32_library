@@ -11,28 +11,41 @@ Comment:
 /*** File Library ***/
 #include "stm32446mapping.h"
 #include "stm32446template.h" // move this then to stm32446mapping header file.
+#include <math.h>
 
 /*** File Constant & Macros ***/
 
 /*** File Variable ***/
-static STM32446 template_stm32446;
+static STM32446 mapper;
 
 /*** File Header ***/
-void STM32446TemplateInic(void);
+// TEMPLATE1
+void STM32446Template1Inic( uint8_t parameter );
+// TEMPLATE1
+void STM32446Template1Enable(void);
 
-// ADC1
-STM32446TEMPLATE STM32446TEMPLATEenable(void)
+// TEMPLATE1
+STM32446TEMPLATE1 STM32446TEMPLATE1enable(void)
 {
-	template_stm32446 = STM32446enable();
-	STM32446TEMPLATE template;
+	mapper = STM32446enable();
+	STM32446TEMPLATE1 template1;
 
-	template.inic = STM32446TemplateInic;
+	template1.inic = STM32446Template1Inic;
 
-	return template;
+	STM32446Template1Enable();
+
+	return template1;
 }
 
-void STM32446TemplateInic(void)
+// TEMPLATE1
+void STM32446Template1Enable(void)
 {
-	// Enable TEMPLATE Clock
+
 }
+
+void STM32446Template1Inic( uint8_t parameter )
+{
+	
+}
+
 
