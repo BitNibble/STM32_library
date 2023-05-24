@@ -6,10 +6,11 @@ License: GNU General Public License
 Hardware: STM32-446
 Date: 20052023
 Comment:
-	manual um1724, m0390, pm0056, pm0214, and other sources.
-	Virtual Image STM32-446, mapping.
-	Still in progress 03082022, increment has go along.
-	Stable.
+	-manual um1724, m0390, pm0056, pm0214, and other sources.
+	-Virtual Image STM32-446, mapping.
+	-Still in progress 03082022, increment has go along.
+	-Stable.
+	-Dependent on CMSIS
 *******************************************************************************/
 #ifndef _STM32446MAPPING_H_
 	#define _STM32446MAPPING_H_
@@ -25,6 +26,7 @@ Comment:
 /*** Module Library ***/
 // Comment out modules not being used
 #include <stm32446adc.h>
+#include "stm32446rtc.h" 
 
 /***Global Define and Macros***/
 
@@ -197,18 +199,9 @@ typedef struct
 typedef struct
 {
 	RTC_TypeDef* reg;
-	void (*enable)(void);
-	uint8_t (*inic)(uint8_t clock);
-	void (*Day)(uint8_t day);
-	void (*Month)(uint8_t month);
-	void (*WeekDay)(uint8_t weekday);
-	void (*Year)(uint8_t year);
-	void (*Hour)(uint8_t hour);
-	void (*Minute)(uint8_t minute);
-	void (*Second)(uint8_t second);
-	void (*dr2vec)(char* vect);
-	void (*tr2vec)(char* vect);
-	void (*RegWrite)(volatile uint32_t* reg, uint32_t data);
+	#if defined(_STM32446RTC_H_)
+		STM32446RTC (*enable)(void);
+	#endif
 }STM32446RTCobj;
 
 // SYSCFG

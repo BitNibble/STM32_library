@@ -14,7 +14,7 @@ Comment:
 /*** File Library ***/
 #include "stm32446mapping.h"
 #include <stdio.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 #include <math.h>
@@ -25,8 +25,8 @@ Comment:
 /*** File Variable ***/
 static STM32446 ret;
 static volatile uint32_t DelayCounter;
-static uint32_t STM32446TimeTr;
-static uint32_t STM32446DateDr;
+//static uint32_t STM32446TimeTr;
+//static uint32_t STM32446DateDr;
 static volatile uint32_t mem[4];
 static volatile uint32_t nen[4];
 
@@ -122,20 +122,6 @@ void STM32446GpioHreset( unsigned int data );
 void STM32446GpioHset( unsigned int data );
 void STM32446GpioHafr( unsigned int data, unsigned int pin );
 
-// RTC
-void STM32446RtcEnable(void);
-uint8_t STM32446RtcInic(uint8_t clock);
-void STM32446RtcDay(uint8_t day);
-void STM32446RtcMonth(uint8_t month);
-void STM32446RtcWeekDay(uint8_t weekday);
-void STM32446RtcYear(uint8_t year);
-void STM32446RtcHour(uint8_t hour);
-void STM32446RtcMinute(uint8_t minute);
-void STM32446RtcSecond(uint8_t second);
-void STM32446Rtcdr2vec(char* vect);
-void STM32446Rtctr2vec(char* vect);
-void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
-
 // SYSCFG
 void STM32446SyscfgEnable(void);
 
@@ -179,11 +165,10 @@ void STM32446Gpiosetupreg(volatile uint32_t* reg, unsigned int size_block, unsig
 void STM32446GpioSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 char* STM32446FUNCftoa(double num, char* res, uint8_t afterpoint);
 char* STM32446FUNCprint( char* str, uint8_t size_str, const char* format, ... );
-// FILE FUNC
-void STM32446RtcSetTr(void);
-void STM32446RtcSetDr(void);
-uint8_t STM32446RtcAccess(uint8_t clock);
+/*** FILE FUNC ***/
+// SRAM
 void STM32446SramAccess(void);
+// COMMON
 uint32_t SystemClock(void);
 void STM32446Reverse(char s[]);
 int STM32446StringLength (const char string[]);
@@ -294,18 +279,9 @@ STM32446 STM32446enable(void){
 	
 	// RTC
 	ret.rtc.reg = (RTC_TypeDef*) RTC_BASE;
-	ret.rtc.enable = STM32446RtcEnable;
-	ret.rtc.inic = STM32446RtcInic;
-	ret.rtc.Day = STM32446RtcDay;
-	ret.rtc.Month = STM32446RtcMonth;
-	ret.rtc.WeekDay = STM32446RtcWeekDay;
-	ret.rtc.Year = STM32446RtcYear;
-	ret.rtc.Hour = STM32446RtcHour;
-	ret.rtc.Minute = STM32446RtcMinute;
-	ret.rtc.Second = STM32446RtcSecond;
-	ret.rtc.dr2vec = STM32446Rtcdr2vec;
-	ret.rtc.tr2vec = STM32446Rtctr2vec;
-	ret.rtc.RegWrite = STM32446RtcRegWrite;
+	#if defined(_STM32446RTC_H_)
+		ret.rtc.enable = STM32446RTCenable;
+	#endif
 	
 	// SYSCFG
 	ret.syscfg.reg = (SYSCFG_TypeDef*) SYSCFG_BASE;
@@ -354,7 +330,7 @@ STM32446 STM32446enable(void){
 	
 	// ENABLES
 
-	// FUNCS
+	// FUNC
 	ret.func.bcd2dec = STM32446bcd2dec;
 	ret.func.dec2bcd = STM32446dec2bcd;
 	ret.func.triggerA = STM32446triggerA;
@@ -383,8 +359,8 @@ STM32446 STM32446enable(void){
 	return ret;
 }
 
-// INICS
-// peripheral
+
+// RCC
 uint8_t STM32446RccInic(void)
 {
 	uint8_t clkused; // First turn it on then select it or enable it.
@@ -417,7 +393,7 @@ uint8_t STM32446RccInic(void)
 	return clkused;
 }
 
-// FUNCS
+// FUNC
 // RCC
 void STM32446RccHEnable(unsigned int hclock)
 {
@@ -1121,227 +1097,6 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 	}
 }
 
-// RTC
-void STM32446RtcEnable(void)
-{
-	ret.rcc.reg->BDCR |= (1 << 15); // RTCEN: RTC clock enable
-}
-
-uint8_t STM32446RtcInic(uint8_t clock)
-{ // slow
-	uint8_t status = 255;
-	STM32446TimeTr = ret.rtc.reg->TR;
-	STM32446DateDr = ret.rtc.reg->DR;
-	
-	status = STM32446RtcAccess(clock);
-	
-	// Some help from youtube vids
-	//ret.rcc.reg->CFGR &= (uint32_t) ~((1 << 0) | (1 << 1)); // RCC_CFGR sw[2:0] 00 Bits 1:0
-	//ret.rcc.reg->CFGR &= (uint32_t) ~((1 << 20) | (1 << 19) | (1 << 18) | (1 << 17) | (1 << 16)); // RCC_CFGR RTCPRE[4:0] 00010: HSE/2 Bits 20:16
-	//ret.rcc.reg->CFGR |= (uint32_t) (1 << 17); // RCC_CFGR RTCPRE[4:0] 00010: HSE/2 Bits
-	
-	ret.rtc.enable();
-	//ret.rcc.reg->BDCR |= (1 << 15); // RTCEN: RTC clock enable
-	
-	// 5 - Enter the "key" to unlock write protection
-	ret.rtc.reg->WPR |= 0xCA;
-	ret.rtc.reg->WPR |= 0x53;
-	//ret.rtc.reg->ISR &= (uint32_t) ~((1 << 3) | (1 << 5) | (1 << 7));
-
-	// 6 - Set INIT bit and wait for ready flag
-	ret.rtc.reg->ISR |= (1 << 7); // INIT: Initialization mode
-	while( !(ret.rtc.reg->ISR & (1 << 6)) ); // INITF: Initialization flag
-	status = 6;
-
-	// 7 - Adjust prescaler values for RTC to obtain 1 Hz
-	//ret.rtc-reg->PRER |= 0xF9;
-	//ret.rtc.reg->PRER |= (0x7F << 16);
-	
-	// 8 - Write Time and Date values
-	//ret.rtc.reg->TR |= 0x130000;
-	//ret.rtc.reg->TR |= 0x5700;
-	//ret.rtc.reg->DR |= 0x215124;
-	
-	// 9 - Set BYPSHAD bit
-	// must read twice
-	//ret.rtc.reg->CR |= (1 << 5); // BYPSHAD: Bypass the shadow registers
-	// read only once
-	ret.rtc.reg->CR &= (uint32_t) ~(1 << 5); // BYPSHAD: Disable Bypass the shadow registers
-	
-	// 10 - Clear INIT bit
-	ret.rtc.reg->ISR &= (uint32_t) ~(1 << 7);
-	
-	// 11 - Disable access to RTC registers
-	ret.pwr.reg->CR &= (uint32_t) ~(1 << 8);
-
-	return status;
-}
-
-void STM32446RtcHour(uint8_t hour)
-{
-	uint8_t t, u;
-	const uint32_t mask = 0x003F0000;
-	
-	t = STM32446dec2bcd(hour / 10);
-	u = STM32446dec2bcd(hour % 10);
-	STM32446TimeTr = ret.rtc.reg->TR;
-	STM32446TimeTr &= (uint32_t) ~mask; // clear ht and hu 
-	// hu, ht
-	STM32446TimeTr |= (uint32_t) ((u << 16) | (t << 20));
-	STM32446RtcSetTr();
-}
-
-void STM32446RtcMinute(uint8_t minute)
-{
-	uint8_t t, u;
-	const uint32_t mask = 0x00007F00;
-	
-	t = STM32446dec2bcd(minute / 10);
-	u = STM32446dec2bcd(minute % 10);
-	STM32446TimeTr = ret.rtc.reg->TR;
-	STM32446TimeTr &= (uint32_t) ~mask; // clear mnt and mnu 
-	// mnu, mnt
-	STM32446TimeTr |= (uint32_t) ((u << 8) | (t << 12));
-	STM32446RtcSetTr();
-}
-
-void STM32446RtcSecond(uint8_t second)
-{
-	uint8_t t, u;
-	const uint32_t mask = 0x0000007F;
-	
-	t = STM32446dec2bcd(second / 10);
-	u = STM32446dec2bcd(second % 10);
-	STM32446TimeTr = ret.rtc.reg->TR;
-	STM32446TimeTr &= (uint32_t) ~mask; // clear st and su 
-	// su, st
-	STM32446TimeTr |= (uint32_t) ((u << 0) | (t << 4));
-	STM32446RtcSetTr();
-}
-
-void STM32446RtcYear(uint8_t year)
-{
-	uint8_t t, u;
-	const uint32_t mask = 0x00FF0000;
-	
-	t = STM32446dec2bcd(year / 10);
-	u = STM32446dec2bcd(year % 10);
-	STM32446DateDr &= (uint32_t) ~mask; // clear YT and YU 
-	// YU, YT
-	STM32446DateDr |= (uint32_t) ((u << 16) | (t << 20));
-	STM32446RtcSetDr();
-}
-
-void STM32446RtcWeekDay(uint8_t weekday)
-{
-	uint8_t u;
-	const uint32_t mask = 0x0000E0000;
-	
-	u = STM32446dec2bcd(weekday % 10);
-	STM32446DateDr &= (uint32_t) ~mask; // clear WDU 
-	// WDU
-	STM32446DateDr |= (uint32_t) (u << 13);
-	STM32446RtcSetDr();
-}
-
-void STM32446RtcMonth(uint8_t month)
-{
-	uint8_t t, u;
-	const uint32_t mask = 0x00001F00;
-	
-	t = STM32446dec2bcd(month / 10);
-	u = STM32446dec2bcd(month % 10);
-	STM32446DateDr &= (uint32_t) ~mask; // clear MT and MU 
-	// MU, MT
-	STM32446DateDr |= (uint32_t) ((u << 8) | (t << 12));
-	STM32446RtcSetDr();
-}
-
-void STM32446RtcDay(uint8_t day)
-{
-	uint8_t t, u;
-	const uint32_t mask = 0x0000003F;
-	
-	t = STM32446dec2bcd(day / 10);
-	u = STM32446dec2bcd(day % 10);
-	STM32446DateDr &= (uint32_t) ~mask; // clear DT and DU 
-	// DU, DT
-	STM32446DateDr |= (uint32_t) ((u << 0) | (t << 4));
-	STM32446RtcSetDr();
-}
-
-void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data)
-{
-	//1 - Enable access to the RTC registers
-	ret.pwr.reg->CR |= (1 << 8); // Disable backup domain write protection
-	//2 - Enter the "key" to unlock write protection	
-	ret.rtc.reg->WPR |= 0xCA;
-	ret.rtc.reg->WPR |= 0x53;
-	//3 - Write
-	
-	*reg = data;
-	
-	//4 - Disable access to RTC registers	
-	ret.pwr.reg->CR &= (uint32_t) ~(1 << 8);
-}
-
-void STM32446Rtcdr2vec(char* vect)
-{
-	uint32_t dr = ret.rtc.reg->DR;
-	// YT
-	vect[0] = (uint8_t) (dr >> 20) & 0x0F;
-	vect[0] = STM32446bcd2dec(vect[0]);
-	// YU
-	vect[1] = (uint8_t) (dr >> 16) & 0x0F;
-	vect[1] = STM32446bcd2dec(vect[1]);
-	// WDU
-	vect[2] = (uint8_t) (dr >> 13) & 0x07;
-	vect[2] = STM32446bcd2dec(vect[2]);
-	// MT
-	vect[3] = (uint8_t) (dr >> 12) & 0x01;
-	vect[3] = STM32446bcd2dec(vect[3]);
-	// MU
-	vect[4] = (uint8_t) (dr >> 8) & 0x0F;
-	vect[4] = STM32446bcd2dec(vect[4]);
-	// DT
-	vect[5] = (uint8_t) (dr >> 4) & 0x03;
-	vect[5] = STM32446bcd2dec(vect[5]);
-	// DU
-	vect[6] = (uint8_t) dr & 0x0F;
-	vect[6] = STM32446bcd2dec(vect[6]);
-	// Store Value
-	STM32446DateDr = dr;
-}
-
-void STM32446Rtctr2vec(char* vect)
-{
-	uint32_t tr = ret.rtc.reg->TR;
-	if(ret.rtc.reg->ISR & (1 << 5)){ // RSF: Registers synchronization flag
-		// ht
-		vect[0] = (uint8_t) (tr >> 20) & 0x03;
-		vect[0] = STM32446bcd2dec(vect[0]);
-		// hu
-		vect[1] = (uint8_t) (tr >> 16) & 0x0F;
-		vect[1] = STM32446bcd2dec(vect[1]);
-		// mnt
-		vect[2] = (uint8_t) (tr >> 12) & 0x07;
-		vect[2] = STM32446bcd2dec(vect[2]);
-		// mnu
-		vect[3] = (uint8_t) (tr >> 8) & 0x0F;
-		vect[3] = STM32446bcd2dec(vect[3]);
-		// st
-		vect[4] = (uint8_t) (tr >> 4) & 0x07;
-		vect[4] = STM32446bcd2dec(vect[4]);
-		// su
-		vect[5] = (uint8_t) tr & 0x0F;
-		vect[5] = STM32446bcd2dec(vect[5]);
-		// Store value
-		STM32446TimeTr = tr;
-		// Clear Registers synchronization flag
-		ret.rtc.reg->ISR &= (uint32_t) ~(1 << 5);
-	}
-}
-
 // SYSCFG
 void STM32446SyscfgEnable(void)
 {
@@ -1617,66 +1372,6 @@ char* STM32446FUNCprint( char* str, uint8_t size_str, const char* format, ... )
 }
 
 // FILE FUNC
-//RTC
-void STM32446RtcSetTr(void)
-{
-	//1 - Enable access to the RTC registers
-	ret.pwr.reg->CR |= (1 << 8); // Disable backup domain write protection
-	//2 - Enter the "key" to unlock write protection	
-	ret.rtc.reg->WPR |= 0xCA;
-	ret.rtc.reg->WPR |= 0x53;
-	//3 - Set INIT bit and wait for ready flag
-	ret.rtc.reg->ISR |= (1 << 7); // INIT: Initialization mode
-	while( !(ret.rtc.reg->ISR & (1 << 6)) ); // INITF: Initialization flag
-	//4 - Setup
-	
-	ret.rtc.reg->TR = STM32446TimeTr;
-	
-	//5 - Clear INIT bit
-	ret.rtc.reg->ISR &= (uint32_t) ~(1 << 7);
-	//6 - Disable access to RTC registers	
-	ret.pwr.reg->CR &= (uint32_t) ~(1 << 8);
-}
-
-void STM32446RtcSetDr(void)
-{
-	//1 - Enable access to the RTC registers
-	ret.pwr.reg->CR |= (1 << 8); // Disable backup domain write protection
-	//2 - Enter the "key" to unlock write protection	
-	ret.rtc.reg->WPR |= 0xCA;
-	ret.rtc.reg->WPR |= 0x53;
-	//3 - Set INIT bit and wait for ready flag
-	ret.rtc.reg->ISR |= (1 << 7); // INIT: Initialization mode
-	while( !(ret.rtc.reg->ISR & (1 << 6)) ); // INITF: Initialization flag
-	//4 - Setup
-	
-	ret.rtc.reg->DR = STM32446DateDr;
-	
-	//5 - Clear INIT bit
-	ret.rtc.reg->ISR &= (uint32_t) ~(1 << 7);
-	//6 - Disable access to RTC registers	
-	ret.pwr.reg->CR &= (uint32_t) ~(1 << 8);
-}
-
-uint8_t STM32446RtcAccess(uint8_t clock)
-{
-	uint8_t status;
-	// RM0390 pg 94
-	// RTC access
-	//1 - Enable the power interface clock by setting the PWREN bits in the RCC_APB1ENR
-	ret.rcc.reg->APB1ENR |= (1 << 28); // Power interface clock enable
-	//RCC->APB1ENR |= ((1 << 11) | (1 << 28));
-	//2 - Set the DBP bit in the PWR power control register (PWR_CR)
-	ret.pwr.reg->CR |= (1 << 8); // Disable backup domain write protection
-	//3 - Select the RTC clock source RTC/AWU clock
-	STM32446RccLEnable(clock);
-	status = 1;
-	//4 - RTCSEL[1:0]: RTC clock source selection
-	STM32446RccLSelect(clock);
-	status = 2;
-	return status;
-}
-
 // SRAM
 void STM32446SramAccess(void)
 {
