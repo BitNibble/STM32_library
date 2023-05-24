@@ -19,6 +19,9 @@ Comment:
 #include <stdarg.h>
 #include <math.h>
 
+/*** Module Library ***/
+//#include <stm32446adc.h>
+
 /*** File Constant & Macros ***/
 #define STM32446_SCB_BASE ((0xE000E000UL) + 0x0D00UL))
 
@@ -29,6 +32,7 @@ static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
 static volatile uint32_t mem[4];
 static volatile uint32_t nen[4];
+static double STM32446temperature;
 
 static struct CLOCKprescaler
 {
@@ -50,10 +54,10 @@ static struct PLLparameters
 /*** File Header ***/
 // SysTick
 void SystickInic(void);
-
 // INIC
 uint8_t STM32446RccInic(void);
 
+// FUNC
 // RCC
 void STM32446RccHEnable(unsigned int hclock);
 uint8_t STM32446RccHSelect(uint8_t sysclk);
@@ -139,6 +143,16 @@ void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
 // SYSCFG
 void STM32446SyscfgEnable(void);
 
+// ADC1
+void STM32446Adc1Enable(void);
+void STM32446Adc1Inic(void);
+void STM32446Adc1VBAT(void);
+void STM32446Adc1TEMP(void);
+void STM32446Adc1Start(void);
+double STM32446Adc1Read(void);
+void STM32446Adc1Restart(void);
+void STM32446Adc1Stop(void);
+
 // TIM9
 void STM32446Tim9Enable(void);
 
@@ -202,6 +216,7 @@ STM32446 STM32446enable(void){
 // Comment out the linked modules to reduce memmory usage.
 	mem[0] = 0;
 	nen[0] = 0;
+	STM32446temperature = 0;
 	// CORE
 	// Coprocessor Access Control Register
 	ret.scb.reg = ((SCB_Type*) STM32446_SCB_BASE;
@@ -332,10 +347,16 @@ STM32446 STM32446enable(void){
 	
 	// ADC1
 	ret.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
+	ret.adc1.enable = STM32446Adc1Enable;
 	ret.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
-	#if defined(_STM32446ADC_H_)
-		ret.adc1.enable = STM32446ADCenable;
-	#endif
+	// single
+	ret.adc1.single.inic = STM32446Adc1Inic;
+	ret.adc1.single.vbat = STM32446Adc1VBAT;
+	ret.adc1.single.temp = STM32446Adc1TEMP;
+	ret.adc1.single.start = STM32446Adc1Start;
+	ret.adc1.single.read = STM32446Adc1Read;
+	ret.adc1.single.restart = STM32446Adc1Restart;
+	ret.adc1.single.stop = STM32446Adc1Stop;
 	
 	// TIM9
 	ret.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
@@ -1346,6 +1367,67 @@ void STM32446Rtctr2vec(char* vect)
 void STM32446SyscfgEnable(void)
 {
 	ret.rcc.reg->APB2ENR |= (1 << 14); //syscfg clock enable
+}
+
+// ADC1
+void STM32446Adc1Enable(void)
+{
+	ret.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
+}
+
+void STM32446Adc1Inic(void)
+{
+	// ADC Clock
+	// ret.rcc.reg->APB1ENR |= (1 << 29); // DACEN: DAC interface clock enable
+	ret.adc1.enable();
+	//ret.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
+	// ADC CONFIG
+	ret.adc1.reg->CR2 |= (1 << 10); // EOCS: End of conversion selection
+	ret.adc1.common.reg->CCR |= (3 << 16); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
+	ret.adc1.reg->SMPR1 |= (7 << 24); // SMPx[2:0]: Channel x sampling time selection
+	ret.adc1.reg->CR1 |= (1 << 11); // DISCEN: Discontinuous mode on regular channels
+	ret.adc1.reg->SQR3 |= 18; // SQ1[4:0]: 1st conversion in regular sequence
+}
+
+void STM32446Adc1VBAT(void) // vbat overrides temperature
+{
+	ret.adc1.common.reg->CCR |= (1 << 22); // VBATE: VBAT enable
+}
+
+void STM32446Adc1TEMP(void)
+{
+	// Temperature (in �C) = {(VSENSE V25) / Avg_Slope} + 25
+	ret.adc1.common.reg->CCR |= (1 << 23); // TSVREFE: Temperature sensor and VREFINT enable
+}
+
+void STM32446Adc1Start()
+{
+	// turn on select source and start reading
+	ret.adc1.reg->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
+	//
+	ret.adc1.reg->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels
+}
+
+double STM32446Adc1Read(void)
+{
+	if(ret.adc1.common.reg->CSR & (1 << 1)){ // EOC1: End of conversion of ADC1
+		STM32446temperature = ret.adc1.reg->DR;
+		ret.adc1.reg->SR &= (unsigned int) ~(1 << 4); // STRT: Regular channel start flag
+	}
+	return STM32446temperature;
+}
+
+void STM32446Adc1Restart(void)
+{
+	if(ret.adc1.common.reg->CSR & (1 << 4)) // STRT1: Regular channel Start flag of ADC1
+		;
+	else
+		ret.adc1.reg->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels;
+}
+
+void STM32446Adc1Stop(void)
+{
+	ret.adc1.reg->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
 }
 
 // TIM9

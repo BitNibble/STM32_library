@@ -22,10 +22,6 @@ Comment:
 #endif
 #include "stm32f4xx.h"
 
-/*** Module Library ***/
-// Comment out modules not being used
-#include <stm32446adc.h>
-
 /***Global Define and Macros***/
 
 /*** Global Variable ***/
@@ -268,14 +264,25 @@ typedef struct
 }STM32446ADCCOMMONobj;
 
 // ADC1
+// types of ADC1 applications
+typedef struct
+{
+	void (*inic)(void);
+	void (*vbat)(void);
+	void (*temp)(void);
+	void (*start)(void);
+	double (*read)(void);
+	void (*restart)(void);
+	void (*stop)(void);
+}STM32446ADC1single;
+
 // Registry structs
 typedef struct
 {
 	ADC_TypeDef* reg;
+	void (*enable)(void);
 	STM32446ADCCOMMONobj common;
-	#if defined(_STM32446ADC_H_)
-		STM32446ADC (*enable)(void);
-	#endif
+	STM32446ADC1single single;
 }STM32446ADC1obj;
 
 // USART1
