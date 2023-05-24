@@ -1,5 +1,5 @@
 /******************************************************************************
-	STM32 446 TEMPLATE
+	STM32 446 USART1
 Author: Sergio Santos 
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
@@ -8,8 +8,8 @@ Date: 23052023
 Comment:
 	
 *******************************************************************************/
-#ifndef _STM32446TEMPLATE_H_
-	#define _STM32446TEMPLATE_H_
+#ifndef _STM32446USART_H_
+	#define _STM32446USART_H_
 
 /*** Library ***/
 #include <inttypes.h>
@@ -18,11 +18,14 @@ Comment:
 
 /*** Variable ***/
 typedef struct{
-	void (*inic)(void);
-}STM32446TEMPLATE;
+	void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+	void (*transmit)(void);
+	void (*receive)(void);
+	void (*stop)(void);
+}STM32446USART1;
 
 /*** Global Header ***/
-STM32446TEMPLATE STM32446TEMPLATEenable(void);
+STM32446USART1 STM32446USART1enable(void);
 
 #endif
 /*** EOF ***/

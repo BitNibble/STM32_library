@@ -28,13 +28,13 @@ typedef struct
 	double (*read)(void);
 	void (*restart)(void);
 	void (*stop)(void);
-}STM32446ADC1singlev2;
+}STM32446ADC1single;
 
 typedef struct{
-	STM32446ADC1singlev2 single;
-}STM32446ADC;
+	STM32446ADC1single single;
+}STM32446ADC1;
 
-STM32446ADC STM32446ADCenable(void);
+STM32446ADC1 STM32446ADC1enable(void);
 
 #endif
 /*** EOF ***/

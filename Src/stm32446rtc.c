@@ -21,7 +21,6 @@ static uint32_t STM32446DateDr;
 
 /*** File Header ***/
 // RTC
-void STM32446RtcEnable(void);
 uint8_t STM32446RtcInic(uint8_t clock);
 void STM32446RtcDay(uint8_t day);
 void STM32446RtcMonth(uint8_t month);
@@ -34,6 +33,7 @@ void STM32446Rtcdr2vec(char* vect);
 void STM32446Rtctr2vec(char* vect);
 void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
 // RTC
+void STM32446RtcEnable(void);
 void STM32446RtcSetTr(void);
 void STM32446RtcSetDr(void);
 uint8_t STM32446RtcAccess(uint8_t clock);
@@ -55,6 +55,8 @@ STM32446RTC STM32446RTCenable(void)
 	rtc.dr2vec = STM32446Rtcdr2vec;
 	rtc.tr2vec = STM32446Rtctr2vec;
 	rtc.RegWrite = STM32446RtcRegWrite;
+
+	STM32446RtcEnable();
 
 	return rtc;
 }
@@ -78,7 +80,7 @@ uint8_t STM32446RtcInic(uint8_t clock)
 	//rtc_stm32446.rcc.reg->CFGR &= (uint32_t) ~((1 << 20) | (1 << 19) | (1 << 18) | (1 << 17) | (1 << 16)); // RCC_CFGR RTCPRE[4:0] 00010: HSE/2 Bits 20:16
 	//rtc_stm32446.rcc.reg->CFGR |= (uint32_t) (1 << 17); // RCC_CFGR RTCPRE[4:0] 00010: HSE/2 Bits
 	
-	STM32446RtcEnable();
+	//STM32446RtcEnable();
 	//rtc_stm32446.rcc.reg->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 	
 	// 5 - Enter the "key" to unlock write protection

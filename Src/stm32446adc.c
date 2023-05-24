@@ -18,7 +18,7 @@ static STM32446 adc_stm32446;
 static double STM32446temperature;
 
 /*** File Header ***/
-void STM32446Adc1Enable(void);
+// ADC1
 void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);
 void STM32446Adc1TEMP(void);
@@ -26,24 +26,28 @@ void STM32446Adc1Start(void);
 double STM32446Adc1Read(void);
 void STM32446Adc1Restart(void);
 void STM32446Adc1Stop(void);
+// ADC1
+void STM32446Adc1Enable(void);
 
 // ADC1
-STM32446ADC STM32446ADCenable(void)
+STM32446ADC1 STM32446ADC1enable(void)
 {
 	adc_stm32446 = STM32446enable();
-	STM32446ADC adc;
+	STM32446ADC1 adc1;
 
 	STM32446temperature = 0;
 
-	adc.single.inic = STM32446Adc1Inic;
-	adc.single.vbat = STM32446Adc1VBAT;
-	adc.single.temp = STM32446Adc1TEMP;
-	adc.single.start = STM32446Adc1Start;
-	adc.single.read = STM32446Adc1Read;
-	adc.single.restart = STM32446Adc1Restart;
-	adc.single.stop = STM32446Adc1Stop;
+	adc1.single.inic = STM32446Adc1Inic;
+	adc1.single.vbat = STM32446Adc1VBAT;
+	adc1.single.temp = STM32446Adc1TEMP;
+	adc1.single.start = STM32446Adc1Start;
+	adc1.single.read = STM32446Adc1Read;
+	adc1.single.restart = STM32446Adc1Restart;
+	adc1.single.stop = STM32446Adc1Stop;
 
-	return adc;
+	STM32446Adc1Enable();
+
+	return adc1;
 }
 
 void STM32446Adc1Enable(void)
@@ -55,7 +59,7 @@ void STM32446Adc1Inic(void)
 {
 	// ADC Clock
 	// adc_stm32446.rcc.reg->APB1ENR |= (1 << 29); // DACEN: DAC interface clock enable
-	STM32446Adc1Enable();
+	//STM32446Adc1Enable();
 	// adc_stm32446.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 	// ADC CONFIG
 	adc_stm32446.adc1.reg->CR2 |= (1 << 10); // EOCS: End of conversion selection

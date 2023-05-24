@@ -25,8 +25,9 @@ Comment:
 
 /*** Module Library ***/
 // Comment out modules not being used
-#include <stm32446adc.h>
-#include "stm32446rtc.h" 
+#include "stm32446adc.h"
+#include "stm32446rtc.h"
+#include "stm32446usart.h"
 
 /***Global Define and Macros***/
 
@@ -44,6 +45,28 @@ typedef struct
 //	uint16_t H;
 //	uint16_t L;
 //}STM32446HighLowWord;
+
+typedef struct
+{
+	uint16_t AHB;
+	uint8_t APB1;
+	uint8_t APB2;
+}STM32446CLOCK_prescaler;
+
+typedef struct
+{
+	uint32_t Source;
+	uint8_t M;
+	uint16_t N;
+	uint8_t P;
+	uint8_t Q;
+	uint8_t R;
+}STM32446PLL_parameter;
+
+typedef struct
+{
+	uint32_t (*SystemClock)(void);
+}STM32446Query;
 
 /*** STM32446 ***/
 
@@ -267,7 +290,7 @@ typedef struct
 	ADC_TypeDef* reg;
 	STM32446ADCCOMMONobj common;
 	#if defined(_STM32446ADC_H_)
-		STM32446ADC (*enable)(void);
+		STM32446ADC1 (*enable)(void);
 	#endif
 }STM32446ADC1obj;
 
@@ -275,12 +298,9 @@ typedef struct
 typedef struct
 {
 	USART_TypeDef* reg;
-	void (*enable)(void);
-	void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-	void (*transmit)(void);
-	void (*receive)(void);
-	void (*parameters)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-	void (*stop)(void);
+	#if defined(_STM32446USART_H_)
+		STM32446USART1 (*enable)(void);
+	#endif
 }STM32446USART1obj;
 
 // INIC
@@ -324,6 +344,11 @@ typedef struct
 // STM32446 IMAGE Linker
 typedef struct
 {
+	// PARAMETER
+	STM32HighLowByte HLbyte;
+	STM32446CLOCK_prescaler CLOCK_prescaler;
+	STM32446PLL_parameter PLL_parameter;
+	STM32446Query query;
 	// CORE
 	STM32446SCBobj scb;
 	// MCU

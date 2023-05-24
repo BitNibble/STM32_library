@@ -25,36 +25,15 @@ Comment:
 /*** File Variable ***/
 static STM32446 ret;
 static volatile uint32_t DelayCounter;
-//static uint32_t STM32446TimeTr;
-//static uint32_t STM32446DateDr;
 static volatile uint32_t mem[4];
 static volatile uint32_t nen[4];
-
-static struct CLOCKprescaler
-{
-	uint16_t AHB;
-	uint8_t APB1;
-	uint8_t APB2;
-}CLOCK_prescaler;
-
-static struct PLLparameters
-{
-	uint32_t Source;
-	uint8_t M;
-	uint16_t N;
-	uint8_t P;
-	uint8_t Q;
-	uint8_t R;
-}PLL_parameter;
 
 /*** File Header ***/
 // SysTick
 void SystickInic(void);
 
-// INIC
-uint8_t STM32446RccInic(void);
-
 // RCC
+uint8_t STM32446RccInic(void);
 void STM32446RccHEnable(unsigned int hclock);
 uint8_t STM32446RccHSelect(uint8_t sysclk);
 void STM32446RccLEnable(unsigned int lclock);
@@ -128,14 +107,6 @@ void STM32446SyscfgEnable(void);
 // TIM9
 void STM32446Tim9Enable(void);
 
-// USART1
-void STM32446Usart1Enable(void);
-void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-void STM32446Usart1Transmit(void);
-void STM32446Usart1Receive(void);
-void STM32446Usart1Parameters( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-void STM32446Usart1Stop(void);
-
 // MISCELLANEOUS
 char STM32446bcd2dec(char num);
 char STM32446dec2bcd(char num);
@@ -165,20 +136,18 @@ void STM32446Gpiosetupreg(volatile uint32_t* reg, unsigned int size_block, unsig
 void STM32446GpioSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 char* STM32446FUNCftoa(double num, char* res, uint8_t afterpoint);
 char* STM32446FUNCprint( char* str, uint8_t size_str, const char* format, ... );
+
 /*** FILE FUNC ***/
 // SRAM
 void STM32446SramAccess(void);
-// COMMON
-uint32_t SystemClock(void);
+//COMMON
 void STM32446Reverse(char s[]);
 int STM32446StringLength (const char string[]);
 uint8_t STM32446FUNCintinvstr(int32_t num, char* res, uint8_t n_digit);
-
-// Template
-void template(void);
+// QUERY
+uint32_t SystemClock(void);
 
 // Interrupt Prototype
-
 void SysTick_Handler(void);
 
 /**** Procedure & Functions ***/
@@ -310,7 +279,7 @@ STM32446 STM32446enable(void){
 	ret.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
 	ret.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
 	#if defined(_STM32446ADC_H_)
-		ret.adc1.enable = STM32446ADCenable;
+		ret.adc1.enable = STM32446ADC1enable;
 	#endif
 	
 	// TIM9
@@ -319,16 +288,16 @@ STM32446 STM32446enable(void){
 
 	// USART1
 	ret.usart1.reg = (USART_TypeDef*) USART1_BASE;
-	ret.usart1.enable = STM32446Usart1Enable;
-	ret.usart1.inic = STM32446Usart1Inic;
-	ret.usart1.transmit = STM32446Usart1Transmit;
-	ret.usart1.receive = STM32446Usart1Receive;
-	ret.usart1.parameters = STM32446Usart1Parameters;
-	ret.usart1.stop = STM32446Usart1Stop;
+	#if defined(_STM32446USART_H_)
+		ret.usart1.enable = STM32446USART1enable;
+	#endif
 	
-	// INICS
+	// INIC
 	
-	// ENABLES
+	// ENABLE
+
+	// QUERY
+	ret.query.SystemClock = SystemClock;
 
 	// FUNC
 	ret.func.bcd2dec = STM32446bcd2dec;
@@ -351,14 +320,11 @@ STM32446 STM32446enable(void){
 	ret.func.setup = STM32446GpioSetup;
 	ret.func.ftoa = STM32446FUNCftoa;
 	ret.func.print = STM32446FUNCprint;
-	ret.func.test = template;
-	
 	
 	SystickInic(); // Polling delay source.
 	
 	return ret;
 }
-
 
 // RCC
 uint8_t STM32446RccInic(void)
@@ -393,7 +359,6 @@ uint8_t STM32446RccInic(void)
 	return clkused;
 }
 
-// FUNC
 // RCC
 void STM32446RccHEnable(unsigned int hclock)
 {
@@ -482,82 +447,82 @@ void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppr
 	switch(ppre2){ // 13
 		case 2:
 			ret.rcc.reg->CFGR |= (4 << 13);
-			CLOCK_prescaler.APB2 = 2;
+			ret.CLOCK_prescaler.APB2 = 2;
 		break;
 		case 4:
 			ret.rcc.reg->CFGR |= (5 << 13);
-			CLOCK_prescaler.APB2 = 4;
+			ret.CLOCK_prescaler.APB2 = 4;
 		break;
 		case 8:
 			ret.rcc.reg->CFGR |= (6 << 13);
-			CLOCK_prescaler.APB2 = 8;
+			ret.CLOCK_prescaler.APB2 = 8;
 		break;
 		case 16:
 			ret.rcc.reg->CFGR |= (7 << 13);
-			CLOCK_prescaler.APB2 = 16;
+			ret.CLOCK_prescaler.APB2 = 16;
 		break;
 		default:
-			CLOCK_prescaler.APB2 = 1;
+			ret.CLOCK_prescaler.APB2 = 1;
 		break;
 	}
 
 	switch(ppre1){ // 10
 	case 2:
 		ret.rcc.reg->CFGR |= (4 << 10);
-		CLOCK_prescaler.APB1 = 2;
+		ret.CLOCK_prescaler.APB1 = 2;
 	break;
 	case 4:
 		ret.rcc.reg->CFGR |= (5 << 10);
-		CLOCK_prescaler.APB1 = 4;
+		ret.CLOCK_prescaler.APB1 = 4;
 	break;
 	case 8:
 		ret.rcc.reg->CFGR |= (6 << 10);
-		CLOCK_prescaler.APB1 = 8;
+		ret.CLOCK_prescaler.APB1 = 8;
 	break;
 	case 16:
 		ret.rcc.reg->CFGR |= (7 << 10);
-		CLOCK_prescaler.APB1 = 16;
+		ret.CLOCK_prescaler.APB1 = 16;
 	break;
 	default:
-		CLOCK_prescaler.APB1 = 1;
+		ret.CLOCK_prescaler.APB1 = 1;
 	break;
 	}
 
 	switch(ahbpre){ // 4
 	case 2:
 		ret.rcc.reg->CFGR |= (8 << 4);
-		CLOCK_prescaler.AHB = 2;
+		ret.CLOCK_prescaler.AHB = 2;
 	break;
 	case 4:
 		ret.rcc.reg->CFGR |= (9 << 4);
-		CLOCK_prescaler.AHB = 4;
+		ret.CLOCK_prescaler.AHB = 4;
 	break;
 	case 8:
 		ret.rcc.reg->CFGR |= (10 << 4);
-		CLOCK_prescaler.AHB = 8;
+		ret.CLOCK_prescaler.AHB = 8;
 	break;
 	case 16:
 		ret.rcc.reg->CFGR |= (11 << 4);
-		CLOCK_prescaler.AHB = 16;
+		ret.CLOCK_prescaler.AHB = 16;
 	break;
 	case 64:
 		ret.rcc.reg->CFGR |= (12 << 4);
-		CLOCK_prescaler.AHB = 64;
+		ret.CLOCK_prescaler.AHB = 64;
 	break;
 	case 128:
 		ret.rcc.reg->CFGR |= (13 << 4);
-		CLOCK_prescaler.AHB = 128;
+		ret.CLOCK_prescaler.AHB = 128;
 	break;
 	case 256:
 		ret.rcc.reg->CFGR |= (14 << 4);
-		CLOCK_prescaler.AHB = 256;
+		ret.CLOCK_prescaler.AHB = 256;
 	break;
 	case 512:
 		ret.rcc.reg->CFGR |= (15 << 4);
-		CLOCK_prescaler.AHB = 512;
+		ret.CLOCK_prescaler.AHB = 512;
 	break;
 	default:
-		CLOCK_prescaler.AHB = 1;
+		ret.CLOCK_prescaler.AHB = 1;
 	break;
 	}
 }
@@ -571,51 +536,51 @@ void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int pl
 
 	if(pllr > 1 && pllr < 8){ // PLLR[28]: Main PLL division factor for I2Ss, SAIs, SYSTEM and SPDIF-Rx clocks
 		ret.rcc.reg->PLLCFGR |= (pllr << 28);
-		PLL_parameter.R = pllr;
+		ret.PLL_parameter.R = pllr;
 	}
 
 	if(pllq > 1 && pllq < 16){ // PLLQ[24]: Main PLL (PLL) division factor for USB OTG FS, SDIOclocks
 		ret.rcc.reg->PLLCFGR |= (pllq << 24);
-		PLL_parameter.Q = pllq;
+		ret.PLL_parameter.Q = pllq;
 	}
 
 	if(pllsrc == 1){ // PLLSRC[22]: Main PLL(PLL) and audio PLL (PLLI2S) entry clock source
-		PLL_parameter.Source = 25000000;
+		ret.PLL_parameter.Source = 25000000;
 		ret.rcc.reg->PLLCFGR |= (1 << 22);
 	}else{
-		PLL_parameter.Source = 16000000;
+		ret.PLL_parameter.Source = 16000000;
 	}
 
 	switch(pllp){ // PLLP[16]: Main PLL (PLL) division factor for main system clock
 		case 2:
-			PLL_parameter.P = pllp;
+			ret.PLL_parameter.P = pllp;
 		break;
 		case 4:
 			ret.rcc.reg->PLLCFGR |= (1 << 16);
-			PLL_parameter.P = pllp;
+			ret.PLL_parameter.P = pllp;
 		break;
 		case 6:
 			ret.rcc.reg->PLLCFGR |= (2 << 16);
-			PLL_parameter.P = pllp;
+			ret.PLL_parameter.P = pllp;
 		break;
 		case 8:
 			ret.rcc.reg->PLLCFGR |= (3 << 16);
-			PLL_parameter.P = pllp;
+			ret.PLL_parameter.P = pllp;
 		break;
 		default:
 			ret.rcc.reg->PLLCFGR |= (1 << 16);
-			PLL_parameter.P = 4;
+			ret.PLL_parameter.P = 4;
 		break;
 	}
 
 	if(plln > 49 && plln < 433){ // PLLN[6]: Main PLL (PLL) multiplication factor for VCO
 		ret.rcc.reg->PLLCFGR |= (plln << 6);
-		PLL_parameter.N = plln;
+		ret.PLL_parameter.N = plln;
 	}
 
 	if(pllm > 1 && pllm < 64){ // PLLM[0]: Division factor for the main PLL (PLL) input clock [2Mhz]
 		ret.rcc.reg->PLLCFGR |= pllm;
-		PLL_parameter.M = pllm;
+		ret.PLL_parameter.M = pllm;
 	}
 }
 
@@ -650,20 +615,21 @@ uint32_t SystemClock(void) // Query
 	switch((ret.rcc.reg->CFGR >> 2) & 3) // SWS[2]: System clock switch status
 	{
 		case 0: // 00: HSI oscillator used as the system clock
-			PLL_parameter.Source = 16000000;
+			ret.PLL_parameter.Source = 16000000;
 			sysclk= 16000000;
 		break;
 		case 1: // 01: HSE oscillator used as the system clock
-			PLL_parameter.Source = 25000000;
+			ret.PLL_parameter.Source = 25000000;
 			sysclk = 25000000;
 		break;
 		case 2: // 10: PLL used as the system clock
-			sysclk = ( PLL_parameter.Source / PLL_parameter.M ) * ( PLL_parameter.N / PLL_parameter.P );
+			sysclk = ( ret.PLL_parameter.Source / ret.PLL_parameter.M ) * ( ret.PLL_parameter.N / ret.PLL_parameter.P );
 		break;
 		case 3: // 11: PLL_R used as the system clock
-			sysclk = ( PLL_parameter.Source / PLL_parameter.M ) * ( PLL_parameter.N / PLL_parameter.R );
+			sysclk = ( ret.PLL_parameter.Source / ret.PLL_parameter.M ) * ( ret.PLL_parameter.N / ret.PLL_parameter.R );
 		break;
 		default:
+			sysclk= 16000000;
 		break;
 	}
 	return sysclk;
@@ -1109,121 +1075,6 @@ void STM32446Tim9Enable(void)
 	ret.rcc.reg->APB2ENR |= (1 << 16); //timer 9 clock enabled
 }
 
-// USART1
-void STM32446Usart1Enable(void)
-{
-	ret.rcc.reg->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
-}
-
-void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
-{
-	// RCC
-	ret.usart1.enable();
-	// ret.rcc.reg->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
-	// Choose GPIO
-	// PA9 - TX		PA10 - RX
-	// PA11 - CTS		PA12 - RTS
-	// AF7 and AF8, activation. therefore
-	ret.gpioa.moder(2,9);
-	ret.gpioa.moder(2,10);
-	ret.gpioa.afr(7,9);
-	ret.gpioa.afr(7,10);
-	//	Procedure:
-	// 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
-	// 2. Program the M bit in USART_CR1 to define the word length.
-	// 3. Program the number of stop bits in USART_CR2.
-	// 4. Select DMA enable (DMAT) in USART_CR3 if Multi buffer Communication is to take
-	//   place. Configure the DMA register as explained in multibuffer communication.
-	// 5. Select the desired baud rate using the USART_BRR register.
-
-	ret.usart1.reg->CR1 |= (1 << 13); // UE: USART enable
-	STM32446Usart1Parameters( wordlength, samplingmode, stopbits, baudrate ); // Default
-
-}
-void STM32446Usart1Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in USART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the USART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the USART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	ret.usart1.reg->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	ret.usart1.reg->CR1 |= (1 << 3); // TE: Transmitter enable
-	// ret.usart1.reg->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; ret.usart1.reg->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// ret.usart1.reg->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-	ret.usart1.reg->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Usart1Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register USART_BRR
-	// 6.	Set the RE bit USART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	ret.usart1.reg->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	ret.usart1.reg->CR1 |= (1 << 2); // RE: Receiver enable
-	ret.usart1.reg->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
-void STM32446Usart1Parameters( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
-// Sets the usart parameters, using real values.
-{
-	uint8_t sampling;
-	double value, fracpart, intpart;
-	
-	if(wordlength == 9)
-		ret.usart1.reg->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
-	else if(wordlength == 8)
-		ret.usart1.reg->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
-	else
-		ret.usart1.reg->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-	
-	if(samplingmode == 8){
-		sampling = 8;
-		ret.usart1.reg->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
-	}else if(samplingmode == 16){
-		sampling = 16;
-		ret.usart1.reg->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16.
-	}else{
-		sampling = 16;
-		ret.usart1.reg->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
-	}
-	
-	ret.usart1.reg->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
-	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
-		ret.usart1.reg->CR2 |= (1 << 12);
-	else if(fabs(stopbits - 1) < 0.00001) // STOP: STOP bits, 00: 1 Stop bit.
-		ret.usart1.reg->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12));
-	else if(fabs(stopbits - 1.5) < 0.00001) // STOP: STOP bits, 11: 1.5 Stop bit
-		ret.usart1.reg->CR2 |= ((1 << 13) | (1 << 12));
-	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
-		ret.usart1.reg->CR2 |= (1 << 13);
-	
-	value = (double) SystemClock() / ( CLOCK_prescaler.AHB * sampling * baudrate );
-	fracpart = modf(value, &intpart);
-	
-	ret.usart1.reg->BRR = 0; // clean slate, reset.
-	if(samplingmode == 16){
-		ret.usart1.reg->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
-		ret.usart1.reg->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0]
-	}else if(samplingmode == 8){
-		ret.usart1.reg->BRR = (uint32_t) (round(fracpart * 8)); // DIV_Fraction
-		ret.usart1.reg->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0]
-	}else{
-		ret.usart1.reg->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
-		ret.usart1.reg->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
-	}
-}
-
-void STM32446Usart1Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	ret.usart1.reg->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-}
-
 //MISCELLANEOUS
 // Convert Binary Coded Decimal (BCD) to Decimal
 char STM32446bcd2dec(char num)
@@ -1391,12 +1242,6 @@ void STM32446SramAccess(void)
 
 	// 3 - Enable the backup SRAM clock by setting BKPSRAMEN bit in the RCC_AHB1ENR
 	ret.rcc.reg->AHB1ENR |= (1 << 18); // BKPSRAMEN: Backup SRAM interface clock enable
-}
-
-// TEMPLATE
-void template(void)
-{ // the best procedure ever, does absolutely nothing.
-
 }
 
 // Function to count the number of characters in a string
