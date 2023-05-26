@@ -109,6 +109,26 @@ typedef struct
 	#endif
 }STM32446ADC1obj;
 
+// ADC -> ADC2
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	#if defined(_STM32446ADC_H_)
+		void (*enable)(void);
+	#endif
+}STM32446ADC2obj;
+
+// ADC -> ADC3
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	#if defined(_STM32446ADC_H_)
+		void (*enable)(void);
+	#endif
+}STM32446ADC3obj;
+
 // CAN_TxMailBox
 typedef struct
 {
@@ -127,11 +147,17 @@ typedef struct
 	CAN_FilterRegister_TypeDef* reg;
 }STM32446CAN_FilterRegisterobj;
 
-// CAN
+// CAN -> CAN1
 typedef struct
 {
 	CAN_TypeDef* reg;
-}STM32446CANobj;
+}STM32446CAN1obj;
+
+// CAN -> CAN2
+typedef struct
+{
+	CAN_TypeDef* reg;
+}STM32446CAN2obj;
 
 // CEC
 typedef struct
@@ -316,11 +342,23 @@ typedef struct
 	void (*enable)(void);
 }STM32446SYSCFGobj;
 
-// I2C
+// I2C -> I2C1
 typedef struct
 {
 	I2C_TypeDef* reg;
-}STM32446I2Cobj;
+}STM32446I2C1obj;
+
+// I2C -> I2C2
+typedef struct
+{
+	I2C_TypeDef* reg;
+}STM32446I2C2obj;
+
+// I2C -> I2C3
+typedef struct
+{
+	I2C_TypeDef* reg;
+}STM32446I2C3obj;
 
 // FMPI2C
 typedef struct
@@ -384,17 +422,41 @@ typedef struct
 	#endif
 }STM32446RTCobj;
 
-// SAI
+// SAI -> SAI1
 typedef struct
 {
 	SAI_TypeDef* reg;
-}STM32446SAIobj;
+}STM32446SAI1obj;
 
-// SAI_Block
+// SAI1_Block -> SAI1_BlockA
 typedef struct
 {
 	SAI_Block_TypeDef* reg;
-}STM32446SAI_Blockobj;
+}STM32446SAI1_BlockAobj;
+
+// SAI1_Block -> SAI1_BlockB
+typedef struct
+{
+	SAI_Block_TypeDef* reg;
+}STM32446SAI1_BlockBobj;
+
+// SAI -> SAI2
+typedef struct
+{
+	SAI_TypeDef* reg;
+}STM32446SAI2obj;
+
+// SAI2_Block -> SAI2_BlockA
+typedef struct
+{
+	SAI_Block_TypeDef* reg;
+}STM32446SAI2_BlockAobj;
+
+// SAI2_Block -> SAI2_BlockB
+typedef struct
+{
+	SAI_Block_TypeDef* reg;
+}STM32446SAI2_BlockBobj;
 
 // SDIO
 typedef struct
@@ -402,11 +464,29 @@ typedef struct
 	SDIO_TypeDef* reg;
 }STM32446SDIOobj;
 
-// SPI
+// SPI -> SPI1
 typedef struct
 {
 	SPI_TypeDef* reg;
-}STM32446SPIobj;
+}STM32446SPI1obj;
+
+// SPI -> SPI2
+typedef struct
+{
+	SPI_TypeDef* reg;
+}STM32446SPI2obj;
+
+// SPI -> SPI3
+typedef struct
+{
+	SPI_TypeDef* reg;
+}STM32446SPI3obj;
+
+// SPI -> SPI4
+typedef struct
+{
+	SPI_TypeDef* reg;
+}STM32446SPI4obj;
 
 // QUADSPI
 typedef struct
@@ -420,6 +500,78 @@ typedef struct
 	SPDIFRX_TypeDef* reg;
 }STM32446SPDIFRXobj;
 
+// TIM -> TIM1
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM1obj;
+
+// TIM -> TIM2
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM2obj;
+
+// TIM -> TIM3
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM3obj;
+
+// TIM -> TIM4
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM4obj;
+
+// TIM -> TIM5
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM5obj;
+
+// TIM -> TIM6
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM6obj;
+
+// TIM -> TIM7
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM7obj;
+
+// TIM -> TIM8
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM8obj;
+
 // TIM -> TIM9
 typedef struct
 {
@@ -429,6 +581,51 @@ typedef struct
 	#endif
 }STM32446TIM9obj;
 
+// TIM -> TIM10
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM10obj;
+
+// TIM -> TIM11
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM11obj;
+
+// TIM -> TIM12
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM12obj;
+
+// TIM -> TIM13
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM13obj;
+
+// TIM -> TIM14
+typedef struct
+{
+	TIM_TypeDef* reg;
+	#if defined(_STM32446TIM_H_)
+		void (*enable)(void);
+	#endif
+}STM32446TIM14obj;
+
 // USART -> USART1
 typedef struct
 {
@@ -437,6 +634,51 @@ typedef struct
 		STM32446USART1 (*enable)(void);
 	#endif
 }STM32446USART1obj;
+
+// USART -> USART2
+typedef struct
+{
+	USART_TypeDef* reg;
+	#if defined(_STM32446USART_H_)
+		void (*enable)(void);
+	#endif
+}STM32446USART2obj;
+
+// USART -> USART3
+typedef struct
+{
+	USART_TypeDef* reg;
+	#if defined(_STM32446USART_H_)
+		void (*enable)(void);
+	#endif
+}STM32446USART3obj;
+
+// USART -> USART4
+typedef struct
+{
+	USART_TypeDef* reg;
+	#if defined(_STM32446USART_H_)
+		void (*enable)(void);
+	#endif
+}STM32446USART4obj;
+
+// USART -> USART5
+typedef struct
+{
+	USART_TypeDef* reg;
+	#if defined(_STM32446USART_H_)
+		void (*enable)(void);
+	#endif
+}STM32446USART5obj;
+
+// USART -> USART6
+typedef struct
+{
+	USART_TypeDef* reg;
+	#if defined(_STM32446USART_H_)
+		void (*enable)(void);
+	#endif
+}STM32446USART6obj;
 
 // WWDG
 typedef struct
@@ -533,6 +775,8 @@ typedef struct
 	STM32446SysTickobj systick;
 	// MCU
 	STM32446ADC1obj adc1;
+	STM32446ADC2obj adc2;
+	STM32446ADC3obj adc3;
 	STM32446CRCobj crc;
 	STM32446DMA1obj dma1;
 	STM32446DMA2obj dma2;
@@ -547,8 +791,26 @@ typedef struct
 	STM32446PWRobj pwr;
 	STM32446RCCobj rcc;
 	STM32446RTCobj rtc;
+	STM32446TIM1obj tim1;
+	STM32446TIM2obj tim2;
+	STM32446TIM3obj tim3;
+	STM32446TIM4obj tim4;
+	STM32446TIM5obj tim5;
+	STM32446TIM6obj tim6;
+	STM32446TIM7obj tim7;
+	STM32446TIM8obj tim8;
 	STM32446TIM9obj tim9;
+	STM32446TIM10obj tim10;
+	STM32446TIM11obj tim11;
+	STM32446TIM12obj tim12;
+	STM32446TIM13obj tim13;
+	STM32446TIM14obj tim14;
 	STM32446USART1obj usart1;
+	STM32446USART2obj usart2;
+	STM32446USART3obj usart3;
+	STM32446USART4obj usart4;
+	STM32446USART5obj usart5;
+	STM32446USART6obj usart6;
 	
 	// INIC
 	STM32446_inic inic;
