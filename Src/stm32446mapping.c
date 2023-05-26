@@ -31,25 +31,24 @@ static volatile uint32_t mem[4];
 static volatile uint32_t nen[4];
 
 /*** File Header ***/
-// SysTick
+// CORE
+// SYSTICK
 void SystickInic(void);
+void STM32446delay_ms(uint32_t ms);
+void STM32446delay_10us(uint32_t ten_us);
+void STM32446delay_us(uint32_t us);
 
-// RCC
-uint8_t STM32446RccInic(void);
-void STM32446RccHEnable(unsigned int hclock);
-uint8_t STM32446RccHSelect(uint8_t hclock);
-void STM32446RccLEnable(unsigned int lclock);
-void STM32446RccLSelect(uint8_t lclock);
-void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-uint32_t SystemClock(void);
+// MCU
+// GPIO
+void STM32446GpioSetpins( GPIO_TypeDef* regs, int n_pin, ... );
+void STM32446GpioSetpin( GPIO_TypeDef* regs, int pin );
+void STM32446GpioSet( GPIO_TypeDef* regs, int data );
+void STM32446GpioResetpins( GPIO_TypeDef* regs, int n_pin, ... );
+void STM32446GpioResetpin( GPIO_TypeDef* regs, int pin );
+void STM32446GpioReset( GPIO_TypeDef* regs, int data );
+void STM32446PinBlock( volatile uint32_t* dest, uint32_t size_block, uint32_t data, uint32_t pin );
 
-// PLL
-void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
-void STM32446RccPLLCLKEnable(void);
-void STM32446RccPLLI2SEnable(void);
-void STM32446RccPLLSAIEnable(void);
-
-// GPIOA
+// GPIO -> GPIOA
 void STM32446GpioAenable( void );
 void STM32446GpioAmoder( unsigned int data, unsigned int pin );
 void STM32446GpioAospeedr( unsigned int data, unsigned int pin );
@@ -58,7 +57,7 @@ void STM32446GpioAreset( unsigned int data );
 void STM32446GpioAset( unsigned int data );
 void STM32446GpioAafr( unsigned int data, unsigned int pin );
 
-// GPIOB
+// GPIO -> GPIOB
 void STM32446GpioBenable( void );
 void STM32446GpioBmoder( unsigned int data, unsigned int pin );
 void STM32446GpioBospeedr( unsigned int data, unsigned int pin );
@@ -67,7 +66,7 @@ void STM32446GpioBreset( unsigned int data );
 void STM32446GpioBset( unsigned int data );
 void STM32446GpioBafr( unsigned int data, unsigned int pin );
 
-// GPIOC
+// GPIO -> GPIOC
 void STM32446GpioCenable( void );
 void STM32446GpioCmoder( unsigned int data, unsigned int pin );
 void STM32446GpioCospeedr( unsigned int data, unsigned int pin );
@@ -76,7 +75,7 @@ void STM32446GpioCreset( unsigned int data );
 void STM32446GpioCset( unsigned int data );
 void STM32446GpioCafr( unsigned int data, unsigned int pin );
 
-// GPIOD
+// GPIO -> GPIOD
 void STM32446GpioDenable( void );
 void STM32446GpioDmoder( unsigned int data, unsigned int pin );
 void STM32446GpioDospeedr( unsigned int data, unsigned int pin );
@@ -85,7 +84,7 @@ void STM32446GpioDreset( unsigned int data );
 void STM32446GpioDset( unsigned int data );
 void STM32446GpioDafr( unsigned int data, unsigned int pin );
 
-// GPIOE
+// GPIO -> GPIOE
 void STM32446GpioEenable( void );
 void STM32446GpioEmoder( unsigned int data, unsigned int pin );
 void STM32446GpioEospeedr( unsigned int data, unsigned int pin );
@@ -94,7 +93,7 @@ void STM32446GpioEreset( unsigned int data );
 void STM32446GpioEset( unsigned int data );
 void STM32446GpioEafr( unsigned int data, unsigned int pin );
 
-// GPIOH
+// GPIO -> GPIOH
 void STM32446GpioHenable( void );
 void STM32446GpioHmoder( unsigned int data, unsigned int pin );
 void STM32446GpioHospeedr( unsigned int data, unsigned int pin );
@@ -106,35 +105,40 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin );
 // SYSCFG
 void STM32446SysCfgEnable(void);
 
-// MISCELLANEOUS
-char STM32446bcd2dec(char num);
-char STM32446dec2bcd(char num);
-// SYSTICK
-void STM32446delay_ms(uint32_t ms);
-void STM32446delay_10us(uint32_t ten_us);
-void STM32446delay_us(uint32_t us);
+// PLL
+void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
+void STM32446RccPLLCLKEnable(void);
+void STM32446RccPLLI2SEnable(void);
+void STM32446RccPLLSAIEnable(void);
+
+// RCC
+uint8_t STM32446RccInic(void);
+void STM32446RccHEnable(unsigned int hclock);
+uint8_t STM32446RccHSelect(uint8_t hclock);
+void STM32446RccLEnable(unsigned int lclock);
+void STM32446RccLSelect(uint8_t lclock);
+void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
+uint32_t SystemClock(void);
+
+/*** MISCELLANEOUS ***/
 // BUTTON
 uint32_t STM32446triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter);
 uint32_t STM32446triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter);
+
 // BYTE
 uint16_t STM32ReadHLByte(STM32HighLowByte reg);
 uint16_t STM32ReadLHByte(STM32HighLowByte reg);
 STM32HighLowByte STM32WriteHLByte(uint16_t val);
 STM32HighLowByte STM32WriteLHByte(uint16_t val);
 uint16_t STM32SwapByte(uint16_t num);
-// GPIO
-void STM32446GpioSetpins( GPIO_TypeDef* regs, int n_pin, ... );
-void STM32446GpioSetpin( GPIO_TypeDef* regs, int pin );
-void STM32446GpioSet( GPIO_TypeDef* regs, int data );
-void STM32446GpioResetpins( GPIO_TypeDef* regs, int n_pin, ... );
-void STM32446GpioResetpin( GPIO_TypeDef* regs, int pin );
-void STM32446GpioReset( GPIO_TypeDef* regs, int data );
-void STM32446PinBlock( volatile uint32_t* dest, uint32_t size_block, uint32_t data, uint32_t pin );
+
 // GENERIC
 void STM32446Gpiosetupreg(volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int pin);
 void STM32446GpioSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 char* STM32446FUNCftoa(double num, char* res, uint8_t afterpoint);
 char* STM32446FUNCprint( char* str, uint8_t size_str, const char* format, ... );
+char STM32446bcd2dec(char num);
+char STM32446dec2bcd(char num);
 
 /*** FILE FUNC ***/
 // SRAM
@@ -146,44 +150,50 @@ uint8_t STM32446FUNCintinvstr(int32_t num, char* res, uint8_t n_digit);
 // QUERY
 uint32_t SystemClock(void);
 
-// Interrupt Prototype
+/*** INTERRUPT ***/
+// Systick
 void SysTick_Handler(void);
 
 /**** Procedure & Functions ***/
-// STM32446 Image Linker
+// STM32F446RE Image Linker
 STM32446 STM32446enable(void){
-// Comment out the linked modules to reduce memmory usage.
+	// Comment out the linked modules to reduce memmory usage.
 	mem[0] = 0;
 	nen[0] = 0;
 	// CORE
 	// Coprocessor Access Control Register
 	stm32446.scb.reg = ((SCB_Type*) STM32446_SCB_BASE;
 
-	// STM32446 OBJECTS
-	// FLASH
-	stm32446.flash.reg = (FLASH_TypeDef*) FLASH_R_BASE;
+	// NVIC
+	stm32446.nvic.reg = (NVIC_Type*) NVIC_BASE;
 	
+	// SysTick (Used as Delay Source)
+	stm32446.systick.reg = (SysTick_Type*) SysTick_BASE;
+	stm32446.systick.delay_ms = STM32446delay_ms;
+	stm32446.systick.delay_10us = STM32446delay_10us;
+	stm32446.systick.delay_us = STM32446delay_us;
+	
+	// STM32F446RE OBJECTS
+	// ADC -> ADC1
+	stm32446.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
+	stm32446.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
+	#if defined(_STM32446ADC_H_)
+		stm32446.adc1.enable = STM32446ADC1enable;
+	#endif
+
 	// CRC
 	stm32446.crc.reg = (CRC_TypeDef*) CRC_BASE;
 	
-	// PWR
-	stm32446.pwr.reg = (PWR_TypeDef*) PWR_BASE;
-	
-	// RCC
-	stm32446.rcc.reg = (RCC_TypeDef*) RCC_BASE;
-	stm32446.rcc.inic = STM32446RccInic;
-	stm32446.rcc.henable = STM32446RccHEnable;
-	stm32446.rcc.hselect = STM32446RccHSelect;
-	stm32446.rcc.lenable = STM32446RccLEnable;
-	stm32446.rcc.lselect = STM32446RccLSelect;
-	stm32446.rcc.prescaler = STM32446Prescaler;
-	stm32446.rcc.systemclock = SystemClock;
+	// DMA1
+	stm32446.dma1.reg = (DMA_TypeDef*) DMA1_BASE;
+	stm32446.dma1.stream[0].reg = (DMA_Stream_TypeDef*) DMA1_Stream0_BASE;
 
-	// PLL
-	stm32446.rcc.pll.division = STM32446PLLDivision;
-	stm32446.rcc.pll.enable = STM32446RccPLLCLKEnable;
-	stm32446.rcc.plli2s.enable = STM32446RccPLLI2SEnable;
-	stm32446.rcc.pllsai.enable = STM32446RccPLLSAIEnable;
+	// DMA2
+	stm32446.dma2.reg = (DMA_TypeDef*) DMA2_BASE;
+	stm32446.dma2.stream[0].reg = (DMA_Stream_TypeDef*) DMA2_Stream0_BASE;
+
+	// FLASH
+	stm32446.flash.reg = (FLASH_TypeDef*) FLASH_R_BASE;
 	
 	// GPIOA
 	stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
@@ -244,6 +254,29 @@ STM32446 STM32446enable(void){
 	stm32446.gpioh.reset = STM32446GpioHreset;
 	stm32446.gpioh.set = STM32446GpioHset;
 	stm32446.gpioh.afr = STM32446GpioHafr;
+
+	// SYSCFG
+	stm32446.syscfg.reg = (SYSCFG_TypeDef*) SYSCFG_BASE;
+	stm32446.syscfg.enable = STM32446SysCfgEnable;
+	
+	// PWR
+	stm32446.pwr.reg = (PWR_TypeDef*) PWR_BASE;
+
+	// PLL
+	stm32446.rcc.pll.division = STM32446PLLDivision;
+	stm32446.rcc.pll.enable = STM32446RccPLLCLKEnable;
+	stm32446.rcc.plli2s.enable = STM32446RccPLLI2SEnable;
+	stm32446.rcc.pllsai.enable = STM32446RccPLLSAIEnable;
+
+	// RCC
+	stm32446.rcc.reg = (RCC_TypeDef*) RCC_BASE;
+	stm32446.rcc.inic = STM32446RccInic;
+	stm32446.rcc.henable = STM32446RccHEnable;
+	stm32446.rcc.hselect = STM32446RccHSelect;
+	stm32446.rcc.lenable = STM32446RccLEnable;
+	stm32446.rcc.lselect = STM32446RccLSelect;
+	stm32446.rcc.prescaler = STM32446Prescaler;
+	stm32446.rcc.systemclock = SystemClock;
 	
 	// RTC
 	stm32446.rtc.reg = (RTC_TypeDef*) RTC_BASE;
@@ -251,43 +284,13 @@ STM32446 STM32446enable(void){
 		stm32446.rtc.enable = STM32446RTCenable;
 	#endif
 	
-	// SYSCFG
-	stm32446.syscfg.reg = (SYSCFG_TypeDef*) SYSCFG_BASE;
-	stm32446.syscfg.enable = STM32446SysCfgEnable;
-	
-	// DMA1
-	stm32446.dma1.reg = (DMA_TypeDef*) DMA1_BASE;
-	stm32446.dma1.stream[0].reg = (DMA_Stream_TypeDef*) DMA1_Stream0_BASE;
-
-	// DMA2
-	stm32446.dma2.reg = (DMA_TypeDef*) DMA2_BASE;
-	stm32446.dma2.stream[0].reg = (DMA_Stream_TypeDef*) DMA2_Stream0_BASE;
-	
-	// NVIC
-	stm32446.nvic.reg = (NVIC_Type*) NVIC_BASE;
-	
-	// SysTick (Used as Delay Source)
-	stm32446.systick.reg = (SysTick_Type*) SysTick_BASE;
-	stm32446.systick.delay_ms = STM32446delay_ms;
-	stm32446.systick.delay_10us = STM32446delay_10us;
-	stm32446.systick.delay_us = STM32446delay_us;
-	
-	// random order
-	
-	// ADC1
-	stm32446.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
-	stm32446.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
-	#if defined(_STM32446ADC_H_)
-		stm32446.adc1.enable = STM32446ADC1enable;
-	#endif
-	
-	// TIM9
+	// TIM -> TIM9
 	stm32446.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim9.enable = STM32446TIM9enable;
 	#endif
 
-	// USART1
+	// USART -> USART1
 	stm32446.usart1.reg = (USART_TypeDef*) USART1_BASE;
 	#if defined(_STM32446USART_H_)
 		stm32446.usart1.enable = STM32446USART1enable;
@@ -1070,7 +1073,7 @@ void STM32446SysCfgEnable(void)
 	stm32446.rcc.reg->APB2ENR |= (1 << 14); //syscfg clock enable
 }
 
-//MISCELLANEOUS
+// MISCELLANEOUS
 // Convert Binary Coded Decimal (BCD) to Decimal
 char STM32446bcd2dec(char num)
 {
