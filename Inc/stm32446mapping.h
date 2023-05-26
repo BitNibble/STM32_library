@@ -28,6 +28,7 @@ Comment:
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
+#include "stm32446tim.h"
 
 /***Global Define and Macros***/
 
@@ -274,7 +275,9 @@ typedef struct
 typedef struct
 {
 	TIM_TypeDef* reg;
-	void (*enable)(void);
+	#if defined(_STM32446TIM_H_)
+		STM32446TIM9 (*enable)(void);
+	#endif
 }STM32446TIM9obj;
 
 // ADC COMMON
@@ -387,4 +390,5 @@ STM32446 STM32446enable(void);
 
 #endif
 /***EOF***/
+
 

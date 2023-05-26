@@ -47,6 +47,7 @@ LCD0 LCD0enable(GPIO_TypeDef* reg)
 	// ALLOCA??O MEMORIA PARA Estrutura
 	LCD0 lcd0;
 	stm = STM32446enable(); // The entire stm32446
+
 	// LOCAL VARIABLES
 	// import parameters
 	ireg = reg;

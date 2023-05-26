@@ -16,7 +16,7 @@ Comment:
 /*** File Constant & Macros ***/
 
 /*** File Variable ***/
-static STM32446 mapper;
+static STM32446 stm32446;
 
 /*** File Header ***/
 // TEMPLATE1
@@ -27,7 +27,7 @@ void STM32446Template1Enable(void);
 // TEMPLATE1
 STM32446TEMPLATE1 STM32446TEMPLATE1enable(void)
 {
-	mapper = STM32446enable();
+	stm32446 = STM32446enable();
 	STM32446TEMPLATE1 template1;
 
 	template1.inic = STM32446Template1Inic;
