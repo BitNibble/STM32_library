@@ -26,8 +26,8 @@ typedef struct{
 	void (*Hour)(uint8_t hour);
 	void (*Minute)(uint8_t minute);
 	void (*Second)(uint8_t second);
-	void (*dr2vec)(char* vect);
-	void (*tr2vec)(char* vect);
+	void (*dr2vec)(char* rtc_vect);
+	void (*tr2vec)(char* rtc_vect);
 	void (*RegWrite)(volatile uint32_t* reg, uint32_t data);
 }STM32446RTC;
 

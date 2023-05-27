@@ -29,8 +29,8 @@ void STM32446RtcYear(uint8_t year);
 void STM32446RtcHour(uint8_t hour);
 void STM32446RtcMinute(uint8_t minute);
 void STM32446RtcSecond(uint8_t second);
-void STM32446Rtcdr2vec(char* vect);
-void STM32446Rtctr2vec(char* vect);
+void STM32446Rtcdr2vec(char* rtc_vect);
+void STM32446Rtctr2vec(char* rtc_vect);
 void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
 // RTC
 void STM32446RtcEnable(void);
@@ -225,56 +225,60 @@ void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data)
 	stm32446.pwr.reg->CR &= (uint32_t) ~(1 << 8);
 }
 
-void STM32446Rtcdr2vec(char* vect)
+void STM32446Rtcdr2vec(char* rtc_vect)
 {
 	uint32_t dr = stm32446.rtc.reg->DR;
-	// YT
-	vect[0] = (uint8_t) (dr >> 20) & 0x0F;
-	vect[0] = stm32446.func.bcd2dec(vect[0]);
-	// YU
-	vect[1] = (uint8_t) (dr >> 16) & 0x0F;
-	vect[1] = stm32446.func.bcd2dec(vect[1]);
-	// WDU
-	vect[2] = (uint8_t) (dr >> 13) & 0x07;
-	vect[2] = stm32446.func.bcd2dec(vect[2]);
-	// MT
-	vect[3] = (uint8_t) (dr >> 12) & 0x01;
-	vect[3] = stm32446.func.bcd2dec(vect[3]);
-	// MU
-	vect[4] = (uint8_t) (dr >> 8) & 0x0F;
-	vect[4] = stm32446.func.bcd2dec(vect[4]);
-	// DT
-	vect[5] = (uint8_t) (dr >> 4) & 0x03;
-	vect[5] = stm32446.func.bcd2dec(vect[5]);
-	// DU
-	vect[6] = (uint8_t) dr & 0x0F;
-	vect[6] = stm32446.func.bcd2dec(vect[6]);
-	// Store Value
-	STM32446DateDr = dr;
+	if(stm32446.rtc.reg->ISR & (1 << 5)){ // RSF: Registers synchronization flag
+		// YT
+		rtc_vect[0] = (uint8_t) (dr >> 20) & 0x0F;
+		rtc_vect[0] = stm32446.func.bcd2dec(rtc_vect[0]);
+		// YU
+		rtc_vect[1] = (uint8_t) (dr >> 16) & 0x0F;
+		rtc_vect[1] = stm32446.func.bcd2dec(rtc_vect[1]);
+		// WDU
+		rtc_vect[2] = (uint8_t) (dr >> 13) & 0x07;
+		rtc_vect[2] = stm32446.func.bcd2dec(rtc_vect[2]);
+		// MT
+		rtc_vect[3] = (uint8_t) (dr >> 12) & 0x01;
+		rtc_vect[3] = stm32446.func.bcd2dec(rtc_vect[3]);
+		// MU
+		rtc_vect[4] = (uint8_t) (dr >> 8) & 0x0F;
+		rtc_vect[4] = stm32446.func.bcd2dec(rtc_vect[4]);
+		// DT
+		rtc_vect[5] = (uint8_t) (dr >> 4) & 0x03;
+		rtc_vect[5] = stm32446.func.bcd2dec(rtc_vect[5]);
+		// DU
+		rtc_vect[6] = (uint8_t) dr & 0x0F;
+		rtc_vect[6] = stm32446.func.bcd2dec(rtc_vect[6]);
+		// Store Value
+		STM32446DateDr = dr;
+		// Clear Registers synchronization flag
+		stm32446.rtc.reg->ISR &= (uint32_t) ~(1 << 5);
+	}
 }
 
-void STM32446Rtctr2vec(char* vect)
+void STM32446Rtctr2vec(char* rtc_vect)
 {
 	uint32_t tr = stm32446.rtc.reg->TR;
 	if(stm32446.rtc.reg->ISR & (1 << 5)){ // RSF: Registers synchronization flag
 		// ht
-		vect[0] = (uint8_t) (tr >> 20) & 0x03;
-		vect[0] = stm32446.func.bcd2dec(vect[0]);
+		rtc_vect[0] = (uint8_t) (tr >> 20) & 0x03;
+		rtc_vect[0] = stm32446.func.bcd2dec(rtc_vect[0]);
 		// hu
-		vect[1] = (uint8_t) (tr >> 16) & 0x0F;
-		vect[1] = stm32446.func.bcd2dec(vect[1]);
+		rtc_vect[1] = (uint8_t) (tr >> 16) & 0x0F;
+		rtc_vect[1] = stm32446.func.bcd2dec(rtc_vect[1]);
 		// mnt
-		vect[2] = (uint8_t) (tr >> 12) & 0x07;
-		vect[2] = stm32446.func.bcd2dec(vect[2]);
+		rtc_vect[2] = (uint8_t) (tr >> 12) & 0x07;
+		rtc_vect[2] = stm32446.func.bcd2dec(rtc_vect[2]);
 		// mnu
-		vect[3] = (uint8_t) (tr >> 8) & 0x0F;
-		vect[3] = stm32446.func.bcd2dec(vect[3]);
+		rtc_vect[3] = (uint8_t) (tr >> 8) & 0x0F;
+		rtc_vect[3] = stm32446.func.bcd2dec(rtc_vect[3]);
 		// st
-		vect[4] = (uint8_t) (tr >> 4) & 0x07;
-		vect[4] = stm32446.func.bcd2dec(vect[4]);
+		rtc_vect[4] = (uint8_t) (tr >> 4) & 0x07;
+		rtc_vect[4] = stm32446.func.bcd2dec(rtc_vect[4]);
 		// su
-		vect[5] = (uint8_t) tr & 0x0F;
-		vect[5] = stm32446.func.bcd2dec(vect[5]);
+		rtc_vect[5] = (uint8_t) tr & 0x0F;
+		rtc_vect[5] = stm32446.func.bcd2dec(rtc_vect[5]);
 		// Store value
 		STM32446TimeTr = tr;
 		// Clear Registers synchronization flag

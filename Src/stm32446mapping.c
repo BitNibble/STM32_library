@@ -26,9 +26,9 @@ Comment:
 /*** File Variable ***/
 static STM32446 stm32446;
 
-static volatile uint32_t DelayCounter;
-static volatile uint32_t mem[4];
-static volatile uint32_t nen[4];
+uint32_t DelayCounter;
+uint32_t mem[4];
+uint32_t nen[4];
 
 /*** File Header ***/
 // CORE
@@ -1242,21 +1242,18 @@ uint32_t STM32446triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t 
 {
 	nen[3] = 0;
 	
-	switch(nen[0]){
+	switch(nen[0]){ // Start value
 		case 0:
-			if(hl_io & (1 << pin)){
-				nen[1] = counter;
+			nen[1] = counter;
+			if(hl_io & (1 << pin))
 				nen[0] = 1;
-			}
 		break;
 		case 1:
+			nen[2] = counter;
+			if(nen[2] == nen[1])
+				nen[2] += sizeof(nen[0]) * 8;
 			if(lh_io & (1 << pin)){
-				nen[2] = counter;
-				if((nen[2] + 1) > nen[1]){
-					nen[3] = nen[2] - nen[1];
-				}else{
-					nen[3] = ((uint32_t) ~0 - nen[1]) + nen[2];
-				}
+				nen[3] = nen[2] - nen[1];
 				nen[0] = 0;
 			}
 		break;
