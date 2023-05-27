@@ -64,7 +64,7 @@ void CIRC_put( struct circ_buf_template* circ, uint8_t data ){
 	}
 	
 	if( next == circ->tail ){
-		*circ->head = '\n';
+		*next = 0;
 	}else{
 		*next = data;
 		circ->head = next;

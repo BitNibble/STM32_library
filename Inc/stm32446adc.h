@@ -11,13 +11,13 @@ Comment:
 #ifndef _STM32446ADC_H_
 	#define _STM32446ADC_H_
 
-/*** Library ***/
+// ADC_Common
+typedef struct
+{
+	ADC_Common_TypeDef* reg;
+}STM32446ADCCOMMONobj;
 
-/*** Constant & Macros ***/
-
-/*** Variable ***/
-
-/*** Header ***/
+/*** ADC 1 ***/
 // ADC1
 typedef struct
 {
@@ -30,12 +30,43 @@ typedef struct
 	void (*stop)(void);
 }STM32446ADC1single;
 
+// ADC1
 typedef struct{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+
 	STM32446ADC1single single;
 }STM32446ADC1;
 
 STM32446ADC1 STM32446ADC1enable(void);
 
+// ADC -> ADC1
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	STM32446ADC1 (*enable)(void);
+}STM32446ADC1obj;
+
+/*** ADC 2 ***/
+// ADC -> ADC2
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	void (*enable)(void);
+}STM32446ADC2obj;
+
+/*** ADC 3 ***/
+// ADC -> ADC3
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	void (*enable)(void);
+}STM32446ADC3obj;
+
 #endif
 /*** EOF ***/
+
 

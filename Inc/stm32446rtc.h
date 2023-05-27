@@ -14,10 +14,9 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** Constant & Macros ***/
-
-/*** Variable ***/
 typedef struct{
+	RTC_TypeDef* reg;
+
 	uint8_t (*inic)(uint8_t clock);
 	void (*Day)(uint8_t day);
 	void (*Month)(uint8_t month);
@@ -34,6 +33,14 @@ typedef struct{
 /*** Global Header ***/
 STM32446RTC STM32446RTCenable(void);
 
+// RTC
+typedef struct
+{
+	RTC_TypeDef* reg;
+	STM32446RTC (*enable)(void);
+}STM32446RTCobj;
+
 #endif
 /*** EOF ***/
+
 

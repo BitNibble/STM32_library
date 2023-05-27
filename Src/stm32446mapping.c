@@ -173,25 +173,21 @@ STM32446 STM32446enable(void){
 	stm32446.systick.delay_10us = STM32446delay_10us;
 	stm32446.systick.delay_us = STM32446delay_us;
 	
-	// STM32F446RE OBJECTS
-	// ADC -> ADC1
-	stm32446.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
-	stm32446.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
 	#if defined(_STM32446ADC_H_)
+		// ADC -> ADC1
+		stm32446.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
+		stm32446.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
+
 		stm32446.adc1.enable = STM32446ADC1enable;
-	#endif
 
-	// ADC -> ADC2
-	stm32446.adc2.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
-	stm32446.adc2.reg = (ADC_TypeDef*) ADC2_BASE;
-	#if defined(_STM32446ADC_H_)
+		// ADC -> ADC2
+		stm32446.adc2.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
+		stm32446.adc2.reg = (ADC_TypeDef*) ADC2_BASE;
 		stm32446.adc2.enable = NULL;
-	#endif
 
-	// ADC -> ADC3
-	stm32446.adc3.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
-	stm32446.adc3.reg = (ADC_TypeDef*) ADC3_BASE;
-	#if defined(_STM32446ADC_H_)
+		// ADC -> ADC3
+		stm32446.adc3.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
+		stm32446.adc3.reg = (ADC_TypeDef*) ADC3_BASE;
 		stm32446.adc3.enable = NULL;
 	#endif
 
@@ -292,129 +288,92 @@ STM32446 STM32446enable(void){
 	stm32446.rcc.prescaler = STM32446Prescaler;
 	stm32446.rcc.systemclock = SystemClock;
 	
-	// RTC
-	stm32446.rtc.reg = (RTC_TypeDef*) RTC_BASE;
 	#if defined(_STM32446RTC_H_)
+		stm32446.rtc.reg = (RTC_TypeDef*) RTC_BASE;
 		stm32446.rtc.enable = STM32446RTCenable;
 	#endif
 	
-	// TIM -> TIM1
-	stm32446.tim1.reg = (TIM_TypeDef*) TIM1_BASE;
 	#if defined(_STM32446TIM_H_)
+	// TIM -> TIM1
+		stm32446.tim1.reg = (TIM_TypeDef*) TIM1_BASE;
 		stm32446.tim1.enable = NULL;
-	#endif
 
 	// TIM -> TIM2
-	stm32446.tim2.reg = (TIM_TypeDef*) TIM2_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim2.reg = (TIM_TypeDef*) TIM2_BASE;
 		stm32446.tim2.enable = NULL;
-	#endif
 
 	// TIM -> TIM3
-	stm32446.tim3.reg = (TIM_TypeDef*) TIM3_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim3.reg = (TIM_TypeDef*) TIM3_BASE;
 		stm32446.tim3.enable = NULL;
-	#endif
 
 	// TIM -> TIM4
-	stm32446.tim4.reg = (TIM_TypeDef*) TIM4_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim4.reg = (TIM_TypeDef*) TIM4_BASE;
 		stm32446.tim4.enable = NULL;
-	#endif
 
 	// TIM -> TIM5
-	stm32446.tim5.reg = (TIM_TypeDef*) TIM5_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim5.reg = (TIM_TypeDef*) TIM5_BASE;
 		stm32446.tim5.enable = NULL;
-	#endif
 
 	// TIM -> TIM6
-	stm32446.tim6.reg = (TIM_TypeDef*) TIM6_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim6.reg = (TIM_TypeDef*) TIM6_BASE;
 		stm32446.tim6.enable = NULL;
-	#endif
 
 	// TIM -> TIM7
-	stm32446.tim7.reg = (TIM_TypeDef*) TIM7_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim7.reg = (TIM_TypeDef*) TIM7_BASE;
 		stm32446.tim7.enable = NULL;
-	#endif
 
 	// TIM -> TIM8
-	stm32446.tim8.reg = (TIM_TypeDef*) TIM8_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim8.reg = (TIM_TypeDef*) TIM8_BASE;
 		stm32446.tim8.enable = NULL;
-	#endif
 
 	// TIM -> TIM9
-	stm32446.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 		stm32446.tim9.enable = STM32446TIM9enable;
-	#endif
 
 	// TIM -> TIM10
-	stm32446.tim10.reg = (TIM_TypeDef*) TIM10_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim10.reg = (TIM_TypeDef*) TIM10_BASE;
 		stm32446.tim10.enable = NULL;
-	#endif
 
 	// TIM -> TIM11
-	stm32446.tim11.reg = (TIM_TypeDef*) TIM11_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim11.reg = (TIM_TypeDef*) TIM11_BASE;
 		stm32446.tim11.enable = NULL;
-	#endif
 
 	// TIM -> TIM12
-	stm32446.tim12.reg = (TIM_TypeDef*) TIM12_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim12.reg = (TIM_TypeDef*) TIM12_BASE;
 		stm32446.tim12.enable = NULL;
-	#endif
 
 	// TIM -> TIM13
-	stm32446.tim13.reg = (TIM_TypeDef*) TIM13_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim13.reg = (TIM_TypeDef*) TIM13_BASE;
 		stm32446.tim13.enable = NULL;
-	#endif
 
 	// TIM -> TIM14
-	stm32446.tim14.reg = (TIM_TypeDef*) TIM14_BASE;
-	#if defined(_STM32446TIM_H_)
+		stm32446.tim14.reg = (TIM_TypeDef*) TIM14_BASE;
 		stm32446.tim14.enable = NULL;
 	#endif
 
-	// USART -> USART1
-	stm32446.usart1.reg = (USART_TypeDef*) USART1_BASE;
 	#if defined(_STM32446USART_H_)
+	// USART -> USART1
+		stm32446.usart1.reg = (USART_TypeDef*) USART1_BASE;
 		stm32446.usart1.enable = STM32446USART1enable;
-	#endif
 	
 	// USART -> USART2
-	stm32446.usart2.reg = (USART_TypeDef*) USART2_BASE;
-	#if defined(_STM32446USART_H_)
+		stm32446.usart2.reg = (USART_TypeDef*) USART2_BASE;
 		stm32446.usart2.enable = NULL;
-	#endif
 
 	// USART -> USART3
-	stm32446.usart3.reg = (USART_TypeDef*) USART3_BASE;
-	#if defined(_STM32446USART_H_)
+		stm32446.usart3.reg = (USART_TypeDef*) USART3_BASE;
 		stm32446.usart3.enable = NULL;
-	#endif
 
 	// USART -> USART4
-	stm32446.usart4.reg = (USART_TypeDef*) UART4_BASE;
-	#if defined(_STM32446USART_H_)
+		stm32446.usart4.reg = (USART_TypeDef*) UART4_BASE;
 		stm32446.usart4.enable = NULL;
-	#endif
 
 	// USART -> USART5
-	stm32446.usart5.reg = (USART_TypeDef*) UART5_BASE;
-	#if defined(_STM32446USART_H_)
+		stm32446.usart5.reg = (USART_TypeDef*) UART5_BASE;
 		stm32446.usart5.enable = NULL;
-	#endif
 
 	// USART -> USART6
-	stm32446.usart6.reg = (USART_TypeDef*) USART6_BASE;
-	#if defined(_STM32446USART_H_)
+		stm32446.usart6.reg = (USART_TypeDef*) USART6_BASE;
 		stm32446.usart6.enable = NULL;
 	#endif
 	

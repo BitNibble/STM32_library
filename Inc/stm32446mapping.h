@@ -93,6 +93,7 @@ typedef struct
 }STM32446SysTickobj;
 
 /*** MCU ***/
+/***
 // ADC_Common
 typedef struct
 {
@@ -128,6 +129,7 @@ typedef struct
 		void (*enable)(void);
 	#endif
 }STM32446ADC3obj;
+***/
 
 // CAN_TxMailBox
 typedef struct
@@ -413,6 +415,7 @@ typedef struct
 	STM32446RCCPLLSAI pllsai;
 }STM32446RCCobj;
 
+/***
 // RTC
 typedef struct
 {
@@ -421,6 +424,7 @@ typedef struct
 		STM32446RTC (*enable)(void);
 	#endif
 }STM32446RTCobj;
+***/
 
 // SAI -> SAI1
 typedef struct
@@ -500,6 +504,7 @@ typedef struct
 	SPDIFRX_TypeDef* reg;
 }STM32446SPDIFRXobj;
 
+/***
 // TIM -> TIM1
 typedef struct
 {
@@ -625,7 +630,9 @@ typedef struct
 		void (*enable)(void);
 	#endif
 }STM32446TIM14obj;
+***/
 
+/***
 // USART -> USART1
 typedef struct
 {
@@ -679,6 +686,7 @@ typedef struct
 		void (*enable)(void);
 	#endif
 }STM32446USART6obj;
+***/
 
 // WWDG
 typedef struct
@@ -774,9 +782,11 @@ typedef struct
 	STM32446NVICobj nvic;
 	STM32446SysTickobj systick;
 	// MCU
-	STM32446ADC1obj adc1;
-	STM32446ADC2obj adc2;
-	STM32446ADC3obj adc3;
+	#if defined(_STM32446ADC_H_)
+		STM32446ADC1obj adc1;
+		STM32446ADC2obj adc2;
+		STM32446ADC3obj adc3;
+	#endif
 	STM32446CRCobj crc;
 	STM32446DMA1obj dma1;
 	STM32446DMA2obj dma2;
@@ -790,27 +800,33 @@ typedef struct
 	STM32446SYSCFGobj syscfg;
 	STM32446PWRobj pwr;
 	STM32446RCCobj rcc;
-	STM32446RTCobj rtc;
-	STM32446TIM1obj tim1;
-	STM32446TIM2obj tim2;
-	STM32446TIM3obj tim3;
-	STM32446TIM4obj tim4;
-	STM32446TIM5obj tim5;
-	STM32446TIM6obj tim6;
-	STM32446TIM7obj tim7;
-	STM32446TIM8obj tim8;
-	STM32446TIM9obj tim9;
-	STM32446TIM10obj tim10;
-	STM32446TIM11obj tim11;
-	STM32446TIM12obj tim12;
-	STM32446TIM13obj tim13;
-	STM32446TIM14obj tim14;
-	STM32446USART1obj usart1;
-	STM32446USART2obj usart2;
-	STM32446USART3obj usart3;
-	STM32446USART4obj usart4;
-	STM32446USART5obj usart5;
-	STM32446USART6obj usart6;
+	#if defined(_STM32446RTC_H_)
+		STM32446RTCobj rtc;
+	#endif
+	#if defined(_STM32446TIM_H_)
+		STM32446TIM1obj tim1;
+		STM32446TIM2obj tim2;
+		STM32446TIM3obj tim3;
+		STM32446TIM4obj tim4;
+		STM32446TIM5obj tim5;
+		STM32446TIM6obj tim6;
+		STM32446TIM7obj tim7;
+		STM32446TIM8obj tim8;
+		STM32446TIM9obj tim9;
+		STM32446TIM10obj tim10;
+		STM32446TIM11obj tim11;
+		STM32446TIM12obj tim12;
+		STM32446TIM13obj tim13;
+		STM32446TIM14obj tim14;
+	#endif
+	#if defined(_STM32446USART_H_)
+		STM32446USART1obj usart1;
+		STM32446USART2obj usart2;
+		STM32446USART3obj usart3;
+		STM32446USART4obj usart4;
+		STM32446USART5obj usart5;
+		STM32446USART6obj usart6;
+	#endif
 	
 	// INIC
 	STM32446_inic inic;
