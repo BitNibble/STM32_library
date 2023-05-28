@@ -17,20 +17,12 @@ static STM32446 stm32446;
 static STM32446USART1 usart1;
 
 /*** USART 1 ***/
-// USART1
-void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-void STM32446Usart1Transmit(void);
-void STM32446Usart1Receive(void);
-void STM32446Usart1Stop(void);
-// USART1
-void STM32446Usart1Enable(void);
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 
 // USART1
 STM32446USART1 STM32446USART1enable(void)
 {
 	stm32446 = STM32446enable();
-
 	usart1.reg = (USART_TypeDef*) USART1_BASE;
 
 	usart1.inic = STM32446Usart1Inic;
@@ -164,5 +156,7 @@ void STM32446Usart1Stop(void){
 
 /*** USART 3 ***/
 // Future Implementation
+
+/*** EOF ***/
 
 

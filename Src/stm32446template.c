@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 23052023
+Date: 28052023
 Comment:
 	
 *******************************************************************************/
@@ -13,22 +13,16 @@ Comment:
 #include "stm32446template.h" // move this then to stm32446mapping header file.
 #include <math.h>
 
-/*** File Constant & Macros ***/
-
-/*** File Variable ***/
 static STM32446 stm32446;
+static STM32446TEMPLATE1 template1;
 
 /*** File Header ***/
-// TEMPLATE1
-void STM32446Template1Inic( uint8_t parameter );
-// TEMPLATE1
 void STM32446Template1Enable(void);
 
 // TEMPLATE1
 STM32446TEMPLATE1 STM32446TEMPLATE1enable(void)
 {
 	stm32446 = STM32446enable();
-	STM32446TEMPLATE1 template1;
 
 	template1.inic = STM32446Template1Inic;
 
@@ -47,5 +41,7 @@ void STM32446Template1Inic( uint8_t parameter )
 {
 	
 }
+
+/*** EOF ***/
 
 

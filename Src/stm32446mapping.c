@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 07062022 inic
+Date: 28052023
 Comment:
 	manual um1724, m0390, pm0056, pm0214, and other sources.
 	Virtual Image STM32-446, mapping.
@@ -47,60 +47,6 @@ void STM32446GpioResetpins( GPIO_TypeDef* regs, int n_pin, ... );
 void STM32446GpioResetpin( GPIO_TypeDef* regs, int pin );
 void STM32446GpioReset( GPIO_TypeDef* regs, int data );
 void STM32446PinBlock( volatile uint32_t* dest, uint32_t size_block, uint32_t data, uint32_t pin );
-
-// GPIO -> GPIOA
-void STM32446GpioAenable( void );
-void STM32446GpioAmoder( unsigned int data, unsigned int pin );
-void STM32446GpioAospeedr( unsigned int data, unsigned int pin );
-void STM32446GpioApupdr( unsigned int data, unsigned int pin );
-void STM32446GpioAreset( unsigned int data );
-void STM32446GpioAset( unsigned int data );
-void STM32446GpioAafr( unsigned int data, unsigned int pin );
-
-// GPIO -> GPIOB
-void STM32446GpioBenable( void );
-void STM32446GpioBmoder( unsigned int data, unsigned int pin );
-void STM32446GpioBospeedr( unsigned int data, unsigned int pin );
-void STM32446GpioBpupdr( unsigned int data, unsigned int pin );
-void STM32446GpioBreset( unsigned int data );
-void STM32446GpioBset( unsigned int data );
-void STM32446GpioBafr( unsigned int data, unsigned int pin );
-
-// GPIO -> GPIOC
-void STM32446GpioCenable( void );
-void STM32446GpioCmoder( unsigned int data, unsigned int pin );
-void STM32446GpioCospeedr( unsigned int data, unsigned int pin );
-void STM32446GpioCpupdr( unsigned int data, unsigned int pin );
-void STM32446GpioCreset( unsigned int data );
-void STM32446GpioCset( unsigned int data );
-void STM32446GpioCafr( unsigned int data, unsigned int pin );
-
-// GPIO -> GPIOD
-void STM32446GpioDenable( void );
-void STM32446GpioDmoder( unsigned int data, unsigned int pin );
-void STM32446GpioDospeedr( unsigned int data, unsigned int pin );
-void STM32446GpioDpupdr( unsigned int data, unsigned int pin );
-void STM32446GpioDreset( unsigned int data );
-void STM32446GpioDset( unsigned int data );
-void STM32446GpioDafr( unsigned int data, unsigned int pin );
-
-// GPIO -> GPIOE
-void STM32446GpioEenable( void );
-void STM32446GpioEmoder( unsigned int data, unsigned int pin );
-void STM32446GpioEospeedr( unsigned int data, unsigned int pin );
-void STM32446GpioEpupdr( unsigned int data, unsigned int pin );
-void STM32446GpioEreset( unsigned int data );
-void STM32446GpioEset( unsigned int data );
-void STM32446GpioEafr( unsigned int data, unsigned int pin );
-
-// GPIO -> GPIOH
-void STM32446GpioHenable( void );
-void STM32446GpioHmoder( unsigned int data, unsigned int pin );
-void STM32446GpioHospeedr( unsigned int data, unsigned int pin );
-void STM32446GpioHpupdr( unsigned int data, unsigned int pin );
-void STM32446GpioHreset( unsigned int data );
-void STM32446GpioHset( unsigned int data );
-void STM32446GpioHafr( unsigned int data, unsigned int pin );
 
 // SYSCFG
 void STM32446SysCfgEnable(void);
@@ -179,6 +125,13 @@ STM32446 STM32446enable(void){
 		stm32446.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
 
 		stm32446.adc1.enable = STM32446ADC1enable;
+		stm32446.adc1.single.inic = STM32446Adc1Inic;
+		stm32446.adc1.single.vbat = STM32446Adc1VBAT;
+		stm32446.adc1.single.temp = STM32446Adc1TEMP;
+		stm32446.adc1.single.start = STM32446Adc1Start;
+		stm32446.adc1.single.read = STM32446Adc1Read;
+		stm32446.adc1.single.restart = STM32446Adc1Restart;
+		stm32446.adc1.single.stop = STM32446Adc1Stop;
 
 		// ADC -> ADC2
 		stm32446.adc2.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
@@ -205,66 +158,68 @@ STM32446 STM32446enable(void){
 	// FLASH
 	stm32446.flash.reg = (FLASH_TypeDef*) FLASH_R_BASE;
 	
-	// GPIOA
-	stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
-	stm32446.gpioa.enable = STM32446GpioAenable;
-	stm32446.gpioa.moder = STM32446GpioAmoder;
-	stm32446.gpioa.ospeedr = STM32446GpioAospeedr;
-	stm32446.gpioa.pupdr = STM32446GpioApupdr;
-	stm32446.gpioa.reset = STM32446GpioAreset;
-	stm32446.gpioa.set = STM32446GpioAset;
-	stm32446.gpioa.afr = STM32446GpioAafr;
-	
-	// GPIOB
-	stm32446.gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
-	stm32446.gpiob.enable = STM32446GpioBenable;
-	stm32446.gpiob.moder = STM32446GpioBmoder;
-	stm32446.gpiob.ospeedr = STM32446GpioBospeedr;
-	stm32446.gpiob.pupdr = STM32446GpioBpupdr;
-	stm32446.gpiob.reset = STM32446GpioBreset;
-	stm32446.gpiob.set = STM32446GpioBset;
-	stm32446.gpiob.afr = STM32446GpioBafr;
-	
-	// GPIOC
-	stm32446.gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
-	stm32446.gpioc.enable = STM32446GpioCenable;
-	stm32446.gpioc.moder = STM32446GpioCmoder;
-	stm32446.gpioc.ospeedr = STM32446GpioCospeedr;
-	stm32446.gpioc.pupdr = STM32446GpioCpupdr;
-	stm32446.gpioc.reset = STM32446GpioCreset;
-	stm32446.gpioc.set = STM32446GpioCset;
-	stm32446.gpioc.afr = STM32446GpioCafr;
-	
-	// GPIOD
-	stm32446.gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
-	stm32446.gpiod.enable = STM32446GpioDenable;
-	stm32446.gpiod.moder = STM32446GpioDmoder;
-	stm32446.gpiod.ospeedr = STM32446GpioDospeedr;
-	stm32446.gpiod.pupdr = STM32446GpioDpupdr;
-	stm32446.gpiod.reset = STM32446GpioDreset;
-	stm32446.gpiod.set = STM32446GpioDset;
-	stm32446.gpiod.afr = STM32446GpioDafr;
+	#if defined(_STM32446GPIO_H_)
+		// GPIOA
+		stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
+		stm32446.gpioa.enable = STM32446GPIOAenable;
+		stm32446.gpioa.moder = STM32446GpioAmoder;
+		stm32446.gpioa.ospeedr = STM32446GpioAospeedr;
+		stm32446.gpioa.pupdr = STM32446GpioApupdr;
+		stm32446.gpioa.reset = STM32446GpioAreset;
+		stm32446.gpioa.set = STM32446GpioAset;
+		stm32446.gpioa.afr = STM32446GpioAafr;
 
-	// GPIOE
-	stm32446.gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
-	stm32446.gpioe.enable = STM32446GpioEenable;
-	stm32446.gpioe.moder = STM32446GpioEmoder;
-	stm32446.gpioe.ospeedr = STM32446GpioEospeedr;
-	stm32446.gpioe.pupdr = STM32446GpioEpupdr;
-	stm32446.gpioe.reset = STM32446GpioEreset;
-	stm32446.gpioe.set = STM32446GpioEset;
-	stm32446.gpioe.afr = STM32446GpioEafr;
+		// GPIOB
+		stm32446.gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
+		stm32446.gpiob.enable = STM32446GPIOBenable;
+		stm32446.gpiob.moder = STM32446GpioBmoder;
+		stm32446.gpiob.ospeedr = STM32446GpioBospeedr;
+		stm32446.gpiob.pupdr = STM32446GpioBpupdr;
+		stm32446.gpiob.reset = STM32446GpioBreset;
+		stm32446.gpiob.set = STM32446GpioBset;
+		stm32446.gpiob.afr = STM32446GpioBafr;
 
-	// GPIOH
-	stm32446.gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
-	stm32446.gpioh.enable = STM32446GpioHenable;
-	stm32446.gpioh.moder = STM32446GpioHmoder;
-	stm32446.gpioh.ospeedr = STM32446GpioHospeedr;
-	stm32446.gpioh.pupdr = STM32446GpioHpupdr;
-	stm32446.gpioh.reset = STM32446GpioHreset;
-	stm32446.gpioh.set = STM32446GpioHset;
-	stm32446.gpioh.afr = STM32446GpioHafr;
+		// GPIOC
+		stm32446.gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
+		stm32446.gpioc.enable = STM32446GPIOCenable;
+		stm32446.gpioc.moder = STM32446GpioCmoder;
+		stm32446.gpioc.ospeedr = STM32446GpioCospeedr;
+		stm32446.gpioc.pupdr = STM32446GpioCpupdr;
+		stm32446.gpioc.reset = STM32446GpioCreset;
+		stm32446.gpioc.set = STM32446GpioCset;
+		stm32446.gpioc.afr = STM32446GpioCafr;
 
+		// GPIOD
+		stm32446.gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
+		stm32446.gpiod.enable = STM32446GPIODenable;
+		stm32446.gpiod.moder = STM32446GpioDmoder;
+		stm32446.gpiod.ospeedr = STM32446GpioDospeedr;
+		stm32446.gpiod.pupdr = STM32446GpioDpupdr;
+		stm32446.gpiod.reset = STM32446GpioDreset;
+		stm32446.gpiod.set = STM32446GpioDset;
+		stm32446.gpiod.afr = STM32446GpioDafr;
+	
+		// GPIOE
+		stm32446.gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
+		stm32446.gpioe.enable = STM32446GPIOEenable;
+		stm32446.gpioe.moder = STM32446GpioEmoder;
+		stm32446.gpioe.ospeedr = STM32446GpioEospeedr;
+		stm32446.gpioe.pupdr = STM32446GpioEpupdr;
+		stm32446.gpioe.reset = STM32446GpioEreset;
+		stm32446.gpioe.set = STM32446GpioEset;
+		stm32446.gpioe.afr = STM32446GpioEafr;
+	
+		// GPIOH
+		stm32446.gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
+		stm32446.gpioh.enable = STM32446GPIOHenable;
+		stm32446.gpioh.moder = STM32446GpioHmoder;
+		stm32446.gpioh.ospeedr = STM32446GpioHospeedr;
+		stm32446.gpioh.pupdr = STM32446GpioHpupdr;
+		stm32446.gpioh.reset = STM32446GpioHreset;
+		stm32446.gpioh.set = STM32446GpioHset;
+		stm32446.gpioh.afr = STM32446GpioHafr;
+	#endif
+	
 	// SYSCFG
 	stm32446.syscfg.reg = (SYSCFG_TypeDef*) SYSCFG_BASE;
 	stm32446.syscfg.enable = STM32446SysCfgEnable;
@@ -291,88 +246,104 @@ STM32446 STM32446enable(void){
 	#if defined(_STM32446RTC_H_)
 		stm32446.rtc.reg = (RTC_TypeDef*) RTC_BASE;
 		stm32446.rtc.enable = STM32446RTCenable;
+		stm32446.rtc.inic = STM32446RtcInic;
+		stm32446.rtc.Day = STM32446RtcDay;
+		stm32446.rtc.Month = STM32446RtcMonth;
+		stm32446.rtc.WeekDay = STM32446RtcWeekDay;
+		stm32446.rtc.Year = STM32446RtcYear;
+		stm32446.rtc.Hour = STM32446RtcHour;
+		stm32446.rtc.Minute = STM32446RtcMinute;
+		stm32446.rtc.Second = STM32446RtcSecond;
+		stm32446.rtc.dr2vec = STM32446Rtcdr2vec;
+		stm32446.rtc.tr2vec = STM32446Rtctr2vec;
+		stm32446.rtc.RegWrite = STM32446RtcRegWrite;
 	#endif
 	
 	#if defined(_STM32446TIM_H_)
-	// TIM -> TIM1
+		// TIM -> TIM1
 		stm32446.tim1.reg = (TIM_TypeDef*) TIM1_BASE;
 		stm32446.tim1.enable = NULL;
 
-	// TIM -> TIM2
+		// TIM -> TIM2
 		stm32446.tim2.reg = (TIM_TypeDef*) TIM2_BASE;
 		stm32446.tim2.enable = NULL;
 
-	// TIM -> TIM3
+		// TIM -> TIM3
 		stm32446.tim3.reg = (TIM_TypeDef*) TIM3_BASE;
 		stm32446.tim3.enable = NULL;
 
-	// TIM -> TIM4
+		// TIM -> TIM4
 		stm32446.tim4.reg = (TIM_TypeDef*) TIM4_BASE;
 		stm32446.tim4.enable = NULL;
 
-	// TIM -> TIM5
+		// TIM -> TIM5
 		stm32446.tim5.reg = (TIM_TypeDef*) TIM5_BASE;
 		stm32446.tim5.enable = NULL;
 
-	// TIM -> TIM6
+		// TIM -> TIM6
 		stm32446.tim6.reg = (TIM_TypeDef*) TIM6_BASE;
 		stm32446.tim6.enable = NULL;
 
-	// TIM -> TIM7
+		// TIM -> TIM7
 		stm32446.tim7.reg = (TIM_TypeDef*) TIM7_BASE;
 		stm32446.tim7.enable = NULL;
 
-	// TIM -> TIM8
+		// TIM -> TIM8
 		stm32446.tim8.reg = (TIM_TypeDef*) TIM8_BASE;
 		stm32446.tim8.enable = NULL;
 
-	// TIM -> TIM9
+		// TIM -> TIM9
 		stm32446.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 		stm32446.tim9.enable = STM32446TIM9enable;
+		stm32446.tim9.inic = STM32446Tim9Inic;
 
-	// TIM -> TIM10
+		// TIM -> TIM10
 		stm32446.tim10.reg = (TIM_TypeDef*) TIM10_BASE;
 		stm32446.tim10.enable = NULL;
 
-	// TIM -> TIM11
+		// TIM -> TIM11
 		stm32446.tim11.reg = (TIM_TypeDef*) TIM11_BASE;
 		stm32446.tim11.enable = NULL;
 
-	// TIM -> TIM12
+		// TIM -> TIM12
 		stm32446.tim12.reg = (TIM_TypeDef*) TIM12_BASE;
 		stm32446.tim12.enable = NULL;
 
-	// TIM -> TIM13
+		// TIM -> TIM13
 		stm32446.tim13.reg = (TIM_TypeDef*) TIM13_BASE;
 		stm32446.tim13.enable = NULL;
 
-	// TIM -> TIM14
+		// TIM -> TIM14
 		stm32446.tim14.reg = (TIM_TypeDef*) TIM14_BASE;
 		stm32446.tim14.enable = NULL;
 	#endif
 
 	#if defined(_STM32446USART_H_)
-	// USART -> USART1
+		// USART -> USART1
 		stm32446.usart1.reg = (USART_TypeDef*) USART1_BASE;
 		stm32446.usart1.enable = STM32446USART1enable;
+		stm32446.usart1.inic = STM32446Usart1Inic;
+		stm32446.usart1.transmit = STM32446Usart1Transmit;
+		stm32446.usart1.receive = STM32446Usart1Receive;
+		stm32446.usart1.stop = STM32446Usart1Stop;
 	
-	// USART -> USART2
+		// USART -> USART2
 		stm32446.usart2.reg = (USART_TypeDef*) USART2_BASE;
 		stm32446.usart2.enable = NULL;
 
-	// USART -> USART3
+		// USART -> USART3
 		stm32446.usart3.reg = (USART_TypeDef*) USART3_BASE;
 		stm32446.usart3.enable = NULL;
 
-	// USART -> USART4
+		// USART -> USART4
 		stm32446.usart4.reg = (USART_TypeDef*) UART4_BASE;
 		stm32446.usart4.enable = NULL;
 
-	// USART -> USART5
+		// USART -> USART5
 		stm32446.usart5.reg = (USART_TypeDef*) UART5_BASE;
 		stm32446.usart5.enable = NULL;
 
-	// USART -> USART6
+		// USART -> USART6
 		stm32446.usart6.reg = (USART_TypeDef*) USART6_BASE;
 		stm32446.usart6.enable = NULL;
 	#endif
@@ -812,342 +783,6 @@ void STM32446PinBlock( volatile uint32_t* dest, uint32_t size_block, uint32_t da
 	*dest |= (data << pin);
 }
 
-// GPIOA
-void STM32446GpioAenable( void )
-{
-	stm32446.rcc.reg->AHB1ENR |= (1 << 0);
-}
-
-void STM32446GpioAmoder( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioa.reg->MODER &= ~(mask << (pin * blocksize));
-	stm32446.gpioa.reg->MODER |= (data << (pin * blocksize));
-}
-
-void STM32446GpioAospeedr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioa.reg->OSPEEDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioa.reg->OSPEEDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioApupdr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioa.reg->PUPDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioa.reg->PUPDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioAreset( unsigned int data )
-{
-	stm32446.gpioa.reg->BSRR = (unsigned int)(data << 16);
-}
-
-void STM32446GpioAset( unsigned int data )
-{
-	stm32446.gpioa.reg->BSRR = (unsigned int)( data );
-}
-
-void STM32446GpioAafr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 4;
-	const unsigned int n_bits = sizeof(unsigned int) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, blocksize) - 1);
-	unsigned int index = (pin * blocksize) / n_bits;
-	data &= mask;
-	if(index < 2){
-		stm32446.gpioa.reg->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
-		stm32446.gpioa.reg->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
-	}
-}
-
-// GPIOB
-void STM32446GpioBenable( void )
-{
-	stm32446.rcc.reg->AHB1ENR |= (1 << 1);
-}
-
-void STM32446GpioBmoder( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpiob.reg->MODER &= ~(mask << (pin * blocksize));
-	stm32446.gpiob.reg->MODER |= (data << (pin * blocksize));
-}
-
-void STM32446GpioBospeedr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpiob.reg->OSPEEDR &= ~(mask << (pin * blocksize));
-	stm32446.gpiob.reg->OSPEEDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioBpupdr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpiob.reg->PUPDR &= ~(mask << (pin * blocksize));
-	stm32446.gpiob.reg->PUPDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioBreset( unsigned int data )
-{
-	stm32446.gpiob.reg->BSRR = (unsigned int)(data << 16);
-}
-
-void STM32446GpioBset( unsigned int data )
-{
-	stm32446.gpiob.reg->BSRR = (unsigned int)( data );
-}
-
-void STM32446GpioBafr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 4;
-	const unsigned int n_bits = sizeof(unsigned int) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, blocksize) - 1);
-	unsigned int index = (pin * blocksize) / n_bits;
-	data &= mask;
-	if(index < 2){
-		stm32446.gpiob.reg->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
-		stm32446.gpiob.reg->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
-	}
-}
-
-// GPIOC
-void STM32446GpioCenable( void )
-{
-	stm32446.rcc.reg->AHB1ENR |= (1 << 2);
-}
-
-void STM32446GpioCmoder( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioc.reg->MODER &= ~(mask << (pin * blocksize));
-	stm32446.gpioc.reg->MODER |= (data << (pin * blocksize));
-}
-
-void STM32446GpioCospeedr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioc.reg->OSPEEDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioc.reg->OSPEEDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioCpupdr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioc.reg->PUPDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioc.reg->PUPDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioCreset( unsigned int data )
-{
-	stm32446.gpioc.reg->BSRR = (unsigned int)(data << 16);
-}
-
-void STM32446GpioCset( unsigned int data )
-{
-	stm32446.gpioc.reg->BSRR = (unsigned int)( data );
-}
-
-void STM32446GpioCafr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 4;
-	const unsigned int n_bits = sizeof(unsigned int) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, blocksize) - 1);
-	unsigned int index = (pin * blocksize) / n_bits;
-	data &= mask;
-	if(index < 2){
-		stm32446.gpioc.reg->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
-		stm32446.gpioc.reg->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
-	}
-}
-
-// GPIOD
-void STM32446GpioDenable( void )
-{
-	stm32446.rcc.reg->AHB1ENR |= (1 << 3);
-}
-
-void STM32446GpioDmoder( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpiod.reg->MODER &= ~(mask << (pin * blocksize));
-	stm32446.gpiod.reg->MODER |= (data << (pin * blocksize));
-}
-
-void STM32446GpioDospeedr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpiod.reg->OSPEEDR &= ~(mask << (pin * blocksize));
-	stm32446.gpiod.reg->OSPEEDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioDpupdr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpiod.reg->PUPDR &= ~(mask << (pin * blocksize));
-	stm32446.gpiod.reg->PUPDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioDreset( unsigned int data )
-{
-	stm32446.gpiod.reg->BSRR = (unsigned int)(data << 16);
-}
-
-void STM32446GpioDset( unsigned int data )
-{
-	stm32446.gpiod.reg->BSRR = (unsigned int)( data );
-}
-
-void STM32446GpioDafr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 4;
-	const unsigned int n_bits = sizeof(unsigned int) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, blocksize) - 1);
-	unsigned int index = (pin * blocksize) / n_bits;
-	data &= mask;
-	if(index < 2){
-		stm32446.gpiod.reg->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
-		stm32446.gpiod.reg->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
-	}
-}
-
-// GPIOE
-void STM32446GpioEenable( void )
-{
-	stm32446.rcc.reg->AHB1ENR |= (1 << 4);
-}
-
-void STM32446GpioEmoder( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioe.reg->MODER &= ~(mask << (pin * blocksize));
-	stm32446.gpioe.reg->MODER |= (data << (pin * blocksize));
-}
-
-void STM32446GpioEospeedr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioe.reg->OSPEEDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioe.reg->OSPEEDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioEpupdr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioe.reg->PUPDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioe.reg->PUPDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioEreset( unsigned int data )
-{
-	stm32446.gpioe.reg->BSRR = (unsigned int)(data << 16);
-}
-
-void STM32446GpioEset( unsigned int data )
-{
-	stm32446.gpioe.reg->BSRR = (unsigned int)( data );
-}
-
-void STM32446GpioEafr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 4;
-	const unsigned int n_bits = sizeof(unsigned int) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, blocksize) - 1);
-	unsigned int index = (pin * blocksize) / n_bits;
-	data &= mask;
-	if(index < 2){
-		stm32446.gpioe.reg->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
-		stm32446.gpioe.reg->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
-	}
-}
-
-// GPIOH
-void STM32446GpioHenable( void )
-{
-	stm32446.rcc.reg->AHB1ENR |= (1 << 7);
-}
-
-void STM32446GpioHmoder( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioh.reg->MODER &= ~(mask << (pin * blocksize));
-	stm32446.gpioh.reg->MODER |= (data << (pin * blocksize));
-}
-
-void STM32446GpioHospeedr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioh.reg->OSPEEDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioh.reg->OSPEEDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioHpupdr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 2;
-	unsigned int mask = (unsigned int)(pow(2, blocksize) - 1);
-	data &= mask;
-	stm32446.gpioh.reg->PUPDR &= ~(mask << (pin * blocksize));
-	stm32446.gpioh.reg->PUPDR |= (data << (pin * blocksize));
-}
-
-void STM32446GpioHreset( unsigned int data )
-{
-	stm32446.gpioh.reg->BSRR = (unsigned int)(data << 16);
-}
-
-void STM32446GpioHset( unsigned int data )
-{
-	stm32446.gpioh.reg->BSRR = (unsigned int)( data );
-}
-
-void STM32446GpioHafr( unsigned int data, unsigned int pin )
-{
-	const unsigned int blocksize = 4;
-	const unsigned int n_bits = sizeof(unsigned int) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, blocksize) - 1);
-	unsigned int index = (pin * blocksize) / n_bits;
-	data &= mask;
-	if(index < 2){
-		stm32446.gpioh.reg->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
-		stm32446.gpioh.reg->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
-	}
-}
-
 // SYSCFG
 void STM32446SysCfgEnable(void)
 {
@@ -1404,7 +1039,7 @@ void SysTick_Handler(void)
 
 /***
  *
- * Start separating modules into libraries to be appended, instead of clustered here.
+ *
  *
  *
  * */

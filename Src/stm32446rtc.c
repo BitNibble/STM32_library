@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 23052023
+Date: 28052023
 Comment:
 	
 *******************************************************************************/
@@ -17,19 +17,7 @@ static STM32446RTC rtc;
 static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
 
-// RTC
-uint8_t STM32446RtcInic(uint8_t clock);
-void STM32446RtcDay(uint8_t day);
-void STM32446RtcMonth(uint8_t month);
-void STM32446RtcWeekDay(uint8_t weekday);
-void STM32446RtcYear(uint8_t year);
-void STM32446RtcHour(uint8_t hour);
-void STM32446RtcMinute(uint8_t minute);
-void STM32446RtcSecond(uint8_t second);
-void STM32446Rtcdr2vec(char* rtc_vect);
-void STM32446Rtctr2vec(char* rtc_vect);
-void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
-// RTC
+/*** RTC ***/
 void STM32446RtcEnable(void);
 void STM32446RtcSetTr(void);
 void STM32446RtcSetDr(void);
@@ -343,4 +331,7 @@ uint8_t STM32446RtcAccess(uint8_t clock)
 	status = 2;
 	return status;
 }
+
+/*** EOF ***/
+
 

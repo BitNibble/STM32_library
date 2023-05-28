@@ -4,7 +4,7 @@ Author: Sergio Manuel Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 20052023
+Date: 28052023
 Comment:
 	-manual um1724, m0390, pm0056, pm0214, and other sources.
 	-Virtual Image STM32-446, mapping.
@@ -29,6 +29,7 @@ Comment:
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
 #include "stm32446tim.h"
+#include "stm32446gpio.h"
 
 /***Global Define and Macros***/
 
@@ -93,13 +94,6 @@ typedef struct
 }STM32446SysTickobj;
 
 /*** MCU ***/
-/***
-// ADC_Common
-typedef struct
-{
-	ADC_Common_TypeDef* reg;
-}STM32446ADCCOMMONobj;
-
 // ADC -> ADC1
 typedef struct
 {
@@ -107,6 +101,7 @@ typedef struct
 	STM32446ADCCOMMONobj common;
 	#if defined(_STM32446ADC_H_)
 		STM32446ADC1 (*enable)(void);
+		STM32446ADC1single single;
 	#endif
 }STM32446ADC1obj;
 
@@ -129,7 +124,6 @@ typedef struct
 		void (*enable)(void);
 	#endif
 }STM32446ADC3obj;
-***/
 
 // CAN_TxMailBox
 typedef struct
@@ -247,11 +241,12 @@ typedef struct
 	FMC_Bank5_6_TypeDef* reg;
 }STM32446FMC_Bank5_6obj;
 
+/***/
 // GPIO -> GPIOA
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	void (*enable)(void);
+	STM32446GPIOA (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -264,7 +259,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	void (*enable)(void);
+	STM32446GPIOB (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -277,7 +272,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	void (*enable)(void);
+	STM32446GPIOC (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -290,7 +285,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	void (*enable)(void);
+	STM32446GPIOD (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -303,7 +298,7 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	void (*enable)(void);
+	STM32446GPIOE (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -316,19 +311,33 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	STM32446GPIOF (*enable)(void);
+	void (*moder)( unsigned int data, unsigned int pin );
+	void (*ospeedr)( unsigned int data, unsigned int pin );
+	void (*pupdr)( unsigned int data, unsigned int pin );
+	void (*afr)( unsigned int data, unsigned int pin );
+	void (*reset)( unsigned int data );
+	void (*set)( unsigned int data );
 }STM32446GpioFobj;
 
 // GPIO -> GPIOG
 typedef struct
 {
 	GPIO_TypeDef* reg;
+	STM32446GPIOG (*enable)(void);
+	void (*moder)( unsigned int data, unsigned int pin );
+	void (*ospeedr)( unsigned int data, unsigned int pin );
+	void (*pupdr)( unsigned int data, unsigned int pin );
+	void (*afr)( unsigned int data, unsigned int pin );
+	void (*reset)( unsigned int data );
+	void (*set)( unsigned int data );
 }STM32446GpioGobj;
 
 // GPIO -> GPIOH
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	void (*enable)(void);
+	STM32446GPIOH (*enable)(void);
 	void (*moder)( unsigned int data, unsigned int pin );
 	void (*ospeedr)( unsigned int data, unsigned int pin );
 	void (*pupdr)( unsigned int data, unsigned int pin );
@@ -415,16 +424,25 @@ typedef struct
 	STM32446RCCPLLSAI pllsai;
 }STM32446RCCobj;
 
-/***
 // RTC
 typedef struct
 {
 	RTC_TypeDef* reg;
 	#if defined(_STM32446RTC_H_)
 		STM32446RTC (*enable)(void);
+		uint8_t (*inic)(uint8_t clock);
+		void (*Day)(uint8_t day);
+		void (*Month)(uint8_t month);
+		void (*WeekDay)(uint8_t weekday);
+		void (*Year)(uint8_t year);
+		void (*Hour)(uint8_t hour);
+		void (*Minute)(uint8_t minute);
+		void (*Second)(uint8_t second);
+		void (*dr2vec)(char* rtc_vect);
+		void (*tr2vec)(char* rtc_vect);
+		void (*RegWrite)(volatile uint32_t* reg, uint32_t data);
 	#endif
 }STM32446RTCobj;
-***/
 
 // SAI -> SAI1
 typedef struct
@@ -504,7 +522,6 @@ typedef struct
 	SPDIFRX_TypeDef* reg;
 }STM32446SPDIFRXobj;
 
-/***
 // TIM -> TIM1
 typedef struct
 {
@@ -583,6 +600,7 @@ typedef struct
 	TIM_TypeDef* reg;
 	#if defined(_STM32446TIM_H_)
 		STM32446TIM9 (*enable)(void);
+		void (*inic)(void);
 	#endif
 }STM32446TIM9obj;
 
@@ -630,15 +648,17 @@ typedef struct
 		void (*enable)(void);
 	#endif
 }STM32446TIM14obj;
-***/
 
-/***
 // USART -> USART1
 typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
 		STM32446USART1 (*enable)(void);
+		void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+		void (*transmit)(void);
+		void (*receive)(void);
+		void (*stop)(void);
 	#endif
 }STM32446USART1obj;
 
@@ -686,7 +706,6 @@ typedef struct
 		void (*enable)(void);
 	#endif
 }STM32446USART6obj;
-***/
 
 // WWDG
 typedef struct
@@ -791,12 +810,14 @@ typedef struct
 	STM32446DMA1obj dma1;
 	STM32446DMA2obj dma2;
 	STM32446FLASHobj flash;
-	STM32446GpioAobj gpioa;
-	STM32446GpioBobj gpiob;
-	STM32446GpioCobj gpioc;
-	STM32446GpioDobj gpiod;
-	STM32446GpioEobj gpioe;
-	STM32446GpioHobj gpioh;
+	#if defined(_STM32446GPIO_H_)
+		STM32446GpioAobj gpioa;
+		STM32446GpioBobj gpiob;
+		STM32446GpioCobj gpioc;
+		STM32446GpioDobj gpiod;
+		STM32446GpioEobj gpioe;
+		STM32446GpioHobj gpioh;
+	#endif
 	STM32446SYSCFGobj syscfg;
 	STM32446PWRobj pwr;
 	STM32446RCCobj rcc;
@@ -827,7 +848,6 @@ typedef struct
 		STM32446USART5obj usart5;
 		STM32446USART6obj usart6;
 	#endif
-	
 	// INIC
 	STM32446_inic inic;
 	// ENABLE
@@ -836,10 +856,11 @@ typedef struct
 	STM32446_function func;
 }STM32446;
 
-/*** Global Procedure & Function ***/
+/*** Global ***/
 STM32446 STM32446enable(void);
 
 #endif
+
 /***EOF***/
 
 

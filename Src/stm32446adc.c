@@ -4,12 +4,12 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 23052023
+Date: 28052023
 Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include "stm32446mapping.h" // after fix architecture in rcc lib, use it here.
+#include "stm32446mapping.h"
 #include "stm32446adc.h"
 
 static STM32446 stm32446;
@@ -17,18 +17,8 @@ static STM32446ADC1 adc1;
 static double STM32446temperature;
 
 /*** ADC 1 ***/
-// ADC1
-void STM32446Adc1Inic(void);
-void STM32446Adc1VBAT(void);
-void STM32446Adc1TEMP(void);
-void STM32446Adc1Start(void);
-double STM32446Adc1Read(void);
-void STM32446Adc1Restart(void);
-void STM32446Adc1Stop(void);
-// ADC1
 void STM32446Adc1Enable(void);
 
-// ADC1
 STM32446ADC1 STM32446ADC1enable(void)
 {
 	stm32446 = STM32446enable();
@@ -116,5 +106,7 @@ void STM32446Adc1Stop(void)
 
 /*** ADC 3 ***/
 // For future implementation.
+
+/*** EOF ***/
 
 

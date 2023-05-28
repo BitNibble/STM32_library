@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 23052023
+Date: 28052023
 Comment:
 	
 *******************************************************************************/
@@ -17,9 +17,6 @@ static STM32446 stm32446;
 STM32446TIM9 tim9;
 
 /*** TIM 9 ***/
-// TIM9
-void STM32446Tim9Inic(void);
-// TIM9
 void STM32446Tim9Enable(void);
 
 // TIM9
@@ -61,6 +58,8 @@ void STM32446Tim9Inic(void)
 // Future Implementation
 
 /*** File Interrupt ***/
-// void TIM1_BRK_TIM9_IRQHandler(void){ }
+// void TIM1_BRK_TIM9_IRQHandler(void){ // receive interrupt flags }
+
+/*** EOF ***/
 
 
