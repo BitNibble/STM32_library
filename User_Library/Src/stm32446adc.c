@@ -9,11 +9,9 @@ Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include "stm32446mapping.h"
+#include "stm32f446xx.h"
 #include "stm32446adc.h"
 
-static STM32446 stm32446;
-static STM32446ADC1 adc1;
 static double STM32446temperature;
 
 /*** ADC 1 ***/
@@ -21,8 +19,7 @@ void STM32446Adc1Enable(void);
 
 STM32446ADC1 STM32446ADC1enable(void)
 {
-	stm32446 = STM32446enable();
-
+	STM32446ADC1 adc1;
 	STM32446temperature = 0;
 
 	adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
@@ -43,7 +40,7 @@ STM32446ADC1 STM32446ADC1enable(void)
 
 void STM32446Adc1Enable(void)
 {
-	stm32446.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
+	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 }
 
 void STM32446Adc1Inic(void)
@@ -53,52 +50,52 @@ void STM32446Adc1Inic(void)
 	//STM32446Adc1Enable();
 	// stm32446.rcc.reg->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 	// ADC CONFIG
-	adc1.reg->CR2 |= (1 << 10); // EOCS: End of conversion selection
-	adc1.common.reg->CCR |= (3 << 16); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
-	adc1.reg->SMPR1 |= (7 << 24); // SMPx[2:0]: Channel x sampling time selection
-	adc1.reg->CR1 |= (1 << 11); // DISCEN: Discontinuous mode on regular channels
-	adc1.reg->SQR3 |= 18; // SQ1[4:0]: 1st conversion in regular sequence
+	ADC1->CR2 |= (1 << 10); // EOCS: End of conversion selection
+	ADC123_COMMON->CCR |= (3 << 16); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
+	ADC1->SMPR1 |= (7 << 24); // SMPx[2:0]: Channel x sampling time selection
+	ADC1->CR1 |= (1 << 11); // DISCEN: Discontinuous mode on regular channels
+	ADC1->SQR3 |= 18; // SQ1[4:0]: 1st conversion in regular sequence
 }
 
 void STM32446Adc1VBAT(void) // vbat overrides temperature
 {
-	adc1.common.reg->CCR |= (1 << 22); // VBATE: VBAT enable
+	ADC123_COMMON->CCR |= (1 << 22); // VBATE: VBAT enable
 }
 
 void STM32446Adc1TEMP(void)
 {
 	// Temperature (in ?C) = {(VSENSE V25) / Avg_Slope} + 25
-	adc1.common.reg->CCR |= (1 << 23); // TSVREFE: Temperature sensor and VREFINT enable
+	ADC123_COMMON->CCR |= (1 << 23); // TSVREFE: Temperature sensor and VREFINT enable
 }
 
 void STM32446Adc1Start()
 {
 	// turn on select source and start reading
-	adc1.reg->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
+	ADC1->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
 	//
-	adc1.reg->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels
+	ADC1->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels
 }
 
 double STM32446Adc1Read(void)
 {
-	if(adc1.common.reg->CSR & (1 << 1)){ // EOC1: End of conversion of ADC1
-		STM32446temperature = adc1.reg->DR;
-		adc1.reg->SR &= (unsigned int) ~(1 << 4); // STRT: Regular channel start flag
+	if(ADC123_COMMON->CSR & (1 << 1)){ // EOC1: End of conversion of ADC1
+		STM32446temperature = ADC1->DR;
+		ADC1->SR &= (unsigned int) ~(1 << 4); // STRT: Regular channel start flag
 	}
 	return STM32446temperature;
 }
 
 void STM32446Adc1Restart(void)
 {
-	if(adc1.common.reg->CSR & (1 << 4)) // STRT1: Regular channel Start flag of ADC1
+	if(ADC123_COMMON->CSR & (1 << 4)) // STRT1: Regular channel Start flag of ADC1
 		;
 	else
-		adc1.reg->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels;
+		ADC1->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels;
 }
 
 void STM32446Adc1Stop(void)
 {
-	adc1.reg->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
+	ADC1->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
 }
 
 /*** ADC 2 ***/

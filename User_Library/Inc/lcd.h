@@ -42,9 +42,11 @@ typedef struct
 	void (*gotoxy)(unsigned int y, unsigned int x);
 	void (*reboot)(void);
 }LCD0;
+
 /*** Global Header ***/
 LCD0 LCD0enable(GPIO_TypeDef* reg);
 
 #endif
 /***EOF***/
+
 

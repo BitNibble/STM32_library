@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: all
-Date: 12112022
+Date: 28052023
 Comment:
 	STM32F446RE
 ************************************************************************/
@@ -12,12 +12,9 @@ Comment:
 #include "lcd.h"
 
 /*** File Constant & Macro ***/
-#define LCD_N_TICKS 0 // 512
-#define BIT_N_TICKS 0 // 32
 // CMD RS
 #define INST 0
 #define DATA 1
-// ticks depends on CPU frequency this case 16Mhz
 #define LCDCMDMASK ((1 << RS) | (1 << RW) | (1 << EN))
 
 /*** File Variable ***/
@@ -37,16 +34,18 @@ void LCD0_string_size(const char* s, uint32_t size); // RAW
 void LCD0_hspace(uint32_t n);
 void LCD0_clear(void);
 void LCD0_gotoxy(unsigned int y, unsigned int x);
-void LCD0_strobe(uint16_t num);
 void LCD0_reboot(void);
-void LCD_ticks(uint16_t num);
+// Common
+void LCD0_strobe(void);
+void lcd_setpin( GPIO_TypeDef* reg, int pin );
+void lcd_resetpin( GPIO_TypeDef* reg, int pin );
 
 /*** Procedure & Function ***/
 LCD0 LCD0enable(GPIO_TypeDef* reg)
 {
-	// ALLOCA??O MEMORIA PARA Estrutura
+	// ALLOCACAO MEMORIA PARA Estrutura
 	LCD0 lcd0;
-	stm = STM32446enable(); // The entire stm32446
+	stm = STM32446enable();
 
 	// LOCAL VARIABLES
 	// import parameters
@@ -134,27 +133,27 @@ void LCD0_inic(void)
 }
 void LCD0_write(char c, unsigned short D_I)
 { // write to LCD
-	stm.func.resetpin(ireg,RW); // lcd as input
+	lcd_resetpin(ireg,RW); // lcd as input
 	ireg->MODER &= (uint32_t) ~((3 << (DB4 *2)) | (3 << (DB5* 2)) | (3 << (DB6* 2)) | (3 << (DB7 * 2))); // mcu as output
 	ireg->MODER |= ((1 << (DB4 *2)) | (1 << (DB5* 2)) | (1 << (DB6* 2)) | (1 << (DB7 * 2))); // mcu as output
 	
-	if(D_I) stm.func.setpin(ireg, RS); else stm.func.resetpin(ireg, RS);
-	LCD0_strobe(LCD_N_TICKS); LCD_ticks(BIT_N_TICKS);
+	if(D_I) lcd_setpin(ireg, RS); else lcd_resetpin(ireg, RS);
+	LCD0_strobe( );
 	
-	if(c & 0x80) stm.func.setpin(ireg,DB7); else stm.func.resetpin(ireg,DB7); LCD_ticks(BIT_N_TICKS);
-	if(c & 0x40) stm.func.setpin(ireg,DB6); else stm.func.resetpin(ireg,DB6); LCD_ticks(BIT_N_TICKS);
-	if(c & 0x20) stm.func.setpin(ireg,DB5); else stm.func.resetpin(ireg,DB5); LCD_ticks(BIT_N_TICKS);
-	if(c & 0x10) stm.func.setpin(ireg,DB4); else stm.func.resetpin(ireg,DB4); LCD_ticks(BIT_N_TICKS);
+	if(c & 0x80) lcd_setpin(ireg,DB7); else lcd_resetpin(ireg,DB7);
+	if(c & 0x40) lcd_setpin(ireg,DB6); else lcd_resetpin(ireg,DB6);
+	if(c & 0x20) lcd_setpin(ireg,DB5); else lcd_resetpin(ireg,DB5);
+	if(c & 0x10) lcd_setpin(ireg,DB4); else lcd_resetpin(ireg,DB4);
 	
-	if(D_I) stm.func.setpin(ireg, RS); else stm.func.resetpin(ireg, RS);
-	LCD0_strobe(LCD_N_TICKS); LCD_ticks(BIT_N_TICKS);
+	if(D_I) lcd_setpin(ireg, RS); else lcd_resetpin(ireg, RS);
+	LCD0_strobe( );
 	
-	if(c & 0x08) stm.func.setpin(ireg,DB7); else stm.func.resetpin(ireg,DB7); LCD_ticks(BIT_N_TICKS);
-	if(c & 0x04) stm.func.setpin(ireg,DB6); else stm.func.resetpin(ireg,DB6); LCD_ticks(BIT_N_TICKS);
-	if(c & 0x02) stm.func.setpin(ireg,DB5); else stm.func.resetpin(ireg,DB5); LCD_ticks(BIT_N_TICKS);
-	if(c & 0x01) stm.func.setpin(ireg,DB4); else stm.func.resetpin(ireg,DB4); LCD_ticks(BIT_N_TICKS);
+	if(c & 0x08) lcd_setpin(ireg,DB7); else lcd_resetpin(ireg,DB7);
+	if(c & 0x04) lcd_setpin(ireg,DB6); else lcd_resetpin(ireg,DB6);
+	if(c & 0x02) lcd_setpin(ireg,DB5); else lcd_resetpin(ireg,DB5);
+	if(c & 0x01) lcd_setpin(ireg,DB4); else lcd_resetpin(ireg,DB4);
 	
-	stm.func.resetpin(ireg, EN); LCD_ticks(BIT_N_TICKS);
+	lcd_resetpin(ireg, EN);
 }
 
 char LCD0_read(unsigned short D_I)
@@ -162,27 +161,27 @@ char LCD0_read(unsigned short D_I)
 	uint32_t data = 0;
 	uint8_t c = 0;
 	ireg->MODER &= (uint32_t) ~((3 << (DB4 * 2)) | (3 << (DB5 * 2)) | (3 << (DB6 * 2)) | (3 << (DB7 * 2))); // mcu as input
-	stm.func.setpin(ireg, RW); // lcd as output
+	lcd_setpin(ireg, RW); // lcd as output
 	
-	if(D_I) stm.func.setpin(ireg, RS); else stm.func.resetpin(ireg, RS);
-	LCD0_strobe(LCD_N_TICKS); LCD_ticks(BIT_N_TICKS);
+	if(D_I) lcd_setpin(ireg, RS); else lcd_resetpin(ireg, RS);
+	LCD0_strobe( );
 	data = ireg->IDR; // read data
 	
-	if(data & (1 << DB7)) c |= 1 << 7; else c &= ~(1 << 7); LCD_ticks(BIT_N_TICKS);
-	if(data & (1 << DB6)) c |= 1 << 6; else c &= ~(1 << 6); LCD_ticks(BIT_N_TICKS);
-	if(data & (1 << DB5)) c |= 1 << 5; else c &= ~(1 << 5); LCD_ticks(BIT_N_TICKS);
-	if(data & (1 << DB4)) c |= 1 << 4; else c &= ~(1 << 4); LCD_ticks(BIT_N_TICKS);
+	if(data & (1 << DB7)) c |= 1 << 7; else c &= ~(1 << 7);
+	if(data & (1 << DB6)) c |= 1 << 6; else c &= ~(1 << 6);
+	if(data & (1 << DB5)) c |= 1 << 5; else c &= ~(1 << 5);
+	if(data & (1 << DB4)) c |= 1 << 4; else c &= ~(1 << 4);
 	
-	if(D_I) stm.func.setpin(ireg, RS); else stm.func.resetpin(ireg, RS);
-	LCD0_strobe(LCD_N_TICKS); LCD_ticks(BIT_N_TICKS);
+	if(D_I) lcd_setpin(ireg, RS); else lcd_resetpin(ireg, RS);
+	LCD0_strobe( );
 	data = ireg->IDR; // read data
 
-	if(data & (1 << DB7)) c |= 1 << 3; else c &= ~(1 << 3); LCD_ticks(BIT_N_TICKS);
-	if(data & (1 << DB6)) c |= 1 << 2; else c &= ~(1 << 2); LCD_ticks(BIT_N_TICKS);
-	if(data & (1 << DB5)) c |= 1 << 1; else c &= ~(1 << 1); LCD_ticks(BIT_N_TICKS);
-	if(data & (1 << DB4)) c |= 1 << 0; else c &= ~(1 << 0); LCD_ticks(BIT_N_TICKS);
+	if(data & (1 << DB7)) c |= 1 << 3; else c &= ~(1 << 3);
+	if(data & (1 << DB6)) c |= 1 << 2; else c &= ~(1 << 2);
+	if(data & (1 << DB5)) c |= 1 << 1; else c &= ~(1 << 1);
+	if(data & (1 << DB4)) c |= 1 << 0; else c &= ~(1 << 0);
 	
-	stm.func.resetpin(ireg, EN); LCD_ticks(BIT_N_TICKS);
+	lcd_resetpin(ireg, EN);
 
 	return c;
 }
@@ -277,11 +276,10 @@ void LCD0_gotoxy(unsigned int y, unsigned int x)
 	}
 }
 
-void LCD0_strobe(uint16_t num)
+void LCD0_strobe(void)
 {
-	stm.func.resetpin(ireg, EN);
-	LCD_ticks(num);
-	stm.func.setpin(ireg, EN);
+	lcd_resetpin(ireg, EN);
+	lcd_setpin(ireg, EN);
 }
 
 void LCD0_reboot(void)
@@ -297,10 +295,15 @@ void LCD0_reboot(void)
 	lcd0_detect = tmp;
 }
 
-void LCD_ticks(uint16_t num)
+/*** COMMON ***/
+void lcd_setpin( GPIO_TypeDef* reg, int pin )
 {
-	uint16_t count;
-	for(count = 0; count < num; count++) ;
+	reg->BSRR = (1 << pin);
+}
+
+void lcd_resetpin( GPIO_TypeDef* reg, int pin )
+{
+	reg->BSRR = (unsigned int)((1 << pin) << 16);
 }
 
 /*** File Interrupt ***/
@@ -329,4 +332,5 @@ void LCD0_BF(void)
 /*** File Interrupt ***/
 
 /***EOF***/
+
 
