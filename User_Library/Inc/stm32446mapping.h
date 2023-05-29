@@ -25,6 +25,7 @@ Comment:
 
 /*** Module Library ***/
 // Comment out modules not being used
+#include "stm32446rcc.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
@@ -71,8 +72,8 @@ typedef struct
 	uint32_t (*SystemClock)(void);
 }STM32446Query;
 
-/*** STM32F446RE ***/
-/*** CORE ***/
+/************ STM32F446RE ************/
+/************ CORE ************/
 // SCB
 typedef struct
 {
@@ -94,7 +95,7 @@ typedef struct
 	void (*delay_us)(uint32_t us);
 }STM32446SysTickobj;
 
-/*** MCU ***/
+/************ MCU ************/
 // ADC -> ADC1
 typedef struct
 {
@@ -247,104 +248,120 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOA (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOA (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioAobj;
 
 // GPIO -> GPIOB
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOB (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOB (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioBobj;
 
 // GPIO -> GPIOC
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOC (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOC (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioCobj;
 
 // GPIO -> GPIOD
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOD (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOD (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioDobj;
 
 // GPIO -> GPIOE
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOE (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOE (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioEobj;
 
 // GPIO -> GPIOF
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOF (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOF (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioFobj;
 
 // GPIO -> GPIOG
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOG (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOG (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioGobj;
 
 // GPIO -> GPIOH
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	STM32446GPIOH (*enable)(void);
-	void (*moder)( unsigned int data, unsigned int pin );
-	void (*ospeedr)( unsigned int data, unsigned int pin );
-	void (*pupdr)( unsigned int data, unsigned int pin );
-	void (*afr)( unsigned int data, unsigned int pin );
-	void (*reset)( unsigned int data );
-	void (*set)( unsigned int data );
+	#if defined(_STM32446GPIO_H_)
+		STM32446GPIOH (*enable)(void);
+		void (*moder)( unsigned int data, unsigned int pin );
+		void (*ospeedr)( unsigned int data, unsigned int pin );
+		void (*pupdr)( unsigned int data, unsigned int pin );
+		void (*afr)( unsigned int data, unsigned int pin );
+		void (*reset)( unsigned int data );
+		void (*set)( unsigned int data );
+	#endif
 }STM32446GpioHobj;
 
 // SYSCFG
@@ -390,39 +407,22 @@ typedef struct
 	PWR_TypeDef* reg;
 }STM32446PWRobj;
 
-// RCC -> PLL
-typedef struct
-{
-	void (*division)(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
-	void (*enable)(void);
-}STM32446RCCPLL;
-
-// RCC -> PLLI2S
-typedef struct
-{
-	void (*enable)(void);
-}STM32446RCCPLLI2S;
-
-// RCC -> PLLSAI
-typedef struct
-{
-	void (*enable)(void);
-}STM32446RCCPLLSAI;
-
-// RCC -> RCC
+// RCC
 typedef struct
 {
 	RCC_TypeDef* reg;
-	uint8_t (*inic)(void);
-	void (*henable)(unsigned int hclock);
-	uint8_t (*hselect)(uint8_t sysclk);
-	void (*lenable)(unsigned int lclock);
-	void (*lselect)(uint8_t lclock);
-	void (*prescaler)(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-	uint32_t (*systemclock)(void);
-	STM32446RCCPLL pll;
-	STM32446RCCPLLI2S plli2s;
-	STM32446RCCPLLSAI pllsai;
+	#if defined(_STM32446RCC_H_)
+		STM32446RCC (*enable)(void);
+		void (*henable)(unsigned int hclock);
+		uint8_t (*hselect)(uint8_t sysclk);
+		void (*lenable)(unsigned int lclock);
+		void (*lselect)(uint8_t lclock);
+		void (*prescaler)(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
+		uint32_t (*systemclock)(void);
+		STM32446RCCPLL pll;
+		STM32446RCCPLLI2S plli2s;
+		STM32446RCCPLLSAI pllsai;
+	#endif
 }STM32446RCCobj;
 
 // RTC
@@ -795,53 +795,43 @@ typedef struct
 	STM32446NVICobj nvic;
 	STM32446SysTickobj systick;
 	// MCU
-	#if defined(_STM32446ADC_H_)
-		STM32446ADC1obj adc1;
-		STM32446ADC2obj adc2;
-		STM32446ADC3obj adc3;
-	#endif
+	STM32446ADC1obj adc1;
+	STM32446ADC2obj adc2;
+	STM32446ADC3obj adc3;
 	STM32446CRCobj crc;
 	STM32446DMA1obj dma1;
 	STM32446DMA2obj dma2;
 	STM32446FLASHobj flash;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GpioAobj gpioa;
-		STM32446GpioBobj gpiob;
-		STM32446GpioCobj gpioc;
-		STM32446GpioDobj gpiod;
-		STM32446GpioEobj gpioe;
-		STM32446GpioHobj gpioh;
-	#endif
+	STM32446GpioAobj gpioa;
+	STM32446GpioBobj gpiob;
+	STM32446GpioCobj gpioc;
+	STM32446GpioDobj gpiod;
+	STM32446GpioEobj gpioe;
+	STM32446GpioHobj gpioh;
 	STM32446SYSCFGobj syscfg;
 	STM32446PWRobj pwr;
 	STM32446RCCobj rcc;
-	#if defined(_STM32446RTC_H_)
-		STM32446RTCobj rtc;
-	#endif
-	#if defined(_STM32446TIM_H_)
-		STM32446TIM1obj tim1;
-		STM32446TIM2obj tim2;
-		STM32446TIM3obj tim3;
-		STM32446TIM4obj tim4;
-		STM32446TIM5obj tim5;
-		STM32446TIM6obj tim6;
-		STM32446TIM7obj tim7;
-		STM32446TIM8obj tim8;
-		STM32446TIM9obj tim9;
-		STM32446TIM10obj tim10;
-		STM32446TIM11obj tim11;
-		STM32446TIM12obj tim12;
-		STM32446TIM13obj tim13;
-		STM32446TIM14obj tim14;
-	#endif
-	#if defined(_STM32446USART_H_)
-		STM32446USART1obj usart1;
-		STM32446USART2obj usart2;
-		STM32446USART3obj usart3;
-		STM32446USART4obj usart4;
-		STM32446USART5obj usart5;
-		STM32446USART6obj usart6;
-	#endif
+	STM32446RTCobj rtc;
+	STM32446TIM1obj tim1;
+	STM32446TIM2obj tim2;
+	STM32446TIM3obj tim3;
+	STM32446TIM4obj tim4;
+	STM32446TIM5obj tim5;
+	STM32446TIM6obj tim6;
+	STM32446TIM7obj tim7;
+	STM32446TIM8obj tim8;
+	STM32446TIM9obj tim9;
+	STM32446TIM10obj tim10;
+	STM32446TIM11obj tim11;
+	STM32446TIM12obj tim12;
+	STM32446TIM13obj tim13;
+	STM32446TIM14obj tim14;
+	STM32446USART1obj usart1;
+	STM32446USART2obj usart2;
+	STM32446USART3obj usart3;
+	STM32446USART4obj usart4;
+	STM32446USART5obj usart5;
+	STM32446USART6obj usart6;
 	// INIC
 	STM32446_inic inic;
 	// ENABLE
