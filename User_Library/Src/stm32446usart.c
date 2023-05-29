@@ -130,7 +130,7 @@ void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART1->CR2 |= (1 << 13);
 
-	value = (double) stm32446.query.SystemClock() / ( stm32446.CLOCK_prescaler.AHB * sampling * baudrate );
+	value = (double) stm32446.query.sysclk / ( stm32446.query.CLOCK_prescaler.AHB * sampling * baudrate );
 	fracpart = modf(value, &intpart);
 
 	USART1->BRR = 0; // clean slate, reset.

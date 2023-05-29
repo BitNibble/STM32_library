@@ -31,8 +31,6 @@ Comment:
 #include "stm32446tim.h"
 #include "stm32446gpio.h"
 
-/***Global Define and Macros***/
-
 /*** Global Variable ***/
 // PARAMETER
 typedef struct
@@ -67,6 +65,9 @@ typedef struct
 
 typedef struct
 {
+	uint32_t sysclk;
+	STM32446CLOCK_prescaler CLOCK_prescaler;
+	STM32446PLL_parameter PLL_parameter;
 	uint32_t (*SystemClock)(void);
 }STM32446Query;
 
@@ -774,27 +775,20 @@ typedef struct
 	STM32HighLowByte (*WriteHLByte)(uint16_t val);
 	STM32HighLowByte (*WriteLHByte)(uint16_t val);
 	uint16_t (*SwapByte)(uint16_t num);
-	void (*setpins)( GPIO_TypeDef* regs, int n_pin, ... ); // BSRR
-	void (*setpin)( GPIO_TypeDef* regs, int pin ); // BSRR
-	void (*set)( GPIO_TypeDef* regs, int data ); // BSRR
-	void (*resetpins)( GPIO_TypeDef* regs, int n_pin, ... ); // BSRR
-	void (*resetpin)( GPIO_TypeDef* regs, int pin); // BSRR
-	void (*reset)( GPIO_TypeDef* regs, int data); // BSRR
-	void (*setupreg)(volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int pin); // GENERIC & |
-	void (*pinblock)( volatile uint32_t* dest, uint32_t size_block, uint32_t data, uint32_t pin );
-	void (*setup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n ); // GENERIN [] & |
 	char* (*ftoa)(double num, char* res, uint8_t afterpoint);
 	char* (*print)( char* str, uint8_t size_str, const char* format, ... );
-	void (*test)(void);
+	void (*regsetbits)( unsigned int* reg, int n_bits, ... );
+	void (*regresetbits)( unsigned int* reg, int n_bits, ... );
+	void (*regsetup)(volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit);
+	void (*vecsetup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 }STM32446_function;
+
 
 /*** STM32F446RE IMAGE Linker ***/
 typedef struct
 {
 	// PARAMETER
 	STM32HighLowByte HLbyte;
-	STM32446CLOCK_prescaler CLOCK_prescaler;
-	STM32446PLL_parameter PLL_parameter;
 	STM32446Query query;
 	// CORE
 	STM32446SCBobj scb;
