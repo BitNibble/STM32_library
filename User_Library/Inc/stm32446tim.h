@@ -20,11 +20,11 @@ typedef struct{
 	void (*inic)(void);
 }STM32446TIM9;
 
-/*** TIM 9 ***/
 STM32446TIM9 STM32446TIM9enable(void);
 void STM32446Tim9Inic(void);
 
 #endif
+
 /*** EOF ***/
 
 /******

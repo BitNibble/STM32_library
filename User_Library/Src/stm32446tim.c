@@ -9,8 +9,7 @@ Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include <stm32f446xx.h>
-#include <core_cm4.h>
+#include <stm32446mapping.h>
 #include "stm32446tim.h"
 
 /*** TIM 9 ***/

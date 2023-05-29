@@ -22,15 +22,16 @@ Comment:
 	#define STM32F446xx
 #endif
 #include "stm32f4xx.h"
+#include "stm32446common.h"
 
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446rcc.h"
+#include "stm32446gpio.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
 #include "stm32446tim.h"
-#include "stm32446gpio.h"
 
 /*** Global Variable ***/
 // PARAMETER
@@ -857,4 +858,5 @@ STM32446 STM32446enable(void);
 3º Pointer and Variable
 4º Casting
 ******/
+
 

@@ -9,7 +9,7 @@ Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include "stm32f446xx.h"
+#include "stm32446mapping.h"
 #include "stm32446rtc.h"
 
 static uint32_t STM32446TimeTr;

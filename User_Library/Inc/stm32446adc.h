@@ -11,24 +11,7 @@ Comment:
 #ifndef _STM32446ADC_H_
 	#define _STM32446ADC_H_
 
-/*** ADC_Common ***/
-typedef struct
-{
-	ADC_Common_TypeDef* reg;
-}STM32446ADCCOMMONobj;
-
 /*** ADC 1 ***/
-typedef struct
-{
-	void (*inic)(void);
-	void (*vbat)(void);
-	void (*temp)(void);
-	void (*start)(void);
-	double (*read)(void);
-	void (*restart)(void);
-	void (*stop)(void);
-}STM32446ADC1single;
-
 typedef struct{
 	ADC_TypeDef* reg;
 	STM32446ADCCOMMONobj common;

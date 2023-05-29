@@ -10,6 +10,7 @@ Comment:
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
+#include "stm32446usart.h"
 #include <math.h>
 
 static STM32446 stm32446;

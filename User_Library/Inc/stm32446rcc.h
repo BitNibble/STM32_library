@@ -14,26 +14,6 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** TypeDef ***/
-// RCC -> PLL
-typedef struct
-{
-	void (*division)(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
-	void (*enable)(void);
-}STM32446RCCPLL;
-
-// RCC -> PLLI2S
-typedef struct
-{
-	void (*enable)(void);
-}STM32446RCCPLLI2S;
-
-// RCC -> PLLSAI
-typedef struct
-{
-	void (*enable)(void);
-}STM32446RCCPLLSAI;
-
 /*** RCC ***/
 typedef struct{
 	RCC_TypeDef* reg;

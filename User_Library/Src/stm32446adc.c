@@ -9,7 +9,7 @@ Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include "stm32f446xx.h"
+#include "stm32446mapping.h"
 #include "stm32446adc.h"
 
 static double STM32446temperature;

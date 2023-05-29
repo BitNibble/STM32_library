@@ -9,7 +9,7 @@ Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include "stm32f446xx.h"
+#include "stm32446mapping.h"
 #include "stm32446template.h" // move this then to stm32446mapping header file.
 #include <math.h>
 
