@@ -37,5 +37,18 @@ typedef struct {
 EXPLODE EXPLODEenable(void);
 
 #endif
+
 /***EOF***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
+
 

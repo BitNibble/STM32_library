@@ -173,7 +173,19 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin );
 /*** EOF ***/
 /***
  * Three methods in one
- *
  */
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
+
+
 
 

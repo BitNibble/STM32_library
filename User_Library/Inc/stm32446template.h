@@ -28,4 +28,15 @@ void STM32446Template1Inic( uint8_t parameter );
 
 /*** EOF ***/
 
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
+
 

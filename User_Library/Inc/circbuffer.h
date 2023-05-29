@@ -32,7 +32,18 @@ typedef struct circ_buf_template circbuff;
 circbuff CIRCBUFFenable(uint8_t size_buff, uint8_t* buff);
 
 #endif
-/********************************Comment***************************************
-*******************************************************************************/
+
 /***EOF***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
+
 

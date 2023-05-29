@@ -13,17 +13,13 @@ Comment:
 #include <string.h>
 #include "circbuffer.h"
 
-/*** File Constant & Macro ***/
-
-/*** File Variable ***/
-
 /*** File Header ***/
 uint8_t CIRC_get(struct circ_buf_template* circ);
 void CIRC_put(struct circ_buf_template* circ, uint8_t data);
 void CIRC_putstr(struct circ_buf_template* circ, const char* str);
 void CIRC_getstr(struct circ_buf_template* circ, uint8_t* str);
 
-/*** Procedure & Function ***/
+/*** Procedure & Function Definition***/
 circbuff CIRCBUFFenable( uint8_t size_buff, uint8_t* buff )
 {
 	// OBJECT STRUCT

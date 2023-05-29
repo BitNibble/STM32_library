@@ -48,4 +48,15 @@ void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
 
 /*** EOF ***/
 
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
+
 
