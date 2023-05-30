@@ -32,7 +32,7 @@ static uint32_t nen[4];
 /*** File Header ***/
 /*** TOP ***/
 uint32_t STM32446_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
-void STM32446_setbit(uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
 /*** SYSTICK ***/
 void SystickInic(void);
@@ -66,7 +66,6 @@ uint32_t STM32446_getpllr(void);
 // MCU
 void STM32446RegSetBits( unsigned int* reg, int n_bits, ... );
 void STM32446RegResetBits( unsigned int* reg, int n_bits, ... );
-void STM32446RegSetup(volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit);
 void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 // BUTTON
 uint32_t STM32446triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter);
@@ -424,7 +423,6 @@ STM32446 STM32446enable(void){
 	stm32446.func.print = STM32446FUNCprint;
 	stm32446.func.regsetbits = STM32446RegSetBits;
 	stm32446.func.regresetbits = STM32446RegResetBits;
-	stm32446.func.regsetup = STM32446RegSetup;
 	stm32446.func.vecsetup = STM32446VecSetup;
 	stm32446.func.getbit = STM32446_getbit;
 	stm32446.func.setbit = STM32446_setbit;
@@ -807,7 +805,7 @@ uint32_t STM32446_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 	return value;
 }
 
-void STM32446_setbit(uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
@@ -844,26 +842,6 @@ void STM32446RegResetBits( unsigned int* reg, int n_bits, ... )
 	}
 }
 
-void STM32446RegSetup( volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit )
-{
-	unsigned int mask = (unsigned int)(pow(2, size_block) - 1);
-	unsigned int location = bit * size_block;
-	data &= mask;
-	*reg &= ~(mask << location);
-	*reg |= (data << location);
-}
-
-/*** Version 2
-void STM32446RegSetup( volatile uint32_t* reg, uint32_t size_block, uint32_t data, uint32_t bit )
-{
-	uint32_t mask = (uint32_t)(pow(2, size_block) - 1);
-	uint32_t location = bit * size_block;
-	data &= mask;
-	*reg |= (mask << location);
-	*reg &= (data << location) | ~(mask << location);
-}
-***/
-
 void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n )
 {
 	const unsigned int n_bits = sizeof(data) * 8;
@@ -872,14 +850,6 @@ void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, u
 	data &= mask;
 	vec[index] &= ~( mask << ((block_n * size_block) - (index * n_bits)) );
 	vec[index] |= ( data << ((block_n * size_block) - (index * n_bits)) );
-}
-
-void STM32446RegSet( volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit )
-{
-	unsigned int mask = (unsigned int)((1 << size_block) - 1);
-	data &= mask;
-	*reg &= ~(mask << bit);
-	*reg |= (data << bit);
 }
 
 // Convert Binary Coded Decimal (BCD) to Decimal

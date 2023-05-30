@@ -786,10 +786,9 @@ typedef struct
 	char* (*print)( char* str, uint8_t size_str, const char* format, ... );
 	void (*regsetbits)( unsigned int* reg, int n_bits, ... );
 	void (*regresetbits)( unsigned int* reg, int n_bits, ... );
-	void (*regsetup)(volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit);
 	void (*vecsetup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 	uint32_t (*getbit)(uint32_t reg, uint32_t size_block, uint32_t bit);
-	void (*setbit)(uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 }STM32446_function;
 
 
