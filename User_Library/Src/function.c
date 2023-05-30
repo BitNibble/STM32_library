@@ -66,6 +66,8 @@ FUNCHighLowByte FUNCWriteHLByte(uint16_t val);
 FUNCHighLowByte FUNCWriteLHByte(uint16_t val);
 uint16_t FUNCSwapByte(uint16_t num);
 char* FUNCprint(const char *format, ... );
+uint32_t function_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void function_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 /***pc use***
 char* FUNCfltos(FILE* stream);
 char* FUNCftos(FILE* stream);
@@ -571,6 +573,26 @@ char* FUNCprint( const char* format, ... )
 		// FUNCstr[0]='/0';FUNCstr[1]='/0';FUNCstr[2]='/0';FUNCstr[3]='/0';
 	}else
 		return FUNCstr;
+}
+
+uint32_t function_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void function_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /******

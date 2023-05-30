@@ -14,6 +14,9 @@ Comment:
 
 static double STM32446temperature;
 
+uint32_t adc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+
 /*** ADC 1 ***/
 STM32446ADC1 STM32446ADC1enable(void)
 {
@@ -96,6 +99,26 @@ void STM32446Adc1Stop(void)
 
 /*** ADC 3 ***/
 // For future implementation.
+
+uint32_t adc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
+}
 
 /*** EOF ***/
 

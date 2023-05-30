@@ -12,6 +12,9 @@ Comment:
 #include <stm32446mapping.h>
 #include "stm32446tim.h"
 
+uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+
 /*** TIM 9 ***/
 STM32446TIM9 STM32446TIM9enable(void)
 {
@@ -43,6 +46,26 @@ void STM32446Tim9Inic(void)
 
 /*** TIM 10 ***/
 // Future Implementation
+
+uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
+}
 
 /*** File Interrupt ***/
 // void TIM1_BRK_TIM9_IRQHandler(void){ // receive interrupt flags }

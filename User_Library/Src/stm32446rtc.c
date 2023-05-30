@@ -16,6 +16,8 @@ static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
 
 /*** RTC ***/
+uint32_t rtc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void STM32446RtcSetTr(void);
 void STM32446RtcSetDr(void);
 uint8_t STM32446RtcAccess(uint8_t clock);
@@ -373,6 +375,26 @@ void rtc_lselect(uint8_t lclock)
 			RCC->BDCR |= (1 << 8); // LSE oscillator clock used as the RTC clock
 		break;
 	}
+}
+
+uint32_t rtc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /*** EOF ***/

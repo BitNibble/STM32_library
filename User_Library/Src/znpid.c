@@ -29,6 +29,8 @@ double ZNPID_derivative(znpidparameter* par, double PV, double timelapse);
 double ZNPID_delta(double present_value, double past_value);
 double ZNPID_sum(double value_1, double value_2);
 double ZNPID_product(double value_1, double value_2);
+uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
 /***Procedure & Function***/
 ZNPID ZNPIDenable(void)
@@ -119,6 +121,26 @@ double ZNPID_sum(double value_1, double value_2)
 double ZNPID_product(double value_1, double value_2)
 {
 	return (value_1 * value_2);
+}
+
+uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /***File Interrupt***/

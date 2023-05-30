@@ -39,6 +39,8 @@ void LCD0_reboot(void);
 void LCD0_strobe(void);
 void lcd_setpin( GPIO_TypeDef* reg, int pin );
 void lcd_resetpin( GPIO_TypeDef* reg, int pin );
+uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void lcd_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
 /*** Procedure & Function ***/
 LCD0 LCD0enable(GPIO_TypeDef* reg)
@@ -304,6 +306,26 @@ void lcd_setpin( GPIO_TypeDef* reg, int pin )
 void lcd_resetpin( GPIO_TypeDef* reg, int pin )
 {
 	reg->BSRR = (unsigned int)((1 << pin) << 16);
+}
+
+uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void lcd_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /*** File Interrupt ***/

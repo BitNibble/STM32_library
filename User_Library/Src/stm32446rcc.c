@@ -14,7 +14,10 @@ Comment:
 
 STM32446 stm32446;
 
-/*** FUNCTION DEFINITION ***/
+uint32_t rcc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void rcc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+
+/*** RCC ***/
 STM32446RCC STM32446RCCenable(void)
 {
 	stm32446 = STM32446enable();
@@ -169,6 +172,26 @@ void STM32446RccPLLSAIEnable(void)
 		for( RCC->CR |= (1 << 28) ; !(RCC->CR & (1 << 29)) ; ); // PLLSAION: PLLSAI enable
 	//else
 		//RCC->CR &= (unsigned int) ~(1 << 28);
+}
+
+uint32_t rcc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void rcc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /*** EOF ***/

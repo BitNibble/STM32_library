@@ -14,6 +14,9 @@ Comment:
 #include "stm32446gpio.h"
 #include "math.h"
 
+uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+
 /*** GPIOA ***/
 // GPIO -> GPIOA
 STM32446GPIOA STM32446GPIOAenable(void)
@@ -564,6 +567,26 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 		GPIOH->AFR[index] &= ~( mask << ((pin * blocksize) - (index * n_bits)) );
 		GPIOH->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
 	}
+}
+
+uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+	return value;
+}
+
+void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /**** EOF ****/

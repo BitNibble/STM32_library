@@ -15,8 +15,8 @@ Comment:
 
 static STM32446 stm32446;
 
-/*** USART 1 ***/
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 uint32_t usart_getclocksource(void);
 uint32_t usart_getsysclk(void);
@@ -470,8 +470,16 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 	mask = (mask << bit);
 	tmp = mask & reg;
 	value = (tmp >> bit);
-
 	return value;
+}
+
+void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = data & mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
 }
 
 /*** EOF ***/
