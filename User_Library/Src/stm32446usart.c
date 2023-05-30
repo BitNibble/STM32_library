@@ -15,10 +15,23 @@ Comment:
 
 static STM32446 stm32446;
 
-uint32_t usart_getsysclk(void);
-
 /*** USART 1 ***/
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+uint32_t usart_getclocksource(void);
+uint32_t usart_getsysclk(void);
+uint32_t usart_gethpre(void);
+uint32_t usart_gethppre1(void);
+uint32_t usart_gethppre2(void);
+uint32_t usart_getrtcpre(void);
+uint32_t usart_gethmco1pre(void);
+uint32_t usart_gethmco2pre(void);
+uint32_t usart_getpllm(void);
+uint32_t usart_getplln(void);
+uint32_t usart_getpllp(void);
+uint32_t usart_getpllq(void);
+uint32_t usart_getpllr(void);
+uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+
 
 // USART1
 STM32446USART1 STM32446USART1enable(void)
@@ -134,7 +147,7 @@ void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART1->CR2 |= (1 << 13);
 
-	value = (double) usart_getsysclk() / ( stm32446.query.CLOCK_prescaler.AHB * sampling * baudrate );
+	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
 
 	USART1->BRR = 0; // clean slate, reset.
@@ -163,6 +176,14 @@ void STM32446Usart1Stop(void){
 // Future Implementation
 
 
+uint32_t usart_getclocksource(void)
+{
+	uint32_t reg = RCC->CR;
+	uint32_t source;
+	if(reg & (1 << 1)){source = HSI_RC;}else if(reg & (1 << 17)){source = HSE_OSC;}
+
+	return source;
+}
 uint32_t usart_getsysclk(void)
 {
 	uint32_t reg = RCC->CFGR; uint32_t size_block = 2; uint32_t bit = 2;
@@ -174,20 +195,278 @@ uint32_t usart_getsysclk(void)
 	value = (tmp >> bit);
 
 	switch(value) // SWS[2]: System clock switch status
-		{
-			case 1: // 01: HSE oscillator used as the system clock
-				value = HSE_OSC;
-			break;
-			case 2: // 10: PLL used as the system clock
-				value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.P );
-			break;
-			case 3: // 11: PLL_R used as the system clock
-				value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.R );
-			break;
-			default: // 00: HSI oscillator used as the system clock
-				value = HSI_RC;
-			break;
+	{
+		case 1: // 01: HSE oscillator used as the system clock
+			value = HSE_OSC;
+		break;
+		case 2: // 10: PLL used as the system clock
+			value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.P );
+		break;
+		case 3: // 11: PLL_R used as the system clock
+			value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.R );
+		break;
+		default: // 00: HSI oscillator used as the system clock
+			value = HSI_RC;
+		break;
+	}
+	return value;
+}
+
+uint32_t usart_gethpre(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 4; uint32_t bit = 4;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value)
+	{
+		case 0b1000:
+			value = 2;
+		break;
+		case 0b1001:
+			value = 4;
+		break;
+		case 0b1010:
+			value = 8;
+		break;
+		case 0b1011:
+			value = 16;
+		break;
+		case 0b1100:
+			value = 64;
+		break;
+		case 0b1101:
+			value = 128;
+		break;
+		case 0b1110:
+			value = 256;
+		break;
+		case 0b1111:
+			value = 512;
+		break;
+		default:
+			value = 1;
+		break;
+	}
+	return value;
+}
+
+uint32_t usart_gethppre1(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 10;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value)
+	{
+		case 0b100:
+			value = 2;
+		break;
+		case 0b101:
+			value = 4;
+		break;
+		case 0b110:
+			value = 8;
+		break;
+		case 0b111:
+			value = 16;
+		default:
+			value = 1;
+		break;
+	}
+	return value;
+}
+
+uint32_t usart_gethppre2(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 13;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value)
+	{
+		case 0b100:
+			value = 2;
+		break;
+		case 0b101:
+			value = 4;
+		break;
+		case 0b110:
+			value = 8;
+		break;
+		case 0b111:
+			value = 16;
+		default:
+			value = 1;
+		break;
+	}
+	return value;
+}
+
+uint32_t usart_getrtcpre(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 5; uint32_t bit = 16;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	return value;
+}
+
+uint32_t usart_gethmco1pre(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 24;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value)
+	{
+		case 0b100:
+			value = 2;
+		break;
+		case 0b101:
+			value = 3;
+		break;
+		case 0b110:
+			value = 4;
+		break;
+		case 0b111:
+			value = 5;
+		default:
+			value = 1;
+		break;
+	}
+	return value;
+}
+
+uint32_t usart_gethmco2pre(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 27;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value)
+	{
+		case 0b100:
+			value = 2;
+		break;
+		case 0b101:
+			value = 3;
+		break;
+		case 0b110:
+			value = 4;
+		break;
+		case 0b111:
+			value = 5;
+		default:
+			value = 1;
+		break;
 		}
+	return value;
+}
+
+uint32_t usart_getpllm(void)
+{
+	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 6; uint32_t bit = 0;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	return value;
+}
+
+uint32_t usart_getplln(void)
+{
+	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 9; uint32_t bit = 6;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	return value;
+}
+
+uint32_t usart_getpllp(void)
+{
+	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 2; uint32_t bit = 16;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value)
+	{
+		case 0b00:
+			value = 2;
+		break;
+		case 0b01:
+			value = 4;
+		break;
+		case 0b10:
+			value = 6;
+		break;
+		case 0b11:
+			value = 8;
+		break;
+		default:
+		break;
+	}
+	return value;
+}
+
+uint32_t usart_getpllq(void)
+{
+	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 4; uint32_t bit = 24;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	return value;
+}
+
+uint32_t usart_getpllr(void)
+{
+	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 3; uint32_t bit = 28;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
 	return value;
 }
 
@@ -212,7 +491,6 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 				value = 3;
 			break;
 			default:
-				value = 0;
 			break;
 		}
 	return value;
