@@ -16,7 +16,6 @@ static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
 
 /*** RTC ***/
-void STM32446RtcEnable(void);
 void STM32446RtcSetTr(void);
 void STM32446RtcSetDr(void);
 uint8_t STM32446RtcAccess(uint8_t clock);
@@ -43,15 +42,9 @@ STM32446RTC STM32446RTCenable(void)
 	rtc.tr2vec = STM32446Rtctr2vec;
 	rtc.RegWrite = STM32446RtcRegWrite;
 
-	STM32446RtcEnable();
+	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 
 	return rtc;
-}
-
-// RTC
-void STM32446RtcEnable(void)
-{
-	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 }
 
 uint8_t STM32446RtcInic(uint8_t clock)

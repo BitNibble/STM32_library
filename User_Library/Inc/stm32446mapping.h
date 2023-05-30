@@ -54,28 +54,30 @@ typedef struct
 
 typedef struct
 {
-	uint16_t AHB;
-	uint8_t APB1;
-	uint8_t APB2;
+	uint32_t (*AHB)(void);
+	uint32_t (*APB1)(void);
+	uint32_t (*APB2)(void);
+	uint32_t (*RTCclk)(void);
+	uint32_t (*MCO1)(void);
+	uint32_t (*MCO2)(void);
 }STM32446CLOCK_prescaler;
 
 typedef struct
 {
-	uint32_t Source;
-	uint8_t M;
-	uint16_t N;
-	uint8_t P;
-	uint8_t Q;
-	uint8_t R;
+	uint32_t (*M)(void);
+	uint32_t (*N)(void);
+	uint32_t (*P)(void);
+	uint32_t (*Q)(void);
+	uint32_t (*R)(void);
 }STM32446PLL_parameter;
 
 typedef struct
 {
-	uint32_t dummy;
-	uint32_t sysclk;
 	STM32446CLOCK_prescaler CLOCK_prescaler;
 	STM32446PLL_parameter PLL_parameter;
+	uint32_t (*ClockSource)(void);
 	uint32_t (*SystemClock)(void);
+	uint32_t (*PllSource)(void);
 }STM32446Query;
 
 /************ STM32F446RE ************/
@@ -424,7 +426,6 @@ typedef struct
 		void (*lenable)(unsigned int lclock);
 		void (*lselect)(uint8_t lclock);
 		void (*prescaler)(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-		uint32_t (*systemclock)(void);
 		STM32446RCCPLL pll;
 		STM32446RCCPLLI2S plli2s;
 		STM32446RCCPLLSAI pllsai;
@@ -787,6 +788,8 @@ typedef struct
 	void (*regresetbits)( unsigned int* reg, int n_bits, ... );
 	void (*regsetup)(volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit);
 	void (*vecsetup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
+	uint32_t (*getbit)(uint32_t reg, uint32_t size_block, uint32_t bit);
+	void (*setbit)(uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 }STM32446_function;
 
 

@@ -13,9 +13,6 @@ Comment:
 #include "stm32446tim.h"
 
 /*** TIM 9 ***/
-void STM32446Tim9Enable(void);
-
-// TIM9
 STM32446TIM9 STM32446TIM9enable(void)
 {
 	STM32446TIM9 tim9;
@@ -23,15 +20,9 @@ STM32446TIM9 STM32446TIM9enable(void)
 	tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 	tim9.inic = STM32446Tim9Inic;
 
-	STM32446Tim9Enable();
+	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
 
 	return tim9;
-}
-
-// TIM9
-void STM32446Tim9Enable(void)
-{
-	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
 }
 
 void STM32446Tim9Inic(void)

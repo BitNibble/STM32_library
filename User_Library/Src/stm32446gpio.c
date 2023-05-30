@@ -14,15 +14,6 @@ Comment:
 #include "stm32446gpio.h"
 #include "math.h"
 
-void STM32446GpioAenable( void );
-void STM32446GpioBenable( void );
-void STM32446GpioCenable( void );
-void STM32446GpioDenable( void );
-void STM32446GpioEenable( void );
-void STM32446GpioFenable( void );
-void STM32446GpioGenable( void );
-void STM32446GpioHenable( void );
-
 /*** GPIOA ***/
 // GPIO -> GPIOA
 STM32446GPIOA STM32446GPIOAenable(void)
@@ -37,14 +28,9 @@ STM32446GPIOA STM32446GPIOAenable(void)
 	gpioa.set = STM32446GpioAset;
 	gpioa.afr = STM32446GpioAafr;
 
-	STM32446GpioAenable( );
+	RCC->AHB1ENR |= (1 << 0);
 
 	return gpioa;
-}
-
-void STM32446GpioAenable( void )
-{
-	RCC->AHB1ENR |= (1 << 0);
 }
 
 void STM32446GpioAmoder( unsigned int data, unsigned int pin )
@@ -111,14 +97,9 @@ STM32446GPIOB STM32446GPIOBenable(void)
 	gpiob.set = STM32446GpioBset;
 	gpiob.afr = STM32446GpioBafr;
 
-	STM32446GpioBenable( );
+	RCC->AHB1ENR |= (1 << 1);
 
 	return gpiob;
-}
-
-void STM32446GpioBenable( void )
-{
-	RCC->AHB1ENR |= (1 << 1);
 }
 
 void STM32446GpioBmoder( unsigned int data, unsigned int pin )
@@ -185,14 +166,9 @@ STM32446GPIOC STM32446GPIOCenable(void)
 	gpioc.set = STM32446GpioCset;
 	gpioc.afr = STM32446GpioCafr;
 
-	STM32446GpioCenable( );
+	RCC->AHB1ENR |= (1 << 2);
 
 	return gpioc;
-}
-
-void STM32446GpioCenable( void )
-{
-	RCC->AHB1ENR |= (1 << 2);
 }
 
 void STM32446GpioCmoder( unsigned int data, unsigned int pin )
@@ -259,14 +235,9 @@ STM32446GPIOD STM32446GPIODenable(void)
 	gpiod.set = STM32446GpioDset;
 	gpiod.afr = STM32446GpioDafr;
 
-	STM32446GpioDenable( );
+	RCC->AHB1ENR |= (1 << 3);
 
 	return gpiod;
-}
-
-void STM32446GpioDenable( void )
-{
-	RCC->AHB1ENR |= (1 << 3);
 }
 
 void STM32446GpioDmoder( unsigned int data, unsigned int pin )
@@ -333,14 +304,9 @@ STM32446GPIOE STM32446GPIOEenable(void)
 	gpioe.set = STM32446GpioEset;
 	gpioe.afr = STM32446GpioEafr;
 
-	STM32446GpioEenable( );
+	RCC->AHB1ENR |= (1 << 4);
 
 	return gpioe;
-}
-
-void STM32446GpioEenable( void )
-{
-	RCC->AHB1ENR |= (1 << 4);
 }
 
 void STM32446GpioEmoder( unsigned int data, unsigned int pin )
@@ -407,14 +373,9 @@ STM32446GPIOF STM32446GPIOFenable(void)
 	gpiof.set = STM32446GpioFset;
 	gpiof.afr = STM32446GpioFafr;
 
-	STM32446GpioFenable( );
+	RCC->AHB1ENR |= (1 << 5);
 
 	return gpiof;
-}
-
-void STM32446GpioFenable( void )
-{
-	RCC->AHB1ENR |= (1 << 5);
 }
 
 void STM32446GpioFmoder( unsigned int data, unsigned int pin )
@@ -481,14 +442,9 @@ STM32446GPIOG STM32446GPIOGenable(void)
 	gpiog.set = STM32446GpioGset;
 	gpiog.afr = STM32446GpioGafr;
 
-	STM32446GpioGenable( );
+	RCC->AHB1ENR |= (1 << 6);
 
 	return gpiog;
-}
-
-void STM32446GpioGenable( void )
-{
-	RCC->AHB1ENR |= (1 << 6);
 }
 
 void STM32446GpioGmoder( unsigned int data, unsigned int pin )
@@ -555,14 +511,9 @@ STM32446GPIOH STM32446GPIOHenable(void)
 	gpioh.set = STM32446GpioHset;
 	gpioh.afr = STM32446GpioHafr;
 
-	STM32446GpioHenable( );
+	RCC->AHB1ENR |= (1 << 7);
 
 	return gpioh;
-}
-
-void STM32446GpioHenable( void )
-{
-	RCC->AHB1ENR |= (1 << 7);
 }
 
 void STM32446GpioHmoder( unsigned int data, unsigned int pin )

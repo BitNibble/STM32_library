@@ -15,8 +15,6 @@ Comment:
 static double STM32446temperature;
 
 /*** ADC 1 ***/
-void STM32446Adc1Enable(void);
-
 STM32446ADC1 STM32446ADC1enable(void)
 {
 	STM32446ADC1 adc1;
@@ -33,14 +31,9 @@ STM32446ADC1 STM32446ADC1enable(void)
 	adc1.single.restart = STM32446Adc1Restart;
 	adc1.single.stop = STM32446Adc1Stop;
 
-	STM32446Adc1Enable();
+	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 
 	return adc1;
-}
-
-void STM32446Adc1Enable(void)
-{
-	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 }
 
 void STM32446Adc1Inic(void)

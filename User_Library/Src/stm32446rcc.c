@@ -66,9 +66,6 @@ uint8_t STM32446RccInic(void)
 	STM32446RccLEnable(2);
 	// Low speed oscillator select
 	STM32446RccLSelect(2);
-	// Update Par
-	SystemClock();
-
 	return clkused;
 }
 

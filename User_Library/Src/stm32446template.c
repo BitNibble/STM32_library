@@ -14,24 +14,13 @@ Comment:
 #include <math.h>
 
 /*** File Header ***/
-void STM32446Template1Enable(void);
-
-// TEMPLATE1
 STM32446TEMPLATE1 STM32446TEMPLATE1enable(void)
 {
 	STM32446TEMPLATE1 template1;
 
 	template1.inic = STM32446Template1Inic;
 
-	STM32446Template1Enable();
-
 	return template1;
-}
-
-// TEMPLATE1
-void STM32446Template1Enable(void)
-{
-
 }
 
 void STM32446Template1Inic( uint8_t parameter )

@@ -24,7 +24,6 @@ typedef struct{
 	void (*lenable)(unsigned int lclock);
 	void (*lselect)(uint8_t lclock);
 	void (*prescaler)(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-	uint32_t (*systemclock)(void);
 	STM32446RCCPLL pll;
 	STM32446RCCPLLI2S plli2s;
 	STM32446RCCPLLSAI pllsai;
@@ -44,8 +43,6 @@ uint8_t STM32446RccHSelect(uint8_t hclock);
 void STM32446RccLEnable(unsigned int lclock);
 void STM32446RccLSelect(uint8_t lclock);
 void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-uint32_t SystemClock(void);
-
 #endif
 
 /*** EOF ***/

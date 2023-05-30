@@ -16,6 +16,7 @@ Comment:
 static STM32446 stm32446;
 
 /*** USART 1 ***/
+uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 uint32_t usart_getclocksource(void);
 uint32_t usart_getsysclk(void);
@@ -30,8 +31,6 @@ uint32_t usart_getplln(void);
 uint32_t usart_getpllp(void);
 uint32_t usart_getpllq(void);
 uint32_t usart_getpllr(void);
-uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
-
 
 // USART1
 STM32446USART1 STM32446USART1enable(void)
@@ -47,16 +46,9 @@ STM32446USART1 STM32446USART1enable(void)
 	usart1.receive = STM32446Usart1Receive;
 	usart1.stop = STM32446Usart1Stop;
 
-	stm32446.query.dummy = 55;
-	STM32446Usart1Enable();
+	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
 
 	return usart1;
-}
-
-// USART1
-void STM32446Usart1Enable(void)
-{
-	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
 }
 
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
@@ -175,7 +167,6 @@ void STM32446Usart1Stop(void){
 /*** USART 3 ***/
 // Future Implementation
 
-
 uint32_t usart_getclocksource(void)
 {
 	uint32_t reg = RCC->CR;
@@ -184,6 +175,7 @@ uint32_t usart_getclocksource(void)
 
 	return source;
 }
+
 uint32_t usart_getsysclk(void)
 {
 	uint32_t reg = RCC->CFGR; uint32_t size_block = 2; uint32_t bit = 2;
@@ -200,10 +192,10 @@ uint32_t usart_getsysclk(void)
 			value = HSE_OSC;
 		break;
 		case 2: // 10: PLL used as the system clock
-			value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.P );
+			value = ( usart_getclocksource() / usart_getpllm() ) * ( usart_getplln() / usart_getpllp() );
 		break;
 		case 3: // 11: PLL_R used as the system clock
-			value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.R );
+			value = ( usart_getclocksource() / usart_getpllm() ) * ( usart_getplln() / usart_getpllr() );
 		break;
 		default: // 00: HSI oscillator used as the system clock
 			value = HSI_RC;
@@ -479,20 +471,6 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 	tmp = mask & reg;
 	value = (tmp >> bit);
 
-	switch(value) // Logic
-		{
-			case 1:
-				value = 1;
-			break;
-			case 2:
-				value = 2;
-			break;
-			case 3:
-				value = 3;
-			break;
-			default:
-			break;
-		}
 	return value;
 }
 

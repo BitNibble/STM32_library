@@ -24,7 +24,6 @@ typedef struct{
 }STM32446USART1;
 
 STM32446USART1 STM32446USART1enable(void);
-void STM32446Usart1Enable(void);
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 void STM32446Usart1Transmit(void);
 void STM32446Usart1Receive(void);
