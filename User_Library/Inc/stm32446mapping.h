@@ -24,6 +24,10 @@ Comment:
 #include "stm32f4xx.h"
 #include "stm32446common.h"
 
+/*** Define & Macros***/
+#define HSI_RC 16000000UL
+#define HSE_OSC 25000000UL
+
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446rcc.h"
@@ -67,6 +71,7 @@ typedef struct
 
 typedef struct
 {
+	uint32_t dummy;
 	uint32_t sysclk;
 	STM32446CLOCK_prescaler CLOCK_prescaler;
 	STM32446PLL_parameter PLL_parameter;
@@ -857,6 +862,8 @@ STM32446 STM32446enable(void);
 	- Precedence Scope
 3º Pointer and Variable
 4º Casting
+
+Make more query functions into the system especially about the clock and pll, so it can be reached threw out all the code.
 ******/
 
 

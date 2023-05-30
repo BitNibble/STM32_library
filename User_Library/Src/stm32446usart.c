@@ -15,6 +15,8 @@ Comment:
 
 static STM32446 stm32446;
 
+uint32_t usart_getsysclk(void);
+
 /*** USART 1 ***/
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 
@@ -32,6 +34,7 @@ STM32446USART1 STM32446USART1enable(void)
 	usart1.receive = STM32446Usart1Receive;
 	usart1.stop = STM32446Usart1Stop;
 
+	stm32446.query.dummy = 55;
 	STM32446Usart1Enable();
 
 	return usart1;
@@ -131,7 +134,7 @@ void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART1->CR2 |= (1 << 13);
 
-	value = (double) stm32446.query.sysclk / ( stm32446.query.CLOCK_prescaler.AHB * sampling * baudrate );
+	value = (double) usart_getsysclk() / ( stm32446.query.CLOCK_prescaler.AHB * sampling * baudrate );
 	fracpart = modf(value, &intpart);
 
 	USART1->BRR = 0; // clean slate, reset.
@@ -158,6 +161,62 @@ void STM32446Usart1Stop(void){
 
 /*** USART 3 ***/
 // Future Implementation
+
+
+uint32_t usart_getsysclk(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 2; uint32_t bit = 2;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value) // SWS[2]: System clock switch status
+		{
+			case 1: // 01: HSE oscillator used as the system clock
+				value = HSE_OSC;
+			break;
+			case 2: // 10: PLL used as the system clock
+				value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.P );
+			break;
+			case 3: // 11: PLL_R used as the system clock
+				value = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.R );
+			break;
+			default: // 00: HSI oscillator used as the system clock
+				value = HSI_RC;
+			break;
+		}
+	return value;
+}
+
+uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value) // Logic
+		{
+			case 1:
+				value = 1;
+			break;
+			case 2:
+				value = 2;
+			break;
+			case 3:
+				value = 3;
+			break;
+			default:
+				value = 0;
+			break;
+		}
+	return value;
+}
 
 /*** EOF ***/
 

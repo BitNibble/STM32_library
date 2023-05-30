@@ -554,11 +554,11 @@ uint32_t SystemClock(void) // Query
 	{
 		case 0: // 00: HSI oscillator used as the system clock
 			stm32446.query.PLL_parameter.Source = 16000000;
-			sysclk= 16000000;
+			sysclk= HSI_RC;
 		break;
 		case 1: // 01: HSE oscillator used as the system clock
 			stm32446.query.PLL_parameter.Source = 25000000;
-			sysclk = 25000000;
+			sysclk = HSE_OSC;
 		break;
 		case 2: // 10: PLL used as the system clock
 			sysclk = ( stm32446.query.PLL_parameter.Source / stm32446.query.PLL_parameter.M ) * ( stm32446.query.PLL_parameter.N / stm32446.query.PLL_parameter.P );
@@ -656,6 +656,14 @@ void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, u
 	data &= mask;
 	vec[index] &= ~( mask << ((block_n * size_block) - (index * n_bits)) );
 	vec[index] |= ( data << ((block_n * size_block) - (index * n_bits)) );
+}
+
+void STM32446RegSet( volatile uint32_t* reg, unsigned int size_block, unsigned int data, unsigned int bit )
+{
+	unsigned int mask = (unsigned int)((1 << size_block) - 1);
+	data &= mask;
+	*reg &= ~(mask << bit);
+	*reg |= (data << bit);
 }
 
 // Convert Binary Coded Decimal (BCD) to Decimal
