@@ -3,10 +3,11 @@
 Author: Sergio Santos 
    <sergio.salazar.santos@gmail.com>
 License: GNU General Public License
-Hardware: all
+Hardware: STM32
 Date: 12112022
 Comment:
 	STM32F446RE
+	- Make sure the delay are working in the inic function.
 ************************************************************************/
 #ifndef _LCD_H_
 	#define _LCD_H_
@@ -27,7 +28,7 @@ Comment:
 #define DB6 6
 #define DB7 7
 
-/*** Global Variable ***/
+/*** LCD ***/
 typedef struct
 {
 	void (*write)(char c, unsigned short D_I);
@@ -43,7 +44,6 @@ typedef struct
 	void (*reboot)(void);
 }LCD0;
 
-/*** Global Header ***/
 LCD0 LCD0enable(GPIO_TypeDef* reg);
 
 #endif

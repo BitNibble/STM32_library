@@ -19,7 +19,7 @@ void CIRC_put(struct circ_buf_template* circ, uint8_t data);
 void CIRC_putstr(struct circ_buf_template* circ, const char* str);
 void CIRC_getstr(struct circ_buf_template* circ, uint8_t* str);
 
-/*** Procedure & Function Definition***/
+/*** File Procedure & Function Definition ***/
 circbuff CIRCBUFFenable( uint8_t size_buff, uint8_t* buff )
 {
 	// OBJECT STRUCT
@@ -76,8 +76,6 @@ void CIRC_getstr(struct circ_buf_template* circ, uint8_t* str){
 	uint8_t i;
 	for(i = 0; circ->tail != circ->head  ; str[i++] = CIRC_get(circ), str[i] = '\0');
 }
-
-/*** File Interrupt ***/
 
 /***EOF***/
 

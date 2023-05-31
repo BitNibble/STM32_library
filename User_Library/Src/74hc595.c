@@ -11,17 +11,13 @@ Comment:
 /*** File Library ***/
 #include "74hc595.h"
 
-/*** File Constant & Macro ***/
-
-/***File Variable***/
-
 /*** File Header ***/
 void HC595_shift_bit(hc595parameter* par, uint8_t bool);
 void HC595_shift_ibyte(hc595parameter* par, uint8_t byte);
 void HC595_shift_byte(hc595parameter* par, uint8_t byte);
 void HC595_shift_out(hc595parameter* par);
 
-/*** Procedure & Function ***/
+/*** File Procedure & Function ***/
 HC595 HC595enable(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin)
 {
 	// LOCAL VARIABLES
@@ -82,7 +78,6 @@ void HC595_shift_out(hc595parameter* par)
 	*par->hc595_PORT &= ~(1 << par->HC595_outpin); // Output disable
 }
 
-/***Interrupt***/
-
 /***EOF***/
+
 

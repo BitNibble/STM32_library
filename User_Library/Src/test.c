@@ -12,10 +12,7 @@ Comment:
 /*** File Library ***/
 #include "test.h"
 
-/***File Constant & Macro ***/
-
-/*** File Variable ***/
-
+/*** File Procedure & Function ***/
 TEST TESTenable(void)
 {
 	TEST test;
@@ -23,11 +20,6 @@ TEST TESTenable(void)
 	return test;
 }
 
-/*** File Header ***/
-
-/*** File Procedure & Function ***/
-
-/*** File Interrupt ***/
-
 /***EOF***/
+
 

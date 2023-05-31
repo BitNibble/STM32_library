@@ -11,10 +11,10 @@ Comment:
 #ifndef _CIRCBUFFER_H_
 	#define _CIRCBUFFER_H_
 
-/***Library***/
+/*** File Library ***/
 #include <inttypes.h>
-/***Constant & Macro***/
-/***Global Variable***/
+
+/*** CIRCBUFFER ***/
 struct circ_buf_template
 {
 	uint8_t* tail;
@@ -28,7 +28,7 @@ struct circ_buf_template
 	void (*getstr)(struct circ_buf_template* circ, uint8_t* str);
 } ;
 typedef struct circ_buf_template circbuff;
-/***Header***/
+
 circbuff CIRCBUFFenable(uint8_t size_buff, uint8_t* buff);
 
 #endif

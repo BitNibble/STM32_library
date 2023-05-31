@@ -12,10 +12,6 @@ Comment:
 /*** File Library ***/
 #include"explode.h"
 
-/*** File Constant & Macro ***/
-
-/*** File Variable ***/
-
 /*** File Header ***/
 void EXPLODEupdate(explodeparameter* par, uint32_t x);
 uint32_t EXPLODEhh(explodeparameter* par);
@@ -72,7 +68,6 @@ uint32_t EXPLODEhl(explodeparameter* par)
 	return i;
 }
 
-/*** File Interrupt ***/
-
 /***EOF***/
+
 

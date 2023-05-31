@@ -11,7 +11,7 @@ Comment:
 #ifndef _STM32446RTC_H_
 	#define _STM32446RTC_H_
 
-/*** Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
 /*** RTC ***/
@@ -30,7 +30,6 @@ typedef struct{
 	void (*RegWrite)(volatile uint32_t* reg, uint32_t data);
 }STM32446RTC;
 
-/*** RTC ***/
 STM32446RTC STM32446RTCenable(void);
 uint8_t STM32446RtcInic(uint8_t clock);
 void STM32446RtcDay(uint8_t day);

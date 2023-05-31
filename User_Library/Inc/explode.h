@@ -14,9 +14,9 @@ Comment:
 /*** Global Library ***/
 #include <inttypes.h>
 
-/*** GloablConstant & Macro ***/
+/*** Gloabl Constant & Macro ***/
 
-/*** Global Variable ***/
+/*** Global TypeDef ***/
 typedef struct {
 	uint32_t XI;
 	uint32_t XF;
@@ -26,6 +26,7 @@ typedef struct {
 	uint32_t HL;
 }explodeparameter;
 
+/*** EXPLODE ***/
 typedef struct {
 	/***Variable***/
 	explodeparameter par;
@@ -33,7 +34,6 @@ typedef struct {
 	void (*update)(explodeparameter* par, uint32_t x);
 }EXPLODE;
 
-/*** Global Header ***/
 EXPLODE EXPLODEenable(void);
 
 #endif

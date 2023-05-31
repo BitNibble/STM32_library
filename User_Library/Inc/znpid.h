@@ -11,12 +11,10 @@ Comment:
 #ifndef _ZNPID_H_
 	#define _ZNPID_H_
 
-/*** Global Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
-/*** Global Constant & Macro ***/
-
-/*** Global Variable ***/
+/*** File TypeDef ***/
 typedef struct {
 	double kc; // constant p
 	double ki; // constant i
@@ -31,6 +29,7 @@ typedef struct {
 	double OP; // output signal
 }znpidparameter;
 
+/*** ZNPID ***/
 struct znpid{
 	znpidparameter par;
 	/******/
@@ -42,7 +41,6 @@ struct znpid{
 };
 typedef struct znpid ZNPID;
 
-/*** Global Header ***/
 ZNPID ZNPIDenable(void);
 
 #endif

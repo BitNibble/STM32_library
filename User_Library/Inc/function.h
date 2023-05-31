@@ -19,10 +19,10 @@ Comment:
 #include <string.h>
 #include <errno.h>
 ***/
+
 #include <inttypes.h>
 
-/*** Gloabl Constant & Macro ***/
-/*** Global Variable ***/
+/*** Global TypeDef ***/
 // Low Byte High Byte
 typedef struct
 {
@@ -30,6 +30,7 @@ typedef struct
 	uint8_t L;
 } FUNCHighLowByte;
 
+/*** FUNCTION ***/
 typedef struct
 {
 	// PROTOTYPES VTABLE
@@ -80,7 +81,6 @@ typedef struct
 	***/
 }FUNC;
 
-/*** Global Header ***/
 FUNC FUNCenable(void);
 
 #endif

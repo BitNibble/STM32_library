@@ -23,8 +23,8 @@ STM32446TIM9 STM32446TIM9enable(void)
 	tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 	tim9.inic = STM32446Tim9Inic;
 
-	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
 
+	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
 	return tim9;
 }
 

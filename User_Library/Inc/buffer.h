@@ -11,19 +11,20 @@ Comment:
 #ifndef _BUFFER_H_
 	#define _BUFFER_H_
 
-/*** Global Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
-/*** Global Constant & Macro ***/
+/*** File Constant & Macro ***/
 #define BUFFvar char
 
-/*** Global Variable ***/
+/*** File TypeDef ***/
 typedef struct {
 	BUFFvar* orig;
 	BUFFvar* head;
 	BUFFvar* end;
 }bufferparameter;
 
+/*** BUFFER ***/
 struct buffer
 {
 	bufferparameter par;
@@ -31,10 +32,8 @@ struct buffer
 	BUFFvar* (*raw)(bufferparameter* par);
 	void (*flush)(bufferparameter* par);
 };
-
 typedef struct buffer BUFF;
 
-/*** Global Header ***/
 BUFF BUFFenable(uint8_t size_buff, BUFFvar* buff);
 
 #endif

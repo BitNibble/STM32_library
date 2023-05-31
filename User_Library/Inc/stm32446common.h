@@ -11,6 +11,50 @@ Comment:
 #ifndef _STM32446COMMON_H_
 	#define _STM32446COMMON_H_
 
+/********** Global TypeDef ***********/
+typedef struct
+{
+	uint8_t L;
+	uint8_t H;
+} STM32HighLowByte;
+
+// Low Word High Word
+//typedef struct
+//{
+//	uint16_t H;
+//	uint16_t L;
+//}STM32446HighLowWord;
+
+typedef struct
+{
+	uint32_t (*AHB)(void);
+	uint32_t (*APB1)(void);
+	uint32_t (*APB2)(void);
+	uint32_t (*RTCclk)(void);
+	uint32_t (*MCO1)(void);
+	uint32_t (*MCO2)(void);
+}STM32446CLOCK_prescaler;
+
+typedef struct
+{
+	uint32_t (*M)(void);
+	uint32_t (*N)(void);
+	uint32_t (*P)(void);
+	uint32_t (*Q)(void);
+	uint32_t (*R)(void);
+}STM32446PLL_parameter;
+
+/************** QUERY TypeDef ****************/
+typedef struct
+{
+	STM32446CLOCK_prescaler CLOCK_prescaler;
+	STM32446PLL_parameter PLL_parameter;
+	uint32_t (*ClockSource)(void);
+	uint32_t (*SystemClock)(void);
+	uint32_t (*PllSource)(void);
+}STM32446Query;
+
+/***** Peripheral COMMON TypeDef *****/
 /*** ADC_Common ***/
 typedef struct
 {

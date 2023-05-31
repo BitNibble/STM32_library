@@ -11,7 +11,7 @@ Comment:
 #ifndef _STM32446RCC_H_
 	#define _STM32446RCC_H_
 
-/*** Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
 /*** RCC ***/
@@ -29,7 +29,6 @@ typedef struct{
 	STM32446RCCPLLSAI pllsai;
 }STM32446RCC;
 
-/*** FUNCTION HEADER ***/
 STM32446RCC STM32446RCCenable(void);
 // PLL
 void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);

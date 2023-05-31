@@ -18,7 +18,6 @@ typedef struct{
 	STM32446ADC1single single;
 }STM32446ADC1;
 
-/*** ADC 1 ***/
 STM32446ADC1 STM32446ADC1enable(void);
 void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);

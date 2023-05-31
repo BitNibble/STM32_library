@@ -40,7 +40,6 @@ STM32446RCC STM32446RCCenable(void)
 	return rcc;
 }
 
-/***/
 uint8_t STM32446RccInic(void)
 {
 	uint8_t clkused; // First turn it on then select it or enable it.

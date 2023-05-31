@@ -11,10 +11,10 @@ Comment:
 #ifndef _74HC595_H_
 	#define _74HC595_H_
 
-/***Library***/
+/*** File Library ***/
 #include <inttypes.h>
-/***Constant & Macro***/
-/***Global Variable***/
+
+/*** File TypeDef ***/
 typedef struct{
 	uint8_t HC595_datapin;
 	uint8_t HC595_clkpin;
@@ -23,6 +23,7 @@ typedef struct{
 	volatile uint32_t *hc595_PORT;
 }hc595parameter;
 
+/*** 74HC595 ***/
 typedef struct
 {
 	hc595parameter par;
@@ -32,7 +33,7 @@ typedef struct
 	void (*byte)(hc595parameter* par, uint8_t byte);
 	void (*out)(hc595parameter* par);
 }HC595;
-/***Header***/
+
 HC595 HC595enable(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin);
 
 #endif

@@ -11,18 +11,15 @@ Comment:
 #ifndef _TEST_H_
 	#define _TEST_H_
 
-/*** Global Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
-/*** Gloabl Constant & Macro ***/
-
-/*** Global Variable ***/
+/*** TEST ***/
 typedef struct
 {
 	uint32_t testa;
 }TEST;
 
-/*** Global Header ***/
 TEST TESTenable(void);
 
 #endif

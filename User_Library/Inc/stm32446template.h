@@ -11,16 +11,14 @@ Comment:
 #ifndef _STM32446TEMPLATE_H_
 	#define _STM32446TEMPLATE_H_
 
-/*** Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
 /*** TEMPLATE1 ***/
 typedef struct{
 	void (*inic)( uint8_t parameter );
-	
 }STM32446TEMPLATE1;
 
-/*** TEMPLATE1 ***/
 STM32446TEMPLATE1 STM32446TEMPLATE1enable(void);
 void STM32446Template1Inic( uint8_t parameter );
 

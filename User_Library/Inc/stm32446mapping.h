@@ -37,49 +37,6 @@ Comment:
 #include "stm32446usart.h"
 #include "stm32446tim.h"
 
-/*** Global Variable ***/
-// PARAMETER
-typedef struct
-{
-	uint8_t L;
-	uint8_t H;
-} STM32HighLowByte;
-
-// Low Word High Word
-//typedef struct
-//{
-//	uint16_t H;
-//	uint16_t L;
-//}STM32446HighLowWord;
-
-typedef struct
-{
-	uint32_t (*AHB)(void);
-	uint32_t (*APB1)(void);
-	uint32_t (*APB2)(void);
-	uint32_t (*RTCclk)(void);
-	uint32_t (*MCO1)(void);
-	uint32_t (*MCO2)(void);
-}STM32446CLOCK_prescaler;
-
-typedef struct
-{
-	uint32_t (*M)(void);
-	uint32_t (*N)(void);
-	uint32_t (*P)(void);
-	uint32_t (*Q)(void);
-	uint32_t (*R)(void);
-}STM32446PLL_parameter;
-
-typedef struct
-{
-	STM32446CLOCK_prescaler CLOCK_prescaler;
-	STM32446PLL_parameter PLL_parameter;
-	uint32_t (*ClockSource)(void);
-	uint32_t (*SystemClock)(void);
-	uint32_t (*PllSource)(void);
-}STM32446Query;
-
 /************ STM32F446RE ************/
 /************ CORE ************/
 // SCB
@@ -251,7 +208,6 @@ typedef struct
 	FMC_Bank5_6_TypeDef* reg;
 }STM32446FMC_Bank5_6obj;
 
-/***/
 // GPIO -> GPIOA
 typedef struct
 {
@@ -758,18 +714,6 @@ typedef struct
 }STM32446USB_OTG_HostChannelobj;
 
 /***  MISCELLANEOUS ***/
-// INIC
-typedef struct
-{
-	void (*template)(void);
-}STM32446_inic;
-
-// ENABLE
-typedef struct
-{
-	void (*template)(void);
-}STM32446_enable;
-
 // FUNC
 typedef struct
 {
@@ -791,8 +735,7 @@ typedef struct
 	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 }STM32446_function;
 
-
-/*** STM32F446RE IMAGE Linker ***/
+/*** STM32F446 ***/
 typedef struct
 {
 	// PARAMETER
@@ -840,15 +783,10 @@ typedef struct
 	STM32446USART4obj usart4;
 	STM32446USART5obj usart5;
 	STM32446USART6obj usart6;
-	// INIC
-	STM32446_inic inic;
-	// ENABLE
-	STM32446_enable enable;
 	//FUNCTION
 	STM32446_function func;
 }STM32446;
 
-/*** Global ***/
 STM32446 STM32446enable(void);
 
 #endif

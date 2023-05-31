@@ -8,17 +8,17 @@ Date: 17022021_start
 Comment:
 
 ************************************************************************/
-/***File Library***/
+/*** File Library ***/
 #include "znpid.h"
 
-/***File Constant & Macro***/
+/*** File Constant & Macro ***/
 #define ZNPID_outMAX 1023
 #define ZNPID_outMIN -1023
 
-/***File Variable***/
+/*** File Variable ***/
 double ZNPID_tmp;
 
-/***File Header***/
+/*** File Header ***/
 void ZNPID_set_kc(znpidparameter* par, double kc);
 void ZNPID_set_ki(znpidparameter* par, double ki);
 void ZNPID_set_kd(znpidparameter* par, double kp);
@@ -32,7 +32,7 @@ double ZNPID_product(double value_1, double value_2);
 uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
-/***Procedure & Function***/
+/*** File Procedure & Function ***/
 ZNPID ZNPIDenable(void)
 {
 	// LOCAL VARIABLES
@@ -58,18 +58,22 @@ ZNPID ZNPIDenable(void)
 	
 	return znpid;
 }
+
 void ZNPID_set_kc(znpidparameter* par, double kc)
 {
 	par->kc = kc;
 }
+
 void ZNPID_set_ki(znpidparameter* par, double ki)
 {
 	par->ki = ki;
 }
+
 void ZNPID_set_kd(znpidparameter* par, double kd)
 {	
 	par->kd = kd;
 }
+
 void ZNPID_set_SP(znpidparameter* par, double setpoint)
 {
 	par->SetPoint = setpoint;
@@ -146,4 +150,5 @@ void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 /***File Interrupt***/
 
 /***EOF***/
+
 

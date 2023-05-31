@@ -3,10 +3,11 @@
 Author: Sergio Santos 
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
-Hardware: all
+Hardware: STM32
 Date: 28052023
 Comment:
 	STM32F446RE
+	- Make sure the delay are working in the inic function.
 ************************************************************************/
 /*** File Library ***/
 #include "lcd.h"

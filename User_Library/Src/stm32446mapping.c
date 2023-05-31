@@ -13,6 +13,7 @@ Comment:
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -44,9 +45,11 @@ void SysTick_Handler(void);
 
 // SYSCFG
 void STM32446SysCfgEnable(void);
+
 // SRAM
 void STM32446SramAccess(void);
-// CLOCK
+
+// QUERY CLOCK
 uint32_t STM32446_getclocksource(void);
 uint32_t STM32446_getsysclk(void);
 uint32_t STM32446_pllsource(void);
@@ -86,8 +89,8 @@ void STM32446Reverse(char s[]);
 int STM32446StringLength (const char string[]);
 uint8_t STM32446FUNCintinvstr(int32_t num, char* res, uint8_t n_digit);
 
-/**** Procedure & Functions Definitions ***/
-/******** STM32F446RE Image Linker ********/
+/**** Procedure & Function Definition ***/
+/******* STM32F446RE Image Linker *******/
 STM32446 STM32446enable(void){
 	/*** DEFAULT ***/
 	mem[0] = 0;
@@ -234,12 +237,7 @@ STM32446 STM32446enable(void){
 		stm32446.rcc.pllsai.enable = STM32446RccPLLSAIEnable;
 		stm32446.rcc.pll.division = STM32446PLLDivision;
 		stm32446.rcc.prescaler = STM32446Prescaler;
-
-
-		//stm32446.rcc.systemclock = SystemClock;
-
-
-		#endif
+	#endif
 
 	// RCC
 	stm32446.rcc.reg = (RCC_TypeDef*) RCC_BASE;
@@ -815,7 +813,6 @@ void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 }
 
 /*** MISCELLANEOUS ***/
-// Regs
 void STM32446RegSetBits( unsigned int* reg, int n_bits, ... )
 {
 	uint8_t i;

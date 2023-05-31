@@ -29,7 +29,6 @@ int StringLength (const char string[]);
 void Reverse(char s[]);
 uint8_t  bintobcd(uint8_t bin);
 uint8_t leap_year_check(uint16_t year);
-
 unsigned int FUNCmayia(unsigned int xi, unsigned int xf, uint8_t nbits);
 void FUNCswap(long *px, long *py);
 void FUNCcopy(char to[], char from[]);
@@ -79,7 +78,7 @@ int FUNCreadint(int nmin, int nmax);
 ***/
 // uint8_t TRANupdate(struct TRAN *tr, uint8_t idata);
 
-/*** Procedure & Function ***/
+/*** File Procedure & Function ***/
 FUNC FUNCenable( void )
 {
 	// Comment out links not being used, in order to release memmory.

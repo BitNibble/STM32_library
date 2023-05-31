@@ -11,7 +11,7 @@ Comment:
 #ifndef _STM32446GPIO_H_
 	#define _STM32446GPIO_H_
 
-/*** Library ***/
+/*** File Library ***/
 #include <inttypes.h>
 
 /*** GPIOA ***/
@@ -102,7 +102,6 @@ typedef struct{
 	void (*set)( unsigned int data );
 }STM32446GPIOH;
 
-/*** Function Header ***/
 STM32446GPIOA STM32446GPIOAenable(void);
 STM32446GPIOB STM32446GPIOBenable(void);
 STM32446GPIOC STM32446GPIOCenable(void);
@@ -171,6 +170,7 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin );
 #endif
 
 /*** EOF ***/
+
 /***
  * Three methods in one
  */
@@ -185,7 +185,5 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin );
 3º Pointer and Variable
 4º Casting
 ******/
-
-
 
 
