@@ -92,6 +92,75 @@ typedef struct
 	void (*enable)(void);
 }STM32446RCCPLLSAI;
 
+/*** TIMER9 Common ***/
+typedef struct{
+	uint8_t (*get_ckd)(void);
+	void (*apre)(uint8_t bool);
+	void (*opm)(uint8_t bool);
+	void (*urs)(uint8_t bool);
+	void (*udis)(uint8_t bool);
+	void (*cen)(uint8_t bool);
+}STM32446TIM9_CR1;
+
+typedef struct{
+	void (*msm)(uint8_t bool);
+	void (*ts)(uint8_t ts);
+	void (*sms)(uint8_t sms);
+}STM32446TIM9_SMCR;
+
+typedef struct{
+	void (*tie)(uint8_t bool);
+	void (*cc2ie)(uint8_t bool);
+	void (*cc1ie)(uint8_t bool);
+	void (*uie)(uint8_t bool);
+}STM32446TIM9_DIER;
+
+typedef struct{
+	uint8_t (*cc2of)(void);
+	void (*clear_cc2of)(void);
+	uint8_t (*cc1of)(void);
+	void (*clear_cc1of)(void);
+	uint8_t (*tif)(void);
+	void (*clear_tif)(void);
+	uint8_t (*cc2if)(void);
+	void (*clear_cc2if)(void);
+	uint8_t (*cc1if)(void);
+	void (*clear_cc1if)(void);
+	uint8_t (*uif)(void);
+	void (*clear_uif)(void);
+}STM32446TIM9_SR;
+
+typedef struct{
+	void (*tg)(void);
+	void (*cc2g)(void);
+	void (*cc1g)(void);
+	void (*ug)(void);
+}STM32446TIM9_EGR;
+
+typedef struct{
+	void (*oc2m)(uint8_t oc2m);
+	void (*ic2f)(uint8_t ic2f);
+	void (*oc2pe)(uint8_t bool);
+	void (*oc2fe)(uint8_t bool);
+	void (*ic2psc)(uint8_t ic2psc);
+	void (*cc2s)(uint8_t cc2s);
+	void (*oc1m)(uint8_t oc1m);
+	void (*ic1f)(uint8_t ic1f);
+	void (*oc1pe)(uint8_t bool);
+	void (*oc1fe)(uint8_t bool);
+	void (*ic1psc)(uint8_t ic1psc);
+	void (*cc1s)(uint8_t cc1s);
+}STM32446TIM9_CCMR1;
+
+typedef struct{
+	void (*cc2np)(uint8_t bool);
+	void (*cc2p)(uint8_t bool);
+	void (*cc2e)(uint8_t bool);
+	void (*cc1np)(uint8_t bool);
+	void (*cc1p)(uint8_t bool);
+	void (*cc1e)(uint8_t bool);
+}STM32446TIM9_CCER;
+
 #endif
 
 /*** EOF ***/

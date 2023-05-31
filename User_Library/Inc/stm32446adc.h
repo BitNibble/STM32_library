@@ -11,6 +11,8 @@ Comment:
 #ifndef _STM32446ADC_H_
 	#define _STM32446ADC_H_
 
+#include "stm32446common.h"
+
 /*** ADC 1 ***/
 typedef struct{
 	ADC_TypeDef* reg;

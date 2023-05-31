@@ -13,6 +13,7 @@ Comment:
 
 /*** File Library ***/
 #include <inttypes.h>
+#include "stm32446common.h"
 
 /*** RCC ***/
 typedef struct{

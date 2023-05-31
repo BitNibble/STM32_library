@@ -564,7 +564,21 @@ typedef struct
 	TIM_TypeDef* reg;
 	#if defined(_STM32446TIM_H_)
 		STM32446TIM9 (*enable)(void);
+		STM32446TIM9_CR1 cr1;
+		STM32446TIM9_SMCR smcr;
+		STM32446TIM9_DIER dier;
+		STM32446TIM9_SR sr;
+		STM32446TIM9_EGR egr;
+		STM32446TIM9_CCMR1 ccmr1;
+		STM32446TIM9_CCER ccer;
+		void (*cnt)(uint16_t value);
+		uint16_t (*get_cnt)(void);
+		void (*arr)(uint16_t value);
+		void (*ccr1)(uint16_t value);
+		void (*ccr2)(uint16_t value);
+		void (*psc)(uint16_t value);
 		void (*inic)(void);
+		void (*nvict1t9)(void);
 	#endif
 }STM32446TIM9obj;
 
