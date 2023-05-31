@@ -91,13 +91,21 @@ STM32446TIM9 STM32446TIM9enable(void)
 	tim9.ccr2 = STM32446Tim9_ccr2;
 	// PSC
 	tim9.psc = STM32446Tim9_psc;
+	// CLOCK
+	tim9.clock = STM32446Tim9Clock;
 	// INIC
 	tim9.inic = STM32446Tim9Inic;
 	// INTERRUPT
 	tim9.nvict1t9 = STM32446Tim9EnableInterrupt;
 
-	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
+	STM32446Tim9Clock();
+
 	return tim9;
+}
+
+void STM32446Tim9Clock(void)
+{
+	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
 }
 
 void STM32446Tim9Inic(void)

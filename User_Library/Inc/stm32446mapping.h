@@ -577,6 +577,7 @@ typedef struct
 		void (*ccr1)(uint16_t value);
 		void (*ccr2)(uint16_t value);
 		void (*psc)(uint16_t value);
+		void (*clock)(void);
 		void (*inic)(void);
 		void (*nvict1t9)(void);
 	#endif

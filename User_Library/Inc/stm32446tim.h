@@ -31,11 +31,14 @@ typedef struct{
 	void (*ccr1)(uint16_t value);
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
+	void (*clock)(void);
 	void (*inic)(void);
 	void (*nvict1t9)(void);
 }STM32446TIM9;
 
 STM32446TIM9 STM32446TIM9enable(void);
+// CLOCK
+void STM32446Tim9Clock(void);
 // INIC
 void STM32446Tim9Inic(void);
 // INTERRUPT

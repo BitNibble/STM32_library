@@ -318,6 +318,8 @@ STM32446 STM32446enable(void){
 	stm32446.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim9.enable = STM32446TIM9enable;
+		// CLOCK
+		stm32446.tim9.clock = STM32446Tim9Clock;
 		// INIC
 		stm32446.tim9.inic = STM32446Tim9Inic;
 		// CR1
