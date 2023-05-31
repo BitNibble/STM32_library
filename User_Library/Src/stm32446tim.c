@@ -12,8 +12,6 @@ Comment:
 #include <stm32446mapping.h>
 #include "stm32446tim.h"
 
-//STM32446TIM9 tim9;
-
 /*** File Procedure & Funtion Header ***/
 uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
@@ -24,8 +22,7 @@ STM32446TIM9 STM32446TIM9enable(void)
 	STM32446TIM9 tim9;
 
 	tim9.reg = (TIM_TypeDef*) TIM9_BASE;
-	// INIC
-	tim9.inic = STM32446Tim9Inic;
+	/*** TIM9 Hardware ***/
 	// CR1
 	tim9.cr1.get_ckd = STM32446Tim9_get_ckd;
 	tim9.cr1.apre = STM32446Tim9_set_apre;
@@ -91,6 +88,7 @@ STM32446TIM9 STM32446TIM9enable(void)
 	tim9.ccr2 = STM32446Tim9_ccr2;
 	// PSC
 	tim9.psc = STM32446Tim9_psc;
+	/*** Other ***/
 	// CLOCK
 	tim9.clock = STM32446Tim9Clock;
 	// INIC
@@ -98,6 +96,7 @@ STM32446TIM9 STM32446TIM9enable(void)
 	// INTERRUPT
 	tim9.nvict1t9 = STM32446Tim9EnableInterrupt;
 
+	/*** TIM9 Clock Power***/
 	STM32446Tim9Clock();
 
 	return tim9;
