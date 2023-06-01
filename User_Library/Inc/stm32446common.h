@@ -92,7 +92,7 @@ typedef struct
 	void (*enable)(void);
 }STM32446RCCPLLSAI;
 
-/*** TIMER9 Common ***/
+/*** TIMER9_Common ***/
 typedef struct{
 	uint8_t (*get_ckd)(void);
 	void (*apre)(uint8_t bool);
