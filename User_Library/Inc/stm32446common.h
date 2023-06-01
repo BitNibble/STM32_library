@@ -161,6 +161,79 @@ typedef struct{
 	void (*cc1e)(uint8_t bool);
 }STM32446TIM9_CCER;
 
+/*** USART1_Common ***/
+typedef struct{
+	uint8_t (*cts)(void);
+	void (*clear_cts)(void);
+	uint8_t (*lbd)(void);
+	void (*clear_lbd)(void);
+	uint8_t (*txe)(void);
+	uint8_t (*tc)(void);
+	void (*clear_tc)(void);
+	uint8_t (*rxne)(void);
+	void (*clear_rxne)(void);
+	uint8_t (*idle)(void);
+	uint8_t (*ore)(void);
+	uint8_t (*nf)(void);
+	uint8_t (*fe)(void);
+	uint8_t (*pe)(void);
+}STM32446USART1_SR;
+
+typedef struct{
+	void (*div_mantissa)(uint16_t value);
+	void (*div_fraction)(uint8_t value);
+}STM32446USART1_BRR;
+
+typedef struct{
+	void (*over8)(uint8_t bool);
+	void (*ue)(uint8_t bool);
+	void (*m)(uint8_t bool);
+	void (*wake)(uint8_t bool);
+	void (*pce)(uint8_t bool);
+	void (*ps)(uint8_t bool);
+	void (*peie)(uint8_t bool);
+	void (*txeie)(uint8_t bool);
+	void (*tcie)(uint8_t bool);
+	void (*rxneie)(uint8_t bool);
+	void (*idleie)(uint8_t bool);
+	void (*te)(uint8_t bool);
+	void (*re)(uint8_t bool);
+	void (*rwu)(uint8_t bool);
+	void (*sbk)(uint8_t bool);
+}STM32446USART1_CR1;
+
+typedef struct{
+	void (*linen)(uint8_t bool);
+	void (*stop)(uint8_t value);
+	void (*clken)(uint8_t bool);
+	void (*cpol)(uint8_t bool);
+	void (*cpha)(uint8_t bool);
+	void (*lbcl)(uint8_t bool);
+	void (*lbdie)(uint8_t bool);
+	void (*lbdl)(uint8_t bool);
+	void (*add)(uint8_t value);
+}STM32446USART1_CR2;
+
+typedef struct{
+	void (*onebit)(uint8_t bool);
+	void (*ctsie)(uint8_t bool);
+	void (*ctse)(uint8_t bool);
+	void (*rtse)(uint8_t bool);
+	void (*dmat)(uint8_t bool);
+	void (*dmar)(uint8_t bool);
+	void (*scen)(uint8_t bool);
+	void (*nack)(uint8_t bool);
+	void (*hdsel)(uint8_t bool);
+	void (*irlp)(uint8_t bool);
+	void (*iren)(uint8_t bool);
+	void (*eie)(uint8_t bool);
+}STM32446USART1_CR3;
+
+typedef struct{
+	void (*gt)(uint8_t value);
+	void (*psc)(uint8_t value);
+}STM32446USART1_GTPR;
+
 #endif
 
 /*** EOF ***/
