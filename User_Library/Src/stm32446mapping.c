@@ -121,6 +121,7 @@ STM32446 STM32446enable(void){
 		stm32446.adc1.single.read = STM32446Adc1Read;
 		stm32446.adc1.single.restart = STM32446Adc1Restart;
 		stm32446.adc1.single.stop = STM32446Adc1Stop;
+		stm32446.adc1.clock = STM32446Adc1Clock;
 	#endif
 
 	// ADC -> ADC2
@@ -155,6 +156,7 @@ STM32446 STM32446enable(void){
 	stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioa.enable = STM32446GPIOAenable;
+		stm32446.gpioa.clock = STM32446GpioAclock;
 		stm32446.gpioa.moder = STM32446GpioAmoder;
 		stm32446.gpioa.ospeedr = STM32446GpioAospeedr;
 		stm32446.gpioa.pupdr = STM32446GpioApupdr;
@@ -167,6 +169,7 @@ STM32446 STM32446enable(void){
 	stm32446.gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpiob.enable = STM32446GPIOBenable;
+		stm32446.gpiob.clock = STM32446GpioBclock;
 		stm32446.gpiob.moder = STM32446GpioBmoder;
 		stm32446.gpiob.ospeedr = STM32446GpioBospeedr;
 		stm32446.gpiob.pupdr = STM32446GpioBpupdr;
@@ -179,6 +182,7 @@ STM32446 STM32446enable(void){
 	stm32446.gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioc.enable = STM32446GPIOCenable;
+		stm32446.gpioc.clock = STM32446GpioCclock;
 		stm32446.gpioc.moder = STM32446GpioCmoder;
 		stm32446.gpioc.ospeedr = STM32446GpioCospeedr;
 		stm32446.gpioc.pupdr = STM32446GpioCpupdr;
@@ -191,6 +195,7 @@ STM32446 STM32446enable(void){
 	stm32446.gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpiod.enable = STM32446GPIODenable;
+		stm32446.gpiod.clock = STM32446GpioDclock;
 		stm32446.gpiod.moder = STM32446GpioDmoder;
 		stm32446.gpiod.ospeedr = STM32446GpioDospeedr;
 		stm32446.gpiod.pupdr = STM32446GpioDpupdr;
@@ -203,6 +208,7 @@ STM32446 STM32446enable(void){
 	stm32446.gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioe.enable = STM32446GPIOEenable;
+		stm32446.gpioe.clock = STM32446GpioEclock;
 		stm32446.gpioe.moder = STM32446GpioEmoder;
 		stm32446.gpioe.ospeedr = STM32446GpioEospeedr;
 		stm32446.gpioe.pupdr = STM32446GpioEpupdr;
@@ -211,10 +217,37 @@ STM32446 STM32446enable(void){
 		stm32446.gpioe.afr = STM32446GpioEafr;
 	#endif
 
+	// GPIOF
+	stm32446.gpiof.reg = NULL;
+	#if defined(_STM32446GPIO_H_)
+		stm32446.gpiof.enable = NULL;
+		stm32446.gpiof.clock = NULL;
+		stm32446.gpiof.moder = NULL;
+		stm32446.gpiof.ospeedr = NULL;
+		stm32446.gpiof.pupdr = NULL;
+		stm32446.gpiof.reset = NULL;
+		stm32446.gpiof.set = NULL;
+		stm32446.gpiof.afr = NULL;
+	#endif
+
+	// GPIOG
+	stm32446.gpiog.reg = NULL;
+	#if defined(_STM32446GPIO_H_)
+		stm32446.gpiog.enable = NULL;
+		stm32446.gpiog.clock = NULL;
+		stm32446.gpiog.moder = NULL;
+		stm32446.gpiog.ospeedr = NULL;
+		stm32446.gpiog.pupdr = NULL;
+		stm32446.gpiog.reset = NULL;
+		stm32446.gpiog.set = NULL;
+		stm32446.gpiog.afr = NULL;
+	#endif
+
 	// GPIOH
 	stm32446.gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioh.enable = STM32446GPIOHenable;
+		stm32446.gpioh.clock = STM32446GpioHclock;
 		stm32446.gpioh.moder = STM32446GpioHmoder;
 		stm32446.gpioh.ospeedr = STM32446GpioHospeedr;
 		stm32446.gpioh.pupdr = STM32446GpioHpupdr;
@@ -253,6 +286,7 @@ STM32446 STM32446enable(void){
 	stm32446.rtc.reg = (RTC_TypeDef*) RTC_BASE;
 	#if defined(_STM32446RTC_H_)
 		stm32446.rtc.enable = STM32446RTCenable;
+		stm32446.rtc.clock = STM32446RtcClock;
 		stm32446.rtc.inic = STM32446RtcInic;
 		stm32446.rtc.Day = STM32446RtcDay;
 		stm32446.rtc.Month = STM32446RtcMonth;
@@ -426,7 +460,72 @@ STM32446 STM32446enable(void){
 	// USART -> USART1
 	stm32446.usart1.reg = (USART_TypeDef*) USART1_BASE;
 	#if defined(_STM32446USART_H_)
+		// SR
+		stm32446.usart1.sr.cts = STM32446Usart1_cts;
+		stm32446.usart1.sr.clear_cts = STM32446Usart1_clear_cts;
+		stm32446.usart1.sr.lbd = STM32446Usart1_lbd;
+		stm32446.usart1.sr.clear_lbd = STM32446Usart1_clear_lbd;
+		stm32446.usart1.sr.txe = STM32446Usart1_txe;
+		stm32446.usart1.sr.tc = STM32446Usart1_tc;
+		stm32446.usart1.sr.clear_tc = STM32446Usart1_clear_tc;
+		stm32446.usart1.sr.rxne = STM32446Usart1_rxne;
+		stm32446.usart1.sr.clear_rxne = STM32446Usart1_clear_rxne;
+		stm32446.usart1.sr.idle = STM32446Usart1_idle;
+		stm32446.usart1.sr.ore = STM32446Usart1_ore;
+		stm32446.usart1.sr.nf = STM32446Usart1_nf;
+		stm32446.usart1.sr.fe = STM32446Usart1_fe;
+		stm32446.usart1.sr.pe = STM32446Usart1_pe;
+		// DR
+		stm32446.usart1.dr = STM32446Usart1_dr;
+		stm32446.usart1.get_dr = STM32446Usart1_get_dr;
+		// BRR
+		stm32446.usart1.brr.div_mantissa = STM32446Usart1_div_mantissa;
+		stm32446.usart1.brr.div_fraction = STM32446Usart1_div_fraction;
+		// CR1
+		stm32446.usart1.cr1.over8 = STM32446Usart1_over8;
+		stm32446.usart1.cr1.ue = STM32446Usart1_ue;
+		stm32446.usart1.cr1.m = STM32446Usart1_m;
+		stm32446.usart1.cr1.wake = STM32446Usart1_wake;
+		stm32446.usart1.cr1.pce = STM32446Usart1_pce;
+		stm32446.usart1.cr1.ps = STM32446Usart1_ps;
+		stm32446.usart1.cr1.peie = STM32446Usart1_peie;
+		stm32446.usart1.cr1.txeie = STM32446Usart1_txeie;
+		stm32446.usart1.cr1.tcie = STM32446Usart1_tcie;
+		stm32446.usart1.cr1.rxneie = STM32446Usart1_rxneie;
+		stm32446.usart1.cr1.idleie = STM32446Usart1_idleie;
+		stm32446.usart1.cr1.te = STM32446Usart1_te;
+		stm32446.usart1.cr1.re = STM32446Usart1_re;
+		stm32446.usart1.cr1.rwu = STM32446Usart1_rwu;
+		stm32446.usart1.cr1.sbk = STM32446Usart1_sbk;
+		// CR2
+		stm32446.usart1.cr2.linen = STM32446Usart1_linen;
+		stm32446.usart1.cr2.stop = STM32446Usart1_stop;
+		stm32446.usart1.cr2.clken = STM32446Usart1_clken;
+		stm32446.usart1.cr2.cpol = STM32446Usart1_cpol;
+		stm32446.usart1.cr2.cpha = STM32446Usart1_cpha;
+		stm32446.usart1.cr2.lbcl = STM32446Usart1_lbcl;
+		stm32446.usart1.cr2.lbdie = STM32446Usart1_lbdie;
+		stm32446.usart1.cr2.lbdl = STM32446Usart1_lbdl;
+		stm32446.usart1.cr2.add = STM32446Usart1_add;
+		// CR3
+		stm32446.usart1.cr3.onebit = STM32446Usart1_onebit;
+		stm32446.usart1.cr3.ctsie = STM32446Usart1_ctsie;
+		stm32446.usart1.cr3.ctse = STM32446Usart1_ctse;
+		stm32446.usart1.cr3.rtse = STM32446Usart1_rtse;
+		stm32446.usart1.cr3.dmat = STM32446Usart1_dmat;
+		stm32446.usart1.cr3.dmar = STM32446Usart1_dmar;
+		stm32446.usart1.cr3.scen = STM32446Usart1_scen;
+		stm32446.usart1.cr3.nack = STM32446Usart1_nack;
+		stm32446.usart1.cr3.hdsel = STM32446Usart1_hdsel;
+		stm32446.usart1.cr3.irlp = STM32446Usart1_irlp;
+		stm32446.usart1.cr3.iren = STM32446Usart1_iren;
+		stm32446.usart1.cr3.eie = STM32446Usart1_eie;
+		// GTPR
+		stm32446.usart1.gtpr.gt = STM32446Usart1_gt;
+		stm32446.usart1.gtpr.psc = STM32446Usart1_psc;
+		// Other
 		stm32446.usart1.enable = STM32446USART1enable;
+		stm32446.usart1.clock = STM32446Usart1Clock;
 		stm32446.usart1.inic = STM32446Usart1Inic;
 		stm32446.usart1.transmit = STM32446Usart1Transmit;
 		stm32446.usart1.receive = STM32446Usart1Receive;

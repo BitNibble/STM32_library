@@ -13,6 +13,7 @@ Comment:
 
 /*** Library ***/
 #include <inttypes.h>
+#include "stm32446common.h"
 
 /*** USART 1 ***/
 typedef struct{
@@ -26,6 +27,7 @@ typedef struct{
 	void (*dr)(uint16_t);
 	uint16_t (*get_dr)(void);
 	// Other
+	void (*clock)(void);
 	void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 	void (*transmit)(void);
 	void (*receive)(void);
@@ -97,10 +99,19 @@ void STM32446Usart1_eie(uint8_t bool);
 void STM32446Usart1_gt(uint8_t value);
 void STM32446Usart1_psc(uint8_t value);
 // Other
+void STM32446Usart1Clock( void );
+void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 void STM32446Usart1Transmit(void);
 void STM32446Usart1Receive(void);
 void STM32446Usart1Stop(void);
+uint32_t usart_getclocksource(void);
+uint32_t usart_gethpre(void);
+uint32_t usart_getpllm(void);
+uint32_t usart_getplln(void);
+uint32_t usart_getpllp(void);
+uint32_t usart_getpllr(void);
+uint32_t usart_getsysclk(void);
 
 #endif
 

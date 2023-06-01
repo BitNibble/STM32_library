@@ -11,6 +11,8 @@ Comment:
 #ifndef _STM32446ADC_H_
 	#define _STM32446ADC_H_
 
+/*** Library ***/
+#include <inttypes.h>
 #include "stm32446common.h"
 
 /*** ADC 1 ***/
@@ -18,9 +20,11 @@ typedef struct{
 	ADC_TypeDef* reg;
 	STM32446ADCCOMMONobj common;
 	STM32446ADC1single single;
+	void (*clock)(void);
 }STM32446ADC1;
 
 STM32446ADC1 STM32446ADC1enable(void);
+void STM32446Adc1Clock(void);
 void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);
 void STM32446Adc1TEMP(void);

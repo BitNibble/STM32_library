@@ -69,6 +69,7 @@ typedef struct
 	#if defined(_STM32446ADC_H_)
 		STM32446ADC1 (*enable)(void);
 		STM32446ADC1single single;
+		void (*clock)(void);
 	#endif
 }STM32446ADC1obj;
 
@@ -214,6 +215,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOA (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -229,6 +231,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOB (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -244,6 +247,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOC (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -259,6 +263,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOD (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -274,6 +279,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOE (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -289,6 +295,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOF (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -304,6 +311,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOG (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -319,6 +327,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		STM32446GPIOH (*enable)(void);
+		void (*clock)(void);
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -394,6 +403,7 @@ typedef struct
 	RTC_TypeDef* reg;
 	#if defined(_STM32446RTC_H_)
 		STM32446RTC (*enable)(void);
+		void (*clock)(void);
 		uint8_t (*inic)(uint8_t clock);
 		void (*Day)(uint8_t day);
 		void (*Month)(uint8_t month);
@@ -633,7 +643,17 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		STM32446USART1_SR sr;
+		STM32446USART1_BRR brr;
+		STM32446USART1_CR1 cr1;
+		STM32446USART1_CR2 cr2;
+		STM32446USART1_CR3 cr3;
+		STM32446USART1_GTPR gtpr;
+		void (*dr)(uint16_t);
+		uint16_t (*get_dr)(void);
+		// Other
 		STM32446USART1 (*enable)(void);
+		void (*clock)(void);
 		void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*transmit)(void);
 		void (*receive)(void);
@@ -773,6 +793,8 @@ typedef struct
 	STM32446GpioCobj gpioc;
 	STM32446GpioDobj gpiod;
 	STM32446GpioEobj gpioe;
+	STM32446GpioFobj gpiof;
+	STM32446GpioGobj gpiog;
 	STM32446GpioHobj gpioh;
 	STM32446SYSCFGobj syscfg;
 	STM32446PWRobj pwr;

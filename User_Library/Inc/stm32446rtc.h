@@ -17,6 +17,7 @@ Comment:
 /*** RTC ***/
 typedef struct{
 	RTC_TypeDef* reg;
+	void (*clock)(void);
 	uint8_t (*inic)(uint8_t clock);
 	void (*Day)(uint8_t day);
 	void (*Month)(uint8_t month);
@@ -31,6 +32,7 @@ typedef struct{
 }STM32446RTC;
 
 STM32446RTC STM32446RTCenable(void);
+void STM32446RtcClock(void);
 uint8_t STM32446RtcInic(uint8_t clock);
 void STM32446RtcDay(uint8_t day);
 void STM32446RtcMonth(uint8_t month);

@@ -24,6 +24,7 @@ STM32446GPIOA STM32446GPIOAenable(void)
 	STM32446GPIOA gpioa;
 	// GPIOA
 	gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
+	gpioa.clock = STM32446GpioAclock;
 	gpioa.moder = STM32446GpioAmoder;
 	gpioa.ospeedr = STM32446GpioAospeedr;
 	gpioa.pupdr = STM32446GpioApupdr;
@@ -34,6 +35,11 @@ STM32446GPIOA STM32446GPIOAenable(void)
 	RCC->AHB1ENR |= (1 << 0);
 
 	return gpioa;
+}
+
+void STM32446GpioAclock( void )
+{
+	RCC->AHB1ENR |= (1 << 0);
 }
 
 void STM32446GpioAmoder( unsigned int data, unsigned int pin )
@@ -93,6 +99,7 @@ STM32446GPIOB STM32446GPIOBenable(void)
 	STM32446GPIOB gpiob;
 	// GPIOB
 	gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
+	gpiob.clock = STM32446GpioBclock;
 	gpiob.moder = STM32446GpioBmoder;
 	gpiob.ospeedr = STM32446GpioBospeedr;
 	gpiob.pupdr = STM32446GpioBpupdr;
@@ -103,6 +110,11 @@ STM32446GPIOB STM32446GPIOBenable(void)
 	RCC->AHB1ENR |= (1 << 1);
 
 	return gpiob;
+}
+
+void STM32446GpioBclock( void )
+{
+	RCC->AHB1ENR |= (1 << 1);
 }
 
 void STM32446GpioBmoder( unsigned int data, unsigned int pin )
@@ -162,6 +174,7 @@ STM32446GPIOC STM32446GPIOCenable(void)
 	STM32446GPIOC gpioc;
 	// GPIOC
 	gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
+	gpioc.clock = STM32446GpioCclock;
 	gpioc.moder = STM32446GpioCmoder;
 	gpioc.ospeedr = STM32446GpioCospeedr;
 	gpioc.pupdr = STM32446GpioCpupdr;
@@ -172,6 +185,11 @@ STM32446GPIOC STM32446GPIOCenable(void)
 	RCC->AHB1ENR |= (1 << 2);
 
 	return gpioc;
+}
+
+void STM32446GpioCclock( void )
+{
+	RCC->AHB1ENR |= (1 << 2);
 }
 
 void STM32446GpioCmoder( unsigned int data, unsigned int pin )
@@ -231,6 +249,7 @@ STM32446GPIOD STM32446GPIODenable(void)
 	STM32446GPIOD gpiod;
 	// GPIOD
 	gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
+	gpiod.clock = STM32446GpioDclock;
 	gpiod.moder = STM32446GpioDmoder;
 	gpiod.ospeedr = STM32446GpioDospeedr;
 	gpiod.pupdr = STM32446GpioDpupdr;
@@ -241,6 +260,11 @@ STM32446GPIOD STM32446GPIODenable(void)
 	RCC->AHB1ENR |= (1 << 3);
 
 	return gpiod;
+}
+
+void STM32446GpioDclock( void )
+{
+	RCC->AHB1ENR |= (1 << 3);
 }
 
 void STM32446GpioDmoder( unsigned int data, unsigned int pin )
@@ -300,6 +324,7 @@ STM32446GPIOE STM32446GPIOEenable(void)
 	STM32446GPIOE gpioe;
 	// GPIOE
 	gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
+	gpioe.clock = STM32446GpioEclock;
 	gpioe.moder = STM32446GpioEmoder;
 	gpioe.ospeedr = STM32446GpioEospeedr;
 	gpioe.pupdr = STM32446GpioEpupdr;
@@ -310,6 +335,11 @@ STM32446GPIOE STM32446GPIOEenable(void)
 	RCC->AHB1ENR |= (1 << 4);
 
 	return gpioe;
+}
+
+void STM32446GpioEclock( void )
+{
+	RCC->AHB1ENR |= (1 << 4);
 }
 
 void STM32446GpioEmoder( unsigned int data, unsigned int pin )
@@ -369,6 +399,7 @@ STM32446GPIOF STM32446GPIOFenable(void)
 	STM32446GPIOF gpiof;
 	// GPIOF
 	gpiof.reg = (GPIO_TypeDef*) GPIOF_BASE;
+	gpiof.clock = STM32446GpioFclock;
 	gpiof.moder = STM32446GpioFmoder;
 	gpiof.ospeedr = STM32446GpioFospeedr;
 	gpiof.pupdr = STM32446GpioFpupdr;
@@ -379,6 +410,11 @@ STM32446GPIOF STM32446GPIOFenable(void)
 	RCC->AHB1ENR |= (1 << 5);
 
 	return gpiof;
+}
+
+void STM32446GpioFclock( void )
+{
+	RCC->AHB1ENR |= (1 << 5);
 }
 
 void STM32446GpioFmoder( unsigned int data, unsigned int pin )
@@ -438,6 +474,7 @@ STM32446GPIOG STM32446GPIOGenable(void)
 	STM32446GPIOG gpiog;
 	// GPIOG
 	gpiog.reg = (GPIO_TypeDef*) GPIOG_BASE;
+	gpiog.clock = STM32446GpioGclock;
 	gpiog.moder = STM32446GpioGmoder;
 	gpiog.ospeedr = STM32446GpioGospeedr;
 	gpiog.pupdr = STM32446GpioGpupdr;
@@ -448,6 +485,11 @@ STM32446GPIOG STM32446GPIOGenable(void)
 	RCC->AHB1ENR |= (1 << 6);
 
 	return gpiog;
+}
+
+void STM32446GpioGclock( void )
+{
+	RCC->AHB1ENR |= (1 << 6);
 }
 
 void STM32446GpioGmoder( unsigned int data, unsigned int pin )
@@ -507,6 +549,7 @@ STM32446GPIOH STM32446GPIOHenable(void)
 	STM32446GPIOH gpioh;
 	// GPIOH
 	gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
+	gpioh.clock = STM32446GpioHclock;
 	gpioh.moder = STM32446GpioHmoder;
 	gpioh.ospeedr = STM32446GpioHospeedr;
 	gpioh.pupdr = STM32446GpioHpupdr;
@@ -517,6 +560,11 @@ STM32446GPIOH STM32446GPIOHenable(void)
 	RCC->AHB1ENR |= (1 << 7);
 
 	return gpioh;
+}
+
+void STM32446GpioHclock( void )
+{
+	RCC->AHB1ENR |= (1 << 7);
 }
 
 void STM32446GpioHmoder( unsigned int data, unsigned int pin )

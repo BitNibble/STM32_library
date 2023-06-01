@@ -33,10 +33,16 @@ STM32446ADC1 STM32446ADC1enable(void)
 	adc1.single.read = STM32446Adc1Read;
 	adc1.single.restart = STM32446Adc1Restart;
 	adc1.single.stop = STM32446Adc1Stop;
+	adc1.clock = STM32446Adc1Clock;
 
 	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 
 	return adc1;
+}
+
+void STM32446Adc1Clock(void)
+{
+	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 }
 
 void STM32446Adc1Inic(void)

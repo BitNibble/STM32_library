@@ -13,31 +13,13 @@ Comment:
 #include "stm32446usart.h"
 #include <math.h>
 
-static STM32446 stm32446;
-
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-uint32_t usart_getclocksource(void);
-uint32_t usart_getsysclk(void);
-uint32_t usart_gethpre(void);
-uint32_t usart_gethppre1(void);
-uint32_t usart_gethppre2(void);
-uint32_t usart_getrtcpre(void);
-uint32_t usart_gethmco1pre(void);
-uint32_t usart_gethmco2pre(void);
-uint32_t usart_getpllm(void);
-uint32_t usart_getplln(void);
-uint32_t usart_getpllp(void);
-uint32_t usart_getpllq(void);
-uint32_t usart_getpllr(void);
 
 // USART1
 STM32446USART1 STM32446USART1enable(void)
 {
 	STM32446USART1 usart1;
-
-	stm32446 = STM32446enable();
 
 	usart1.reg = (USART_TypeDef*) USART1_BASE;
 	// SR
@@ -104,6 +86,7 @@ STM32446USART1 STM32446USART1enable(void)
 	usart1.gtpr.gt = STM32446Usart1_gt;
 	usart1.gtpr.psc = STM32446Usart1_psc;
 	// Other
+	usart1.clock = STM32446Usart1Clock;
 	usart1.inic = STM32446Usart1Inic;
 	usart1.transmit = STM32446Usart1Transmit;
 	usart1.receive = STM32446Usart1Receive;
@@ -112,6 +95,11 @@ STM32446USART1 STM32446USART1enable(void)
 	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
 
 	return usart1;
+}
+
+void STM32446Usart1Clock( void )
+{
+	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
 }
 
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
@@ -123,10 +111,10 @@ void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbi
 	// PA9 - TX		PA10 - RX
 	// PA11 - CTS		PA12 - RTS
 	// AF7 and AF8, activation. therefore
-	stm32446.gpioa.moder(2,9);
-	stm32446.gpioa.moder(2,10);
-	stm32446.gpioa.afr(7,9);
-	stm32446.gpioa.afr(7,10);
+	//stm32446.gpioa.moder(2,9);
+	//stm32446.gpioa.moder(2,10);
+	//stm32446.gpioa.afr(7,9);
+	//stm32446.gpioa.afr(7,10);
 	//	Procedure:
 	// 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
 	// 2. Program the M bit in USART_CR1 to define the word length.
@@ -233,194 +221,239 @@ void STM32446Usart1Stop(void){
 // SR
 uint8_t STM32446Usart1_cts(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 9);
 }
 void STM32446Usart1_clear_cts(void)
 {
+	usart_setbit(&USART1->SR, 1, 9, 0);
 }
 uint8_t STM32446Usart1_lbd(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 8);
 }
 void STM32446Usart1_clear_lbd(void)
 {
+	usart_setbit(&USART1->SR, 1, 8, 0);
 }
 uint8_t STM32446Usart1_txe(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 7);
 }
 uint8_t STM32446Usart1_tc(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 6);
 }
 void STM32446Usart1_clear_tc(void)
 {
+	usart_setbit(&USART1->SR, 1, 6, 0);
 }
 uint8_t STM32446Usart1_rxne(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 5);
 }
 void STM32446Usart1_clear_rxne(void)
 {
+	usart_setbit(&USART1->SR, 1, 5, 0);
 }
 uint8_t STM32446Usart1_idle(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 4);
 }
 uint8_t STM32446Usart1_ore(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 3);
 }
 uint8_t STM32446Usart1_nf(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 2);
 }
 uint8_t STM32446Usart1_fe(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 1);
 }
 uint8_t STM32446Usart1_pe(void)
 {
-	return 0;
+	return usart_getbit(USART1->SR, 1, 0);
 }
 
 // DR
 void STM32446Usart1_dr(uint16_t value)
 {
+	usart_setbit(&USART1->DR, 9, 0, value);
 }
 uint16_t STM32446Usart1_get_dr(void)
 {
-	return 0;
+	return usart_getbit(USART1->DR, 9, 0);
 }
 
 // BRR
 void STM32446Usart1_div_mantissa(uint16_t value)
 {
+	usart_setbit(&USART1->BRR, 12, 4, value);
 }
 void STM32446Usart1_div_fraction(uint8_t value)
 {
+	usart_setbit(&USART1->BRR, 4, 0, value);
 }
 
 // CR1
 void STM32446Usart1_over8(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 15, bool);
 }
 void STM32446Usart1_ue(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 13, bool);
 }
 void STM32446Usart1_m(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 12, bool);
 }
 void STM32446Usart1_wake(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 11, bool);
 }
 void STM32446Usart1_pce(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 10, bool);
 }
 void STM32446Usart1_ps(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 9, bool);
 }
 void STM32446Usart1_peie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 8, bool);
 }
 void STM32446Usart1_txeie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 7, bool);
 }
 void STM32446Usart1_tcie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 6, bool);
 }
 void STM32446Usart1_rxneie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 5, bool);
 }
 void STM32446Usart1_idleie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 4, bool);
 }
 void STM32446Usart1_te(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 3, bool);
 }
 void STM32446Usart1_re(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 2, bool);
 }
 void STM32446Usart1_rwu(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 1, bool);
 }
 void STM32446Usart1_sbk(uint8_t bool)
 {
+	usart_setbit(&USART1->CR1, 1, 0, bool);
 }
 
 // CR2
 void STM32446Usart1_linen(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 14, bool);
 }
 void STM32446Usart1_stop(uint8_t value)
 {
+	usart_setbit(&USART1->CR2, 2, 12, value);
 }
 void STM32446Usart1_clken(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 11, bool);
 }
 void STM32446Usart1_cpol(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 10, bool);
 }
 void STM32446Usart1_cpha(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 9, bool);
 }
 void STM32446Usart1_lbcl(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 8, bool);
 }
 void STM32446Usart1_lbdie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 6, bool);
 }
 void STM32446Usart1_lbdl(uint8_t bool)
 {
+	usart_setbit(&USART1->CR2, 1, 5, bool);
 }
 void STM32446Usart1_add(uint8_t value)
 {
+	usart_setbit(&USART1->CR2, 4, 0, value);
 }
 
 // CR3
 void STM32446Usart1_onebit(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 11, bool);
 }
 void STM32446Usart1_ctsie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 10, bool);
 }
 void STM32446Usart1_ctse(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 9, bool);
 }
 void STM32446Usart1_rtse(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 8, bool);
 }
 void STM32446Usart1_dmat(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 7, bool);
 }
 void STM32446Usart1_dmar(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 6, bool);
 }
 void STM32446Usart1_scen(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 5, bool);
 }
 void STM32446Usart1_nack(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 4, bool);
 }
 void STM32446Usart1_hdsel(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 3, bool);
 }
 void STM32446Usart1_irlp(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 2, bool);
 }
 void STM32446Usart1_iren(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 1, bool);
 }
 void STM32446Usart1_eie(uint8_t bool)
 {
+	usart_setbit(&USART1->CR3, 1, 0, bool);
 }
 
 // GTPR
 void STM32446Usart1_gt(uint8_t value)
 {
+	usart_setbit(&USART1->GTPR, 8, 8, value);
 }
 void STM32446Usart1_psc(uint8_t value)
 {
+	usart_setbit(&USART1->GTPR, 8, 0, value);
 }
 
 uint32_t usart_getclocksource(void)
@@ -430,34 +463,6 @@ uint32_t usart_getclocksource(void)
 	if(reg & (1 << 1)){source = HSI_RC;}else if(reg & (1 << 17)){source = HSE_OSC;}
 
 	return source;
-}
-
-uint32_t usart_getsysclk(void)
-{
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 2; uint32_t bit = 2;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	switch(value) // SWS[2]: System clock switch status
-	{
-		case 1: // 01: HSE oscillator used as the system clock
-			value = HSE_OSC;
-		break;
-		case 2: // 10: PLL used as the system clock
-			value = ( usart_getclocksource() / usart_getpllm() ) * ( usart_getplln() / usart_getpllp() );
-		break;
-		case 3: // 11: PLL_R used as the system clock
-			value = ( usart_getclocksource() / usart_getpllm() ) * ( usart_getplln() / usart_getpllr() );
-		break;
-		default: // 00: HSI oscillator used as the system clock
-			value = HSI_RC;
-		break;
-	}
-	return value;
 }
 
 uint32_t usart_gethpre(void)
@@ -500,139 +505,6 @@ uint32_t usart_gethpre(void)
 			value = 1;
 		break;
 	}
-	return value;
-}
-
-uint32_t usart_gethppre1(void)
-{
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 10;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	switch(value)
-	{
-		case 0b100:
-			value = 2;
-		break;
-		case 0b101:
-			value = 4;
-		break;
-		case 0b110:
-			value = 8;
-		break;
-		case 0b111:
-			value = 16;
-		default:
-			value = 1;
-		break;
-	}
-	return value;
-}
-
-uint32_t usart_gethppre2(void)
-{
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 13;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	switch(value)
-	{
-		case 0b100:
-			value = 2;
-		break;
-		case 0b101:
-			value = 4;
-		break;
-		case 0b110:
-			value = 8;
-		break;
-		case 0b111:
-			value = 16;
-		default:
-			value = 1;
-		break;
-	}
-	return value;
-}
-
-uint32_t usart_getrtcpre(void)
-{
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 5; uint32_t bit = 16;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	return value;
-}
-
-uint32_t usart_gethmco1pre(void)
-{
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 24;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	switch(value)
-	{
-		case 0b100:
-			value = 2;
-		break;
-		case 0b101:
-			value = 3;
-		break;
-		case 0b110:
-			value = 4;
-		break;
-		case 0b111:
-			value = 5;
-		default:
-			value = 1;
-		break;
-	}
-	return value;
-}
-
-uint32_t usart_gethmco2pre(void)
-{
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 3; uint32_t bit = 27;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	switch(value)
-	{
-		case 0b100:
-			value = 2;
-		break;
-		case 0b101:
-			value = 3;
-		break;
-		case 0b110:
-			value = 4;
-		break;
-		case 0b111:
-			value = 5;
-		default:
-			value = 1;
-		break;
-		}
 	return value;
 }
 
@@ -692,19 +564,6 @@ uint32_t usart_getpllp(void)
 	return value;
 }
 
-uint32_t usart_getpllq(void)
-{
-	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 4; uint32_t bit = 24;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	return value;
-}
-
 uint32_t usart_getpllr(void)
 {
 	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 3; uint32_t bit = 28;
@@ -718,6 +577,35 @@ uint32_t usart_getpllr(void)
 	return value;
 }
 
+uint32_t usart_getsysclk(void)
+{
+	uint32_t reg = RCC->CFGR; uint32_t size_block = 2; uint32_t bit = 2;
+	uint32_t value = 0; uint32_t tmp = 0;
+
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp = mask & reg;
+	value = (tmp >> bit);
+
+	switch(value) // SWS[2]: System clock switch status
+	{
+		case 1: // 01: HSE oscillator used as the system clock
+			value = HSE_OSC;
+		break;
+		case 2: // 10: PLL used as the system clock
+			value = ( usart_getclocksource() / usart_getpllm() ) * ( usart_getplln() / usart_getpllp() );
+		break;
+		case 3: // 11: PLL_R used as the system clock
+			value = ( usart_getclocksource() / usart_getpllm() ) * ( usart_getplln() / usart_getpllr() );
+		break;
+		default: // 00: HSI oscillator used as the system clock
+			value = HSI_RC;
+		break;
+	}
+	return value;
+}
+
+/*** File Procedure & Function Definition ***/
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;

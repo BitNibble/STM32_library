@@ -11,7 +11,7 @@ Comment:
 #ifndef _STM32446RCC_H_
 	#define _STM32446RCC_H_
 
-/*** File Library ***/
+/*** Library ***/
 #include <inttypes.h>
 #include "stm32446common.h"
 

@@ -32,6 +32,7 @@ STM32446RTC STM32446RTCenable(void)
 	STM32446RTC rtc;
 	rtc.reg = (RTC_TypeDef*) RTC_BASE;
 
+	rtc.clock = STM32446RtcClock;
 	rtc.inic = STM32446RtcInic;
 	rtc.Day = STM32446RtcDay;
 	rtc.Month = STM32446RtcMonth;
@@ -47,6 +48,11 @@ STM32446RTC STM32446RTCenable(void)
 	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 
 	return rtc;
+}
+
+void STM32446RtcClock(void)
+{
+	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 }
 
 uint8_t STM32446RtcInic(uint8_t clock)
