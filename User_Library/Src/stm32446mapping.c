@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 02062023
 Comment:
 	manual um1724, m0390, pm0056, pm0214, and other sources.
 	Virtual Image STM32-446, mapping.
@@ -113,7 +113,6 @@ STM32446 STM32446enable(void){
 	stm32446.adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
 	stm32446.adc1.reg = (ADC_TypeDef*) ADC1_BASE;
 	#if defined(_STM32446ADC_H_)
-		stm32446.adc1.enable = STM32446ADC1enable;
 		stm32446.adc1.single.inic = STM32446Adc1Inic;
 		stm32446.adc1.single.vbat = STM32446Adc1VBAT;
 		stm32446.adc1.single.temp = STM32446Adc1TEMP;
@@ -155,7 +154,6 @@ STM32446 STM32446enable(void){
 	// GPIOA
 	stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpioa.enable = STM32446GPIOAenable;
 		stm32446.gpioa.clock = STM32446GpioAclock;
 		stm32446.gpioa.moder = STM32446GpioAmoder;
 		stm32446.gpioa.ospeedr = STM32446GpioAospeedr;
@@ -168,7 +166,6 @@ STM32446 STM32446enable(void){
 	// GPIOB
 	stm32446.gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpiob.enable = STM32446GPIOBenable;
 		stm32446.gpiob.clock = STM32446GpioBclock;
 		stm32446.gpiob.moder = STM32446GpioBmoder;
 		stm32446.gpiob.ospeedr = STM32446GpioBospeedr;
@@ -181,7 +178,6 @@ STM32446 STM32446enable(void){
 	// GPIOC
 	stm32446.gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpioc.enable = STM32446GPIOCenable;
 		stm32446.gpioc.clock = STM32446GpioCclock;
 		stm32446.gpioc.moder = STM32446GpioCmoder;
 		stm32446.gpioc.ospeedr = STM32446GpioCospeedr;
@@ -194,7 +190,6 @@ STM32446 STM32446enable(void){
 	// GPIOD
 	stm32446.gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpiod.enable = STM32446GPIODenable;
 		stm32446.gpiod.clock = STM32446GpioDclock;
 		stm32446.gpiod.moder = STM32446GpioDmoder;
 		stm32446.gpiod.ospeedr = STM32446GpioDospeedr;
@@ -207,7 +202,6 @@ STM32446 STM32446enable(void){
 	// GPIOE
 	stm32446.gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpioe.enable = STM32446GPIOEenable;
 		stm32446.gpioe.clock = STM32446GpioEclock;
 		stm32446.gpioe.moder = STM32446GpioEmoder;
 		stm32446.gpioe.ospeedr = STM32446GpioEospeedr;
@@ -220,7 +214,6 @@ STM32446 STM32446enable(void){
 	// GPIOF
 	stm32446.gpiof.reg = NULL;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpiof.enable = NULL;
 		stm32446.gpiof.clock = NULL;
 		stm32446.gpiof.moder = NULL;
 		stm32446.gpiof.ospeedr = NULL;
@@ -233,7 +226,6 @@ STM32446 STM32446enable(void){
 	// GPIOG
 	stm32446.gpiog.reg = NULL;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpiog.enable = NULL;
 		stm32446.gpiog.clock = NULL;
 		stm32446.gpiog.moder = NULL;
 		stm32446.gpiog.ospeedr = NULL;
@@ -246,7 +238,6 @@ STM32446 STM32446enable(void){
 	// GPIOH
 	stm32446.gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
 	#if defined(_STM32446GPIO_H_)
-		stm32446.gpioh.enable = STM32446GPIOHenable;
 		stm32446.gpioh.clock = STM32446GpioHclock;
 		stm32446.gpioh.moder = STM32446GpioHmoder;
 		stm32446.gpioh.ospeedr = STM32446GpioHospeedr;
@@ -275,7 +266,7 @@ STM32446 STM32446enable(void){
 	// RCC
 	stm32446.rcc.reg = (RCC_TypeDef*) RCC_BASE;
 	#if defined(_STM32446RCC_H_)
-		stm32446.rcc.enable = STM32446RCCenable;
+		stm32446.rcc.inic = STM32446RccInic;
 		stm32446.rcc.henable = STM32446RccHEnable;
 		stm32446.rcc.hselect = STM32446RccHSelect;
 		stm32446.rcc.lenable = STM32446RccLEnable;
@@ -285,7 +276,6 @@ STM32446 STM32446enable(void){
 	//RTC
 	stm32446.rtc.reg = (RTC_TypeDef*) RTC_BASE;
 	#if defined(_STM32446RTC_H_)
-		stm32446.rtc.enable = STM32446RTCenable;
 		stm32446.rtc.clock = STM32446RtcClock;
 		stm32446.rtc.inic = STM32446RtcInic;
 		stm32446.rtc.Day = STM32446RtcDay;
@@ -351,7 +341,6 @@ STM32446 STM32446enable(void){
 	// TIM -> TIM9
 	stm32446.tim9.reg = (TIM_TypeDef*) TIM9_BASE;
 	#if defined(_STM32446TIM_H_)
-		stm32446.tim9.enable = STM32446TIM9enable;
 		// CLOCK
 		stm32446.tim9.clock = STM32446Tim9Clock;
 		// INIC
@@ -524,7 +513,6 @@ STM32446 STM32446enable(void){
 		stm32446.usart1.gtpr.gt = STM32446Usart1_gt;
 		stm32446.usart1.gtpr.psc = STM32446Usart1_psc;
 		// Other
-		stm32446.usart1.enable = STM32446USART1enable;
 		stm32446.usart1.clock = STM32446Usart1Clock;
 		stm32446.usart1.inic = STM32446Usart1Inic;
 		stm32446.usart1.transmit = STM32446Usart1Transmit;

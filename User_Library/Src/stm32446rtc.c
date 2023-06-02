@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 02062023
 Comment:
 	
 *******************************************************************************/
@@ -15,7 +15,7 @@ Comment:
 static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
 
-/*** RTC ***/
+/*** File Procedure & Funtion Header ***/
 uint32_t rtc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void STM32446RtcSetTr(void);
@@ -25,30 +25,6 @@ char rtc_bcd2dec(char num);
 char rtc_dec2bcd(char num);
 void rtc_lenable(unsigned int lclock);
 void rtc_lselect(uint8_t lclock);
-
-// RTC
-STM32446RTC STM32446RTCenable(void)
-{
-	STM32446RTC rtc;
-	rtc.reg = (RTC_TypeDef*) RTC_BASE;
-
-	rtc.clock = STM32446RtcClock;
-	rtc.inic = STM32446RtcInic;
-	rtc.Day = STM32446RtcDay;
-	rtc.Month = STM32446RtcMonth;
-	rtc.WeekDay = STM32446RtcWeekDay;
-	rtc.Year = STM32446RtcYear;
-	rtc.Hour = STM32446RtcHour;
-	rtc.Minute = STM32446RtcMinute;
-	rtc.Second = STM32446RtcSecond;
-	rtc.dr2vec = STM32446Rtcdr2vec;
-	rtc.tr2vec = STM32446Rtctr2vec;
-	rtc.RegWrite = STM32446RtcRegWrite;
-
-	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
-
-	return rtc;
-}
 
 void STM32446RtcClock(void)
 {

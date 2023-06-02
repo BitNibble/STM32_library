@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 02062023
 Comment:
 	
 *******************************************************************************/
@@ -14,32 +14,11 @@ Comment:
 
 static double STM32446temperature;
 
+/*** File Procedure & Funtion Header ***/
 uint32_t adc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
-/*** ADC 1 ***/
-STM32446ADC1 STM32446ADC1enable(void)
-{
-	STM32446ADC1 adc1;
-	STM32446temperature = 0;
-
-	adc1.common.reg = (ADC_Common_TypeDef*) ADC123_COMMON_BASE;
-	adc1.reg = (ADC_TypeDef*) ADC1_BASE;
-
-	adc1.single.inic = STM32446Adc1Inic;
-	adc1.single.vbat = STM32446Adc1VBAT;
-	adc1.single.temp = STM32446Adc1TEMP;
-	adc1.single.start = STM32446Adc1Start;
-	adc1.single.read = STM32446Adc1Read;
-	adc1.single.restart = STM32446Adc1Restart;
-	adc1.single.stop = STM32446Adc1Stop;
-	adc1.clock = STM32446Adc1Clock;
-
-	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
-
-	return adc1;
-}
-
+/*** ADC1 ***/
 void STM32446Adc1Clock(void)
 {
 	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable

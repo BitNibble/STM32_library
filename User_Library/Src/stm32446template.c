@@ -12,6 +12,7 @@ Comment:
 #include "stm32446mapping.h"
 #include "stm32446template.h"
 
+/*** File Procedure & Funtion Header ***/
 uint32_t template_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void template_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 

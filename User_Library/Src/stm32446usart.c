@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 23052023
+Date: 02062023
 Comment:
 	
 *******************************************************************************/
@@ -13,90 +13,11 @@ Comment:
 #include "stm32446usart.h"
 #include <math.h>
 
+/*** File Procedure & Funtion Header ***/
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
-// USART1
-STM32446USART1 STM32446USART1enable(void)
-{
-	STM32446USART1 usart1;
-
-	usart1.reg = (USART_TypeDef*) USART1_BASE;
-	// SR
-	usart1.sr.cts = STM32446Usart1_cts;
-	usart1.sr.clear_cts = STM32446Usart1_clear_cts;
-	usart1.sr.lbd = STM32446Usart1_lbd;
-	usart1.sr.clear_lbd = STM32446Usart1_clear_lbd;
-	usart1.sr.txe = STM32446Usart1_txe;
-	usart1.sr.tc = STM32446Usart1_tc;
-	usart1.sr.clear_tc = STM32446Usart1_clear_tc;
-	usart1.sr.rxne = STM32446Usart1_rxne;
-	usart1.sr.clear_rxne = STM32446Usart1_clear_rxne;
-	usart1.sr.idle = STM32446Usart1_idle;
-	usart1.sr.ore = STM32446Usart1_ore;
-	usart1.sr.nf = STM32446Usart1_nf;
-	usart1.sr.fe = STM32446Usart1_fe;
-	usart1.sr.pe = STM32446Usart1_pe;
-	// DR
-	usart1.dr = STM32446Usart1_dr;
-	usart1.get_dr = STM32446Usart1_get_dr;
-	// BRR
-	usart1.brr.div_mantissa = STM32446Usart1_div_mantissa;
-	usart1.brr.div_fraction = STM32446Usart1_div_fraction;
-	// CR1
-	usart1.cr1.over8 = STM32446Usart1_over8;
-	usart1.cr1.ue = STM32446Usart1_ue;
-	usart1.cr1.m = STM32446Usart1_m;
-	usart1.cr1.wake = STM32446Usart1_wake;
-	usart1.cr1.pce = STM32446Usart1_pce;
-	usart1.cr1.ps = STM32446Usart1_ps;
-	usart1.cr1.peie = STM32446Usart1_peie;
-	usart1.cr1.txeie = STM32446Usart1_txeie;
-	usart1.cr1.tcie = STM32446Usart1_tcie;
-	usart1.cr1.rxneie = STM32446Usart1_rxneie;
-	usart1.cr1.idleie = STM32446Usart1_idleie;
-	usart1.cr1.te = STM32446Usart1_te;
-	usart1.cr1.re = STM32446Usart1_re;
-	usart1.cr1.rwu = STM32446Usart1_rwu;
-	usart1.cr1.sbk = STM32446Usart1_sbk;
-	// CR2
-	usart1.cr2.linen = STM32446Usart1_linen;
-	usart1.cr2.stop = STM32446Usart1_stop;
-	usart1.cr2.clken = STM32446Usart1_clken;
-	usart1.cr2.cpol = STM32446Usart1_cpol;
-	usart1.cr2.cpha = STM32446Usart1_cpha;
-	usart1.cr2.lbcl = STM32446Usart1_lbcl;
-	usart1.cr2.lbdie = STM32446Usart1_lbdie;
-	usart1.cr2.lbdl = STM32446Usart1_lbdl;
-	usart1.cr2.add = STM32446Usart1_add;
-	// CR3
-	usart1.cr3.onebit = STM32446Usart1_onebit;
-	usart1.cr3.ctsie = STM32446Usart1_ctsie;
-	usart1.cr3.ctse = STM32446Usart1_ctse;
-	usart1.cr3.rtse = STM32446Usart1_rtse;
-	usart1.cr3.dmat = STM32446Usart1_dmat;
-	usart1.cr3.dmar = STM32446Usart1_dmar;
-	usart1.cr3.scen = STM32446Usart1_scen;
-	usart1.cr3.nack = STM32446Usart1_nack;
-	usart1.cr3.hdsel = STM32446Usart1_hdsel;
-	usart1.cr3.irlp = STM32446Usart1_irlp;
-	usart1.cr3.iren = STM32446Usart1_iren;
-	usart1.cr3.eie = STM32446Usart1_eie;
-	// GTPR
-	usart1.gtpr.gt = STM32446Usart1_gt;
-	usart1.gtpr.psc = STM32446Usart1_psc;
-	// Other
-	usart1.clock = STM32446Usart1Clock;
-	usart1.inic = STM32446Usart1Inic;
-	usart1.transmit = STM32446Usart1Transmit;
-	usart1.receive = STM32446Usart1Receive;
-	usart1.stop = STM32446Usart1Stop;
-
-	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
-
-	return usart1;
-}
-
+/*** USART1 ***/
 void STM32446Usart1Clock( void )
 {
 	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable

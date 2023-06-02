@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 29052023
+Date: 02062023
 Comment:
 	
 *******************************************************************************/
@@ -12,33 +12,9 @@ Comment:
 #include "stm32446mapping.h"
 #include "stm32446rcc.h"
 
-STM32446 stm32446;
-
+/*** File Procedure & Funtion Header ***/
 uint32_t rcc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void rcc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-
-/*** RCC ***/
-STM32446RCC STM32446RCCenable(void)
-{
-	stm32446 = STM32446enable();
-	STM32446RCC rcc;
-
-	rcc.reg = (RCC_TypeDef*) RCC_BASE;
-
-	rcc.henable = STM32446RccHEnable;
-	rcc.hselect = STM32446RccHSelect;
-	rcc.lenable = STM32446RccLEnable;
-	rcc.lselect = STM32446RccLSelect;
-	rcc.prescaler = STM32446Prescaler;
-	rcc.pll.division = STM32446PLLDivision;
-	rcc.pll.enable = STM32446RccPLLCLKEnable;
-	rcc.plli2s.enable = STM32446RccPLLI2SEnable;
-	rcc.pllsai.enable = STM32446RccPLLSAIEnable;
-
-	STM32446RccInic( );
-
-	return rcc;
-}
 
 uint8_t STM32446RccInic(void)
 {

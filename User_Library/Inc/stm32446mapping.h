@@ -4,7 +4,7 @@ Author: Sergio Manuel Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 02062023
 Comment:
 	-manual um1724, m0390, pm0056, pm0214, and other sources.
 	-Virtual Image STM32-446, mapping.
@@ -22,7 +22,6 @@ Comment:
 	#define STM32F446xx
 #endif
 #include "stm32f4xx.h"
-#include "stm32446common.h"
 
 /*** Define & Macros***/
 #define HSI_RC 16000000UL
@@ -38,7 +37,50 @@ Comment:
 #include "stm32446tim.h"
 
 /************ STM32F446RE ************/
-/************ CORE ************/
+/********** Global TypeDef ***********/
+typedef struct
+{
+	uint8_t L;
+	uint8_t H;
+} STM32HighLowByte;
+
+// Low Word High Word
+//typedef struct
+//{
+//	uint16_t H;
+//	uint16_t L;
+//}STM32446HighLowWord;
+
+typedef struct
+{
+	uint32_t (*AHB)(void);
+	uint32_t (*APB1)(void);
+	uint32_t (*APB2)(void);
+	uint32_t (*RTCclk)(void);
+	uint32_t (*MCO1)(void);
+	uint32_t (*MCO2)(void);
+}STM32446CLOCK_prescaler;
+
+typedef struct
+{
+	uint32_t (*M)(void);
+	uint32_t (*N)(void);
+	uint32_t (*P)(void);
+	uint32_t (*Q)(void);
+	uint32_t (*R)(void);
+}STM32446PLL_parameter;
+
+/************** QUERY TypeDef ****************/
+typedef struct
+{
+	STM32446CLOCK_prescaler CLOCK_prescaler;
+	STM32446PLL_parameter PLL_parameter;
+	uint32_t (*ClockSource)(void);
+	uint32_t (*SystemClock)(void);
+	uint32_t (*PllSource)(void);
+}STM32446Query;
+
+/******************* CORE ********************/
 // SCB
 typedef struct
 {
@@ -60,39 +102,7 @@ typedef struct
 	void (*delay_us)(uint32_t us);
 }STM32446SysTickobj;
 
-/************ MCU ************/
-// ADC -> ADC1
-typedef struct
-{
-	ADC_TypeDef* reg;
-	STM32446ADCCOMMONobj common;
-	#if defined(_STM32446ADC_H_)
-		STM32446ADC1 (*enable)(void);
-		STM32446ADC1single single;
-		void (*clock)(void);
-	#endif
-}STM32446ADC1obj;
-
-// ADC -> ADC2
-typedef struct
-{
-	ADC_TypeDef* reg;
-	STM32446ADCCOMMONobj common;
-	#if defined(_STM32446ADC_H_)
-		void (*enable)(void);
-	#endif
-}STM32446ADC2obj;
-
-// ADC -> ADC3
-typedef struct
-{
-	ADC_TypeDef* reg;
-	STM32446ADCCOMMONobj common;
-	#if defined(_STM32446ADC_H_)
-		void (*enable)(void);
-	#endif
-}STM32446ADC3obj;
-
+/******************** MCU ********************/
 // CAN_TxMailBox
 typedef struct
 {
@@ -209,134 +219,6 @@ typedef struct
 	FMC_Bank5_6_TypeDef* reg;
 }STM32446FMC_Bank5_6obj;
 
-// GPIO -> GPIOA
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOA (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioAobj;
-
-// GPIO -> GPIOB
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOB (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioBobj;
-
-// GPIO -> GPIOC
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOC (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioCobj;
-
-// GPIO -> GPIOD
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOD (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioDobj;
-
-// GPIO -> GPIOE
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOE (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioEobj;
-
-// GPIO -> GPIOF
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOF (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioFobj;
-
-// GPIO -> GPIOG
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOG (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioGobj;
-
-// GPIO -> GPIOH
-typedef struct
-{
-	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		STM32446GPIOH (*enable)(void);
-		void (*clock)(void);
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-	#endif
-}STM32446GpioHobj;
-
 // SYSCFG
 typedef struct
 {
@@ -379,44 +261,6 @@ typedef struct
 {
 	PWR_TypeDef* reg;
 }STM32446PWRobj;
-
-// RCC
-typedef struct
-{
-	RCC_TypeDef* reg;
-	#if defined(_STM32446RCC_H_)
-		STM32446RCC (*enable)(void);
-		void (*henable)(unsigned int hclock);
-		uint8_t (*hselect)(uint8_t sysclk);
-		void (*lenable)(unsigned int lclock);
-		void (*lselect)(uint8_t lclock);
-		void (*prescaler)(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-		STM32446RCCPLL pll;
-		STM32446RCCPLLI2S plli2s;
-		STM32446RCCPLLSAI pllsai;
-	#endif
-}STM32446RCCobj;
-
-// RTC
-typedef struct
-{
-	RTC_TypeDef* reg;
-	#if defined(_STM32446RTC_H_)
-		STM32446RTC (*enable)(void);
-		void (*clock)(void);
-		uint8_t (*inic)(uint8_t clock);
-		void (*Day)(uint8_t day);
-		void (*Month)(uint8_t month);
-		void (*WeekDay)(uint8_t weekday);
-		void (*Year)(uint8_t year);
-		void (*Hour)(uint8_t hour);
-		void (*Minute)(uint8_t minute);
-		void (*Second)(uint8_t second);
-		void (*dr2vec)(char* rtc_vect);
-		void (*tr2vec)(char* rtc_vect);
-		void (*RegWrite)(volatile uint32_t* reg, uint32_t data);
-	#endif
-}STM32446RTCobj;
 
 // SAI -> SAI1
 typedef struct
@@ -496,216 +340,6 @@ typedef struct
 	SPDIFRX_TypeDef* reg;
 }STM32446SPDIFRXobj;
 
-// TIM -> TIM1
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM1obj;
-
-// TIM -> TIM2
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM2obj;
-
-// TIM -> TIM3
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM3obj;
-
-// TIM -> TIM4
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM4obj;
-
-// TIM -> TIM5
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM5obj;
-
-// TIM -> TIM6
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM6obj;
-
-// TIM -> TIM7
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM7obj;
-
-// TIM -> TIM8
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM8obj;
-
-// TIM -> TIM9
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		STM32446TIM9 (*enable)(void);
-		STM32446TIM9_CR1 cr1;
-		STM32446TIM9_SMCR smcr;
-		STM32446TIM9_DIER dier;
-		STM32446TIM9_SR sr;
-		STM32446TIM9_EGR egr;
-		STM32446TIM9_CCMR1 ccmr1;
-		STM32446TIM9_CCER ccer;
-		void (*cnt)(uint16_t value);
-		uint16_t (*get_cnt)(void);
-		void (*arr)(uint16_t value);
-		void (*ccr1)(uint16_t value);
-		void (*ccr2)(uint16_t value);
-		void (*psc)(uint16_t value);
-		void (*clock)(void);
-		void (*inic)(void);
-		void (*nvict1t9)(void);
-	#endif
-}STM32446TIM9obj;
-
-// TIM -> TIM10
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM10obj;
-
-// TIM -> TIM11
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM11obj;
-
-// TIM -> TIM12
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM12obj;
-
-// TIM -> TIM13
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM13obj;
-
-// TIM -> TIM14
-typedef struct
-{
-	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
-}STM32446TIM14obj;
-
-// USART -> USART1
-typedef struct
-{
-	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		STM32446USART1_SR sr;
-		STM32446USART1_BRR brr;
-		STM32446USART1_CR1 cr1;
-		STM32446USART1_CR2 cr2;
-		STM32446USART1_CR3 cr3;
-		STM32446USART1_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
-		// Other
-		STM32446USART1 (*enable)(void);
-		void (*clock)(void);
-		void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-		void (*transmit)(void);
-		void (*receive)(void);
-		void (*stop)(void);
-	#endif
-}STM32446USART1obj;
-
-// USART -> USART2
-typedef struct
-{
-	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
-	#endif
-}STM32446USART2obj;
-
-// USART -> USART3
-typedef struct
-{
-	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
-	#endif
-}STM32446USART3obj;
-
-// USART -> USART4
-typedef struct
-{
-	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
-	#endif
-}STM32446USART4obj;
-
-// USART -> USART5
-typedef struct
-{
-	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
-	#endif
-}STM32446USART5obj;
-
-// USART -> USART6
-typedef struct
-{
-	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
-	#endif
-}STM32446USART6obj;
-
 // WWDG
 typedef struct
 {
@@ -748,7 +382,7 @@ typedef struct
 	USB_OTG_HostChannelTypeDef* reg;
 }STM32446USB_OTG_HostChannelobj;
 
-/***  MISCELLANEOUS ***/
+/*************** MISCELLANEOUS ***************/
 // FUNC
 typedef struct
 {
@@ -770,7 +404,7 @@ typedef struct
 	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 }STM32446_function;
 
-/*** STM32F446 ***/
+/***************** STM32F446 *****************/
 typedef struct
 {
 	// PARAMETER

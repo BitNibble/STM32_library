@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 02062023
 Comment:
 	
 *******************************************************************************/
@@ -16,92 +16,7 @@ Comment:
 uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
-/*** TIM 9 ***/
-STM32446TIM9 STM32446TIM9enable(void)
-{
-	STM32446TIM9 tim9;
-
-	tim9.reg = (TIM_TypeDef*) TIM9_BASE;
-	/*** TIM9 Hardware ***/
-	// CR1
-	tim9.cr1.get_ckd = STM32446Tim9_get_ckd;
-	tim9.cr1.apre = STM32446Tim9_set_apre;
-	tim9.cr1.opm = STM32446Tim9_set_opm;
-	tim9.cr1.urs = STM32446Tim9_set_urs;
-	tim9.cr1.udis = STM32446Tim9_set_udis;
-	tim9.cr1.cen = STM32446Tim9_cen;
-	// SMCR
-	tim9.smcr.msm = STM32446Tim9_msm;
-	tim9.smcr.ts = STM32446Tim9_ts;
-	tim9.smcr.sms = STM32446Tim9_sms;
-	// DIER
-	tim9.dier.tie = STM32446Tim9_tie;
-	tim9.dier.cc2ie = STM32446Tim9_cc2ie;
-	tim9.dier.cc1ie = STM32446Tim9_cc1ie;
-	tim9.dier.uie = STM32446Tim9_uie;
-	// SR
-	tim9.sr.cc2of = STM32446Tim9_cc2of;
-	tim9.sr.clear_cc2of = STM32446Tim9_clear_cc2of;
-	tim9.sr.cc1of = STM32446Tim9_cc1of;
-	tim9.sr.clear_cc1of = STM32446Tim9_clear_cc1of;
-	tim9.sr.tif = STM32446Tim9_tif;
-	tim9.sr.clear_tif = STM32446Tim9_clear_tif;
-	tim9.sr.cc2if = STM32446Tim9_cc2if;
-	tim9.sr.clear_cc2if = STM32446Tim9_clear_cc2if;
-	tim9.sr.cc1if = STM32446Tim9_cc1if;
-	tim9.sr.clear_cc1if = STM32446Tim9_clear_cc1if;
-	tim9.sr.uif = STM32446Tim9_uif;
-	tim9.sr.clear_uif = STM32446Tim9_clear_uif;
-	// EGR
-	tim9.egr.tg = STM32446Tim9_tg;
-	tim9.egr.cc2g = STM32446Tim9_cc2g;
-	tim9.egr.cc1g = STM32446Tim9_cc1g;
-	tim9.egr.ug = STM32446Tim9_ug;
-	// CCMR1
-	tim9.ccmr1.oc2m = STM32446Tim9_oc2m;
-	tim9.ccmr1.ic2f = STM32446Tim9_ic2f;
-	tim9.ccmr1.oc2pe = STM32446Tim9_oc2pe;
-	tim9.ccmr1.oc2fe = STM32446Tim9_oc2fe;
-	tim9.ccmr1.ic2psc = STM32446Tim9_ic2psc;
-	tim9.ccmr1.cc2s = STM32446Tim9_cc2s;
-	tim9.ccmr1.oc1m = STM32446Tim9_oc1m;
-	tim9.ccmr1.ic1f = STM32446Tim9_ic1f;
-	tim9.ccmr1.oc1pe = STM32446Tim9_oc1pe;
-	tim9.ccmr1.oc1fe = STM32446Tim9_oc1fe;
-	tim9.ccmr1.ic1psc = STM32446Tim9_ic1psc;
-	tim9.ccmr1.cc1s = STM32446Tim9_cc1s;
-	// CCER
-	tim9.ccer.cc2np = STM32446Tim9_cc2np;
-	tim9.ccer.cc2p = STM32446Tim9_cc2p;
-	tim9.ccer.cc2e = STM32446Tim9_cc2e;
-	tim9.ccer.cc1np = STM32446Tim9_cc1np;
-	tim9.ccer.cc1p = STM32446Tim9_cc1p;
-	tim9.ccer.cc1e = STM32446Tim9_cc1e;
-	// CNT
-	tim9.cnt = STM32446Tim9_cnt;
-	tim9.get_cnt = STM32446Tim9_get_cnt;
-	// ARR
-	tim9.arr = STM32446Tim9_arr;
-	// CCR1
-	tim9.ccr1 = STM32446Tim9_ccr1;
-	// CCR2
-	tim9.ccr2 = STM32446Tim9_ccr2;
-	// PSC
-	tim9.psc = STM32446Tim9_psc;
-	/*** Other ***/
-	// CLOCK
-	tim9.clock = STM32446Tim9Clock;
-	// INIC
-	tim9.inic = STM32446Tim9Inic;
-	// INTERRUPT
-	tim9.nvict1t9 = STM32446Tim9EnableInterrupt;
-
-	/*** TIM9 Clock Power***/
-	STM32446Tim9Clock();
-
-	return tim9;
-}
-
+/*** TIM9 ***/
 void STM32446Tim9Clock(void)
 {
 	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
@@ -146,6 +61,7 @@ void STM32446Tim9EnableInterrupt(void)
 	tim_setbit(&NVIC->ISER[0],1,24,1); // enable interrupt tim 1 brk and tim 9 global (IRGn 24)
 	//tim_setbit(&NVIC->ICER[0],1,24,1); // desable interrupt tim 1 brk and tim 9 global (IRGn 24)
 }
+
 // CR1
 uint8_t STM32446Tim9_get_ckd(void)
 {
@@ -417,7 +333,6 @@ void STM32446Tim9_psc(uint16_t value)
 uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;
-
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
 	tmp = mask & reg;

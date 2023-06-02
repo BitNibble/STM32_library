@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 02062023
 Comment:
 	
 *******************************************************************************/
@@ -13,17 +13,56 @@ Comment:
 
 /*** Library ***/
 #include <inttypes.h>
-#include "stm32446common.h"
 
-/*** ADC 1 ***/
-typedef struct{
+/*** ADC_Common ***/
+typedef struct
+{
+	ADC_Common_TypeDef* reg;
+}STM32446ADCCOMMONobj;
+
+typedef struct
+{
+	void (*inic)(void);
+	void (*vbat)(void);
+	void (*temp)(void);
+	void (*start)(void);
+	double (*read)(void);
+	void (*restart)(void);
+	void (*stop)(void);
+}STM32446ADC1single;
+
+// ADC -> ADC1
+typedef struct
+{
 	ADC_TypeDef* reg;
 	STM32446ADCCOMMONobj common;
-	STM32446ADC1single single;
-	void (*clock)(void);
-}STM32446ADC1;
+	#if defined(_STM32446ADC_H_)
+		STM32446ADC1single single;
+		void (*clock)(void);
+	#endif
+}STM32446ADC1obj;
 
-STM32446ADC1 STM32446ADC1enable(void);
+// ADC -> ADC2
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	#if defined(_STM32446ADC_H_)
+		void (*enable)(void);
+	#endif
+}STM32446ADC2obj;
+
+// ADC -> ADC3
+typedef struct
+{
+	ADC_TypeDef* reg;
+	STM32446ADCCOMMONobj common;
+	#if defined(_STM32446ADC_H_)
+		void (*enable)(void);
+	#endif
+}STM32446ADC3obj;
+
+/*** ADC1 ***/
 void STM32446Adc1Clock(void);
 void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);
