@@ -111,10 +111,10 @@ void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbi
 	// PA9 - TX		PA10 - RX
 	// PA11 - CTS		PA12 - RTS
 	// AF7 and AF8, activation. therefore
-	//stm32446.gpioa.moder(2,9);
-	//stm32446.gpioa.moder(2,10);
-	//stm32446.gpioa.afr(7,9);
-	//stm32446.gpioa.afr(7,10);
+	usart_setbit(&GPIOA->MODER, 2, 2*9, 2);
+	usart_setbit(&GPIOA->MODER, 2, 2*10, 2);
+	usart_setbit(&GPIOA->AFR[1], 4, 4*(9-8), 7);
+	usart_setbit(&GPIOA->AFR[1], 4, 4*(10-8), 7);
 	//	Procedure:
 	// 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
 	// 2. Program the M bit in USART_CR1 to define the word length.
@@ -467,13 +467,7 @@ uint32_t usart_getclocksource(void)
 
 uint32_t usart_gethpre(void)
 {
-	uint32_t reg = RCC->CFGR; uint32_t size_block = 4; uint32_t bit = 4;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
+	uint32_t value = usart_getbit(RCC->CFGR, 4, 4);
 
 	switch(value)
 	{
@@ -510,39 +504,17 @@ uint32_t usart_gethpre(void)
 
 uint32_t usart_getpllm(void)
 {
-	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 6; uint32_t bit = 0;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	return value;
+	return usart_getbit(RCC->PLLCFGR, 6, 0);
 }
 
 uint32_t usart_getplln(void)
 {
-	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 9; uint32_t bit = 6;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	return value;
+	return usart_getbit(RCC->PLLCFGR, 9, 6);
 }
 
 uint32_t usart_getpllp(void)
 {
-	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 2; uint32_t bit = 16;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
+	uint32_t value = usart_getbit(RCC->PLLCFGR, 2, 16);
 
 	switch(value)
 	{
@@ -566,15 +538,7 @@ uint32_t usart_getpllp(void)
 
 uint32_t usart_getpllr(void)
 {
-	uint32_t reg = RCC->PLLCFGR; uint32_t size_block = 3; uint32_t bit = 28;
-	uint32_t value = 0; uint32_t tmp = 0;
-
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp = mask & reg;
-	value = (tmp >> bit);
-
-	return value;
+	return usart_getbit(RCC->PLLCFGR, 3, 28);
 }
 
 uint32_t usart_getsysclk(void)
