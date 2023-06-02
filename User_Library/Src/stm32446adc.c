@@ -45,7 +45,7 @@ void STM32446Adc1VBAT(void) // vbat overrides temperature
 
 void STM32446Adc1TEMP(void)
 {
-	// Temperature (in ?C) = {(VSENSE V25) / Avg_Slope} + 25
+	// Temperature (in degrees) = {(VSENSE V25) / Avg_Slope} + 25
 	ADC123_COMMON->CCR |= (1 << 23); // TSVREFE: Temperature sensor and VREFINT enable
 }
 
@@ -98,11 +98,13 @@ uint32_t adc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 
 void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	value = data & mask;
-	*reg &= ~(mask << bit);
-	*reg |= (value << bit);
+	*(reg + n ) &= ~(mask << bit);
+	*(reg + n ) |= (value << bit);
 }
 
 /*** EOF ***/
