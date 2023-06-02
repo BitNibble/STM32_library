@@ -836,6 +836,7 @@ uint32_t STM32446_gethppre1(void)
 		break;
 		case 0b111:
 			value = 16;
+		break;
 		default:
 			value = 1;
 		break;
@@ -860,6 +861,7 @@ uint32_t STM32446_gethppre2(void)
 		break;
 		case 0b111:
 			value = 16;
+		break;
 		default:
 			value = 1;
 		break;
@@ -889,6 +891,7 @@ uint32_t STM32446_gethmco1pre(void)
 		break;
 		case 0b111:
 			value = 5;
+		break;
 		default:
 			value = 1;
 		break;
@@ -913,6 +916,7 @@ uint32_t STM32446_gethmco2pre(void)
 		break;
 		case 0b111:
 			value = 5;
+		break;
 		default:
 			value = 1;
 		break;
