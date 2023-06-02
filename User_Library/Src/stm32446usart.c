@@ -113,8 +113,8 @@ void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbi
 	// AF7 and AF8, activation. therefore
 	usart_setbit(&GPIOA->MODER, 2, 2*9, 2);
 	usart_setbit(&GPIOA->MODER, 2, 2*10, 2);
-	usart_setbit(&GPIOA->AFR[1], 4, 4*(9-8), 7);
-	usart_setbit(&GPIOA->AFR[1], 4, 4*(10-8), 7);
+	usart_setbit(GPIOA->AFR, 4, 4*9, 7);
+	usart_setbit(GPIOA->AFR, 4, 4*10, 7);
 	//	Procedure:
 	// 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
 	// 2. Program the M bit in USART_CR1 to define the word length.
@@ -583,11 +583,13 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	value = data & mask;
-	*reg &= ~(mask << bit);
-	*reg |= (value << bit);
+	*(reg + n ) &= ~(mask << bit);
+	*(reg + n ) |= (value << bit);
 }
 
 /*** EOF ***/
