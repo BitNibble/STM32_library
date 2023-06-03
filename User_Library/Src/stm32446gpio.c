@@ -466,6 +466,7 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 	}
 }
 
+/*** File Procedure & Funtion Definition ***/
 uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;
