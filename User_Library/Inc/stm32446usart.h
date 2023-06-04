@@ -14,7 +14,7 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** USART_Common ***/
+/*** USART_Common TypeDef ***/
 typedef struct{
 	uint8_t (*cts)(void);
 	void (*clear_cts)(void);

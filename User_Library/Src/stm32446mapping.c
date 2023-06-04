@@ -49,6 +49,12 @@ void STM32446SysCfgEnable(void);
 // SRAM
 void STM32446SramAccess(void);
 
+// NVIC
+void STM32446NVIC_set_enable( uint8_t IRQn );
+void STM32446NVIC_clear_enable( uint8_t IRQn );
+void STM32446NVIC_set_pending( uint8_t IRQn );
+void STM32446NVIC_clear_pending( uint8_t IRQn );
+
 // QUERY CLOCK
 uint32_t STM32446_getclocksource(void);
 uint32_t STM32446_getsysclk(void);
@@ -101,6 +107,11 @@ STM32446 STM32446enable(void){
 
 	// NVIC
 	stm32446.nvic.reg = (NVIC_Type*) NVIC_BASE;
+	stm32446.nvic.set_enable = STM32446NVIC_set_enable;
+	stm32446.nvic.clear_enable = STM32446NVIC_clear_enable;
+	stm32446.nvic.set_pending = STM32446NVIC_set_pending;
+	stm32446.nvic.clear_pending = STM32446NVIC_clear_pending;
+
 	
 	// SysTick (Used as Delay Source)
 	stm32446.systick.reg = (SysTick_Type*) SysTick_BASE;
@@ -1751,6 +1762,42 @@ void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 	value = data & mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+void STM32446NVIC_set_enable( uint8_t IRQn )
+{
+	volatile uint32_t* reg = NVIC->ISER;
+	uint32_t n = 0;
+	if(IRQn > 31){ n = IRQn/32; IRQn = IRQn - (n * 32); }
+	*(reg + n ) &= ~(1 << IRQn);
+	*(reg + n ) |= (1 << IRQn);
+}
+
+void STM32446NVIC_clear_enable( uint8_t IRQn )
+{
+	volatile uint32_t* reg = NVIC->ICER;
+	uint32_t n = 0;
+	if(IRQn > 31){ n = IRQn/32; IRQn = IRQn - (n * 32); }
+	*(reg + n ) &= ~(1 << IRQn);
+	*(reg + n ) |= (1 << IRQn);
+}
+
+void STM32446NVIC_set_pending( uint8_t IRQn )
+{
+	volatile uint32_t* reg = NVIC->ISPR;
+	uint32_t n = 0;
+	if(IRQn > 31){ n = IRQn/32; IRQn = IRQn - (n * 32); }
+	*(reg + n ) &= ~(1 << IRQn);
+	*(reg + n ) |= (1 << IRQn);
+}
+
+void STM32446NVIC_clear_pending( uint8_t IRQn )
+{
+	volatile uint32_t* reg = NVIC->ICPR;
+	uint32_t n = 0;
+	if(IRQn > 31){ n = IRQn/32; IRQn = IRQn - (n * 32); }
+	*(reg + n ) &= ~(1 << IRQn);
+	*(reg + n ) |= (1 << IRQn);
 }
 
 /*** MISCELLANEOUS ***/

@@ -58,8 +58,12 @@ void STM32446Tim9Inic(void)
 // INTERRUPT
 void STM32446Tim9EnableInterrupt(void)
 {
-	tim_setbit(&NVIC->ISER[0],1,24,1); // enable interrupt tim 1 brk and tim 9 global (IRGn 24)
-	//tim_setbit(&NVIC->ICER[0],1,24,1); // desable interrupt tim 1 brk and tim 9 global (IRGn 24)
+	tim_setbit(NVIC->ISER,1,24,1); // enable interrupt tim 1 brk and tim 9 global (IRGn 24)
+}
+
+void STM32446Tim9DisableInterrupt(void)
+{
+	tim_setbit(NVIC->ICER,1,24,1); // disable interrupt tim 1 brk and tim 9 global (IRGn 24)
 }
 
 /*** TIM9 Bit Mapping ***/

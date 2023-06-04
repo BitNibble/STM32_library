@@ -175,7 +175,7 @@ typedef struct
 		void (*psc)(uint16_t value);
 		void (*clock)(void);
 		void (*inic)(void);
-		void (*nvict1t9)(void);
+		void (*nvict1t9)(void); // IRQ24
 	#endif
 }STM32446TIM9obj;
 

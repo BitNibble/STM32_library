@@ -91,6 +91,10 @@ typedef struct
 typedef struct
 {
 	NVIC_Type* reg;
+	void (*set_enable)( uint8_t IRQn );
+	void (*clear_enable)( uint8_t IRQn );
+	void (*set_pending)( uint8_t IRQn );
+	void (*clear_pending)( uint8_t IRQn );
 }STM32446NVICobj;
 
 // SysTick

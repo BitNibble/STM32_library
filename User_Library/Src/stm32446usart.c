@@ -39,9 +39,9 @@ void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbi
 	// PA9 - TX		PA10 - RX
 	// PA11 - CTS		PA12 - RTS
 	// AF7 and AF8, activation. therefore
-	usart_setbit(&GPIOA->MODER, 2, 2*9, 2);
+	usart_setbit(&GPIOA->MODER, 2, 2*9, 2); // Select Alternate Function Pin
 	usart_setbit(&GPIOA->MODER, 2, 2*10, 2);
-	usart_setbit(GPIOA->AFR, 4, 4*9, 7);
+	usart_setbit(GPIOA->AFR, 4, 4*9, 7); // Select Alternate Function to be Used [SPI2/3, USART1..3, UART5, SPDIF-IN]
 	usart_setbit(GPIOA->AFR, 4, 4*10, 7);
 	//	Procedure:
 	// 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
