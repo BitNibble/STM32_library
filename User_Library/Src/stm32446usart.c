@@ -132,13 +132,7 @@ void STM32446Usart1Stop(void){
 	USART1->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
 }
 
-/*** USART 2 ***/
-// Future Implementation
-
-
-/*** USART 3 ***/
-// Future Implementation
-
+/*** USART 1 Bit Mapping ***/
 // SR
 uint8_t STM32446Usart1_cts(void)
 {
@@ -377,6 +371,1232 @@ void STM32446Usart1_psc(uint8_t value)
 	usart_setbit(&USART1->GTPR, 8, 0, value);
 }
 
+/*** USART2 ***/
+void STM32446Usart2Clock( void )
+{
+	RCC->APB1ENR |= (1 << 17); // USART2EN: USART2 clock enable
+}
+
+/*** USART 2 Bit Mapping ***/
+// SR
+uint8_t STM32446Usart2_cts(void)
+{
+	return usart_getbit(USART2->SR, 1, 9);
+}
+void STM32446Usart2_clear_cts(void)
+{
+	usart_setbit(&USART2->SR, 1, 9, 0);
+}
+uint8_t STM32446Usart2_lbd(void)
+{
+	return usart_getbit(USART2->SR, 1, 8);
+}
+void STM32446Usart2_clear_lbd(void)
+{
+	usart_setbit(&USART2->SR, 1, 8, 0);
+}
+uint8_t STM32446Usart2_txe(void)
+{
+	return usart_getbit(USART2->SR, 1, 7);
+}
+uint8_t STM32446Usart2_tc(void)
+{
+	return usart_getbit(USART2->SR, 1, 6);
+}
+void STM32446Usart2_clear_tc(void)
+{
+	usart_setbit(&USART2->SR, 1, 6, 0);
+}
+uint8_t STM32446Usart2_rxne(void)
+{
+	return usart_getbit(USART2->SR, 1, 5);
+}
+void STM32446Usart2_clear_rxne(void)
+{
+	usart_setbit(&USART2->SR, 1, 5, 0);
+}
+uint8_t STM32446Usart2_idle(void)
+{
+	return usart_getbit(USART2->SR, 1, 4);
+}
+uint8_t STM32446Usart2_ore(void)
+{
+	return usart_getbit(USART2->SR, 1, 3);
+}
+uint8_t STM32446Usart2_nf(void)
+{
+	return usart_getbit(USART2->SR, 1, 2);
+}
+uint8_t STM32446Usart2_fe(void)
+{
+	return usart_getbit(USART2->SR, 1, 1);
+}
+uint8_t STM32446Usart2_pe(void)
+{
+	return usart_getbit(USART2->SR, 1, 0);
+}
+
+// DR
+void STM32446Usart2_dr(uint16_t value)
+{
+	usart_setbit(&USART2->DR, 9, 0, value);
+}
+uint16_t STM32446Usart2_get_dr(void)
+{
+	return usart_getbit(USART2->DR, 9, 0);
+}
+
+// BRR
+void STM32446Usart2_div_mantissa(uint16_t value)
+{
+	usart_setbit(&USART2->BRR, 12, 4, value);
+}
+void STM32446Usart2_div_fraction(uint8_t value)
+{
+	usart_setbit(&USART2->BRR, 4, 0, value);
+}
+
+// CR1
+void STM32446Usart2_over8(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 15, bool);
+}
+void STM32446Usart2_ue(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 13, bool);
+}
+void STM32446Usart2_m(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 12, bool);
+}
+void STM32446Usart2_wake(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 11, bool);
+}
+void STM32446Usart2_pce(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 10, bool);
+}
+void STM32446Usart2_ps(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 9, bool);
+}
+void STM32446Usart2_peie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 8, bool);
+}
+void STM32446Usart2_txeie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 7, bool);
+}
+void STM32446Usart2_tcie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 6, bool);
+}
+void STM32446Usart2_rxneie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 5, bool);
+}
+void STM32446Usart2_idleie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 4, bool);
+}
+void STM32446Usart2_te(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 3, bool);
+}
+void STM32446Usart2_re(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 2, bool);
+}
+void STM32446Usart2_rwu(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 1, bool);
+}
+void STM32446Usart2_sbk(uint8_t bool)
+{
+	usart_setbit(&USART2->CR1, 1, 0, bool);
+}
+
+// CR2
+void STM32446Usart2_linen(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 14, bool);
+}
+void STM32446Usart2_stop(uint8_t value)
+{
+	usart_setbit(&USART2->CR2, 2, 12, value);
+}
+void STM32446Usart2_clken(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 11, bool);
+}
+void STM32446Usart2_cpol(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 10, bool);
+}
+void STM32446Usart2_cpha(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 9, bool);
+}
+void STM32446Usart2_lbcl(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 8, bool);
+}
+void STM32446Usart2_lbdie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 6, bool);
+}
+void STM32446Usart2_lbdl(uint8_t bool)
+{
+	usart_setbit(&USART2->CR2, 1, 5, bool);
+}
+void STM32446Usart2_add(uint8_t value)
+{
+	usart_setbit(&USART2->CR2, 4, 0, value);
+}
+
+// CR3
+void STM32446Usart2_onebit(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 11, bool);
+}
+void STM32446Usart2_ctsie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 10, bool);
+}
+void STM32446Usart2_ctse(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 9, bool);
+}
+void STM32446Usart2_rtse(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 8, bool);
+}
+void STM32446Usart2_dmat(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 7, bool);
+}
+void STM32446Usart2_dmar(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 6, bool);
+}
+void STM32446Usart2_scen(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 5, bool);
+}
+void STM32446Usart2_nack(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 4, bool);
+}
+void STM32446Usart2_hdsel(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 3, bool);
+}
+void STM32446Usart2_irlp(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 2, bool);
+}
+void STM32446Usart2_iren(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 1, bool);
+}
+void STM32446Usart2_eie(uint8_t bool)
+{
+	usart_setbit(&USART2->CR3, 1, 0, bool);
+}
+
+// GTPR
+void STM32446Usart2_gt(uint8_t value)
+{
+	usart_setbit(&USART2->GTPR, 8, 8, value);
+}
+void STM32446Usart2_psc(uint8_t value)
+{
+	usart_setbit(&USART2->GTPR, 8, 0, value);
+}
+
+/*** USART3 ***/
+void STM32446Usart3Clock( void )
+{
+	RCC->APB1ENR |= (1 << 18); // USART3EN: USART3 clock enable
+}
+
+/*** USART 3 Bit Mapping ***/
+// SR
+uint8_t STM32446Usart3_cts(void)
+{
+	return usart_getbit(USART3->SR, 1, 9);
+}
+void STM32446Usart3_clear_cts(void)
+{
+	usart_setbit(&USART3->SR, 1, 9, 0);
+}
+uint8_t STM32446Usart3_lbd(void)
+{
+	return usart_getbit(USART3->SR, 1, 8);
+}
+void STM32446Usart3_clear_lbd(void)
+{
+	usart_setbit(&USART3->SR, 1, 8, 0);
+}
+uint8_t STM32446Usart3_txe(void)
+{
+	return usart_getbit(USART3->SR, 1, 7);
+}
+uint8_t STM32446Usart3_tc(void)
+{
+	return usart_getbit(USART3->SR, 1, 6);
+}
+void STM32446Usart3_clear_tc(void)
+{
+	usart_setbit(&USART3->SR, 1, 6, 0);
+}
+uint8_t STM32446Usart3_rxne(void)
+{
+	return usart_getbit(USART3->SR, 1, 5);
+}
+void STM32446Usart3_clear_rxne(void)
+{
+	usart_setbit(&USART3->SR, 1, 5, 0);
+}
+uint8_t STM32446Usart3_idle(void)
+{
+	return usart_getbit(USART3->SR, 1, 4);
+}
+uint8_t STM32446Usart3_ore(void)
+{
+	return usart_getbit(USART3->SR, 1, 3);
+}
+uint8_t STM32446Usart3_nf(void)
+{
+	return usart_getbit(USART3->SR, 1, 2);
+}
+uint8_t STM32446Usart3_fe(void)
+{
+	return usart_getbit(USART3->SR, 1, 1);
+}
+uint8_t STM32446Usart3_pe(void)
+{
+	return usart_getbit(USART3->SR, 1, 0);
+}
+
+// DR
+void STM32446Usart3_dr(uint16_t value)
+{
+	usart_setbit(&USART3->DR, 9, 0, value);
+}
+uint16_t STM32446Usart3_get_dr(void)
+{
+	return usart_getbit(USART3->DR, 9, 0);
+}
+
+// BRR
+void STM32446Usart3_div_mantissa(uint16_t value)
+{
+	usart_setbit(&USART3->BRR, 12, 4, value);
+}
+void STM32446Usart3_div_fraction(uint8_t value)
+{
+	usart_setbit(&USART3->BRR, 4, 0, value);
+}
+
+// CR1
+void STM32446Usart3_over8(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 15, bool);
+}
+void STM32446Usart3_ue(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 13, bool);
+}
+void STM32446Usart3_m(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 12, bool);
+}
+void STM32446Usart3_wake(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 11, bool);
+}
+void STM32446Usart3_pce(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 10, bool);
+}
+void STM32446Usart3_ps(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 9, bool);
+}
+void STM32446Usart3_peie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 8, bool);
+}
+void STM32446Usart3_txeie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 7, bool);
+}
+void STM32446Usart3_tcie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 6, bool);
+}
+void STM32446Usart3_rxneie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 5, bool);
+}
+void STM32446Usart3_idleie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 4, bool);
+}
+void STM32446Usart3_te(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 3, bool);
+}
+void STM32446Usart3_re(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 2, bool);
+}
+void STM32446Usart3_rwu(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 1, bool);
+}
+void STM32446Usart3_sbk(uint8_t bool)
+{
+	usart_setbit(&USART3->CR1, 1, 0, bool);
+}
+
+// CR2
+void STM32446Usart3_linen(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 14, bool);
+}
+void STM32446Usart3_stop(uint8_t value)
+{
+	usart_setbit(&USART3->CR2, 2, 12, value);
+}
+void STM32446Usart3_clken(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 11, bool);
+}
+void STM32446Usart3_cpol(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 10, bool);
+}
+void STM32446Usart3_cpha(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 9, bool);
+}
+void STM32446Usart3_lbcl(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 8, bool);
+}
+void STM32446Usart3_lbdie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 6, bool);
+}
+void STM32446Usart3_lbdl(uint8_t bool)
+{
+	usart_setbit(&USART3->CR2, 1, 5, bool);
+}
+void STM32446Usart3_add(uint8_t value)
+{
+	usart_setbit(&USART3->CR2, 4, 0, value);
+}
+
+// CR3
+void STM32446Usart3_onebit(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 11, bool);
+}
+void STM32446Usart3_ctsie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 10, bool);
+}
+void STM32446Usart3_ctse(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 9, bool);
+}
+void STM32446Usart3_rtse(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 8, bool);
+}
+void STM32446Usart3_dmat(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 7, bool);
+}
+void STM32446Usart3_dmar(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 6, bool);
+}
+void STM32446Usart3_scen(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 5, bool);
+}
+void STM32446Usart3_nack(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 4, bool);
+}
+void STM32446Usart3_hdsel(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 3, bool);
+}
+void STM32446Usart3_irlp(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 2, bool);
+}
+void STM32446Usart3_iren(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 1, bool);
+}
+void STM32446Usart3_eie(uint8_t bool)
+{
+	usart_setbit(&USART3->CR3, 1, 0, bool);
+}
+
+// GTPR
+void STM32446Usart3_gt(uint8_t value)
+{
+	usart_setbit(&USART3->GTPR, 8, 8, value);
+}
+void STM32446Usart3_psc(uint8_t value)
+{
+	usart_setbit(&USART3->GTPR, 8, 0, value);
+}
+
+/*** UART4 ***/
+void STM32446Uart4Clock( void )
+{
+	RCC->APB1ENR |= (1 << 19); // UART4EN: USART4 clock enable
+}
+
+/*** USART 4 Bit Mapping ***/
+// SR
+uint8_t STM32446Uart4_cts(void)
+{
+	return usart_getbit(UART4->SR, 1, 9);
+}
+void STM32446Uart4_clear_cts(void)
+{
+	usart_setbit(&UART4->SR, 1, 9, 0);
+}
+uint8_t STM32446Uart4_lbd(void)
+{
+	return usart_getbit(UART4->SR, 1, 8);
+}
+void STM32446Uart4_clear_lbd(void)
+{
+	usart_setbit(&UART4->SR, 1, 8, 0);
+}
+uint8_t STM32446Uart4_txe(void)
+{
+	return usart_getbit(UART4->SR, 1, 7);
+}
+uint8_t STM32446Uart4_tc(void)
+{
+	return usart_getbit(UART4->SR, 1, 6);
+}
+void STM32446Uart4_clear_tc(void)
+{
+	usart_setbit(&UART4->SR, 1, 6, 0);
+}
+uint8_t STM32446Uart4_rxne(void)
+{
+	return usart_getbit(UART4->SR, 1, 5);
+}
+void STM32446Uart4_clear_rxne(void)
+{
+	usart_setbit(&UART4->SR, 1, 5, 0);
+}
+uint8_t STM32446Uart4_idle(void)
+{
+	return usart_getbit(UART4->SR, 1, 4);
+}
+uint8_t STM32446Uart4_ore(void)
+{
+	return usart_getbit(UART4->SR, 1, 3);
+}
+uint8_t STM32446Uart4_nf(void)
+{
+	return usart_getbit(UART4->SR, 1, 2);
+}
+uint8_t STM32446Uart4_fe(void)
+{
+	return usart_getbit(UART4->SR, 1, 1);
+}
+uint8_t STM32446Uart4_pe(void)
+{
+	return usart_getbit(UART4->SR, 1, 0);
+}
+
+// DR
+void STM32446Uart4_dr(uint16_t value)
+{
+	usart_setbit(&UART4->DR, 9, 0, value);
+}
+uint16_t STM32446Uart4_get_dr(void)
+{
+	return usart_getbit(UART4->DR, 9, 0);
+}
+
+// BRR
+void STM32446Uart4_div_mantissa(uint16_t value)
+{
+	usart_setbit(&UART4->BRR, 12, 4, value);
+}
+void STM32446Uart4_div_fraction(uint8_t value)
+{
+	usart_setbit(&UART4->BRR, 4, 0, value);
+}
+
+// CR1
+void STM32446Uart4_over8(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 15, bool);
+}
+void STM32446Uart4_ue(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 13, bool);
+}
+void STM32446Uart4_m(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 12, bool);
+}
+void STM32446Uart4_wake(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 11, bool);
+}
+void STM32446Uart4_pce(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 10, bool);
+}
+void STM32446Uart4_ps(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 9, bool);
+}
+void STM32446Uart4_peie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 8, bool);
+}
+void STM32446Uart4_txeie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 7, bool);
+}
+void STM32446Uart4_tcie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 6, bool);
+}
+void STM32446Uart4_rxneie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 5, bool);
+}
+void STM32446Uart4_idleie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 4, bool);
+}
+void STM32446Uart4_te(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 3, bool);
+}
+void STM32446Uart4_re(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 2, bool);
+}
+void STM32446Uart4_rwu(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 1, bool);
+}
+void STM32446Uart4_sbk(uint8_t bool)
+{
+	usart_setbit(&UART4->CR1, 1, 0, bool);
+}
+
+// CR2
+void STM32446Uart4_linen(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 14, bool);
+}
+void STM32446Uart4_stop(uint8_t value)
+{
+	usart_setbit(&UART4->CR2, 2, 12, value);
+}
+void STM32446Uart4_clken(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 11, bool);
+}
+void STM32446Uart4_cpol(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 10, bool);
+}
+void STM32446Uart4_cpha(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 9, bool);
+}
+void STM32446Uart4_lbcl(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 8, bool);
+}
+void STM32446Uart4_lbdie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 6, bool);
+}
+void STM32446Uart4_lbdl(uint8_t bool)
+{
+	usart_setbit(&UART4->CR2, 1, 5, bool);
+}
+void STM32446Uart4_add(uint8_t value)
+{
+	usart_setbit(&UART4->CR2, 4, 0, value);
+}
+
+// CR3
+void STM32446Uart4_onebit(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 11, bool);
+}
+void STM32446Uart4_ctsie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 10, bool);
+}
+void STM32446Uart4_ctse(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 9, bool);
+}
+void STM32446Uart4_rtse(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 8, bool);
+}
+void STM32446Uart4_dmat(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 7, bool);
+}
+void STM32446Uart4_dmar(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 6, bool);
+}
+void STM32446Uart4_scen(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 5, bool);
+}
+void STM32446Uart4_nack(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 4, bool);
+}
+void STM32446Uart4_hdsel(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 3, bool);
+}
+void STM32446Uart4_irlp(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 2, bool);
+}
+void STM32446Uart4_iren(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 1, bool);
+}
+void STM32446Uart4_eie(uint8_t bool)
+{
+	usart_setbit(&UART4->CR3, 1, 0, bool);
+}
+
+// GTPR
+void STM32446Uart4_gt(uint8_t value)
+{
+	usart_setbit(&UART4->GTPR, 8, 8, value);
+}
+void STM32446Uart4_psc(uint8_t value)
+{
+	usart_setbit(&UART4->GTPR, 8, 0, value);
+}
+
+/*** UART5 ***/
+void STM32446Uart5Clock( void )
+{
+	RCC->APB1ENR |= (1 << 20); // UART5EN: UART5 clock enable
+}
+
+/*** UART 5 Bit Mapping ***/
+// SR
+uint8_t STM32446Uart5_cts(void)
+{
+	return usart_getbit(UART5->SR, 1, 9);
+}
+void STM32446Uart5_clear_cts(void)
+{
+	usart_setbit(&UART5->SR, 1, 9, 0);
+}
+uint8_t STM32446Uart5_lbd(void)
+{
+	return usart_getbit(UART5->SR, 1, 8);
+}
+void STM32446Uart5_clear_lbd(void)
+{
+	usart_setbit(&UART5->SR, 1, 8, 0);
+}
+uint8_t STM32446Uart5_txe(void)
+{
+	return usart_getbit(UART5->SR, 1, 7);
+}
+uint8_t STM32446Uart5_tc(void)
+{
+	return usart_getbit(UART5->SR, 1, 6);
+}
+void STM32446Uart5_clear_tc(void)
+{
+	usart_setbit(&UART5->SR, 1, 6, 0);
+}
+uint8_t STM32446Uart5_rxne(void)
+{
+	return usart_getbit(UART5->SR, 1, 5);
+}
+void STM32446Uart5_clear_rxne(void)
+{
+	usart_setbit(&UART5->SR, 1, 5, 0);
+}
+uint8_t STM32446Uart5_idle(void)
+{
+	return usart_getbit(UART5->SR, 1, 4);
+}
+uint8_t STM32446Uart5_ore(void)
+{
+	return usart_getbit(UART5->SR, 1, 3);
+}
+uint8_t STM32446Uart5_nf(void)
+{
+	return usart_getbit(UART5->SR, 1, 2);
+}
+uint8_t STM32446Uart5_fe(void)
+{
+	return usart_getbit(UART5->SR, 1, 1);
+}
+uint8_t STM32446Uart5_pe(void)
+{
+	return usart_getbit(UART5->SR, 1, 0);
+}
+
+// DR
+void STM32446Uart5_dr(uint16_t value)
+{
+	usart_setbit(&UART5->DR, 9, 0, value);
+}
+uint16_t STM32446Uart5_get_dr(void)
+{
+	return usart_getbit(UART5->DR, 9, 0);
+}
+
+// BRR
+void STM32446Uart5_div_mantissa(uint16_t value)
+{
+	usart_setbit(&UART5->BRR, 12, 4, value);
+}
+void STM32446Uart5_div_fraction(uint8_t value)
+{
+	usart_setbit(&UART5->BRR, 4, 0, value);
+}
+
+// CR1
+void STM32446Uart5_over8(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 15, bool);
+}
+void STM32446Uart5_ue(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 13, bool);
+}
+void STM32446Uart5_m(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 12, bool);
+}
+void STM32446Uart5_wake(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 11, bool);
+}
+void STM32446Uart5_pce(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 10, bool);
+}
+void STM32446Uart5_ps(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 9, bool);
+}
+void STM32446Uart5_peie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 8, bool);
+}
+void STM32446Uart5_txeie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 7, bool);
+}
+void STM32446Uart5_tcie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 6, bool);
+}
+void STM32446Uart5_rxneie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 5, bool);
+}
+void STM32446Uart5_idleie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 4, bool);
+}
+void STM32446Uart5_te(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 3, bool);
+}
+void STM32446Uart5_re(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 2, bool);
+}
+void STM32446Uart5_rwu(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 1, bool);
+}
+void STM32446Uart5_sbk(uint8_t bool)
+{
+	usart_setbit(&UART5->CR1, 1, 0, bool);
+}
+
+// CR2
+void STM32446Uart5_linen(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 14, bool);
+}
+void STM32446Uart5_stop(uint8_t value)
+{
+	usart_setbit(&UART5->CR2, 2, 12, value);
+}
+void STM32446Uart5_clken(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 11, bool);
+}
+void STM32446Uart5_cpol(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 10, bool);
+}
+void STM32446Uart5_cpha(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 9, bool);
+}
+void STM32446Uart5_lbcl(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 8, bool);
+}
+void STM32446Uart5_lbdie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 6, bool);
+}
+void STM32446Uart5_lbdl(uint8_t bool)
+{
+	usart_setbit(&UART5->CR2, 1, 5, bool);
+}
+void STM32446Uart5_add(uint8_t value)
+{
+	usart_setbit(&UART5->CR2, 4, 0, value);
+}
+
+// CR3
+void STM32446Uart5_onebit(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 11, bool);
+}
+void STM32446Uart5_ctsie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 10, bool);
+}
+void STM32446Uart5_ctse(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 9, bool);
+}
+void STM32446Uart5_rtse(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 8, bool);
+}
+void STM32446Uart5_dmat(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 7, bool);
+}
+void STM32446Uart5_dmar(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 6, bool);
+}
+void STM32446Uart5_scen(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 5, bool);
+}
+void STM32446Uart5_nack(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 4, bool);
+}
+void STM32446Uart5_hdsel(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 3, bool);
+}
+void STM32446Uart5_irlp(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 2, bool);
+}
+void STM32446Uart5_iren(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 1, bool);
+}
+void STM32446Uart5_eie(uint8_t bool)
+{
+	usart_setbit(&UART5->CR3, 1, 0, bool);
+}
+
+// GTPR
+void STM32446Uart5_gt(uint8_t value)
+{
+	usart_setbit(&UART5->GTPR, 8, 8, value);
+}
+void STM32446Uart5_psc(uint8_t value)
+{
+	usart_setbit(&UART5->GTPR, 8, 0, value);
+}
+
+/*** USART6 ***/
+void STM32446Usart6Clock( void )
+{
+	RCC->APB2ENR |= (1 << 5); // USART6EN: USART6 clock enable
+}
+
+/*** USART 6 Bit Mapping ***/
+// SR
+uint8_t STM32446Usart6_cts(void)
+{
+	return usart_getbit(USART6->SR, 1, 9);
+}
+void STM32446Usart6_clear_cts(void)
+{
+	usart_setbit(&USART6->SR, 1, 9, 0);
+}
+uint8_t STM32446Usart6_lbd(void)
+{
+	return usart_getbit(USART6->SR, 1, 8);
+}
+void STM32446Usart6_clear_lbd(void)
+{
+	usart_setbit(&USART6->SR, 1, 8, 0);
+}
+uint8_t STM32446Usart6_txe(void)
+{
+	return usart_getbit(USART6->SR, 1, 7);
+}
+uint8_t STM32446Usart6_tc(void)
+{
+	return usart_getbit(USART6->SR, 1, 6);
+}
+void STM32446Usart6_clear_tc(void)
+{
+	usart_setbit(&USART6->SR, 1, 6, 0);
+}
+uint8_t STM32446Usart6_rxne(void)
+{
+	return usart_getbit(USART6->SR, 1, 5);
+}
+void STM32446Usart6_clear_rxne(void)
+{
+	usart_setbit(&USART6->SR, 1, 5, 0);
+}
+uint8_t STM32446Usart6_idle(void)
+{
+	return usart_getbit(USART6->SR, 1, 4);
+}
+uint8_t STM32446Usart6_ore(void)
+{
+	return usart_getbit(USART6->SR, 1, 3);
+}
+uint8_t STM32446Usart6_nf(void)
+{
+	return usart_getbit(USART6->SR, 1, 2);
+}
+uint8_t STM32446Usart6_fe(void)
+{
+	return usart_getbit(USART6->SR, 1, 1);
+}
+uint8_t STM32446Usart6_pe(void)
+{
+	return usart_getbit(USART6->SR, 1, 0);
+}
+
+// DR
+void STM32446Usart6_dr(uint16_t value)
+{
+	usart_setbit(&USART6->DR, 9, 0, value);
+}
+uint16_t STM32446Usart6_get_dr(void)
+{
+	return usart_getbit(USART6->DR, 9, 0);
+}
+
+// BRR
+void STM32446Usart6_div_mantissa(uint16_t value)
+{
+	usart_setbit(&USART6->BRR, 12, 4, value);
+}
+void STM32446Usart6_div_fraction(uint8_t value)
+{
+	usart_setbit(&USART6->BRR, 4, 0, value);
+}
+
+// CR1
+void STM32446Usart6_over8(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 15, bool);
+}
+void STM32446Usart6_ue(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 13, bool);
+}
+void STM32446Usart6_m(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 12, bool);
+}
+void STM32446Usart6_wake(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 11, bool);
+}
+void STM32446Usart6_pce(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 10, bool);
+}
+void STM32446Usart6_ps(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 9, bool);
+}
+void STM32446Usart6_peie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 8, bool);
+}
+void STM32446Usart6_txeie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 7, bool);
+}
+void STM32446Usart6_tcie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 6, bool);
+}
+void STM32446Usart6_rxneie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 5, bool);
+}
+void STM32446Usart6_idleie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 4, bool);
+}
+void STM32446Usart6_te(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 3, bool);
+}
+void STM32446Usart6_re(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 2, bool);
+}
+void STM32446Usart6_rwu(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 1, bool);
+}
+void STM32446Usart6_sbk(uint8_t bool)
+{
+	usart_setbit(&USART6->CR1, 1, 0, bool);
+}
+
+// CR2
+void STM32446Usart6_linen(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 14, bool);
+}
+void STM32446Usart6_stop(uint8_t value)
+{
+	usart_setbit(&USART6->CR2, 2, 12, value);
+}
+void STM32446Usart6_clken(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 11, bool);
+}
+void STM32446Usart6_cpol(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 10, bool);
+}
+void STM32446Usart6_cpha(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 9, bool);
+}
+void STM32446Usart6_lbcl(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 8, bool);
+}
+void STM32446Usart6_lbdie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 6, bool);
+}
+void STM32446Usart6_lbdl(uint8_t bool)
+{
+	usart_setbit(&USART6->CR2, 1, 5, bool);
+}
+void STM32446Usart6_add(uint8_t value)
+{
+	usart_setbit(&USART6->CR2, 4, 0, value);
+}
+
+// CR3
+void STM32446Usart6_onebit(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 11, bool);
+}
+void STM32446Usart6_ctsie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 10, bool);
+}
+void STM32446Usart6_ctse(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 9, bool);
+}
+void STM32446Usart6_rtse(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 8, bool);
+}
+void STM32446Usart6_dmat(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 7, bool);
+}
+void STM32446Usart6_dmar(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 6, bool);
+}
+void STM32446Usart6_scen(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 5, bool);
+}
+void STM32446Usart6_nack(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 4, bool);
+}
+void STM32446Usart6_hdsel(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 3, bool);
+}
+void STM32446Usart6_irlp(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 2, bool);
+}
+void STM32446Usart6_iren(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 1, bool);
+}
+void STM32446Usart6_eie(uint8_t bool)
+{
+	usart_setbit(&USART6->CR3, 1, 0, bool);
+}
+
+// GTPR
+void STM32446Usart6_gt(uint8_t value)
+{
+	usart_setbit(&USART6->GTPR, 8, 8, value);
+}
+void STM32446Usart6_psc(uint8_t value)
+{
+	usart_setbit(&USART6->GTPR, 8, 0, value);
+}
+
+/*** File Procedure & Function Definition ***/
 uint32_t usart_getclocksource(void)
 {
 	uint32_t reg = RCC->CR;
@@ -490,7 +1710,6 @@ uint32_t usart_getsysclk(void)
 	return value;
 }
 
-/*** File Procedure & Function Definition ***/
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;

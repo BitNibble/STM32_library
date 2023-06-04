@@ -14,7 +14,7 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** USART1_Common ***/
+/*** USART_Common ***/
 typedef struct{
 	uint8_t (*cts)(void);
 	void (*clear_cts)(void);
@@ -30,12 +30,12 @@ typedef struct{
 	uint8_t (*nf)(void);
 	uint8_t (*fe)(void);
 	uint8_t (*pe)(void);
-}STM32446USART1_SR;
+}STM32446USART_SR;
 
 typedef struct{
 	void (*div_mantissa)(uint16_t value);
 	void (*div_fraction)(uint8_t value);
-}STM32446USART1_BRR;
+}STM32446USART_BRR;
 
 typedef struct{
 	void (*over8)(uint8_t bool);
@@ -53,7 +53,7 @@ typedef struct{
 	void (*re)(uint8_t bool);
 	void (*rwu)(uint8_t bool);
 	void (*sbk)(uint8_t bool);
-}STM32446USART1_CR1;
+}STM32446USART_CR1;
 
 typedef struct{
 	void (*linen)(uint8_t bool);
@@ -65,7 +65,7 @@ typedef struct{
 	void (*lbdie)(uint8_t bool);
 	void (*lbdl)(uint8_t bool);
 	void (*add)(uint8_t value);
-}STM32446USART1_CR2;
+}STM32446USART_CR2;
 
 typedef struct{
 	void (*onebit)(uint8_t bool);
@@ -80,24 +80,24 @@ typedef struct{
 	void (*irlp)(uint8_t bool);
 	void (*iren)(uint8_t bool);
 	void (*eie)(uint8_t bool);
-}STM32446USART1_CR3;
+}STM32446USART_CR3;
 
 typedef struct{
 	void (*gt)(uint8_t value);
 	void (*psc)(uint8_t value);
-}STM32446USART1_GTPR;
+}STM32446USART_GTPR;
 
 // USART -> USART1
 typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
-		STM32446USART1_SR sr;
-		STM32446USART1_BRR brr;
-		STM32446USART1_CR1 cr1;
-		STM32446USART1_CR2 cr2;
-		STM32446USART1_CR3 cr3;
-		STM32446USART1_GTPR gtpr;
+		STM32446USART_SR sr;
+		STM32446USART_BRR brr;
+		STM32446USART_CR1 cr1;
+		STM32446USART_CR2 cr2;
+		STM32446USART_CR3 cr3;
+		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
 		// Other
@@ -114,7 +114,16 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
+		STM32446USART_SR sr;
+		STM32446USART_BRR brr;
+		STM32446USART_CR1 cr1;
+		STM32446USART_CR2 cr2;
+		STM32446USART_CR3 cr3;
+		STM32446USART_GTPR gtpr;
+		void (*dr)(uint16_t);
+		uint16_t (*get_dr)(void);
+		// Other
+		void (*clock)(void);
 	#endif
 }STM32446USART2obj;
 
@@ -123,7 +132,16 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
+		STM32446USART_SR sr;
+		STM32446USART_BRR brr;
+		STM32446USART_CR1 cr1;
+		STM32446USART_CR2 cr2;
+		STM32446USART_CR3 cr3;
+		STM32446USART_GTPR gtpr;
+		void (*dr)(uint16_t);
+		uint16_t (*get_dr)(void);
+		// Other
+		void (*clock)(void);
 	#endif
 }STM32446USART3obj;
 
@@ -132,7 +150,16 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
+		STM32446USART_SR sr;
+		STM32446USART_BRR brr;
+		STM32446USART_CR1 cr1;
+		STM32446USART_CR2 cr2;
+		STM32446USART_CR3 cr3;
+		STM32446USART_GTPR gtpr;
+		void (*dr)(uint16_t);
+		uint16_t (*get_dr)(void);
+		// Other
+		void (*clock)(void);
 	#endif
 }STM32446USART4obj;
 
@@ -141,7 +168,16 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
+		STM32446USART_SR sr;
+		STM32446USART_BRR brr;
+		STM32446USART_CR1 cr1;
+		STM32446USART_CR2 cr2;
+		STM32446USART_CR3 cr3;
+		STM32446USART_GTPR gtpr;
+		void (*dr)(uint16_t);
+		uint16_t (*get_dr)(void);
+		// Other
+		void (*clock)(void);
 	#endif
 }STM32446USART5obj;
 
@@ -150,7 +186,16 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
-		void (*enable)(void);
+		STM32446USART_SR sr;
+		STM32446USART_BRR brr;
+		STM32446USART_CR1 cr1;
+		STM32446USART_CR2 cr2;
+		STM32446USART_CR3 cr3;
+		STM32446USART_GTPR gtpr;
+		void (*dr)(uint16_t);
+		uint16_t (*get_dr)(void);
+		// Other
+		void (*clock)(void);
 	#endif
 }STM32446USART6obj;
 
@@ -225,6 +270,343 @@ void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbi
 void STM32446Usart1Transmit(void);
 void STM32446Usart1Receive(void);
 void STM32446Usart1Stop(void);
+
+/*** USART2 ***/
+// SR
+uint8_t STM32446Usart2_cts(void);
+void STM32446Usart2_clear_cts(void);
+uint8_t STM32446Usart2_lbd(void);
+void STM32446Usart2_clear_lbd(void);
+uint8_t STM32446Usart2_txe(void);
+uint8_t STM32446Usart2_tc(void);
+void STM32446Usart2_clear_tc(void);
+uint8_t STM32446Usart2_rxne(void);
+void STM32446Usart2_clear_rxne(void);
+uint8_t STM32446Usart2_idle(void);
+uint8_t STM32446Usart2_ore(void);
+uint8_t STM32446Usart2_nf(void);
+uint8_t STM32446Usart2_fe(void);
+uint8_t STM32446Usart2_pe(void);
+// DR
+void STM32446Usart2_dr(uint16_t);
+uint16_t STM32446Usart2_get_dr(void);
+// BRR
+void STM32446Usart2_div_mantissa(uint16_t value);
+void STM32446Usart2_div_fraction(uint8_t value);
+// CR1
+void STM32446Usart2_over8(uint8_t bool);
+void STM32446Usart2_ue(uint8_t bool);
+void STM32446Usart2_m(uint8_t bool);
+void STM32446Usart2_wake(uint8_t bool);
+void STM32446Usart2_pce(uint8_t bool);
+void STM32446Usart2_ps(uint8_t bool);
+void STM32446Usart2_peie(uint8_t bool);
+void STM32446Usart2_txeie(uint8_t bool);
+void STM32446Usart2_tcie(uint8_t bool);
+void STM32446Usart2_rxneie(uint8_t bool);
+void STM32446Usart2_idleie(uint8_t bool);
+void STM32446Usart2_te(uint8_t bool);
+void STM32446Usart2_re(uint8_t bool);
+void STM32446Usart2_rwu(uint8_t bool);
+void STM32446Usart2_sbk(uint8_t bool);
+// CR2
+void STM32446Usart2_linen(uint8_t bool);
+void STM32446Usart2_stop(uint8_t value);
+void STM32446Usart2_clken(uint8_t bool);
+void STM32446Usart2_cpol(uint8_t bool);
+void STM32446Usart2_cpha(uint8_t bool);
+void STM32446Usart2_lbcl(uint8_t bool);
+void STM32446Usart2_lbdie(uint8_t bool);
+void STM32446Usart2_lbdl(uint8_t bool);
+void STM32446Usart2_add(uint8_t value);
+// CR3
+void STM32446Usart2_onebit(uint8_t bool);
+void STM32446Usart2_ctsie(uint8_t bool);
+void STM32446Usart2_ctse(uint8_t bool);
+void STM32446Usart2_rtse(uint8_t bool);
+void STM32446Usart2_dmat(uint8_t bool);
+void STM32446Usart2_dmar(uint8_t bool);
+void STM32446Usart2_scen(uint8_t bool);
+void STM32446Usart2_nack(uint8_t bool);
+void STM32446Usart2_hdsel(uint8_t bool);
+void STM32446Usart2_irlp(uint8_t bool);
+void STM32446Usart2_iren(uint8_t bool);
+void STM32446Usart2_eie(uint8_t bool);
+// GTPR
+void STM32446Usart2_gt(uint8_t value);
+void STM32446Usart2_psc(uint8_t value);
+// Other
+void STM32446Usart2Clock( void );
+
+/*** USART3 ***/
+// SR
+uint8_t STM32446Usart3_cts(void);
+void STM32446Usart3_clear_cts(void);
+uint8_t STM32446Usart3_lbd(void);
+void STM32446Usart3_clear_lbd(void);
+uint8_t STM32446Usart3_txe(void);
+uint8_t STM32446Usart3_tc(void);
+void STM32446Usart3_clear_tc(void);
+uint8_t STM32446Usart3_rxne(void);
+void STM32446Usart3_clear_rxne(void);
+uint8_t STM32446Usart3_idle(void);
+uint8_t STM32446Usart3_ore(void);
+uint8_t STM32446Usart3_nf(void);
+uint8_t STM32446Usart3_fe(void);
+uint8_t STM32446Usart3_pe(void);
+// DR
+void STM32446Usart3_dr(uint16_t);
+uint16_t STM32446Usart3_get_dr(void);
+// BRR
+void STM32446Usart3_div_mantissa(uint16_t value);
+void STM32446Usart3_div_fraction(uint8_t value);
+// CR1
+void STM32446Usart3_over8(uint8_t bool);
+void STM32446Usart3_ue(uint8_t bool);
+void STM32446Usart3_m(uint8_t bool);
+void STM32446Usart3_wake(uint8_t bool);
+void STM32446Usart3_pce(uint8_t bool);
+void STM32446Usart3_ps(uint8_t bool);
+void STM32446Usart3_peie(uint8_t bool);
+void STM32446Usart3_txeie(uint8_t bool);
+void STM32446Usart3_tcie(uint8_t bool);
+void STM32446Usart3_rxneie(uint8_t bool);
+void STM32446Usart3_idleie(uint8_t bool);
+void STM32446Usart3_te(uint8_t bool);
+void STM32446Usart3_re(uint8_t bool);
+void STM32446Usart3_rwu(uint8_t bool);
+void STM32446Usart3_sbk(uint8_t bool);
+// CR2
+void STM32446Usart3_linen(uint8_t bool);
+void STM32446Usart3_stop(uint8_t value);
+void STM32446Usart3_clken(uint8_t bool);
+void STM32446Usart3_cpol(uint8_t bool);
+void STM32446Usart3_cpha(uint8_t bool);
+void STM32446Usart3_lbcl(uint8_t bool);
+void STM32446Usart3_lbdie(uint8_t bool);
+void STM32446Usart3_lbdl(uint8_t bool);
+void STM32446Usart3_add(uint8_t value);
+// CR3
+void STM32446Usart3_onebit(uint8_t bool);
+void STM32446Usart3_ctsie(uint8_t bool);
+void STM32446Usart3_ctse(uint8_t bool);
+void STM32446Usart3_rtse(uint8_t bool);
+void STM32446Usart3_dmat(uint8_t bool);
+void STM32446Usart3_dmar(uint8_t bool);
+void STM32446Usart3_scen(uint8_t bool);
+void STM32446Usart3_nack(uint8_t bool);
+void STM32446Usart3_hdsel(uint8_t bool);
+void STM32446Usart3_irlp(uint8_t bool);
+void STM32446Usart3_iren(uint8_t bool);
+void STM32446Usart3_eie(uint8_t bool);
+// GTPR
+void STM32446Usart3_gt(uint8_t value);
+void STM32446Usart3_psc(uint8_t value);
+// Other
+void STM32446Usart3Clock( void );
+
+/*** UART4 ***/
+// SR
+uint8_t STM32446Uart4_cts(void);
+void STM32446Uart4_clear_cts(void);
+uint8_t STM32446Uart4_lbd(void);
+void STM32446Uart4_clear_lbd(void);
+uint8_t STM32446Uart4_txe(void);
+uint8_t STM32446Uart4_tc(void);
+void STM32446Uart4_clear_tc(void);
+uint8_t STM32446Uart4_rxne(void);
+void STM32446Uart4_clear_rxne(void);
+uint8_t STM32446Uart4_idle(void);
+uint8_t STM32446Uart4_ore(void);
+uint8_t STM32446Uart4_nf(void);
+uint8_t STM32446Uart4_fe(void);
+uint8_t STM32446Uart4_pe(void);
+// DR
+void STM32446Uart4_dr(uint16_t);
+uint16_t STM32446Uart4_get_dr(void);
+// BRR
+void STM32446Uart4_div_mantissa(uint16_t value);
+void STM32446Uart4_div_fraction(uint8_t value);
+// CR1
+void STM32446Uart4_over8(uint8_t bool);
+void STM32446Uart4_ue(uint8_t bool);
+void STM32446Uart4_m(uint8_t bool);
+void STM32446Uart4_wake(uint8_t bool);
+void STM32446Uart4_pce(uint8_t bool);
+void STM32446Uart4_ps(uint8_t bool);
+void STM32446Uart4_peie(uint8_t bool);
+void STM32446Uart4_txeie(uint8_t bool);
+void STM32446Uart4_tcie(uint8_t bool);
+void STM32446Uart4_rxneie(uint8_t bool);
+void STM32446Uart4_idleie(uint8_t bool);
+void STM32446Uart4_te(uint8_t bool);
+void STM32446Uart4_re(uint8_t bool);
+void STM32446Uart4_rwu(uint8_t bool);
+void STM32446Uart4_sbk(uint8_t bool);
+// CR2
+void STM32446Uart4_linen(uint8_t bool);
+void STM32446Uart4_stop(uint8_t value);
+void STM32446Uart4_clken(uint8_t bool);
+void STM32446Uart4_cpol(uint8_t bool);
+void STM32446Uart4_cpha(uint8_t bool);
+void STM32446Uart4_lbcl(uint8_t bool);
+void STM32446Uart4_lbdie(uint8_t bool);
+void STM32446Uart4_lbdl(uint8_t bool);
+void STM32446Uart4_add(uint8_t value);
+// CR3
+void STM32446Uart4_onebit(uint8_t bool);
+void STM32446Uart4_ctsie(uint8_t bool);
+void STM32446Uart4_ctse(uint8_t bool);
+void STM32446Uart4_rtse(uint8_t bool);
+void STM32446Uart4_dmat(uint8_t bool);
+void STM32446Uart4_dmar(uint8_t bool);
+void STM32446Uart4_scen(uint8_t bool);
+void STM32446Uart4_nack(uint8_t bool);
+void STM32446Uart4_hdsel(uint8_t bool);
+void STM32446Uart4_irlp(uint8_t bool);
+void STM32446Uart4_iren(uint8_t bool);
+void STM32446Uart4_eie(uint8_t bool);
+// GTPR
+void STM32446Uart4_gt(uint8_t value);
+void STM32446Uart4_psc(uint8_t value);
+// Other
+void STM32446Uart4Clock( void );
+
+/*** UART5 ***/
+// SR
+uint8_t STM32446Uart5_cts(void);
+void STM32446Uart5_clear_cts(void);
+uint8_t STM32446Uart5_lbd(void);
+void STM32446Uart5_clear_lbd(void);
+uint8_t STM32446Uart5_txe(void);
+uint8_t STM32446Uart5_tc(void);
+void STM32446Uart5_clear_tc(void);
+uint8_t STM32446Uart5_rxne(void);
+void STM32446Uart5_clear_rxne(void);
+uint8_t STM32446Uart5_idle(void);
+uint8_t STM32446Uart5_ore(void);
+uint8_t STM32446Uart5_nf(void);
+uint8_t STM32446Uart5_fe(void);
+uint8_t STM32446Uart5_pe(void);
+// DR
+void STM32446Uart5_dr(uint16_t);
+uint16_t STM32446Uart5_get_dr(void);
+// BRR
+void STM32446Uart5_div_mantissa(uint16_t value);
+void STM32446Uart5_div_fraction(uint8_t value);
+// CR1
+void STM32446Uart5_over8(uint8_t bool);
+void STM32446Uart5_ue(uint8_t bool);
+void STM32446Uart5_m(uint8_t bool);
+void STM32446Uart5_wake(uint8_t bool);
+void STM32446Uart5_pce(uint8_t bool);
+void STM32446Uart5_ps(uint8_t bool);
+void STM32446Uart5_peie(uint8_t bool);
+void STM32446Uart5_txeie(uint8_t bool);
+void STM32446Uart5_tcie(uint8_t bool);
+void STM32446Uart5_rxneie(uint8_t bool);
+void STM32446Uart5_idleie(uint8_t bool);
+void STM32446Uart5_te(uint8_t bool);
+void STM32446Uart5_re(uint8_t bool);
+void STM32446Uart5_rwu(uint8_t bool);
+void STM32446Uart5_sbk(uint8_t bool);
+// CR2
+void STM32446Uart5_linen(uint8_t bool);
+void STM32446Uart5_stop(uint8_t value);
+void STM32446Uart5_clken(uint8_t bool);
+void STM32446Uart5_cpol(uint8_t bool);
+void STM32446Uart5_cpha(uint8_t bool);
+void STM32446Uart5_lbcl(uint8_t bool);
+void STM32446Uart5_lbdie(uint8_t bool);
+void STM32446Uart5_lbdl(uint8_t bool);
+void STM32446Uart5_add(uint8_t value);
+// CR3
+void STM32446Uart5_onebit(uint8_t bool);
+void STM32446Uart5_ctsie(uint8_t bool);
+void STM32446Uart5_ctse(uint8_t bool);
+void STM32446Uart5_rtse(uint8_t bool);
+void STM32446Uart5_dmat(uint8_t bool);
+void STM32446Uart5_dmar(uint8_t bool);
+void STM32446Uart5_scen(uint8_t bool);
+void STM32446Uart5_nack(uint8_t bool);
+void STM32446Uart5_hdsel(uint8_t bool);
+void STM32446Uart5_irlp(uint8_t bool);
+void STM32446Uart5_iren(uint8_t bool);
+void STM32446Uart5_eie(uint8_t bool);
+// GTPR
+void STM32446Uart5_gt(uint8_t value);
+void STM32446Uart5_psc(uint8_t value);
+// Other
+void STM32446Uart5Clock( void );
+
+/*** USART6 ***/
+// SR
+uint8_t STM32446Usart6_cts(void);
+void STM32446Usart6_clear_cts(void);
+uint8_t STM32446Usart6_lbd(void);
+void STM32446Usart6_clear_lbd(void);
+uint8_t STM32446Usart6_txe(void);
+uint8_t STM32446Usart6_tc(void);
+void STM32446Usart6_clear_tc(void);
+uint8_t STM32446Usart6_rxne(void);
+void STM32446Usart6_clear_rxne(void);
+uint8_t STM32446Usart6_idle(void);
+uint8_t STM32446Usart6_ore(void);
+uint8_t STM32446Usart6_nf(void);
+uint8_t STM32446Usart6_fe(void);
+uint8_t STM32446Usart6_pe(void);
+// DR
+void STM32446Usart6_dr(uint16_t);
+uint16_t STM32446Usart6_get_dr(void);
+// BRR
+void STM32446Usart6_div_mantissa(uint16_t value);
+void STM32446Usart6_div_fraction(uint8_t value);
+// CR1
+void STM32446Usart6_over8(uint8_t bool);
+void STM32446Usart6_ue(uint8_t bool);
+void STM32446Usart6_m(uint8_t bool);
+void STM32446Usart6_wake(uint8_t bool);
+void STM32446Usart6_pce(uint8_t bool);
+void STM32446Usart6_ps(uint8_t bool);
+void STM32446Usart6_peie(uint8_t bool);
+void STM32446Usart6_txeie(uint8_t bool);
+void STM32446Usart6_tcie(uint8_t bool);
+void STM32446Usart6_rxneie(uint8_t bool);
+void STM32446Usart6_idleie(uint8_t bool);
+void STM32446Usart6_te(uint8_t bool);
+void STM32446Usart6_re(uint8_t bool);
+void STM32446Usart6_rwu(uint8_t bool);
+void STM32446Usart6_sbk(uint8_t bool);
+// CR2
+void STM32446Usart6_linen(uint8_t bool);
+void STM32446Usart6_stop(uint8_t value);
+void STM32446Usart6_clken(uint8_t bool);
+void STM32446Usart6_cpol(uint8_t bool);
+void STM32446Usart6_cpha(uint8_t bool);
+void STM32446Usart6_lbcl(uint8_t bool);
+void STM32446Usart6_lbdie(uint8_t bool);
+void STM32446Usart6_lbdl(uint8_t bool);
+void STM32446Usart6_add(uint8_t value);
+// CR3
+void STM32446Usart6_onebit(uint8_t bool);
+void STM32446Usart6_ctsie(uint8_t bool);
+void STM32446Usart6_ctse(uint8_t bool);
+void STM32446Usart6_rtse(uint8_t bool);
+void STM32446Usart6_dmat(uint8_t bool);
+void STM32446Usart6_dmar(uint8_t bool);
+void STM32446Usart6_scen(uint8_t bool);
+void STM32446Usart6_nack(uint8_t bool);
+void STM32446Usart6_hdsel(uint8_t bool);
+void STM32446Usart6_irlp(uint8_t bool);
+void STM32446Usart6_iren(uint8_t bool);
+void STM32446Usart6_eie(uint8_t bool);
+// GTPR
+void STM32446Usart6_gt(uint8_t value);
+void STM32446Usart6_psc(uint8_t value);
+// Other
+void STM32446Usart6Clock( void );
+
+// Common
 uint32_t usart_getclocksource(void);
 uint32_t usart_gethpre(void);
 uint32_t usart_getpllm(void);

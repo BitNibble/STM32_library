@@ -76,8 +76,8 @@ typedef struct
 	STM32446CLOCK_prescaler CLOCK_prescaler;
 	STM32446PLL_parameter PLL_parameter;
 	uint32_t (*ClockSource)(void);
-	uint32_t (*SystemClock)(void);
 	uint32_t (*PllSource)(void);
+	uint32_t (*SystemClock)(void);
 }STM32446Query;
 
 /******************* CORE ********************/
@@ -451,8 +451,8 @@ typedef struct
 	STM32446USART1obj usart1;
 	STM32446USART2obj usart2;
 	STM32446USART3obj usart3;
-	STM32446USART4obj usart4;
-	STM32446USART5obj usart5;
+	STM32446USART4obj uart4;
+	STM32446USART5obj uart5;
 	STM32446USART6obj usart6;
 	//FUNCTION
 	STM32446_function func;
