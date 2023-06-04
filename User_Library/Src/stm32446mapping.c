@@ -950,6 +950,7 @@ STM32446 STM32446enable(void){
 		// Other
 		stm32446.usart1.clock = STM32446Usart1Clock;
 		stm32446.usart1.inic = STM32446Usart1Inic;
+		stm32446.usart1.parameter = STM32446Usart1Parameter;
 		stm32446.usart1.transmit = STM32446Usart1Transmit;
 		stm32446.usart1.receive = STM32446Usart1Receive;
 		stm32446.usart1.stop = STM32446Usart1Stop;
@@ -1023,6 +1024,10 @@ STM32446 STM32446enable(void){
 		stm32446.usart2.gtpr.psc = STM32446Usart2_psc;
 		// Other
 		stm32446.usart2.clock = STM32446Usart2Clock;
+		stm32446.usart2.parameter = STM32446Usart2Parameter;
+		stm32446.usart2.transmit = STM32446Usart2Transmit;
+		stm32446.usart2.receive = STM32446Usart2Receive;
+		stm32446.usart2.stop = STM32446Usart2Stop;
 	#endif
 
 	// USART -> USART3
@@ -1093,6 +1098,10 @@ STM32446 STM32446enable(void){
 		stm32446.usart3.gtpr.psc = STM32446Usart3_psc;
 		// Other
 		stm32446.usart3.clock = STM32446Usart3Clock;
+		stm32446.usart3.parameter = STM32446Usart3Parameter;
+		stm32446.usart3.transmit = STM32446Usart3Transmit;
+		stm32446.usart3.receive = STM32446Usart3Receive;
+		stm32446.usart3.stop = STM32446Usart3Stop;
 	#endif
 
 	// USART -> UART4
@@ -1163,6 +1172,10 @@ STM32446 STM32446enable(void){
 		stm32446.uart4.gtpr.psc = STM32446Uart4_psc;
 		// Other
 		stm32446.uart4.clock = STM32446Uart4Clock;
+		stm32446.uart4.parameter = STM32446Uart4Parameter;
+		stm32446.uart4.transmit = STM32446Uart4Transmit;
+		stm32446.uart4.receive = STM32446Uart4Receive;
+		stm32446.uart4.stop = STM32446Uart4Stop;
 	#endif
 
 	// UART -> UART5
@@ -1233,6 +1246,10 @@ STM32446 STM32446enable(void){
 		stm32446.uart5.gtpr.psc = STM32446Uart5_psc;
 		// Other
 		stm32446.uart5.clock = STM32446Uart5Clock;
+		stm32446.uart5.parameter = STM32446Uart5Parameter;
+		stm32446.uart5.transmit = STM32446Uart5Transmit;
+		stm32446.uart5.receive = STM32446Uart5Receive;
+		stm32446.uart5.stop = STM32446Uart5Stop;
 	#endif
 
 	// USART -> USART6
@@ -1303,6 +1320,10 @@ STM32446 STM32446enable(void){
 		stm32446.usart6.gtpr.psc = STM32446Usart6_psc;
 		// Other
 		stm32446.usart6.clock = STM32446Usart6Clock;
+		stm32446.usart6.parameter = STM32446Usart6Parameter;
+		stm32446.usart6.transmit = STM32446Usart6Transmit;
+		stm32446.usart6.receive = STM32446Usart6Receive;
+		stm32446.usart6.stop = STM32446Usart6Stop;
 	#endif
 
 	// QUERY
