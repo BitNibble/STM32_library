@@ -145,7 +145,7 @@ typedef struct
 	#endif
 }STM32446USART3obj;
 
-// USART -> USART4
+// USART -> UART4
 typedef struct
 {
 	USART_TypeDef* reg;
@@ -163,7 +163,7 @@ typedef struct
 	#endif
 }STM32446USART4obj;
 
-// USART -> USART5
+// USART -> UART5
 typedef struct
 {
 	USART_TypeDef* reg;
@@ -605,15 +605,6 @@ void STM32446Usart6_gt(uint8_t value);
 void STM32446Usart6_psc(uint8_t value);
 // Other
 void STM32446Usart6Clock( void );
-
-// Common
-uint32_t usart_getclocksource(void);
-uint32_t usart_gethpre(void);
-uint32_t usart_getpllm(void);
-uint32_t usart_getplln(void);
-uint32_t usart_getpllp(void);
-uint32_t usart_getpllr(void);
-uint32_t usart_getsysclk(void);
 
 #endif
 

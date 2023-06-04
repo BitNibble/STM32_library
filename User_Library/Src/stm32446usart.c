@@ -14,6 +14,13 @@ Comment:
 #include <math.h>
 
 /*** File Procedure & Funtion Header ***/
+uint32_t usart_getclocksource(void);
+uint32_t usart_gethpre(void);
+uint32_t usart_getpllm(void);
+uint32_t usart_getplln(void);
+uint32_t usart_getpllp(void);
+uint32_t usart_getpllr(void);
+uint32_t usart_getsysclk(void);
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
@@ -864,10 +871,10 @@ void STM32446Usart3_psc(uint8_t value)
 /*** UART4 ***/
 void STM32446Uart4Clock( void )
 {
-	RCC->APB1ENR |= (1 << 19); // UART4EN: USART4 clock enable
+	RCC->APB1ENR |= (1 << 19); // UART4EN: UART4 clock enable
 }
 
-/*** USART 4 Bit Mapping ***/
+/*** UART 4 Bit Mapping ***/
 // SR
 uint8_t STM32446Uart4_cts(void)
 {
