@@ -30,11 +30,13 @@ Comment:
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446rcc.h"
+#include "stm32446nvic.h"
 #include "stm32446gpio.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
 #include "stm32446tim.h"
+
 
 /************ STM32F446RE ************/
 /********** Global TypeDef ***********/
@@ -86,16 +88,6 @@ typedef struct
 {
 	SCB_Type* reg;
 }STM32446SCBobj;
-
-// NVIC
-typedef struct
-{
-	NVIC_Type* reg;
-	void (*set_enable)( uint8_t IRQn );
-	void (*clear_enable)( uint8_t IRQn );
-	void (*set_pending)( uint8_t IRQn );
-	void (*clear_pending)( uint8_t IRQn );
-}STM32446NVICobj;
 
 // SysTick
 typedef struct
