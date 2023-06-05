@@ -13,7 +13,7 @@ Comment:
 #include "stm32446usart.h"
 #include <math.h>
 
-/*** File Procedure & Funtion Header ***/
+/*** File Procedure & Function Header ***/
 uint32_t usart_getclocksource(void);
 uint32_t usart_gethpre(void);
 uint32_t usart_getpllm(void);
@@ -23,6 +23,7 @@ uint32_t usart_getpllr(void);
 uint32_t usart_getsysclk(void);
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
 /*** USART1 ***/
 void STM32446Usart1Clock( void )
@@ -2157,6 +2158,17 @@ void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value = data & mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = *(reg + n ) & ~(mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /*** EOF ***/

@@ -12,9 +12,10 @@ Comment:
 #include <stm32446mapping.h>
 #include "stm32446tim.h"
 
-/*** File Procedure & Funtion Header ***/
+/*** File Procedure & Function Header ***/
 uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
 /*** TIM9 ***/
 void STM32446Tim9Clock(void)
@@ -354,6 +355,17 @@ void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	value = data & mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = *(reg + n ) & ~(mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /*** File Interrupt ***/

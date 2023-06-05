@@ -34,6 +34,7 @@ static uint32_t nen[4];
 /*** TOP ***/
 uint32_t STM32446_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
 /*** SYSTICK ***/
 void SystickInic(void);
@@ -1759,6 +1760,17 @@ void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 	value = data & mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = *(reg + n ) & ~(mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /*** MISCELLANEOUS ***/

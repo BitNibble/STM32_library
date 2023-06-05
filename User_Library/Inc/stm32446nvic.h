@@ -17,13 +17,15 @@ Comment:
 typedef struct
 {
 	NVIC_Type* reg;
-	void (*set_enable)( uint8_t IRQn );
-	void (*clear_enable)( uint8_t IRQn );
-	void (*set_pending)( uint8_t IRQn );
-	void (*clear_pending)( uint8_t IRQn );
-	uint8_t (*active)( uint8_t IRQn );
-	void (*priority)(uint32_t IRQn, uint32_t priority);
-	void (*trigger)(uint32_t IRQn);
+	#if defined(_STM32446NVIC_H_)
+		void (*set_enable)( uint8_t IRQn );
+		void (*clear_enable)( uint8_t IRQn );
+		void (*set_pending)( uint8_t IRQn );
+		void (*clear_pending)( uint8_t IRQn );
+		uint8_t (*active)( uint8_t IRQn );
+		void (*priority)(uint32_t IRQn, uint32_t priority);
+		void (*trigger)(uint32_t IRQn);
+	#endif
 }STM32446NVICobj;
 
 // NVIC

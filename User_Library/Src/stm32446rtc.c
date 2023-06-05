@@ -15,9 +15,10 @@ Comment:
 static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
 
-/*** File Procedure & Funtion Header ***/
+/*** File Procedure & Function Header ***/
 uint32_t rtc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 void STM32446RtcSetTr(void);
 void STM32446RtcSetDr(void);
 uint8_t STM32446RtcAccess(uint8_t clock);
@@ -250,6 +251,7 @@ void STM32446Rtctr2vec(char* rtc_vect)
 	}
 }
 
+/*** File Procedure & Function Definition ***/
 //RTC
 void STM32446RtcSetTr(void)
 {
@@ -379,6 +381,17 @@ void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	value = data & mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+uint32_t rtc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = *(reg + n ) & ~(mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /*** EOF ***/

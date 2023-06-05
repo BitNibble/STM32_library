@@ -12,6 +12,9 @@ Comment:
 #include "stm32446mapping.h"
 #include "stm32446nvic.h"
 
+/*** File Procedure & Function Header ***/
+uint32_t STM32446NVIC_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+
 void STM32446NVIC_set_enable( uint8_t IRQn )
 {
 	volatile uint32_t* reg = NVIC->ISER;
@@ -71,6 +74,18 @@ void STM32446NVIC_trigger(uint32_t IRQn)
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	value = IRQn & mask;
 	*reg = value;
+}
+
+/*** File Procedure & Function Definition ***/
+uint32_t STM32446NVIC_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
+	uint32_t value = 0;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value = *(reg + n ) & ~(mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /*** EOF ***/
