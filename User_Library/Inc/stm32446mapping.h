@@ -26,7 +26,12 @@ Comment:
 /*** Define & Macros***/
 #define HSI_RC 16000000UL
 #define HSE_OSC 25000000UL
-
+#ifndef on
+	#define on 1
+#endif
+#ifndef off
+	#define off 0
+#endif
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446rcc.h"

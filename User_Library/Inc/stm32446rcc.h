@@ -14,6 +14,15 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
+/*** Define & Macros***/
+#ifndef on
+	#define on 1
+#endif
+#ifndef off
+	#define off 0
+#endif
+
+
 /*** RCC_Common ***/
 // RCC -> PLL
 typedef struct

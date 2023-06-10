@@ -102,15 +102,16 @@ STM32446 STM32446enable(void){
 
 	// NVIC
 	stm32446.nvic.reg = (NVIC_Type*) NVIC_BASE;
-	stm32446.nvic.set_enable = STM32446NVIC_set_enable;
-	stm32446.nvic.clear_enable = STM32446NVIC_clear_enable;
-	stm32446.nvic.set_pending = STM32446NVIC_set_pending;
-	stm32446.nvic.clear_pending = STM32446NVIC_clear_pending;
-	stm32446.nvic.active = STM32446NVIC_active;
-	stm32446.nvic.priority = STM32446NVIC_priority;
-	stm32446.nvic.trigger = STM32446NVIC_trigger;
+	#if defined(_STM32446NVIC_H_)
+		stm32446.nvic.set_enable = STM32446NVIC_set_enable;
+		stm32446.nvic.clear_enable = STM32446NVIC_clear_enable;
+		stm32446.nvic.set_pending = STM32446NVIC_set_pending;
+		stm32446.nvic.clear_pending = STM32446NVIC_clear_pending;
+		stm32446.nvic.active = STM32446NVIC_active;
+		stm32446.nvic.priority = STM32446NVIC_priority;
+		stm32446.nvic.trigger = STM32446NVIC_trigger;
+	#endif
 
-	
 	// SysTick (Used as Delay Source)
 	stm32446.systick.reg = (SysTick_Type*) SysTick_BASE;
 	stm32446.systick.delay_ms = STM32446delay_ms;
