@@ -34,6 +34,7 @@ Comment:
 #endif
 /*** Module Library ***/
 // Comment out modules not being used
+#include "stm32446pwr.h"
 #include "stm32446rcc.h"
 #include "stm32446nvic.h"
 #include "stm32446gpio.h"
@@ -256,12 +257,6 @@ typedef struct
 {
 	IWDG_TypeDef* reg;
 }STM32446IWDGobj;
-
-// PWR
-typedef struct
-{
-	PWR_TypeDef* reg;
-}STM32446PWRobj;
 
 // SAI -> SAI1
 typedef struct
