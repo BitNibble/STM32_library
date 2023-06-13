@@ -38,9 +38,11 @@ Comment:
 #ifndef no
 	#define no 0
 #endif
+
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446flash.h"
+#include "stm32446crc.h"
 #include "stm32446pwr.h"
 #include "stm32446rcc.h"
 #include "stm32446nvic.h"
@@ -49,7 +51,6 @@ Comment:
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
 #include "stm32446tim.h"
-
 
 /************ STM32F446RE ************/
 /********** Global TypeDef ***********/
@@ -68,21 +69,21 @@ typedef struct
 
 typedef struct
 {
-	uint32_t (*AHB)(void);
-	uint32_t (*APB1)(void);
-	uint32_t (*APB2)(void);
-	uint32_t (*RTCclk)(void);
-	uint32_t (*MCO1)(void);
-	uint32_t (*MCO2)(void);
+	uint16_t (*AHB)(void);
+	uint8_t (*APB1)(void);
+	uint8_t (*APB2)(void);
+	uint8_t (*RTCclk)(void);
+	uint8_t (*MCO1)(void);
+	uint8_t (*MCO2)(void);
 }STM32446CLOCK_prescaler;
 
 typedef struct
 {
-	uint32_t (*M)(void);
-	uint32_t (*N)(void);
-	uint32_t (*P)(void);
-	uint32_t (*Q)(void);
-	uint32_t (*R)(void);
+	uint8_t (*M)(void);
+	uint16_t (*N)(void);
+	uint8_t (*P)(void);
+	uint8_t (*Q)(void);
+	uint8_t (*R)(void);
 }STM32446PLL_parameter;
 
 /************** QUERY TypeDef ****************/
@@ -147,12 +148,6 @@ typedef struct
 {
 	CEC_TypeDef* reg;
 }STM32446CECobj;
-
-// CRC
-typedef struct
-{
-	CRC_TypeDef* reg;
-}STM32446CRCobj;
 
 // DAC
 typedef struct

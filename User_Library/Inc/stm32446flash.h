@@ -28,8 +28,8 @@ Comment:
 #ifndef READPROTECTL0
 	#define READPROTECTL0  0xAA
 #endif
-#ifndef READPROTECTL1
-	#define READPROTECTL1  0xCC
+#ifndef READPROTECTL2
+	#define READPROTECTL2  0xCC
 #endif
 
 /*** FLASH Bit Mapping TypeDef ***/
@@ -96,12 +96,14 @@ typedef struct
 {
 	FLASH_TypeDef* reg;
 	#if defined(_STM32446FLASH_H_)
+		/*** Bit Mapping ***/
 		STM32446FLASH_acr acr;
 		STM32446FLASH_sr sr;
 		STM32446FLASH_cr cr;
 		STM32446FLASH_optcr optcr;
 		void (*keyr)(uint32_t);
 		void (*optkeyr)(uint32_t);
+		/*** Other ***/
 	#endif
 }STM32446FLASHobj;
 

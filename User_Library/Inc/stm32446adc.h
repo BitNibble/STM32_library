@@ -210,6 +210,7 @@ typedef struct
 	ADC_TypeDef* reg;
 	STM32446ADCCOMMONobj common;
 	#if defined(_STM32446ADC_H_)
+		/*** Bit Mapping ***/
 		STM32446ADC_SR sr;
 		STM32446ADC_CR1 cr1;
 		STM32446ADC_CR2 cr2;
@@ -230,6 +231,7 @@ typedef struct
 		uint16_t (*jdr3)(void);
 		uint16_t (*jdr4)(void);
 		uint16_t (*dr)(void);
+		/*** Other ***/
 		STM32446ADC1single single;
 		void (*clock)(void);
 	#endif

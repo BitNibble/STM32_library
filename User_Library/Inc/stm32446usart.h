@@ -92,6 +92,7 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		/*** Bit Mapping ***/
 		STM32446USART_SR sr;
 		STM32446USART_BRR brr;
 		STM32446USART_CR1 cr1;
@@ -100,7 +101,7 @@ typedef struct
 		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
-		// Other
+		/*** Other ***/
 		void (*clock)(void);
 		void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -115,6 +116,7 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		/*** Bit Mapping ***/
 		STM32446USART_SR sr;
 		STM32446USART_BRR brr;
 		STM32446USART_CR1 cr1;
@@ -123,7 +125,7 @@ typedef struct
 		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
-		// Other
+		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*transmit)(void);
@@ -137,6 +139,7 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		/*** Bit Mapping ***/
 		STM32446USART_SR sr;
 		STM32446USART_BRR brr;
 		STM32446USART_CR1 cr1;
@@ -145,7 +148,7 @@ typedef struct
 		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
-		// Other
+		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*transmit)(void);
@@ -159,6 +162,7 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		/*** Bit Mapping ***/
 		STM32446USART_SR sr;
 		STM32446USART_BRR brr;
 		STM32446USART_CR1 cr1;
@@ -167,7 +171,7 @@ typedef struct
 		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
-		// Other
+		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*transmit)(void);
@@ -181,6 +185,7 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		/*** Bit Mapping ***/
 		STM32446USART_SR sr;
 		STM32446USART_BRR brr;
 		STM32446USART_CR1 cr1;
@@ -189,7 +194,7 @@ typedef struct
 		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
-		// Other
+		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*transmit)(void);
@@ -203,6 +208,7 @@ typedef struct
 {
 	USART_TypeDef* reg;
 	#if defined(_STM32446USART_H_)
+		/*** Bit Mapping ***/
 		STM32446USART_SR sr;
 		STM32446USART_BRR brr;
 		STM32446USART_CR1 cr1;
@@ -211,7 +217,7 @@ typedef struct
 		STM32446USART_GTPR gtpr;
 		void (*dr)(uint16_t);
 		uint16_t (*get_dr)(void);
-		// Other
+		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 		void (*transmit)(void);

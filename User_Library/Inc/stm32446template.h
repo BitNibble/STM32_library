@@ -16,6 +16,9 @@ Comment:
 
 /*** TEMPLATE1 TypeDef ***/
 typedef struct{
+	/*** Bit Mapping ***/
+
+	/*** Other ***/
 	void (*inic)( uint8_t parameter );
 }STM32446TEMPLATE1;
 

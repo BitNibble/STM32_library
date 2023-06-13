@@ -21,13 +21,18 @@ Comment:
 #ifndef off
 	#define off 0
 #endif
-
+#ifndef yes
+	#define yes 1
+#endif
+#ifndef no
+	#define no 0
+#endif
 
 /*** RCC_Common TypeDef ***/
 // RCC -> PLL
 typedef struct
 {
-	void (*division)(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
+	void (*division)(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr);
 	void (*enable)(void);
 }STM32446RCCPLL;
 
@@ -465,16 +470,7 @@ typedef struct
 {
 	RCC_TypeDef* reg;
 	#if defined(_STM32446RCC_H_)
-		uint8_t (*inic)(void);
-		void (*henable)(unsigned int hclock);
-		uint8_t (*hselect)(uint8_t sysclk);
-		void (*lenable)(unsigned int lclock);
-		void (*lselect)(uint8_t lclock);
-		void (*prescaler)(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-		STM32446RCCPLL pll;
-		STM32446RCCPLLI2S plli2s;
-		STM32446RCCPLLSAI pllsai;
-		/*** RCC Bit Mapping TypeDef ***/
+		/*** Bit Mapping ***/
 		// CR
 		STM32446RCC_cr cr;
 		// PLLCFGR
@@ -529,22 +525,33 @@ typedef struct
 		STM32446RCC_ckgatenr ckgatenr;
 		// DCKCFGR2
 		STM32446RCC_dckcfgr2 dckcfgr2;
+		/*** Extended ***/
+		STM32446RCCPLL pll;
+		STM32446RCCPLLI2S plli2s;
+		STM32446RCCPLLSAI pllsai;
+		/*** Other ***/
+		uint8_t (*inic)(void);
+		void (*henable)(uint8_t hclock);
+		uint8_t (*hselect)(uint8_t sysclk);
+		void (*lenable)(uint8_t lclock);
+		void (*lselect)(uint8_t lclock);
+		void (*prescaler)(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre);
 	#endif
 }STM32446RCCobj;
 
 /*** RCC Procedure & Function Header ***/
 // PLL
-void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
+void STM32446PLLDivision(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr);
 void STM32446RccPLLCLKEnable(void);
 void STM32446RccPLLI2SEnable(void);
 void STM32446RccPLLSAIEnable(void);
 // RCC
 uint8_t STM32446RccInic(void);
-void STM32446RccHEnable(unsigned int hclock);
+void STM32446RccHEnable(uint8_t hclock);
 uint8_t STM32446RccHSelect(uint8_t hclock);
-void STM32446RccLEnable(unsigned int lclock);
+void STM32446RccLEnable(uint8_t lclock);
 void STM32446RccLSelect(uint8_t lclock);
-void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
+void STM32446Prescaler(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre);
 /*** RCC Bit Mapping Header ***/
 // CR
 uint8_t STM32446RCC_CR_get_pllsairdy(void);

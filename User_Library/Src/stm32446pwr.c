@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 11062023
 Comment:
 	
 *******************************************************************************/
@@ -66,6 +66,10 @@ void STM32446PWR_cr_dbp(uint8_t bool)
 void STM32446PWR_cr_pls(uint8_t value)
 {
 	pwr_setbit(&PWR->CR, 3, 5, value);
+}
+uint8_t STM32446PWR_cr_get_pls(void)
+{
+	return pwr_getbit(PWR->CR, 3, 5);
 }
 void STM32446PWR_cr_pvde(uint8_t bool)
 {

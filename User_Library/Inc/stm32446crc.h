@@ -1,0 +1,55 @@
+/******************************************************************************
+	STM32 446 CRC
+Author: Sergio Santos
+	<sergio.salazar.santos@gmail.com>
+License: GNU General Public License
+Hardware: STM32-446
+Date: 13062023
+Comment:
+	
+*******************************************************************************/
+#ifndef _STM32446CRC_H_
+	#define _STM32446CRC_H_
+
+/*** Library ***/
+#include <inttypes.h>
+
+/*** CRC TypeDef ***/
+typedef struct
+{
+	CRC_TypeDef* reg;
+	#if defined(_STM32446CRC_H_)
+		/*** Bit Mapping ***/
+		void (*dr)(uint32_t value);
+		uint32_t (*get_dr)(void);
+		void (*idr)(uint8_t value);
+		uint8_t (*get_idr)(void);
+		void (*reset)(void);
+		/*** Other ***/
+	#endif
+}STM32446CRCobj;
+
+/***** CRC Procedure & Function Header ******/
+/*** CRC Bit Mapping Header ***/
+void STM32446CRC_dr(uint32_t value);
+uint32_t STM32446CRC_get_dr(void);
+void STM32446CRC_idr(uint8_t value);
+uint8_t STM32446CRC_get_idr(void);
+void STM32446CRC_reset(void);
+
+#endif
+
+/*** EOF ***/
+
+/******
+1 Sequence
+2 Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3 Pointer and Variable
+4 Casting
+******/
+
+

@@ -21,6 +21,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -36,6 +37,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -51,6 +53,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -66,6 +69,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -81,6 +85,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -96,6 +101,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -111,6 +117,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );
@@ -126,6 +133,7 @@ typedef struct
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
 		void (*clock)(void);
+		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
 		void (*pupdr)( unsigned int data, unsigned int pin );

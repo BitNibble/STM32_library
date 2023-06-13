@@ -30,6 +30,7 @@ typedef struct
 	void (*fpds)(uint8_t bool);
 	void (*dbp)(uint8_t bool);
 	void (*pls)(uint8_t value);
+	uint8_t (*get_pls)(void);
 	void (*pvde)(uint8_t bool);
 	void (*clear_csbf)(void);
 	void (*clear_cwuf)(void);
@@ -60,8 +61,10 @@ typedef struct
 {
 	PWR_TypeDef* reg;
 	#if defined(_STM32446PWR_H_)
+		/*** Bit Mapping ***/
 		STM32446PWR_cr cr;
 		STM32446PWR_csr csr;
+		/*** Other ***/
 	#endif
 }STM32446PWRobj;
 
@@ -81,6 +84,7 @@ void STM32446PWR_cr_lpuds(uint8_t bool);
 void STM32446PWR_cr_fpds(uint8_t bool);
 void STM32446PWR_cr_dbp(uint8_t bool);
 void STM32446PWR_cr_pls(uint8_t value);
+uint8_t STM32446PWR_cr_get_pls(void);
 void STM32446PWR_cr_pvde(uint8_t bool);
 void STM32446PWR_cr_clear_csbf(void);
 void STM32446PWR_cr_clear_cwuf(void);

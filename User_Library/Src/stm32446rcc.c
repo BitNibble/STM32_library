@@ -50,10 +50,10 @@ uint8_t STM32446RccInic(void)
 }
 
 // RCC
-void STM32446RccHEnable(unsigned int hclock)
+void STM32446RccHEnable(uint8_t hclock)
 {
-	unsigned int set;
-	unsigned int rdy;
+	uint8_t set;
+	uint8_t rdy;
 	for( set = 1, rdy = 1; rdy ; ){
 		if(hclock == 0){ // HSION: Internal high-speed clock enable
 			if( set ){ RCC->CR |= ( 1 << 0); set = 0; }else if( RCC->CR & ( 1 << 1) ) rdy = 0;
@@ -88,10 +88,10 @@ uint8_t STM32446RccHSelect(uint8_t hclock)
 	return (RCC->CFGR >> 2) & 3;
 }
 
-void STM32446RccLEnable(unsigned int lclock)
+void STM32446RccLEnable(uint8_t lclock)
 {
-	unsigned int set;
-	unsigned int rdy;
+	uint8_t set;
+	uint8_t rdy;
 	for( set = 1, rdy = 1; rdy ; ){
 		if(lclock == 2){ // LSION: Internal low-speed oscillator enable
 			if( set ){ RCC->CSR |= ( 1 << 0); set = 0; }else if( RCC->CSR & ( 1 << 1) ) rdy = 0;
@@ -123,6 +123,119 @@ void STM32446RccLSelect(uint8_t lclock)
 		default:
 			RCC->BDCR |= (1 << 8); // LSE oscillator clock used as the RTC clock
 		break;
+	}
+}
+
+void STM32446Prescaler(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre)
+{
+	const unsigned int mask = 0x001FFCF0;
+	RCC->CFGR &= (unsigned int) ~mask; // clear args
+
+	if(rtcpre > 1 && rtcpre < 32) // 16
+		RCC->CFGR |= (rtcpre << 16);
+
+	switch(ppre2){ // 13
+		case 2:
+			RCC->CFGR |= (4 << 13);
+		break;
+		case 4:
+			RCC->CFGR |= (5 << 13);
+		break;
+		case 8:
+			RCC->CFGR |= (6 << 13);
+		break;
+		case 16:
+			RCC->CFGR |= (7 << 13);
+		break;
+		default:
+		break;
+	}
+
+	switch(ppre1){ // 10
+	case 2:
+		RCC->CFGR |= (4 << 10);
+	break;
+	case 4:
+		RCC->CFGR |= (5 << 10);
+	break;
+	case 8:
+		RCC->CFGR |= (6 << 10);
+	break;
+	case 16:
+		RCC->CFGR |= (7 << 10);
+	break;
+	default:
+	break;
+	}
+
+	switch(ahbpre){ // 4
+	case 2:
+		RCC->CFGR |= (8 << 4);
+	break;
+	case 4:
+		RCC->CFGR |= (9 << 4);
+	break;
+	case 8:
+		RCC->CFGR |= (10 << 4);
+	break;
+	case 16:
+		RCC->CFGR |= (11 << 4);
+	break;
+	case 64:
+		RCC->CFGR |= (12 << 4);
+	break;
+	case 128:
+		RCC->CFGR |= (13 << 4);
+	break;
+	case 256:
+		RCC->CFGR |= (14 << 4);
+	break;
+	case 512:
+		RCC->CFGR |= (15 << 4);
+	break;
+	default:
+	break;
+	}
+}
+
+// PLL
+void STM32446PLLDivision(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr)
+{
+	const unsigned int mask = 0x7F437FFF;
+	RCC->PLLCFGR &= (unsigned int) ~mask; // clear args
+
+
+	if(pllr > 1 && pllr < 8){ // PLLR[28]: Main PLL division factor for I2Ss, SAIs, SYSTEM and SPDIF-Rx clocks
+		RCC->PLLCFGR |= (pllr << 28);
+	}
+
+	if(pllq > 1 && pllq < 16){ // PLLQ[24]: Main PLL (PLL) division factor for USB OTG FS, SDIOclocks
+		RCC->PLLCFGR |= (pllq << 24);
+	}
+
+	if(pllsrc == 1) // PLLSRC[22]: Main PLL(PLL) and audio PLL (PLLI2S) entry clock source
+		RCC->PLLCFGR |= (1 << 22);
+
+	switch(pllp){ // PLLP[16]: Main PLL (PLL) division factor for main system clock
+		case 4:
+			RCC->PLLCFGR |= (1 << 16);
+		break;
+		case 6:
+			RCC->PLLCFGR |= (2 << 16);
+		break;
+		case 8:
+			RCC->PLLCFGR |= (3 << 16);
+		break;
+		default:
+		break;
+	}
+
+	if(plln > 49 && plln < 433){ // PLLN[6]: Main PLL (PLL) multiplication factor for VCO
+		RCC->PLLCFGR |= (plln << 6);
+	}
+
+	if(pllm > 1 && pllm < 64){ // PLLM[0]: Division factor for the main PLL (PLL) input clock [2Mhz]
+		RCC->PLLCFGR |= pllm;
 	}
 }
 
