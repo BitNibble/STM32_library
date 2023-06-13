@@ -103,6 +103,7 @@ STM32446 STM32446enable(void){
 	// NVIC
 	stm32446.nvic.reg = (NVIC_Type*) NVIC_BASE;
 	#if defined(_STM32446NVIC_H_)
+		/*** NVIC Bit Mapping Link ***/
 		stm32446.nvic.set_enable = STM32446NVIC_set_enable;
 		stm32446.nvic.clear_enable = STM32446NVIC_clear_enable;
 		stm32446.nvic.set_pending = STM32446NVIC_set_pending;
@@ -110,6 +111,7 @@ STM32446 STM32446enable(void){
 		stm32446.nvic.active = STM32446NVIC_active;
 		stm32446.nvic.priority = STM32446NVIC_priority;
 		stm32446.nvic.trigger = STM32446NVIC_trigger;
+
 	#endif
 
 	// SysTick (Used as Delay Source)
@@ -131,6 +133,7 @@ STM32446 STM32446enable(void){
 		stm32446.adc1.single.restart = STM32446Adc1Restart;
 		stm32446.adc1.single.stop = STM32446Adc1Stop;
 		stm32446.adc1.clock = STM32446Adc1Clock;
+		/*** ADC1 Bit Mapping Link ***/
 		// SR
 		stm32446.adc1.sr.ovr = STM32446ADC1_sr_ovr;
 		stm32446.adc1.sr.clear_ovr = STM32446ADC1_sr_clear_ovr;
@@ -276,6 +279,7 @@ STM32446 STM32446enable(void){
 		stm32446.adc1.common.ccr.multi = STM32446ADC_ccr_multi;
 		// CDR
 		stm32446.adc1.common.cdr = STM32446ADC_cdr;
+
 	#endif
 
 	// ADC -> ADC2
@@ -283,6 +287,7 @@ STM32446 STM32446enable(void){
 	stm32446.adc2.reg = (ADC_TypeDef*) ADC2_BASE;
 	#if defined(_STM32446ADC_H_)
 		stm32446.adc2.clock = STM32446Adc2Clock;
+		/*** ADC2 Bit Mapping Link ***/
 		// SR
 		stm32446.adc2.sr.ovr = STM32446ADC2_sr_ovr;
 		stm32446.adc2.sr.clear_ovr = STM32446ADC2_sr_clear_ovr;
@@ -428,6 +433,7 @@ STM32446 STM32446enable(void){
 		stm32446.adc2.common.ccr.multi = STM32446ADC_ccr_multi;
 		// CDR
 		stm32446.adc2.common.cdr = STM32446ADC_cdr;
+
 	#endif
 
 	// ADC -> ADC3
@@ -435,6 +441,7 @@ STM32446 STM32446enable(void){
 	stm32446.adc3.reg = (ADC_TypeDef*) ADC3_BASE;
 	#if defined(_STM32446ADC_H_)
 		stm32446.adc3.clock = STM32446Adc3Clock;
+		/*** ADC3 Bit Mapping Link ***/
 		// SR
 		stm32446.adc3.sr.ovr = STM32446ADC3_sr_ovr;
 		stm32446.adc3.sr.clear_ovr = STM32446ADC3_sr_clear_ovr;
@@ -580,6 +587,7 @@ STM32446 STM32446enable(void){
 		stm32446.adc3.common.ccr.multi = STM32446ADC_ccr_multi;
 		// CDR
 		stm32446.adc3.common.cdr = STM32446ADC_cdr;
+
 	#endif
 
 	// CRC
@@ -600,96 +608,112 @@ STM32446 STM32446enable(void){
 	stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioa.clock = STM32446GpioAclock;
+		/*** GPIOA Bit Mapping Link ***/
 		stm32446.gpioa.moder = STM32446GpioAmoder;
 		stm32446.gpioa.ospeedr = STM32446GpioAospeedr;
 		stm32446.gpioa.pupdr = STM32446GpioApupdr;
 		stm32446.gpioa.reset = STM32446GpioAreset;
 		stm32446.gpioa.set = STM32446GpioAset;
 		stm32446.gpioa.afr = STM32446GpioAafr;
+
 	#endif
 
 	// GPIOB
 	stm32446.gpiob.reg = (GPIO_TypeDef*) GPIOB_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpiob.clock = STM32446GpioBclock;
+		/*** GPIOB Bit Mapping Link ***/
 		stm32446.gpiob.moder = STM32446GpioBmoder;
 		stm32446.gpiob.ospeedr = STM32446GpioBospeedr;
 		stm32446.gpiob.pupdr = STM32446GpioBpupdr;
 		stm32446.gpiob.reset = STM32446GpioBreset;
 		stm32446.gpiob.set = STM32446GpioBset;
 		stm32446.gpiob.afr = STM32446GpioBafr;
+
 	#endif
 
 	// GPIOC
 	stm32446.gpioc.reg = (GPIO_TypeDef*) GPIOC_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioc.clock = STM32446GpioCclock;
+		/*** GPIOC Bit Mapping Link ***/
 		stm32446.gpioc.moder = STM32446GpioCmoder;
 		stm32446.gpioc.ospeedr = STM32446GpioCospeedr;
 		stm32446.gpioc.pupdr = STM32446GpioCpupdr;
 		stm32446.gpioc.reset = STM32446GpioCreset;
 		stm32446.gpioc.set = STM32446GpioCset;
 		stm32446.gpioc.afr = STM32446GpioCafr;
+
 	#endif
 
 	// GPIOD
 	stm32446.gpiod.reg = (GPIO_TypeDef*) GPIOD_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpiod.clock = STM32446GpioDclock;
+		/*** GPIOD Bit Mapping Link ***/
 		stm32446.gpiod.moder = STM32446GpioDmoder;
 		stm32446.gpiod.ospeedr = STM32446GpioDospeedr;
 		stm32446.gpiod.pupdr = STM32446GpioDpupdr;
 		stm32446.gpiod.reset = STM32446GpioDreset;
 		stm32446.gpiod.set = STM32446GpioDset;
 		stm32446.gpiod.afr = STM32446GpioDafr;
+
 	#endif
 
 	// GPIOE
 	stm32446.gpioe.reg = (GPIO_TypeDef*) GPIOE_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioe.clock = STM32446GpioEclock;
+		/*** GPIOE Bit Mapping Link ***/
 		stm32446.gpioe.moder = STM32446GpioEmoder;
 		stm32446.gpioe.ospeedr = STM32446GpioEospeedr;
 		stm32446.gpioe.pupdr = STM32446GpioEpupdr;
 		stm32446.gpioe.reset = STM32446GpioEreset;
 		stm32446.gpioe.set = STM32446GpioEset;
 		stm32446.gpioe.afr = STM32446GpioEafr;
+
 	#endif
 
 	// GPIOF
 	stm32446.gpiof.reg = NULL;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpiof.clock = NULL;
+		/*** GPIOF Bit Mapping Link ***/
 		stm32446.gpiof.moder = NULL;
 		stm32446.gpiof.ospeedr = NULL;
 		stm32446.gpiof.pupdr = NULL;
 		stm32446.gpiof.reset = NULL;
 		stm32446.gpiof.set = NULL;
 		stm32446.gpiof.afr = NULL;
+
 	#endif
 
 	// GPIOG
 	stm32446.gpiog.reg = NULL;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpiog.clock = NULL;
+		/*** GPIOG Bit Mapping Link ***/
 		stm32446.gpiog.moder = NULL;
 		stm32446.gpiog.ospeedr = NULL;
 		stm32446.gpiog.pupdr = NULL;
 		stm32446.gpiog.reset = NULL;
 		stm32446.gpiog.set = NULL;
 		stm32446.gpiog.afr = NULL;
+
 	#endif
 
 	// GPIOH
 	stm32446.gpioh.reg = (GPIO_TypeDef*) GPIOH_BASE;
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioh.clock = STM32446GpioHclock;
+		/*** GPIOH Bit Mapping Link ***/
 		stm32446.gpioh.moder = STM32446GpioHmoder;
 		stm32446.gpioh.ospeedr = STM32446GpioHospeedr;
 		stm32446.gpioh.pupdr = STM32446GpioHpupdr;
 		stm32446.gpioh.reset = STM32446GpioHreset;
 		stm32446.gpioh.set = STM32446GpioHset;
 		stm32446.gpioh.afr = STM32446GpioHafr;
+
 	#endif
 
 	// SYSCFG
@@ -698,6 +722,41 @@ STM32446 STM32446enable(void){
 	
 	// PWR
 	stm32446.pwr.reg = (PWR_TypeDef*) PWR_BASE;
+	#if defined(_STM32446PWR_H_)
+		/*** PWR Bit Mapping Link ***/
+		// CR
+		stm32446.pwr.cr.fissr = STM32446PWR_cr_fissr;
+		stm32446.pwr.cr.fmssr = STM32446PWR_cr_fmssr;
+		stm32446.pwr.cr.uden = STM32446PWR_cr_uden;
+		stm32446.pwr.cr.odswen = STM32446PWR_cr_odswen;
+		stm32446.pwr.cr.oden = STM32446PWR_cr_oden;
+		stm32446.pwr.cr.vos = STM32446PWR_cr_vos;
+		stm32446.pwr.cr.adcdc1 = STM32446PWR_cr_adcdc1;
+		stm32446.pwr.cr.mruds = STM32446PWR_cr_mruds;
+		stm32446.pwr.cr.lpuds = STM32446PWR_cr_lpuds;
+		stm32446.pwr.cr.fpds = STM32446PWR_cr_fpds;
+		stm32446.pwr.cr.dbp = STM32446PWR_cr_dbp;
+		stm32446.pwr.cr.pls = STM32446PWR_cr_pls;
+		stm32446.pwr.cr.pvde = STM32446PWR_cr_pvde;
+		stm32446.pwr.cr.clear_csbf = STM32446PWR_cr_clear_csbf;
+		stm32446.pwr.cr.clear_cwuf = STM32446PWR_cr_clear_cwuf;
+		stm32446.pwr.cr.pdds =STM32446PWR_cr_pdds;
+		stm32446.pwr.cr.lpds = STM32446PWR_cr_lpds;
+		// CSR
+		stm32446.pwr.csr.udrdy = STM32446PWR_udrdy;
+		stm32446.pwr.csr.clear_udrdy = STM32446PWR_csr_clear_udrdy;
+		stm32446.pwr.csr.odswrdy = STM32446PWR_csr_odswrdy;
+		stm32446.pwr.csr.odrdy = STM32446PWR_csr_odrdy;
+		stm32446.pwr.csr.vosrdy = STM32446PWR_csr_vosrdy;
+		stm32446.pwr.csr.bre = STM32446PWR_csr_bre;
+		stm32446.pwr.csr.ewup1 = STM32446PWR_csr_ewup1;
+		stm32446.pwr.csr.ewup2 = STM32446PWR_csr_ewup2;
+		stm32446.pwr.csr.brr = STM32446PWR_csr_brr;
+		stm32446.pwr.csr.pvdo = STM32446PWR_csr_pvdo;
+		stm32446.pwr.csr.sbf = STM32446PWR_csr_sbf;
+		stm32446.pwr.csr.wuf = STM32446PWR_csr_wuf;
+
+	#endif
 
 	// PLL
 	#if defined(_STM32446RCC_H_)
@@ -706,6 +765,7 @@ STM32446 STM32446enable(void){
 		stm32446.rcc.pllsai.enable = STM32446RccPLLSAIEnable;
 		stm32446.rcc.pll.division = STM32446PLLDivision;
 		stm32446.rcc.prescaler = STM32446Prescaler;
+
 	#endif
 
 	// RCC
@@ -716,7 +776,7 @@ STM32446 STM32446enable(void){
 		stm32446.rcc.hselect = STM32446RccHSelect;
 		stm32446.rcc.lenable = STM32446RccLEnable;
 		stm32446.rcc.lselect = STM32446RccLSelect;
-		/*** RCC Bit Mapping Header ***/
+		/*** RCC Bit Mapping Link ***/
 		// CR
 		stm32446.rcc.cr.get_pllsairdy = STM32446RCC_CR_get_pllsairdy;
 		stm32446.rcc.cr.pllsaion = STM32446RCC_CR_pllsaion;
@@ -1025,6 +1085,7 @@ STM32446 STM32446enable(void){
 		stm32446.rcc.dckcfgr2.ck48msel = STM32446RCC_DCKCFGR2_ck48msel;
 		stm32446.rcc.dckcfgr2.cecsel = STM32446RCC_DCKCFGR2_cecsel;
 		stm32446.rcc.dckcfgr2.fmpi2c1sel = STM32446RCC_DCKCFGR2_fmpi2c1sel;
+
 	#endif
 	
 	//RTC
@@ -1042,54 +1103,63 @@ STM32446 STM32446enable(void){
 		stm32446.rtc.dr2vec = STM32446Rtcdr2vec;
 		stm32446.rtc.tr2vec = STM32446Rtctr2vec;
 		stm32446.rtc.RegWrite = STM32446RtcRegWrite;
+
 	#endif
 	
 	// TIM -> TIM1
 	stm32446.tim1.reg = (TIM_TypeDef*) TIM1_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim1.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM2
 	stm32446.tim2.reg = (TIM_TypeDef*) TIM2_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim2.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM3
 	stm32446.tim3.reg = (TIM_TypeDef*) TIM3_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim3.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM4
 	stm32446.tim4.reg = (TIM_TypeDef*) TIM4_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim4.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM5
 	stm32446.tim5.reg = (TIM_TypeDef*) TIM5_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim5.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM6
 	stm32446.tim6.reg = (TIM_TypeDef*) TIM6_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim6.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM7
 	stm32446.tim7.reg = (TIM_TypeDef*) TIM7_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim7.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM8
 	stm32446.tim8.reg = (TIM_TypeDef*) TIM8_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim8.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM9
@@ -1099,6 +1169,7 @@ STM32446 STM32446enable(void){
 		stm32446.tim9.clock = STM32446Tim9Clock;
 		// INIC
 		stm32446.tim9.inic = STM32446Tim9Inic;
+		/*** TIM9 Bit Mapping Link ***/
 		// CR1
 		stm32446.tim9.cr1.get_ckd = STM32446Tim9_get_ckd;
 		stm32446.tim9.cr1.apre = STM32446Tim9_set_apre;
@@ -1168,41 +1239,48 @@ STM32446 STM32446enable(void){
 		stm32446.tim9.inic = STM32446Tim9Inic;
 		// INTERRUPT
 		stm32446.tim9.nvict1t9 = STM32446Tim9EnableInterrupt;
+
 	#endif
 
 	// TIM -> TIM10
 	stm32446.tim10.reg = (TIM_TypeDef*) TIM10_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim10.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM11
 	stm32446.tim11.reg = (TIM_TypeDef*) TIM11_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim11.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM12
 	stm32446.tim12.reg = (TIM_TypeDef*) TIM12_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim12.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM13
 	stm32446.tim13.reg = (TIM_TypeDef*) TIM13_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim13.enable = NULL;
+
 	#endif
 
 	// TIM -> TIM14
 	stm32446.tim14.reg = (TIM_TypeDef*) TIM14_BASE;
 	#if defined(_STM32446TIM_H_)
 		stm32446.tim14.enable = NULL;
+
 	#endif
 
 	// USART -> USART1
 	stm32446.usart1.reg = (USART_TypeDef*) USART1_BASE;
 	#if defined(_STM32446USART_H_)
+		/*** USART1 Bit Mapping Link ***/
 		// SR
 		stm32446.usart1.sr.cts = STM32446Usart1_cts;
 		stm32446.usart1.sr.clear_cts = STM32446Usart1_clear_cts;
@@ -1273,11 +1351,13 @@ STM32446 STM32446enable(void){
 		stm32446.usart1.transmit = STM32446Usart1Transmit;
 		stm32446.usart1.receive = STM32446Usart1Receive;
 		stm32446.usart1.stop = STM32446Usart1Stop;
+
 	#endif
 
 	// USART -> USART2
 	stm32446.usart2.reg = (USART_TypeDef*) USART2_BASE;
 	#if defined(_STM32446USART_H_)
+		/*** USART2 Bit Mapping Link ***/
 		// SR
 		stm32446.usart2.sr.cts = STM32446Usart2_cts;
 		stm32446.usart2.sr.clear_cts = STM32446Usart2_clear_cts;
@@ -1347,11 +1427,13 @@ STM32446 STM32446enable(void){
 		stm32446.usart2.transmit = STM32446Usart2Transmit;
 		stm32446.usart2.receive = STM32446Usart2Receive;
 		stm32446.usart2.stop = STM32446Usart2Stop;
+
 	#endif
 
 	// USART -> USART3
 	stm32446.usart3.reg = (USART_TypeDef*) USART3_BASE;
 	#if defined(_STM32446USART_H_)
+		/*** USART3 Bit Mapping Link ***/
 		// SR
 		stm32446.usart3.sr.cts = STM32446Usart3_cts;
 		stm32446.usart3.sr.clear_cts = STM32446Usart3_clear_cts;
@@ -1421,11 +1503,13 @@ STM32446 STM32446enable(void){
 		stm32446.usart3.transmit = STM32446Usart3Transmit;
 		stm32446.usart3.receive = STM32446Usart3Receive;
 		stm32446.usart3.stop = STM32446Usart3Stop;
+
 	#endif
 
 	// USART -> UART4
 	stm32446.uart4.reg = (USART_TypeDef*) UART4_BASE;
 	#if defined(_STM32446USART_H_)
+		/*** UART4 Bit Mapping Link ***/
 		// SR
 		stm32446.uart4.sr.cts = STM32446Uart4_cts;
 		stm32446.uart4.sr.clear_cts = STM32446Uart4_clear_cts;
@@ -1495,11 +1579,13 @@ STM32446 STM32446enable(void){
 		stm32446.uart4.transmit = STM32446Uart4Transmit;
 		stm32446.uart4.receive = STM32446Uart4Receive;
 		stm32446.uart4.stop = STM32446Uart4Stop;
+
 	#endif
 
 	// UART -> UART5
 	stm32446.uart5.reg = (USART_TypeDef*) UART5_BASE;
 	#if defined(_STM32446USART_H_)
+		/*** UART5 Bit Mapping Link ***/
 		// SR
 		stm32446.uart5.sr.cts = STM32446Uart5_cts;
 		stm32446.uart5.sr.clear_cts = STM32446Uart5_clear_cts;
@@ -1569,11 +1655,13 @@ STM32446 STM32446enable(void){
 		stm32446.uart5.transmit = STM32446Uart5Transmit;
 		stm32446.uart5.receive = STM32446Uart5Receive;
 		stm32446.uart5.stop = STM32446Uart5Stop;
+
 	#endif
 
 	// USART -> USART6
 	stm32446.usart6.reg = (USART_TypeDef*) USART6_BASE;
 	#if defined(_STM32446USART_H_)
+		/*** USART6 Bit Mapping Link ***/
 		// SR
 		stm32446.usart6.sr.cts = STM32446Usart6_cts;
 		stm32446.usart6.sr.clear_cts = STM32446Usart6_clear_cts;
@@ -1643,6 +1731,7 @@ STM32446 STM32446enable(void){
 		stm32446.usart6.transmit = STM32446Usart6Transmit;
 		stm32446.usart6.receive = STM32446Usart6Receive;
 		stm32446.usart6.stop = STM32446Usart6Stop;
+
 	#endif
 
 	// QUERY
