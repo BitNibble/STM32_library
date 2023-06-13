@@ -52,7 +52,6 @@ void STM32446SramAccess(void);
 
 // QUERY CLOCK
 uint32_t STM32446_getclocksource(void);
-uint32_t STM32446_getsysclk(void);
 uint32_t STM32446_pllsource(void);
 uint32_t STM32446_gethpre(void);
 uint32_t STM32446_gethppre1(void);
@@ -65,6 +64,7 @@ uint32_t STM32446_getplln(void);
 uint32_t STM32446_getpllp(void);
 uint32_t STM32446_getpllq(void);
 uint32_t STM32446_getpllr(void);
+uint32_t STM32446_getsysclk(void);
 
 /*** MISCELLANEOUS ***/
 // MCU
@@ -90,8 +90,7 @@ void STM32446Reverse(char s[]);
 int STM32446StringLength (const char string[]);
 uint8_t STM32446FUNCintinvstr(int32_t num, char* res, uint8_t n_digit);
 
-/**** Procedure & Function Definition ***/
-/******* STM32F446RE Image Linker *******/
+/******* STM32F446RE Procedure & Function Definition *******/
 STM32446 STM32446enable(void){
 	/*** DEFAULT ***/
 	mem[0] = 0;
@@ -603,6 +602,59 @@ STM32446 STM32446enable(void){
 
 	// FLASH
 	stm32446.flash.reg = (FLASH_TypeDef*) FLASH_R_BASE;
+	#if defined(_STM32446FLASH_H_)
+		/*** FLASH Bit Mapping Link ***/
+		// ACR
+		stm32446.flash.acr.dcrst = STM32446FLASH_acr_dcrst;
+		stm32446.flash.acr.icrst = STM32446FLASH_acr_icrst;
+		stm32446.flash.acr.dcen = STM32446FLASH_acr_dcen;
+		stm32446.flash.acr.icen = STM32446FLASH_acr_icen;
+		stm32446.flash.acr.prften = STM32446FLASH_acr_prften;
+		stm32446.flash.acr.latency = STM32446FLASH_acr_latency;
+		// SR
+		stm32446.flash.sr.bsy = STM32446FLASH_sr_bsy;
+		stm32446.flash.sr.rderr = STM32446FLASH_sr_rderr;
+		stm32446.flash.sr.clear_rderr = STM32446FLASH_sr_clear_rderr;
+		stm32446.flash.sr.pgserr = STM32446FLASH_sr_pgserr;
+		stm32446.flash.sr.clear_pgserr = STM32446FLASH_sr_clear_pgserr;
+		stm32446.flash.sr.pgperr = STM32446FLASH_sr_pgperr;
+		stm32446.flash.sr.clear_pgperr = STM32446FLASH_sr_clear_pgperr;
+		stm32446.flash.sr.pgaerr = STM32446FLASH_sr_pgaerr;
+		stm32446.flash.sr.clear_pgaerr = STM32446FLASH_sr_clear_pgaerr;
+		stm32446.flash.sr.wrperr = STM32446FLASH_sr_wrperr;
+		stm32446.flash.sr.clear_wrperr = STM32446FLASH_sr_clear_wrperr;
+		stm32446.flash.sr.operr = STM32446FLASH_sr_operr;
+		stm32446.flash.sr.clear_operr = STM32446FLASH_sr_clear_operr;
+		stm32446.flash.sr.eop = STM32446FLASH_sr_eop;
+		stm32446.flash.sr.clear_eop = STM32446FLASH_sr_clear_eop;
+		// CR
+		stm32446.flash.cr.lock = STM32446FLASH_cr_lock;
+		stm32446.flash.cr.errie = STM32446FLASH_cr_errie;
+		stm32446.flash.cr.eopie = STM32446FLASH_cr_eopie;
+		stm32446.flash.cr.strt = STM32446FLASH_cr_strt;
+		stm32446.flash.cr.psize = STM32446FLASH_cr_psize;
+		stm32446.flash.cr.snb = STM32446FLASH_cr_snb;
+		stm32446.flash.cr.mer = STM32446FLASH_cr_mer;
+		stm32446.flash.cr.ser = STM32446FLASH_cr_ser;
+		stm32446.flash.cr.pg = STM32446FLASH_cr_pg;
+		// OPTCR
+		stm32446.flash.optcr.sprmod = STM32446FLASH_optcr_sprmod;
+		stm32446.flash.optcr.n_wrp = STM32446FLASH_optcr_n_wrp;
+		stm32446.flash.optcr.get_n_wrp = STM32446FLASH_optcr_get_n_wrp;
+		stm32446.flash.optcr.rdp = STM32446FLASH_optcr_rdp;
+		stm32446.flash.optcr.get_rdp = STM32446FLASH_optcr_get_rdp;
+		stm32446.flash.optcr.nrst_stdby = STM32446FLASH_optcr_nrst_stdby;
+		stm32446.flash.optcr.nrst_stop = STM32446FLASH_optcr_nrst_stop;
+		stm32446.flash.optcr.wdg_sw = STM32446FLASH_optcr_wdg_sw;
+		stm32446.flash.optcr.bor_lev = STM32446FLASH_optcr_bor_lev;
+		stm32446.flash.optcr.optstrt = STM32446FLASH_optcr_optstrt;
+		stm32446.flash.optcr.optlock = STM32446FLASH_optcr_optlock;
+		// KEYR
+		stm32446.flash.keyr = STM32446FLASH_keyr_key;
+		// OPTKEYR
+		stm32446.flash.optkeyr = STM32446FLASH_optkeyr_optkey;
+
+	#endif
 
 	// GPIOA
 	stm32446.gpioa.reg = (GPIO_TypeDef*) GPIOA_BASE;
@@ -2434,12 +2486,16 @@ void SysTick_Handler(void)
 
 /***EOF***/
 
-/***
- * Library Scope
- * File Scope
- * Function Scope
- * Precedence Scope
- *
- * */
+/******
+1 - Sequence
+2 - Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3 - Pointer and Variable
+4 - Casting
+******/
+
 
 

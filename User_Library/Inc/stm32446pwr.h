@@ -65,7 +65,8 @@ typedef struct
 	#endif
 }STM32446PWRobj;
 
-/***** PWR Procedure & Funtion Header ******/
+/***** PWR Procedure & Function Header ******/
+
 /*** PWR Bit Mapping Header ***/
 // CR
 void STM32446PWR_cr_fissr(uint8_t bool);

@@ -40,6 +40,7 @@ Comment:
 #endif
 /*** Module Library ***/
 // Comment out modules not being used
+#include "stm32446flash.h"
 #include "stm32446pwr.h"
 #include "stm32446rcc.h"
 #include "stm32446nvic.h"
@@ -196,12 +197,6 @@ typedef struct
 {
 	EXTI_TypeDef* reg;
 }STM32446EXTIobj;
-
-// FLASH
-typedef struct
-{
-	FLASH_TypeDef* reg;
-}STM32446FLASHobj;
 
 // FMC_Bank1
 typedef struct

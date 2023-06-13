@@ -12,7 +12,7 @@ Comment:
 #include "stm32446mapping.h"
 #include "stm32446pwr.h"
 
-/*** File Procedure & Funtion Header ***/
+/*** File Procedure & Function Header ***/
 uint32_t pwr_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void pwr_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t pwr_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
