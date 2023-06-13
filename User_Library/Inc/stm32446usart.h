@@ -14,7 +14,7 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** USART_Common TypeDef ***/
+/*** USART Bit Mapping Common TypeDef ***/
 typedef struct{
 	uint8_t (*cts)(void);
 	void (*clear_cts)(void);
@@ -220,7 +220,7 @@ typedef struct
 	#endif
 }STM32446USART6obj;
 
-/*** USART1 ***/
+/*** USART1 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Usart1_cts(void);
 void STM32446Usart1_clear_cts(void);
@@ -292,7 +292,7 @@ void STM32446Usart1Transmit(void);
 void STM32446Usart1Receive(void);
 void STM32446Usart1Stop(void);
 
-/*** USART2 ***/
+/*** USART2 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Usart2_cts(void);
 void STM32446Usart2_clear_cts(void);
@@ -363,7 +363,7 @@ void STM32446Usart2Transmit(void);
 void STM32446Usart2Receive(void);
 void STM32446Usart2Stop(void);
 
-/*** USART3 ***/
+/*** USART3 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Usart3_cts(void);
 void STM32446Usart3_clear_cts(void);
@@ -434,7 +434,7 @@ void STM32446Usart3Transmit(void);
 void STM32446Usart3Receive(void);
 void STM32446Usart3Stop(void);
 
-/*** UART4 ***/
+/*** UART4 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Uart4_cts(void);
 void STM32446Uart4_clear_cts(void);
@@ -505,7 +505,7 @@ void STM32446Uart4Transmit(void);
 void STM32446Uart4Receive(void);
 void STM32446Uart4Stop(void);
 
-/*** UART5 ***/
+/*** UART5 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Uart5_cts(void);
 void STM32446Uart5_clear_cts(void);
@@ -576,7 +576,7 @@ void STM32446Uart5Transmit(void);
 void STM32446Uart5Receive(void);
 void STM32446Uart5Stop(void);
 
-/*** USART6 ***/
+/*** USART6 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Usart6_cts(void);
 void STM32446Usart6_clear_cts(void);

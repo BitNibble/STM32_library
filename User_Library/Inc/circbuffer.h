@@ -14,7 +14,7 @@ Comment:
 /*** File Library ***/
 #include <inttypes.h>
 
-/*** CIRCBUFFER ***/
+/*** CIRCBUFFER TypeDef ***/
 struct circ_buf_template
 {
 	uint8_t* tail;

@@ -15,6 +15,7 @@ Comment:
 /*** File Procedure & Function Header ***/
 uint32_t STM32446NVIC_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** NVIC Procedure & Function Definition ***/
 void STM32446NVIC_set_enable( uint8_t IRQn )
 {
 	volatile uint32_t* reg = NVIC->ISER;

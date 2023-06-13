@@ -17,6 +17,7 @@ uint32_t rcc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void rcc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t rcc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** RCC Procedure & Function Definition ***/
 uint8_t STM32446RccInic(void)
 {
 	uint8_t clkused; // First turn it on then select it or enable it.

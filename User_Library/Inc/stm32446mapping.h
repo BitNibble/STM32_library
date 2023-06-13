@@ -32,6 +32,12 @@ Comment:
 #ifndef off
 	#define off 0
 #endif
+#ifndef yes
+	#define yes 1
+#endif
+#ifndef no
+	#define no 0
+#endif
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446pwr.h"
@@ -88,7 +94,7 @@ typedef struct
 	uint32_t (*SystemClock)(void);
 }STM32446Query;
 
-/******************* CORE ********************/
+/******************* CORE TypeDef ********************/
 // SCB
 typedef struct
 {
@@ -104,7 +110,7 @@ typedef struct
 	void (*delay_us)(uint32_t us);
 }STM32446SysTickobj;
 
-/******************** MCU ********************/
+/******************** MCU TypeDef ********************/
 // CAN_TxMailBox
 typedef struct
 {
@@ -378,7 +384,7 @@ typedef struct
 	USB_OTG_HostChannelTypeDef* reg;
 }STM32446USB_OTG_HostChannelobj;
 
-/*************** MISCELLANEOUS ***************/
+/*************** MISCELLANEOUS TypeDef ***************/
 // FUNC
 typedef struct
 {
@@ -400,7 +406,7 @@ typedef struct
 	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 }STM32446_function;
 
-/***************** STM32F446 *****************/
+/***************** STM32F446 TypeDef *****************/
 typedef struct
 {
 	// PARAMETER
@@ -470,7 +476,7 @@ STM32446 STM32446enable(void);
 3º Pointer and Variable
 4º Casting
 
-Make more query functions into the system especially about the clock and pll, so it can be reached threw out all the code.
+Make more query functions into the system especially about the clock and pll, so it can be reached threw out all the code, done.
 ******/
 
 

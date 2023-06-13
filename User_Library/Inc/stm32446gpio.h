@@ -14,6 +14,7 @@ Comment:
 /*** File Library ***/
 #include <inttypes.h>
 
+/*** GPIO TypeDef ***/
 // GPIO -> GPIOA
 typedef struct
 {
@@ -134,7 +135,7 @@ typedef struct
 	#endif
 }STM32446GpioHobj;
 
-/***** Procedure & Funtion Header ******/
+/***** GPIO Procedure & Funtion Header ******/
 void STM32446GpioAclock( void );
 void STM32446GpioAmoder( unsigned int data, unsigned int pin );
 void STM32446GpioAospeedr( unsigned int data, unsigned int pin );

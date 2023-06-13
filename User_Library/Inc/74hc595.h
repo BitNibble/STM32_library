@@ -23,7 +23,7 @@ typedef struct{
 	volatile uint32_t *hc595_PORT;
 }hc595parameter;
 
-/*** 74HC595 ***/
+/*** 74HC595 TypeDef ***/
 typedef struct
 {
 	hc595parameter par;

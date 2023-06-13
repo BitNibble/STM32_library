@@ -78,7 +78,7 @@ int FUNCreadint(int nmin, int nmax);
 ***/
 // uint8_t TRANupdate(struct TRAN *tr, uint8_t idata);
 
-/*** File Procedure & Function ***/
+/*** FUNC Procedure & Function Definition ***/
 FUNC FUNCenable( void )
 {
 	// Comment out links not being used, in order to release memmory.

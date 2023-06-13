@@ -14,13 +14,16 @@ Comment:
 /*** File Library ***/
 #include <inttypes.h>
 
-/*** TEMPLATE1 ***/
+/*** TEMPLATE1 TypeDef ***/
 typedef struct{
 	void (*inic)( uint8_t parameter );
 }STM32446TEMPLATE1;
 
 STM32446TEMPLATE1 STM32446TEMPLATE1enable(void);
+
+/*** Template1 Procedure & Function Header ***/
 void STM32446Template1Inic( uint8_t parameter );
+/*** Template1 Bit Mapping Header ***/
 
 #endif
 

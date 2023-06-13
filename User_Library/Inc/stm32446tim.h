@@ -14,7 +14,7 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** TIMER9_Common ***/
+/*** TIMER9_Common Bit Mapping TypeDef ***/
 typedef struct{
 	uint8_t (*get_ckd)(void);
 	void (*apre)(uint8_t bool);
@@ -83,6 +83,7 @@ typedef struct{
 	void (*cc1e)(uint8_t bool);
 }STM32446TIM9_CCER;
 
+/*** TIMER TypeDef***/
 // TIM -> TIM1
 typedef struct
 {
@@ -224,13 +225,14 @@ typedef struct
 	#endif
 }STM32446TIM14obj;
 
-/*** TIM9 ***/
+/*** TIM9 Procedure & Function Header ***/
 // CLOCK
 void STM32446Tim9Clock(void);
 // INIC
 void STM32446Tim9Inic(void);
 // INTERRUPT
 void STM32446Tim9EnableInterrupt(void);
+/*** TIM9 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim9_get_ckd(void);
 void STM32446Tim9_set_apre(uint8_t bool);

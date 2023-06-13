@@ -17,7 +17,7 @@ void HC595_shift_ibyte(hc595parameter* par, uint8_t byte);
 void HC595_shift_byte(hc595parameter* par, uint8_t byte);
 void HC595_shift_out(hc595parameter* par);
 
-/*** File Procedure & Function ***/
+/*** 74HC595 Procedure & Function Definition ***/
 HC595 HC595enable(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin)
 {
 	// LOCAL VARIABLES

@@ -32,7 +32,7 @@ double ZNPID_product(double value_1, double value_2);
 uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 
-/*** File Procedure & Function ***/
+/*** ZNPID Procedure & Function Definition ***/
 ZNPID ZNPIDenable(void)
 {
 	// LOCAL VARIABLES

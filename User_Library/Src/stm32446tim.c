@@ -17,6 +17,7 @@ uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** TIMER Procedure & Function Definition ***/
 /*** TIM9 ***/
 void STM32446Tim9Clock(void)
 {

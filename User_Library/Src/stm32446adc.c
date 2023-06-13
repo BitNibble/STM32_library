@@ -19,6 +19,7 @@ uint32_t adc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t adc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** ADC Procedure & Function Definition ***/
 /*** ADC1 Bit Mapping ***/
 // SR
 uint8_t STM32446ADC1_sr_ovr(void)

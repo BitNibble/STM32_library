@@ -12,7 +12,7 @@ Comment:
 /*** File Library ***/
 #include "test.h"
 
-/*** File Procedure & Function ***/
+/*** Test Procedure & Function Definition ***/
 TEST TESTenable(void)
 {
 	TEST test;

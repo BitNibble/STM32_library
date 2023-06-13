@@ -18,7 +18,7 @@ void BUFF_push(bufferparameter* par, BUFFvar data);
 BUFFvar* BUFF_raw(bufferparameter* par);
 void BUFF_flush(bufferparameter* par);
 
-/*** File Procedure & Function ***/
+/*** BUFF Procedure & Function Definition ***/
 BUFF BUFFenable( uint8_t size_buff, BUFFvar* buff )
 {
 	// OBJECT STRUCT

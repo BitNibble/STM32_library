@@ -21,7 +21,7 @@ uint32_t pwr_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 
 
 
-/*** Procedure & Function Definition ***/
+/*** PWR Procedure & Function Definition ***/
 uint32_t pwr_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;

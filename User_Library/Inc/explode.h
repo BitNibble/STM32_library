@@ -14,7 +14,7 @@ Comment:
 /*** Global Library ***/
 #include <inttypes.h>
 
-/*** Gloabl Constant & Macro ***/
+/*** Global Constant & Macro ***/
 
 /*** Global TypeDef ***/
 typedef struct {

@@ -30,7 +30,7 @@ typedef struct
 	uint8_t L;
 } FUNCHighLowByte;
 
-/*** FUNCTION ***/
+/*** PROCEDURE & FUNCTION TypeDef ***/
 typedef struct
 {
 	// PROTOTYPES VTABLE

@@ -19,7 +19,7 @@ uint32_t EXPLODEll(explodeparameter* par);
 uint32_t EXPLODElh(explodeparameter* par);
 uint32_t EXPLODEhl(explodeparameter* par);
 
-/*** Procedure & Function ***/
+/*** EXPLODE Procedure & Function Definition ***/
 EXPLODE EXPLODEenable( void )
 {
 	// struct object

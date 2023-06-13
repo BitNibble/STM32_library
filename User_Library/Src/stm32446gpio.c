@@ -19,6 +19,7 @@ uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** GPIO Procedure & Function Definition ***/
 /*** GPIOA ***/
 void STM32446GpioAclock( void )
 {

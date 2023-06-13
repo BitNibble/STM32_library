@@ -14,22 +14,22 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** Bit Mapping TypeDef ***/
+/*** PWR Bit Mapping TypeDef ***/
 // CR
 typedef struct
 {
 	void (*fissr)(uint8_t bool);
 	void (*fmssr)(uint8_t bool);
-	void (*uden)(uint8_t bool);
+	void (*uden)(uint8_t value);
 	void (*odswen)(uint8_t bool);
 	void (*oden)(uint8_t bool);
-	void (*vos)(uint8_t bool);
+	void (*vos)(uint8_t value);
 	void (*adcdc1)(uint8_t bool);
 	void (*mruds)(uint8_t bool);
 	void (*lpuds)(uint8_t bool);
 	void (*fpds)(uint8_t bool);
 	void (*dbp)(uint8_t bool);
-	void (*pls)(uint8_t bool);
+	void (*pls)(uint8_t value);
 	void (*pvde)(uint8_t bool);
 	void (*clear_csbf)(void);
 	void (*clear_cwuf)(void);
@@ -39,6 +39,7 @@ typedef struct
 // CSR
 typedef struct
 {
+	uint8_t (*udrdy)(void);
 	void (*clear_udrdy)(void);
 	uint8_t (*odswrdy)(void);
 	uint8_t (*odrdy)(void);
@@ -54,7 +55,7 @@ typedef struct
 
 /*** PWR_Common TypeDef ***/
 
-/*** PWR ***/
+/*** PWR TypeDef ***/
 typedef struct
 {
 	PWR_TypeDef* reg;
@@ -64,29 +65,28 @@ typedef struct
 	#endif
 }STM32446PWRobj;
 
-/***** Procedure & Funtion Header ******/
-
-/*** PWR Bit Mapping ***/
+/***** PWR Procedure & Funtion Header ******/
+/*** PWR Bit Mapping Header ***/
 // CR
 void STM32446PWR_cr_fissr(uint8_t bool);
 void STM32446PWR_cr_fmssr(uint8_t bool);
-void STM32446PWR_cr_uden(uint8_t bool);
+void STM32446PWR_cr_uden(uint8_t value);
 void STM32446PWR_cr_odswen(uint8_t bool);
 void STM32446PWR_cr_oden(uint8_t bool);
-void STM32446PWR_cr_vos(uint8_t bool);
+void STM32446PWR_cr_vos(uint8_t value);
 void STM32446PWR_cr_adcdc1(uint8_t bool);
 void STM32446PWR_cr_mruds(uint8_t bool);
 void STM32446PWR_cr_lpuds(uint8_t bool);
 void STM32446PWR_cr_fpds(uint8_t bool);
 void STM32446PWR_cr_dbp(uint8_t bool);
-void STM32446PWR_cr_pls(uint8_t bool);
+void STM32446PWR_cr_pls(uint8_t value);
 void STM32446PWR_cr_pvde(uint8_t bool);
 void STM32446PWR_cr_clear_csbf(void);
 void STM32446PWR_cr_clear_cwuf(void);
 void STM32446PWR_cr_pdds(uint8_t bool);
 void STM32446PWR_cr_lpds(uint8_t bool);
-
 // CSR
+uint8_t STM32446PWR_udrdy(void);
 void STM32446PWR_csr_clear_udrdy(void);
 uint8_t STM32446PWR_csr_odswrdy(void);
 uint8_t STM32446PWR_csr_odrdy(void);

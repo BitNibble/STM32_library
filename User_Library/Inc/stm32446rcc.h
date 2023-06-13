@@ -23,7 +23,7 @@ Comment:
 #endif
 
 
-/*** RCC_Common ***/
+/*** RCC_Common TypeDef ***/
 // RCC -> PLL
 typedef struct
 {
@@ -460,7 +460,7 @@ typedef struct
 	void (*fmpi2c1sel)(uint8_t value);
 }STM32446RCC_dckcfgr2;
 
-/*** RCC ***/
+/*** RCC TypeDef ***/
 typedef struct
 {
 	RCC_TypeDef* reg;
@@ -532,6 +532,7 @@ typedef struct
 	#endif
 }STM32446RCCobj;
 
+/*** RCC Procedure & Function Header ***/
 // PLL
 void STM32446PLLDivision(unsigned int pllsrc, unsigned int pllm, unsigned int plln, unsigned int pllp, unsigned int pllq, unsigned int pllr);
 void STM32446RccPLLCLKEnable(void);
@@ -544,7 +545,6 @@ uint8_t STM32446RccHSelect(uint8_t hclock);
 void STM32446RccLEnable(unsigned int lclock);
 void STM32446RccLSelect(uint8_t lclock);
 void STM32446Prescaler(unsigned int ahbpre, unsigned int ppre1, unsigned int ppre2, unsigned int rtcpre);
-
 /*** RCC Bit Mapping Header ***/
 // CR
 uint8_t STM32446RCC_CR_get_pllsairdy(void);

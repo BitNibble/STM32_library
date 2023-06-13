@@ -25,6 +25,7 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** USART Procedure & Function Definition ***/
 /*** USART1 ***/
 void STM32446Usart1Clock( void )
 {

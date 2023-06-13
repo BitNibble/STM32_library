@@ -14,7 +14,7 @@ Comment:
 /*** Library ***/
 #include <inttypes.h>
 
-/*** Bit Mapping TypeDef ***/
+/*** ADC Bit Mapping TypeDef ***/
 // SR
 typedef struct
 {
@@ -203,7 +203,7 @@ typedef struct
 	void (*stop)(void);
 }STM32446ADC1single;
 
-/*** ADC ***/
+/*** ADC TypeDef ***/
 // ADC -> ADC1
 typedef struct
 {
@@ -295,7 +295,7 @@ typedef struct
 	#endif
 }STM32446ADC3obj;
 
-/***** Procedure & Funtion Header ******/
+/***** ADC1 Procedure & Function Header ******/
 /*** ADC1 ***/
 void STM32446Adc1Clock(void);
 void STM32446Adc1Inic(void);
@@ -306,7 +306,7 @@ double STM32446Adc1Read(void);
 void STM32446Adc1Restart(void);
 void STM32446Adc1Stop(void);
 
-/*** ADC1 Bit Mapping ***/
+/*** ADC1 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC1_sr_ovr(void);
 void STM32446ADC1_sr_clear_ovr(void);
@@ -418,7 +418,7 @@ uint16_t STM32446ADC1_dr(void);
 /*** ADC2 ***/
 void STM32446Adc2Clock(void);
 
-/*** ADC2 Bit Mapping ***/
+/*** ADC2 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC2_sr_ovr(void);
 void STM32446ADC2_sr_clear_ovr(void);
@@ -530,7 +530,7 @@ uint16_t STM32446ADC2_dr(void);
 /*** ADC3 ***/
 void STM32446Adc3Clock(void);
 
-/*** ADC3 Bit Mapping ***/
+/*** ADC3 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC3_sr_ovr(void);
 void STM32446ADC3_sr_clear_ovr(void);
@@ -639,7 +639,7 @@ uint16_t STM32446ADC3_jdr3(void);
 uint16_t STM32446ADC3_jdr4(void);
 uint16_t STM32446ADC3_dr(void);
 
-/*** Common ***/
+/*** ADC Common Header ***/
 // CSR
 uint8_t STM32446ADC_csr_ovr3(void);
 uint8_t STM32446ADC_csr_strt3(void);

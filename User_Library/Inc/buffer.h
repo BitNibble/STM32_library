@@ -24,7 +24,7 @@ typedef struct {
 	BUFFvar* end;
 }bufferparameter;
 
-/*** BUFFER ***/
+/*** BUFFER TypeDef ***/
 struct buffer
 {
 	bufferparameter par;

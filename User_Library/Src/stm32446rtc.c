@@ -27,6 +27,7 @@ char rtc_dec2bcd(char num);
 void rtc_lenable(unsigned int lclock);
 void rtc_lselect(uint8_t lclock);
 
+/*** RTC Procedure & Function Definition ***/
 void STM32446RtcClock(void)
 {
 	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable

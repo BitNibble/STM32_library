@@ -13,7 +13,7 @@ Comment:
 
 #include <inttypes.h>
 
-// NVIC
+/*** NVIC TypeDef ***/
 typedef struct
 {
 	NVIC_Type* reg;
@@ -28,6 +28,7 @@ typedef struct
 	#endif
 }STM32446NVICobj;
 
+/*** NVIC Bit Mapping Header ***/
 // NVIC
 void STM32446NVIC_set_enable( uint8_t IRQn );
 void STM32446NVIC_clear_enable( uint8_t IRQn );

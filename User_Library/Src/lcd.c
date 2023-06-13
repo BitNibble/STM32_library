@@ -44,7 +44,7 @@ uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void lcd_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t lcd_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
-/*** Procedure & Function ***/
+/*** LCD0 Procedure & Function Definition ***/
 LCD0 LCD0enable(GPIO_TypeDef* reg)
 {
 	// ALLOCACAO MEMORIA PARA Estrutura
