@@ -46,6 +46,7 @@ Comment:
 #include "stm32446pwr.h"
 #include "stm32446rcc.h"
 #include "stm32446nvic.h"
+#include "stm32446sram.h"
 #include "stm32446gpio.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
@@ -67,6 +68,7 @@ typedef struct
 //	uint16_t L;
 //}STM32446HighLowWord;
 
+/************** QUERY TypeDef ****************/
 typedef struct
 {
 	uint16_t (*AHB)(void);
@@ -86,7 +88,6 @@ typedef struct
 	uint8_t (*R)(void);
 }STM32446PLL_parameter;
 
-/************** QUERY TypeDef ****************/
 typedef struct
 {
 	STM32446CLOCK_prescaler CLOCK_prescaler;
@@ -426,6 +427,7 @@ typedef struct
 	STM32446PWRobj pwr;
 	STM32446RCCobj rcc;
 	STM32446RTCobj rtc;
+	STM32446SRAMobj sram;
 	STM32446TIM1obj tim1;
 	STM32446TIM2obj tim2;
 	STM32446TIM3obj tim3;

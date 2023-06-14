@@ -44,9 +44,6 @@ void STM32446delay_us(uint32_t us);
 // INTERRUPT
 void SysTick_Handler(void);
 
-// SRAM
-void STM32446SramAccess(void);
-
 // QUERY CLOCK
 uint32_t STM32446_getclocksource(void);
 uint32_t STM32446_pllsource(void);
@@ -829,11 +826,6 @@ STM32446 STM32446enable(void){
 	// RCC
 	stm32446.rcc.reg = (RCC_TypeDef*) RCC_BASE;
 	#if defined(_STM32446RCC_H_)
-		stm32446.rcc.inic = STM32446RccInic;
-		stm32446.rcc.henable = STM32446RccHEnable;
-		stm32446.rcc.hselect = STM32446RccHSelect;
-		stm32446.rcc.lenable = STM32446RccLEnable;
-		stm32446.rcc.lselect = STM32446RccLSelect;
 		/*** RCC Bit Mapping Link ***/
 		// CR
 		stm32446.rcc.cr.get_pllsairdy = STM32446RCC_CR_get_pllsairdy;
@@ -1143,6 +1135,12 @@ STM32446 STM32446enable(void){
 		stm32446.rcc.dckcfgr2.ck48msel = STM32446RCC_DCKCFGR2_ck48msel;
 		stm32446.rcc.dckcfgr2.cecsel = STM32446RCC_DCKCFGR2_cecsel;
 		stm32446.rcc.dckcfgr2.fmpi2c1sel = STM32446RCC_DCKCFGR2_fmpi2c1sel;
+		/*** Other ***/
+		stm32446.rcc.inic = STM32446RccInic;
+		stm32446.rcc.henable = STM32446RccHEnable;
+		stm32446.rcc.hselect = STM32446RccHSelect;
+		stm32446.rcc.lenable = STM32446RccLEnable;
+		stm32446.rcc.lselect = STM32446RccLSelect;
 
 	#endif
 	
@@ -1164,6 +1162,12 @@ STM32446 STM32446enable(void){
 
 	#endif
 	
+	// SRAM
+	#if defined(_STM32446SRAM_H_)
+		stm32446.sram.access = STM32446SramAccess;
+
+	#endif
+
 	// TIM -> TIM1
 	stm32446.tim1.reg = (TIM_TypeDef*) TIM1_BASE;
 	#if defined(_STM32446TIM_H_)
@@ -1829,27 +1833,6 @@ STM32446 STM32446enable(void){
 	SystickInic(); // Polling delay source.
 
 	return stm32446;
-}
-
-// SRAM
-void STM32446SramAccess(void)
-{
-	// RM0390 pg 94
-	// SRAM access
-	// 0 - Power Up SRAM
-	PWR->CSR |= (1 << 9); // BRE: Backup regulator enable
-	// Check ready flag Bit 3 BRR: Backup regulator ready
-	for( ; !(PWR->CSR & (1 << 3) )  ; ); // BRR: Backup regulator ready
-
-	// 1 - Enable the power interface clock by setting the PWREN bits in the RCC_APB1ENR
-	RCC->APB1ENR |= (1 << 28); // Power interface clock enable
-	//RCC->APB1ENR |= ((1 << 11) | (1 << 28));
-
-	// 2 - Set the DBP bit in the PWR power control register (PWR_CR)
-	PWR->CR |= (1 << 8); // Disable backup domain write protection
-
-	// 3 - Enable the backup SRAM clock by setting BKPSRAMEN bit in the RCC_AHB1ENR
-	RCC->AHB1ENR |= (1 << 18); // BKPSRAMEN: Backup SRAM interface clock enable
 }
 
 /*** Clock Query Procedure & Function Definition ***/

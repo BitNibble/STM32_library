@@ -1,5 +1,5 @@
 /******************************************************************************
-	STM32 446 CRC
+	STM32 446 SRAM
 Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
@@ -8,34 +8,25 @@ Date: 13062023
 Comment:
 	
 *******************************************************************************/
-#ifndef _STM32446CRC_H_
-	#define _STM32446CRC_H_
+#ifndef _STM32446SRAM_H_
+	#define _STM32446SRAM_H_
 
 /*** Library ***/
 #include <inttypes.h>
 
-/*** CRC TypeDef ***/
+/*** SRAM TypeDef ***/
 typedef struct
 {
-	CRC_TypeDef* reg;
-	#if defined(_STM32446CRC_H_)
+	#if defined(_STM32446SRAM_H_)
 		/*** Bit Mapping ***/
-		void (*dr)(uint32_t value);
-		uint32_t (*get_dr)(void);
-		void (*idr)(uint8_t value);
-		uint8_t (*get_idr)(void);
-		void (*reset)(void);
 		/*** Other ***/
+		void (*access)(void);
 	#endif
-}STM32446CRCobj;
+}STM32446SRAMobj;
 
-/***** CRC Procedure & Function Header ******/
-/*** CRC Bit Mapping Header ***/
-void STM32446CRC_dr(uint32_t value);
-uint32_t STM32446CRC_get_dr(void);
-void STM32446CRC_idr(uint8_t value);
-uint8_t STM32446CRC_get_idr(void);
-void STM32446CRC_reset(void);
+/***** SRAM Procedure & Function Header ******/
+void STM32446SramAccess(void);
+/*** SRAM Bit Mapping Header ***/
 
 #endif
 
