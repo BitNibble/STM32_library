@@ -44,9 +44,6 @@ void STM32446delay_us(uint32_t us);
 // INTERRUPT
 void SysTick_Handler(void);
 
-// SYSCFG
-void STM32446SysCfgEnable(void);
-
 // SRAM
 void STM32446SramAccess(void);
 
@@ -779,7 +776,6 @@ STM32446 STM32446enable(void){
 
 	// SYSCFG
 	stm32446.syscfg.reg = (SYSCFG_TypeDef*) SYSCFG_BASE;
-	stm32446.syscfg.enable = STM32446SysCfgEnable;
 	
 	// PWR
 	stm32446.pwr.reg = (PWR_TypeDef*) PWR_BASE;
@@ -1835,12 +1831,6 @@ STM32446 STM32446enable(void){
 	return stm32446;
 }
 
-// SYSCFG
-void STM32446SysCfgEnable(void)
-{
-	RCC->APB2ENR |= (1 << 14); //syscfg clock enable
-}
-
 // SRAM
 void STM32446SramAccess(void)
 {
@@ -2386,15 +2376,14 @@ void SysTick_Handler(void)
 /***EOF***/
 
 /******
-1 - Sequence
-2 - Scope
+1º Sequence
+2º Scope
 	- Library Scope
 	- File Scope
 	- Function Scope
 	- Precedence Scope
-3 - Pointer and Variable
-4 - Casting
+3º Pointer and Variable
+4º Casting
 ******/
-
 
 
