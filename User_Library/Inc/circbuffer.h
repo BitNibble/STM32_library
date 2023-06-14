@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: all
-Date: 07092022
+Date: 15062023
 Comment:
 	Circular Buffer
 *******************************************************************************/
@@ -14,22 +14,27 @@ Comment:
 /*** File Library ***/
 #include <inttypes.h>
 
+/*** CIRCBUFFER par TypeDef ***/
+typedef struct
+{
+	char* tail;
+	char* head;
+	char* orig;
+	char* end;
+}CIRCBUFFER_par;
+
 /*** CIRCBUFFER TypeDef ***/
 struct circ_buf_template
 {
-	uint8_t* tail;
-	uint8_t* head;
-	uint8_t* buff;
-	uint8_t* orig;
-	uint8_t* end;
-	uint8_t (*get)(struct circ_buf_template* circ);
-	void (*put)(struct circ_buf_template* circ, uint8_t data);
-	void (*putstr)(struct circ_buf_template* circ, const char* str);
-	void (*getstr)(struct circ_buf_template* circ, uint8_t* str);
-} ;
+	CIRCBUFFER_par par;
+	uint8_t (*get)(CIRCBUFFER_par* par);
+	void (*put)(CIRCBUFFER_par* par, char data);
+	void (*putstr)(CIRCBUFFER_par* par, const char* str);
+	void (*getstr)(CIRCBUFFER_par* par, char* str);
+};
 typedef struct circ_buf_template circbuff;
 
-circbuff CIRCBUFFenable(uint8_t size_buff, uint8_t* buff);
+circbuff CIRCBUFFenable(uint8_t size_buff, char* buff);
 
 #endif
 

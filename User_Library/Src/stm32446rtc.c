@@ -18,7 +18,7 @@ static uint32_t STM32446DateDr;
 /*** File Procedure & Function Header ***/
 uint32_t rtc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+uint32_t rtc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 void STM32446RtcSetTr(void);
 void STM32446RtcSetDr(void);
 uint8_t STM32446RtcAccess(uint8_t clock);
@@ -50,13 +50,13 @@ uint8_t STM32446RtcInic(uint8_t clock)
 	//RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
 	
 	// 5 - Enter the "key" to unlock write protection
-	RTC->WPR |= 0xCA;
-	RTC->WPR |= 0x53;
+	RTC->WPR |= RTC_KEY1;
+	RTC->WPR |= RTC_KEY2;
 	//RTC->ISR &= (uint32_t) ~((1 << 3) | (1 << 5) | (1 << 7));
 
 	// 6 - Set INIT bit and wait for ready flag
-	RTC->ISR |= (1 << 7); // INIT: Initialization mode
-	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialization flag
+	RTC->ISR |= (1 << 7); // INIT: Initialisation mode
+	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialisation flag
 	status = 6;
 
 	// 7 - Adjust prescaler values for RTC to obtain 1 Hz
@@ -181,8 +181,8 @@ void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data)
 	//1 - Enable access to the RTC registers
 	PWR->CR |= (1 << 8); // Disable backup domain write protection
 	//2 - Enter the "key" to unlock write protection	
-	RTC->WPR |= 0xCA;
-	RTC->WPR |= 0x53;
+	RTC->WPR |= RTC_KEY1;
+	RTC->WPR |= RTC_KEY2;
 	//3 - Write
 	
 	*reg = data;
@@ -194,7 +194,7 @@ void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data)
 void STM32446Rtcdr2vec(char* rtc_vect)
 {
 	uint32_t dr = RTC->DR;
-	if(RTC->ISR & (1 << 5)){ // RSF: Registers synchronization flag
+	if(RTC->ISR & (1 << 5)){ // RSF: Registers synchronisation flag
 		// YT
 		rtc_vect[0] = (uint8_t) (dr >> 20) & 0x0F;
 		rtc_vect[0] = rtc_bcd2dec(rtc_vect[0]);
@@ -218,7 +218,7 @@ void STM32446Rtcdr2vec(char* rtc_vect)
 		rtc_vect[6] = rtc_bcd2dec(rtc_vect[6]);
 		// Store Value
 		STM32446DateDr = dr;
-		// Clear Registers synchronization flag
+		// Clear Registers synchronisation flag
 		RTC->ISR &= (uint32_t) ~(1 << 5);
 	}
 }
@@ -226,7 +226,7 @@ void STM32446Rtcdr2vec(char* rtc_vect)
 void STM32446Rtctr2vec(char* rtc_vect)
 {
 	uint32_t tr = RTC->TR;
-	if(RTC->ISR & (1 << 5)){ // RSF: Registers synchronization flag
+	if(RTC->ISR & (1 << 5)){ // RSF: Registers synchronisation flag
 		// ht
 		rtc_vect[0] = (uint8_t) (tr >> 20) & 0x03;
 		rtc_vect[0] = rtc_bcd2dec(rtc_vect[0]);
@@ -247,7 +247,7 @@ void STM32446Rtctr2vec(char* rtc_vect)
 		rtc_vect[5] = rtc_bcd2dec(rtc_vect[5]);
 		// Store value
 		STM32446TimeTr = tr;
-		// Clear Registers synchronization flag
+		// Clear Registers synchronisation flag
 		RTC->ISR &= (uint32_t) ~(1 << 5);
 	}
 }
@@ -259,11 +259,11 @@ void STM32446RtcSetTr(void)
 	//1 - Enable access to the RTC registers
 	PWR->CR |= (1 << 8); // Disable backup domain write protection
 	//2 - Enter the "key" to unlock write protection	
-	RTC->WPR |= 0xCA;
-	RTC->WPR |= 0x53;
+	RTC->WPR |= RTC_KEY1;
+	RTC->WPR |= RTC_KEY2;
 	//3 - Set INIT bit and wait for ready flag
-	RTC->ISR |= (1 << 7); // INIT: Initialization mode
-	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialization flag
+	RTC->ISR |= (1 << 7); // INIT: Initialisation mode
+	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialisation flag
 	//4 - Setup
 	
 	RTC->TR = STM32446TimeTr;
@@ -279,11 +279,11 @@ void STM32446RtcSetDr(void)
 	//1 - Enable access to the RTC registers
 	PWR->CR |= (1 << 8); // Disable backup domain write protection
 	//2 - Enter the "key" to unlock write protection	
-	RTC->WPR |= 0xCA;
-	RTC->WPR |= 0x53;
+	RTC->WPR |= RTC_KEY1;
+	RTC->WPR |= RTC_KEY2;
 	//3 - Set INIT bit and wait for ready flag
-	RTC->ISR |= (1 << 7); // INIT: Initialization mode
-	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialization flag
+	RTC->ISR |= (1 << 7); // INIT: Initialisation mode
+	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialisation flag
 	//4 - Setup
 	
 	RTC->DR = STM32446DateDr;
@@ -357,7 +357,7 @@ void rtc_lselect(uint8_t lclock)
 			RCC->BDCR |= ((1 << 8) | (1 << 9)); // HSE oscillator clock divided by a programmable prescaler
 		break;
 		default:
-			RCC->BDCR |= (1 << 8); // LSE oscillator clock used as the RTC clock
+			RCC->BDCR |= (1 << 9); // LSI oscillator clock used as the RTC clock
 		break;
 	}
 }

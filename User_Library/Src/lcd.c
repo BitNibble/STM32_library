@@ -132,7 +132,7 @@ void LCD0_inic(void)
 	// LCD0_write(0x1F, INST); // cursor or display shift
 	// stm.systick.delay_10us(4);
 	// LCD0_write(0x03, INST); // return home
-	// stm.systick.delay_ms(2);
+	stm.systick.delay_ms(10);
 	LCD0_gotoxy(0,0);
 }
 void LCD0_write(char c, unsigned short D_I)

@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: all
-Date: 07092022
+Date: 15062023
 Comment:
     Circular Buffer
 ******************************************************************************/
@@ -14,20 +14,21 @@ Comment:
 #include "circbuffer.h"
 
 /*** File Header ***/
-uint8_t CIRC_get(struct circ_buf_template* circ);
-void CIRC_put(struct circ_buf_template* circ, uint8_t data);
-void CIRC_putstr(struct circ_buf_template* circ, const char* str);
-void CIRC_getstr(struct circ_buf_template* circ, uint8_t* str);
+uint8_t CIRC_get(CIRCBUFFER_par* par);
+void CIRC_put(CIRCBUFFER_par* par, char data);
+void CIRC_putstr(CIRCBUFFER_par* par, const char* str);
+void CIRC_getstr(CIRCBUFFER_par* par, char* str);
 
 /*** CIRCBUFF Procedure & Function Definition ***/
-circbuff CIRCBUFFenable( uint8_t size_buff, uint8_t* buff )
+circbuff CIRCBUFFenable( uint8_t size_buff, char* buff )
 {
 	// OBJECT STRUCT
 	struct circ_buf_template circ;
 	// inic VAR
-	circ.tail = circ.head = circ.buff = buff;
-	circ.orig = buff;
-	circ.end = buff + size_buff; // generic
+	circ.par.tail = circ.par.head = buff;
+	circ.par.orig = buff;
+	circ.par.end = buff + size_buff; // generic
+	*circ.par.tail = *circ.par.head = 0;
 	// function pointers
 	circ.get = CIRC_get;
 	circ.put = CIRC_put;
@@ -36,45 +37,51 @@ circbuff CIRCBUFFenable( uint8_t size_buff, uint8_t* buff )
 	return circ; // return copy
 }
 
-uint8_t CIRC_get( struct circ_buf_template* circ ){
-	uint8_t* next;
-	if( circ->tail == circ->end ){
-		next = circ->orig;
+uint8_t CIRC_get( CIRCBUFFER_par* par ){
+	char* next;
+
+	if( par->tail != par->end ){
+		next = par->tail + 1;
 	}else{
-		next = circ->tail + 1;
+		next = par->orig;
 	}
-	if( circ->tail == circ->head ){
-		*circ->tail = 0;
+
+	if( par->tail != par->head ){
+		par->tail = next;
 	}else{
-		circ->tail = next;
+		*par->tail = 0;
 	}
-	return *circ->tail;
+
+	return *par->tail;
 }
 
-void CIRC_put( struct circ_buf_template* circ, uint8_t data ){
-	uint8_t* next;
-	if( circ->head == circ->end ){
-		next = circ->orig;
+void CIRC_put( CIRCBUFFER_par* par, char data ){
+	char* next;
+
+	if( par->head != par->end ){
+		next = par->head + 1;
 	}else{
-		next = circ->head + 1;
+		next = par->orig;
+
 	}
 	
-	if( next == circ->tail ){
-		*next = 0;
-	}else{
+	if( next != par->tail ){
 		*next = data;
-		circ->head = next;
+		par->head = next;
+	}else{
+		*next = 0;
 	}
 }
 
-void CIRC_putstr(struct circ_buf_template* circ, const char* str){
+void CIRC_putstr( CIRCBUFFER_par* par, const char* str ){
 	uint8_t i;
-	for(i = 0; circ->tail != circ->head ; CIRC_put(circ, str[i++]));
+	for( i = 0; *(str + i) ; CIRC_put(par, *(str + i++)) );
+
 }
 
-void CIRC_getstr(struct circ_buf_template* circ, uint8_t* str){
+void CIRC_getstr( CIRCBUFFER_par* par, char* str ){
 	uint8_t i;
-	for(i = 0; circ->tail != circ->head  ; str[i++] = CIRC_get(circ), str[i] = '\0');
+	for(i = 0; par->tail != par->head  ; *(str + i) = CIRC_get(par), *(str + ++i) = '\0');
 }
 
 /***EOF***/

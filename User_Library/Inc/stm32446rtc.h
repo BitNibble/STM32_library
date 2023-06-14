@@ -11,8 +11,16 @@ Comment:
 #ifndef _STM32446RTC_H_
 	#define _STM32446RTC_H_
 
-/*** File Library ***/
+/*** Library ***/
 #include <inttypes.h>
+
+/*** Define & Macro ***/
+#ifndef RTC_KEY1
+	#define RTC_KEY1 0xCA
+#endif
+#ifndef RTC_KEY2
+	#define RTC_KEY2 0x53
+#endif
 
 /*** RTC TypeDef ***/
 typedef struct

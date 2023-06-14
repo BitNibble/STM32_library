@@ -13,23 +13,23 @@ Comment:
 
 /*** Library ***/
 #include <inttypes.h>
-#ifndef KEY1
-	#define KEY1  0x45670123
+#ifndef FLASH_KEY1
+	#define FLASH_KEY1  0x45670123
 #endif
-#ifndef KEY2
-	#define KEY2  0xCDEF89AB
+#ifndef FLASH_KEY2
+	#define FLASH_KEY2  0xCDEF89AB
 #endif
-#ifndef OPTKEY1
-	#define OPTKEY1  0x08192A3B
+#ifndef FLASH_OPTKEY1
+	#define FLASH_OPTKEY1  0x08192A3B
 #endif
-#ifndef OPTKEY2
-	#define OPTKEY2  0x4C5D6E7F
+#ifndef FLASH_OPTKEY2
+	#define FLASH_OPTKEY2  0x4C5D6E7F
 #endif
-#ifndef READPROTECTL0
-	#define READPROTECTL0  0xAA
+#ifndef FLASH_READPROTECTL0
+	#define FLASH_READPROTECTL0  0xAA
 #endif
-#ifndef READPROTECTL2
-	#define READPROTECTL2  0xCC
+#ifndef FLASH_READPROTECTL2
+	#define FLASH_READPROTECTL2  0xCC
 #endif
 
 /*** FLASH Bit Mapping TypeDef ***/
