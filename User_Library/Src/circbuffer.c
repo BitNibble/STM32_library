@@ -15,12 +15,12 @@ Comment:
 
 /*** File Header ***/
 uint8_t CIRC_get(CIRCBUFFER_par* par);
-void CIRC_put(CIRCBUFFER_par* par, char data);
-void CIRC_putstr(CIRCBUFFER_par* par, const char* str);
-void CIRC_getstr(CIRCBUFFER_par* par, char* str);
+void CIRC_put(CIRCBUFFER_par* par, CIRCBUFF_var data);
+void CIRC_putstr(CIRCBUFFER_par* par, const CIRCBUFF_var* str);
+void CIRC_getstr(CIRCBUFFER_par* par, CIRCBUFF_var* str);
 
 /*** CIRCBUFF Procedure & Function Definition ***/
-circbuff CIRCBUFFenable( uint8_t size_buff, char* buff )
+circbuff CIRCBUFFenable( uint8_t size_buff, CIRCBUFF_var* buff )
 {
 	// OBJECT STRUCT
 	struct circ_buf_template circ;
@@ -38,7 +38,7 @@ circbuff CIRCBUFFenable( uint8_t size_buff, char* buff )
 }
 
 uint8_t CIRC_get( CIRCBUFFER_par* par ){
-	char* next;
+	CIRCBUFF_var* next;
 
 	if( par->tail != par->end ){
 		next = par->tail + 1;
@@ -55,8 +55,8 @@ uint8_t CIRC_get( CIRCBUFFER_par* par ){
 	return *par->tail;
 }
 
-void CIRC_put( CIRCBUFFER_par* par, char data ){
-	char* next;
+void CIRC_put( CIRCBUFFER_par* par, CIRCBUFF_var data ){
+	CIRCBUFF_var* next;
 
 	if( par->head != par->end ){
 		next = par->head + 1;
@@ -73,13 +73,13 @@ void CIRC_put( CIRCBUFFER_par* par, char data ){
 	}
 }
 
-void CIRC_putstr( CIRCBUFFER_par* par, const char* str ){
+void CIRC_putstr( CIRCBUFFER_par* par, const CIRCBUFF_var* str ){
 	uint8_t i;
 	for( i = 0; *(str + i) ; CIRC_put(par, *(str + i++)) );
 
 }
 
-void CIRC_getstr( CIRCBUFFER_par* par, char* str ){
+void CIRC_getstr( CIRCBUFFER_par* par, CIRCBUFF_var* str ){
 	uint8_t i;
 	for(i = 0; par->tail != par->head  ; *(str + i) = CIRC_get(par), *(str + ++i) = '\0');
 }

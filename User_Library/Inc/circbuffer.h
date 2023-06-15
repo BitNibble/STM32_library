@@ -11,16 +11,19 @@ Comment:
 #ifndef _CIRCBUFFER_H_
 	#define _CIRCBUFFER_H_
 
-/*** File Library ***/
+/*** Library ***/
 #include <inttypes.h>
+
+/*** Define & Macro ***/
+#define CIRCBUFF_var char
 
 /*** CIRCBUFFER par TypeDef ***/
 typedef struct
 {
-	char* tail;
-	char* head;
-	char* orig;
-	char* end;
+	CIRCBUFF_var* tail;
+	CIRCBUFF_var* head;
+	CIRCBUFF_var* orig;
+	CIRCBUFF_var* end;
 }CIRCBUFFER_par;
 
 /*** CIRCBUFFER TypeDef ***/
@@ -28,13 +31,13 @@ struct circ_buf_template
 {
 	CIRCBUFFER_par par;
 	uint8_t (*get)(CIRCBUFFER_par* par);
-	void (*put)(CIRCBUFFER_par* par, char data);
-	void (*putstr)(CIRCBUFFER_par* par, const char* str);
-	void (*getstr)(CIRCBUFFER_par* par, char* str);
+	void (*put)(CIRCBUFFER_par* par, CIRCBUFF_var data);
+	void (*putstr)(CIRCBUFFER_par* par, const CIRCBUFF_var* str);
+	void (*getstr)(CIRCBUFFER_par* par, CIRCBUFF_var* str);
 };
 typedef struct circ_buf_template circbuff;
 
-circbuff CIRCBUFFenable(uint8_t size_buff, char* buff);
+circbuff CIRCBUFFenable(uint8_t size_buff, CIRCBUFF_var* buff);
 
 #endif
 

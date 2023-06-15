@@ -4,13 +4,13 @@ Author: Sergio Manuel Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 15062023
 Comment:
 	-manual um1724, m0390, pm0056, pm0214, and other sources.
 	-Virtual Image STM32-446, mapping.
-	-Still in progress 03082022, increment has go along.
-	-Stable.
+	-Still in progress 15062023, increment has go along.
 	-Dependent on CMSIS
+	-Stable.
 *******************************************************************************/
 #ifndef _STM32446MAPPING_H_
 	#define _STM32446MAPPING_H_
@@ -395,6 +395,7 @@ typedef struct
 	void (*vecsetup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
 	uint32_t (*getbit)(uint32_t reg, uint32_t size_block, uint32_t bit);
 	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+	uint32_t (*getsetbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 }STM32446_function;
 
 /***************** STM32F446 TypeDef *****************/
