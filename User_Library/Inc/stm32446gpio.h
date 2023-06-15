@@ -15,12 +15,18 @@ Comment:
 #include <inttypes.h>
 
 /*** GPIO TypeDef ***/
+typedef struct
+{
+	uint32_t (*getbit)(uint32_t reg, uint32_t size_block, uint32_t bit);
+	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+	uint32_t (*getsetbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+}STM32446GpioFunc;
+
 // GPIO -> GPIOA
 typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -28,6 +34,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioAobj;
 
@@ -36,7 +45,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -44,6 +52,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioBobj;
 
@@ -52,7 +63,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -60,6 +70,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioCobj;
 
@@ -68,7 +81,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -76,6 +88,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioDobj;
 
@@ -84,7 +99,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -92,6 +106,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioEobj;
 
@@ -100,7 +117,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -108,6 +124,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioFobj;
 
@@ -116,7 +135,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -124,6 +142,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioGobj;
 
@@ -132,7 +153,6 @@ typedef struct
 {
 	GPIO_TypeDef* reg;
 	#if defined(_STM32446GPIO_H_)
-		void (*clock)(void);
 		/*** Bit Mapping ***/
 		void (*moder)( unsigned int data, unsigned int pin );
 		void (*ospeedr)( unsigned int data, unsigned int pin );
@@ -140,6 +160,9 @@ typedef struct
 		void (*afr)( unsigned int data, unsigned int pin );
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
+		/*** Other ***/
+		void (*clock)(void);
+		STM32446GpioFunc func;
 	#endif
 }STM32446GpioHobj;
 
@@ -208,13 +231,14 @@ void STM32446GpioHreset( unsigned int data );
 void STM32446GpioHset( unsigned int data );
 void STM32446GpioHafr( unsigned int data, unsigned int pin );
 
+/*** Procedure & Function Header ***/
+uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+
 #endif
 
 /*** EOF ***/
-
-/***
- * Three methods in one
- */
 
 /******
 1º Sequence

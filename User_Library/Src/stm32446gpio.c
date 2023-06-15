@@ -14,11 +14,6 @@ Comment:
 #include "stm32446gpio.h"
 #include "math.h"
 
-/*** File Procedure & Funtion Header ***/
-uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
-void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
-
 /*** GPIO Procedure & Function Definition ***/
 /*** GPIOA ***/
 void STM32446GpioAclock( void )
@@ -468,11 +463,10 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 	}
 }
 
-/*** File Procedure & Funtion Definition ***/
+/*** Procedure & Function Definition ***/
 uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;
-
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
 	tmp = mask & reg;

@@ -671,6 +671,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpioa.reset = STM32446GpioAreset;
 		stm32446.gpioa.set = STM32446GpioAset;
 		stm32446.gpioa.afr = STM32446GpioAafr;
+		/*** Other ***/
+		stm32446.gpioa.func.getbit = gpio_getbit;
+		stm32446.gpioa.func.setbit = gpio_setbit;
+		stm32446.gpioa.func.getsetbit = gpio_getsetbit;
+
 
 	#endif
 
@@ -685,6 +690,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpiob.reset = STM32446GpioBreset;
 		stm32446.gpiob.set = STM32446GpioBset;
 		stm32446.gpiob.afr = STM32446GpioBafr;
+		/*** Other ***/
+		stm32446.gpiob.func.getbit = gpio_getbit;
+		stm32446.gpiob.func.setbit = gpio_setbit;
+		stm32446.gpiob.func.getsetbit = gpio_getsetbit;
 
 	#endif
 
@@ -699,6 +708,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpioc.reset = STM32446GpioCreset;
 		stm32446.gpioc.set = STM32446GpioCset;
 		stm32446.gpioc.afr = STM32446GpioCafr;
+		/*** Other ***/
+		stm32446.gpioc.func.getbit = gpio_getbit;
+		stm32446.gpioc.func.setbit = gpio_setbit;
+		stm32446.gpioc.func.getsetbit = gpio_getsetbit;
 
 	#endif
 
@@ -713,6 +726,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpiod.reset = STM32446GpioDreset;
 		stm32446.gpiod.set = STM32446GpioDset;
 		stm32446.gpiod.afr = STM32446GpioDafr;
+		/*** Other ***/
+		stm32446.gpiod.func.getbit = gpio_getbit;
+		stm32446.gpiod.func.setbit = gpio_setbit;
+		stm32446.gpiod.func.getsetbit = gpio_getsetbit;
 
 	#endif
 
@@ -727,6 +744,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpioe.reset = STM32446GpioEreset;
 		stm32446.gpioe.set = STM32446GpioEset;
 		stm32446.gpioe.afr = STM32446GpioEafr;
+		/*** Other ***/
+		stm32446.gpioe.func.getbit = gpio_getbit;
+		stm32446.gpioe.func.setbit = gpio_setbit;
+		stm32446.gpioe.func.getsetbit = gpio_getsetbit;
 
 	#endif
 
@@ -741,6 +762,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpiof.reset = NULL;
 		stm32446.gpiof.set = NULL;
 		stm32446.gpiof.afr = NULL;
+		/*** Other ***/
+		stm32446.gpiof.func.getbit = NULL;
+		stm32446.gpiof.func.setbit = NULL;
+		stm32446.gpiof.func.getsetbit = NULL;
 
 	#endif
 
@@ -755,6 +780,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpiog.reset = NULL;
 		stm32446.gpiog.set = NULL;
 		stm32446.gpiog.afr = NULL;
+		/*** Other ***/
+		stm32446.gpiog.func.getbit = NULL;
+		stm32446.gpiog.func.setbit = NULL;
+		stm32446.gpiog.func.getsetbit = NULL;
 
 	#endif
 
@@ -769,6 +798,10 @@ STM32446 STM32446enable(void){
 		stm32446.gpioh.reset = STM32446GpioHreset;
 		stm32446.gpioh.set = STM32446GpioHset;
 		stm32446.gpioh.afr = STM32446GpioHafr;
+		/*** Other ***/
+		stm32446.gpioh.func.getbit = gpio_getbit;
+		stm32446.gpioh.func.setbit = gpio_setbit;
+		stm32446.gpioh.func.getsetbit = gpio_getsetbit;
 
 	#endif
 

@@ -198,7 +198,7 @@ void LCD0_BF(void)
 	char inst = 0x80;
 	for(i=0; 0x80 & inst; i++){
 		inst = LCD0_read(INST);
-		if(i > 1)
+		if(i > 10) // 1
 			break;
 	}
 }
@@ -313,7 +313,6 @@ void lcd_resetpin( GPIO_TypeDef* reg, int pin )
 uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t value = 0; uint32_t tmp = 0;
-
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
 	tmp = mask & reg;
