@@ -109,30 +109,30 @@ void LCD0_inic(void)
 	// for(repeat = 2 ; repeat ; repeat--){
 		// repeat twice in 4 bit length
 		LCD0_write(0x28, INST); // function set 2B
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 		LCD0_write(0x28, INST); // function set 2B
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 
 		LCD0_write(0x0C, INST); // display on/off control
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 		LCD0_write(0x0C, INST); // display on/off control
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 
 		LCD0_write(0x01, INST); // clear display
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 		LCD0_write(0x01, INST); // clear display
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 
 		LCD0_write(0x06, INST); // entry mode set (crazy settings)
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 		LCD0_write(0x06, INST); // entry mode set (crazy settings)
-		LCD0_BF();
+		LCD0_BF(); stm.systick.delay_10us(4);
 	// }
 	// INICIALIZATION END
 	// LCD0_write(0x1F, INST); // cursor or display shift
 	// stm.systick.delay_10us(4);
 	// LCD0_write(0x03, INST); // return home
-	stm.systick.delay_ms(10);
+	// stm.systick.delay_ms(10);
 	LCD0_gotoxy(0,0);
 }
 void LCD0_write(char c, unsigned short D_I)
