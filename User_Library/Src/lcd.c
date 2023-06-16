@@ -109,24 +109,24 @@ void LCD0_inic(void)
 	// for(repeat = 2 ; repeat ; repeat--){
 		// repeat twice in 4 bit length
 		LCD0_write(0x28, INST); // function set 2B
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 		LCD0_write(0x28, INST); // function set 2B
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 
 		LCD0_write(0x0C, INST); // display on/off control
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 		LCD0_write(0x0C, INST); // display on/off control
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 
 		LCD0_write(0x01, INST); // clear display
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 		LCD0_write(0x01, INST); // clear display
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 
 		LCD0_write(0x06, INST); // entry mode set (crazy settings)
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 		LCD0_write(0x06, INST); // entry mode set (crazy settings)
-		LCD0_BF(); stm.systick.delay_10us(4);
+		LCD0_BF();
 	// }
 	// INICIALIZATION END
 	// LCD0_write(0x1F, INST); // cursor or display shift
@@ -337,7 +337,7 @@ uint32_t lcd_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = *(reg + n ) & ~(mask << bit);
+	value = *(reg + n ) & (mask << bit);
 	value = (value >> bit);
 	return value;
 }
@@ -359,7 +359,7 @@ void LCD0_BF(void)
 	char inst = 0x80;
 	for(i=0; 0x80 & inst; i++){
 		inst = LCD0_read(INST);
-		if(i > 1)
+		if(i > 3)
 			break;
 	}
 }

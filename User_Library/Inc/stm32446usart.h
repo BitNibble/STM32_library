@@ -99,8 +99,8 @@ typedef struct
 		STM32446USART_CR2 cr2;
 		STM32446USART_CR3 cr3;
 		STM32446USART_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
+		void (*dr)(uint32_t data);
+		uint32_t (*get_dr)(void);
 		/*** Other ***/
 		void (*clock)(void);
 		void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -123,8 +123,8 @@ typedef struct
 		STM32446USART_CR2 cr2;
 		STM32446USART_CR3 cr3;
 		STM32446USART_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
+		void (*dr)(uint32_t data);
+		uint32_t (*get_dr)(void);
 		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -146,8 +146,8 @@ typedef struct
 		STM32446USART_CR2 cr2;
 		STM32446USART_CR3 cr3;
 		STM32446USART_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
+		void (*dr)(uint32_t data);
+		uint32_t (*get_dr)(void);
 		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -169,8 +169,8 @@ typedef struct
 		STM32446USART_CR2 cr2;
 		STM32446USART_CR3 cr3;
 		STM32446USART_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
+		void (*dr)(uint32_t data);
+		uint32_t (*get_dr)(void);
 		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -192,8 +192,8 @@ typedef struct
 		STM32446USART_CR2 cr2;
 		STM32446USART_CR3 cr3;
 		STM32446USART_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
+		void (*dr)(uint32_t data);
+		uint32_t (*get_dr)(void);
 		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -215,8 +215,8 @@ typedef struct
 		STM32446USART_CR2 cr2;
 		STM32446USART_CR3 cr3;
 		STM32446USART_GTPR gtpr;
-		void (*dr)(uint16_t);
-		uint16_t (*get_dr)(void);
+		void (*dr)(uint32_t data);
+		uint32_t (*get_dr)(void);
 		/*** Other ***/
 		void (*clock)(void);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
@@ -243,8 +243,8 @@ uint8_t STM32446Usart1_nf(void);
 uint8_t STM32446Usart1_fe(void);
 uint8_t STM32446Usart1_pe(void);
 // DR
-void STM32446Usart1_dr(uint16_t);
-uint16_t STM32446Usart1_get_dr(void);
+void STM32446Usart1_dr(uint32_t data);
+uint32_t STM32446Usart1_get_dr(void);
 // BRR
 void STM32446Usart1_div_mantissa(uint16_t value);
 void STM32446Usart1_div_fraction(uint8_t value);
@@ -315,8 +315,8 @@ uint8_t STM32446Usart2_nf(void);
 uint8_t STM32446Usart2_fe(void);
 uint8_t STM32446Usart2_pe(void);
 // DR
-void STM32446Usart2_dr(uint16_t);
-uint16_t STM32446Usart2_get_dr(void);
+void STM32446Usart2_dr(uint32_t data);
+uint32_t STM32446Usart2_get_dr(void);
 // BRR
 void STM32446Usart2_div_mantissa(uint16_t value);
 void STM32446Usart2_div_fraction(uint8_t value);
@@ -386,8 +386,8 @@ uint8_t STM32446Usart3_nf(void);
 uint8_t STM32446Usart3_fe(void);
 uint8_t STM32446Usart3_pe(void);
 // DR
-void STM32446Usart3_dr(uint16_t);
-uint16_t STM32446Usart3_get_dr(void);
+void STM32446Usart3_dr(uint32_t data);
+uint32_t STM32446Usart3_get_dr(void);
 // BRR
 void STM32446Usart3_div_mantissa(uint16_t value);
 void STM32446Usart3_div_fraction(uint8_t value);
@@ -457,8 +457,8 @@ uint8_t STM32446Uart4_nf(void);
 uint8_t STM32446Uart4_fe(void);
 uint8_t STM32446Uart4_pe(void);
 // DR
-void STM32446Uart4_dr(uint16_t);
-uint16_t STM32446Uart4_get_dr(void);
+void STM32446Uart4_dr(uint32_t data);
+uint32_t STM32446Uart4_get_dr(void);
 // BRR
 void STM32446Uart4_div_mantissa(uint16_t value);
 void STM32446Uart4_div_fraction(uint8_t value);
@@ -528,8 +528,8 @@ uint8_t STM32446Uart5_nf(void);
 uint8_t STM32446Uart5_fe(void);
 uint8_t STM32446Uart5_pe(void);
 // DR
-void STM32446Uart5_dr(uint16_t);
-uint16_t STM32446Uart5_get_dr(void);
+void STM32446Uart5_dr(uint32_t data);
+uint32_t STM32446Uart5_get_dr(void);
 // BRR
 void STM32446Uart5_div_mantissa(uint16_t value);
 void STM32446Uart5_div_fraction(uint8_t value);
@@ -599,8 +599,8 @@ uint8_t STM32446Usart6_nf(void);
 uint8_t STM32446Usart6_fe(void);
 uint8_t STM32446Usart6_pe(void);
 // DR
-void STM32446Usart6_dr(uint16_t);
-uint16_t STM32446Usart6_get_dr(void);
+void STM32446Usart6_dr(uint32_t data);
+uint32_t STM32446Usart6_get_dr(void);
 // BRR
 void STM32446Usart6_div_mantissa(uint16_t value);
 void STM32446Usart6_div_fraction(uint8_t value);

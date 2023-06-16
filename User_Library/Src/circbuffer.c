@@ -25,10 +25,10 @@ circbuff CIRCBUFFenable( uint8_t size_buff, CIRCBUFF_var* buff )
 	// OBJECT STRUCT
 	struct circ_buf_template circ;
 	// inic VAR
-	circ.par.tail = circ.par.head = buff;
+	circ.par.tail = buff;
+	circ.par.head = buff;
 	circ.par.orig = buff;
 	circ.par.end = buff + size_buff; // generic
-	*circ.par.tail = *circ.par.head = 0;
 	// function pointers
 	circ.get = CIRC_get;
 	circ.put = CIRC_put;
@@ -62,7 +62,6 @@ void CIRC_put( CIRCBUFFER_par* par, CIRCBUFF_var data ){
 		next = par->head + 1;
 	}else{
 		next = par->orig;
-
 	}
 	
 	if( next != par->tail ){
@@ -75,13 +74,13 @@ void CIRC_put( CIRCBUFFER_par* par, CIRCBUFF_var data ){
 
 void CIRC_putstr( CIRCBUFFER_par* par, const CIRCBUFF_var* str ){
 	uint8_t i;
-	for( i = 0; *(str + i) ; CIRC_put(par, *(str + i++)) );
+	for( i = 0; *(str + i) ; CIRC_put(par, *(str + i)), i++ );
 
 }
 
 void CIRC_getstr( CIRCBUFFER_par* par, CIRCBUFF_var* str ){
 	uint8_t i;
-	for(i = 0; par->tail != par->head  ; *(str + i) = CIRC_get(par), *(str + ++i) = '\0');
+	for(i = 0; par->tail != par->head  ; *(str + i) = CIRC_get(par), i++, *(str + i) = '\0');
 }
 
 /***EOF***/

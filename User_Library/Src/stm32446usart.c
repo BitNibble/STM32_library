@@ -201,13 +201,15 @@ uint8_t STM32446Usart1_pe(void)
 }
 
 // DR
-void STM32446Usart1_dr(uint16_t value)
+void STM32446Usart1_dr(uint32_t data)
 {
-	usart_setbit(&USART1->DR, 9, 0, value);
+	uint32_t mask = 0x01FF;
+	uint32_t value = data & mask;
+	USART1->DR = value;
 }
-uint16_t STM32446Usart1_get_dr(void)
+uint32_t STM32446Usart1_get_dr(void)
 {
-	return usart_getbit(USART1->DR, 9, 0);
+	return USART1->DR;
 }
 
 // BRR
@@ -530,13 +532,15 @@ uint8_t STM32446Usart2_pe(void)
 }
 
 // DR
-void STM32446Usart2_dr(uint16_t value)
+void STM32446Usart2_dr(uint32_t data)
 {
-	usart_setbit(&USART2->DR, 9, 0, value);
+	uint32_t mask = 0x01FF;
+	uint32_t value = data & mask;
+	USART2->DR = value;
 }
-uint16_t STM32446Usart2_get_dr(void)
+uint32_t STM32446Usart2_get_dr(void)
 {
-	return usart_getbit(USART2->DR, 9, 0);
+	return USART2->DR;
 }
 
 // BRR
@@ -859,13 +863,15 @@ uint8_t STM32446Usart3_pe(void)
 }
 
 // DR
-void STM32446Usart3_dr(uint16_t value)
+void STM32446Usart3_dr(uint32_t data)
 {
-	usart_setbit(&USART3->DR, 9, 0, value);
+	uint32_t mask = 0x01FF;
+	uint32_t value = data & mask;
+	USART3->DR = value;
 }
-uint16_t STM32446Usart3_get_dr(void)
+uint32_t STM32446Usart3_get_dr(void)
 {
-	return usart_getbit(USART3->DR, 9, 0);
+	return USART3->DR;
 }
 
 // BRR
@@ -1188,13 +1194,15 @@ uint8_t STM32446Uart4_pe(void)
 }
 
 // DR
-void STM32446Uart4_dr(uint16_t value)
+void STM32446Uart4_dr(uint32_t data)
 {
-	usart_setbit(&UART4->DR, 9, 0, value);
+	uint32_t mask = 0x01FF;
+	uint32_t value = data & mask;
+	UART4->DR = value;
 }
-uint16_t STM32446Uart4_get_dr(void)
+uint32_t STM32446Uart4_get_dr(void)
 {
-	return usart_getbit(UART4->DR, 9, 0);
+	return UART4->DR;
 }
 
 // BRR
@@ -1517,13 +1525,15 @@ uint8_t STM32446Uart5_pe(void)
 }
 
 // DR
-void STM32446Uart5_dr(uint16_t value)
+void STM32446Uart5_dr(uint32_t data)
 {
-	usart_setbit(&UART5->DR, 9, 0, value);
+	uint32_t mask = 0x01FF;
+	uint32_t value = data & mask;
+	UART5->DR = value;
 }
-uint16_t STM32446Uart5_get_dr(void)
+uint32_t STM32446Uart5_get_dr(void)
 {
-	return usart_getbit(UART5->DR, 9, 0);
+	return UART5->DR;
 }
 
 // BRR
@@ -1846,13 +1856,15 @@ uint8_t STM32446Usart6_pe(void)
 }
 
 // DR
-void STM32446Usart6_dr(uint16_t value)
+void STM32446Usart6_dr(uint32_t data)
 {
-	usart_setbit(&USART6->DR, 9, 0, value);
+	uint32_t mask = 0x01FF;
+	uint32_t value = data & mask;
+	USART6->DR = value;
 }
-uint16_t STM32446Usart6_get_dr(void)
+uint32_t STM32446Usart6_get_dr(void)
 {
-	return usart_getbit(USART6->DR, 9, 0);
+	return USART6->DR;
 }
 
 // BRR
@@ -2144,7 +2156,8 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 	uint32_t value = 0; uint32_t tmp = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
-	tmp = mask & reg;
+	tmp = reg;
+	tmp &= mask;
 	value = (tmp >> bit);
 	return value;
 }
@@ -2155,7 +2168,8 @@ void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = data & mask;
+	value = data;
+	value &= mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
@@ -2166,7 +2180,8 @@ uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t b
 	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = *(reg + n ) & ~(mask << bit);
+	value = *(reg + n );
+	value &= (mask << bit);
 	value = (value >> bit);
 	return value;
 }

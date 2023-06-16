@@ -2126,7 +2126,7 @@ uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_
 	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
 	uint32_t value = 0;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = *(reg + n ) & ~(mask << bit);
+	value = *(reg + n ) & (mask << bit);
 	value = (value >> bit);
 	return value;
 }
