@@ -361,6 +361,16 @@ void tim_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	*reg = value;
 }
 
+void tim_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
+}
+
 uint32_t tim_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	 uint32_t value = 0;
