@@ -40,6 +40,8 @@ void LCD0_reboot(void);
 void LCD0_strobe(void);
 void lcd_setpin( GPIO_TypeDef* reg, int pin );
 void lcd_resetpin( GPIO_TypeDef* reg, int pin );
+uint32_t lcd_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void lcd_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void lcd_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t lcd_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
@@ -310,12 +312,36 @@ void lcd_resetpin( GPIO_TypeDef* reg, int pin )
 	reg->BSRR = (unsigned int)((1 << pin) << 16);
 }
 
-uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+uint32_t lcd_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0; uint32_t tmp = 0;
+	uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
-	tmp = mask & reg;
+	tmp &= mask;
+	value = (tmp >> bit);
+	return value;
+}
+
+void lcd_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	value = (value << bit);
+	*reg = value;
+}
+
+uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	 uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp &= mask;
 	value = (tmp >> bit);
 	return value;
 }
@@ -323,10 +349,10 @@ uint32_t lcd_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 void lcd_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = data & mask;
+	value &= mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
@@ -334,10 +360,10 @@ void lcd_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 uint32_t lcd_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = *(reg + n );
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = *(reg + n ) & (mask << bit);
+	value &= (mask << bit);
 	value = (value >> bit);
 	return value;
 }

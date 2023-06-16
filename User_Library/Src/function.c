@@ -56,7 +56,7 @@ long FUNCgcd1(long a, long b);
 uint8_t FUNCpincheck(uint8_t port, uint8_t pin);
 char* FUNCprint_binary(unsigned int n_bits, unsigned int number);
 void FUNCreverse(char* str, int len);
-uint8_t FUNCintinvstr(int32_t num, char* res, uint8_t n_digit);
+uint8_t FUNCintinvstr(int64_t num, char* res, uint8_t n_digit);
 char* FUNCftoa(double num, char* res, uint8_t afterpoint);
 char* FUNCdectohex(int32_t num);
 uint16_t FUNCReadHLByte(FUNCHighLowByte reg);
@@ -65,8 +65,11 @@ FUNCHighLowByte FUNCWriteHLByte(uint16_t val);
 FUNCHighLowByte FUNCWriteLHByte(uint16_t val);
 uint16_t FUNCSwapByte(uint16_t num);
 char* FUNCprint(const char *format, ... );
+uint32_t function_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void function_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t function_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void function_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t function_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 /***pc use***
 char* FUNCfltos(FILE* stream);
 char* FUNCftos(FILE* stream);
@@ -473,7 +476,7 @@ uint8_t bintobcd(uint8_t bin)
 }
 
 // intinvstr
-uint8_t FUNCintinvstr(int32_t num, char* res, uint8_t n_digit)
+uint8_t FUNCintinvstr(int64_t num, char* res, uint8_t n_digit)
 {
 	uint8_t k = 0;
 	for(res[k++] = (char)((num % 10) + '0'); (num /= 10) > 0 ; res[k++] = (char)((num % 10) + '0'));
@@ -494,18 +497,18 @@ char* FUNCftoa(double num, char* res, uint8_t afterpoint)
 	}else{
 		n = num; sign = 1;
 	}
-	ipart = (uint32_t) n; fpart = n - (double)ipart;
+	ipart = (uint64_t) n; fpart = n - (double)ipart;
 	k = FUNCintinvstr((int)ipart, res, 1);
 	if (sign < 0) res[k++] = '-'; else res[k++] = ' ';
 	res[k] = '\0';
 	Reverse(res);
 	if (afterpoint > 0 && afterpoint < (MAXafterpoint + 1)){ // it is only a 8 bit mcu
 		res[k++] = '.';
-		FUNCintinvstr( (int32_t)(fpart * pow(10, afterpoint)), (res + k), afterpoint );
+		FUNCintinvstr( (int64_t)(fpart * pow(10, afterpoint)), (res + k), afterpoint );
 		Reverse(res + k);
 	}else{
 		res[k++] = '.';
-		FUNCintinvstr( (int32_t)(fpart * pow(10, DEFAULTafterpoint)), (res + k), DEFAULTafterpoint );
+		FUNCintinvstr( (int64_t)(fpart * pow(10, DEFAULTafterpoint)), (res + k), DEFAULTafterpoint );
 		Reverse(res + k);
 	}
 	return res;
@@ -574,13 +577,36 @@ char* FUNCprint( const char* format, ... )
 		return FUNCstr;
 }
 
-uint32_t function_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+uint32_t function_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0; uint32_t tmp = 0;
-
+	uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
-	tmp = mask & reg;
+	tmp &= mask;
+	value = (tmp >> bit);
+	return value;
+}
+
+void function_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	value = (value << bit);
+	*reg = value;
+}
+
+uint32_t function_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	 uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp &= mask;
 	value = (tmp >> bit);
 	return value;
 }
@@ -588,12 +614,23 @@ uint32_t function_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 void function_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = data & mask;
+	value &= mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+uint32_t function_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = *(reg + n );
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= (mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /******

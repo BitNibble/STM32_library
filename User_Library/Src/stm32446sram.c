@@ -13,10 +13,11 @@ Comment:
 #include "stm32446sram.h"
 
 /*** File Procedure & Function Header ***/
+uint32_t sram_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void sram_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t sram_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void sram_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t sram_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
-
 
 /*** SRAM Procedure & Function Definition ***/
 void STM32446SramAccess(void)
@@ -42,12 +43,36 @@ void STM32446SramAccess(void)
 /*** SRAM Bit Mapping Definition ***/
 
 /*** File Procedure & Function Definition ***/
-uint32_t sram_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+uint32_t sram_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0; uint32_t tmp = 0;
+	uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
-	tmp = mask & reg;
+	tmp &= mask;
+	value = (tmp >> bit);
+	return value;
+}
+
+void sram_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	value = (value << bit);
+	*reg = value;
+}
+
+uint32_t sram_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	 uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp &= mask;
 	value = (tmp >> bit);
 	return value;
 }
@@ -55,10 +80,10 @@ uint32_t sram_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 void sram_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = data & mask;
+	value &= mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
@@ -66,10 +91,10 @@ void sram_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint
 uint32_t sram_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = *(reg + n );
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = *(reg + n ) & (mask << bit);
+	value &= (mask << bit);
 	value = (value >> bit);
 	return value;
 }

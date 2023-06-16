@@ -393,6 +393,8 @@ typedef struct
 	void (*regsetbits)( unsigned int* reg, int n_bits, ... );
 	void (*regresetbits)( unsigned int* reg, int n_bits, ... );
 	void (*vecsetup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
+	uint32_t (*readreg)(uint32_t reg, uint32_t size_block, uint32_t bit);
+	void (*writereg)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 	uint32_t (*getbit)(uint32_t reg, uint32_t size_block, uint32_t bit);
 	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 	uint32_t (*getsetbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);

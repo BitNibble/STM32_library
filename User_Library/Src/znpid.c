@@ -29,8 +29,11 @@ double ZNPID_derivative(znpidparameter* par, double PV, double timelapse);
 double ZNPID_delta(double present_value, double past_value);
 double ZNPID_sum(double value_1, double value_2);
 double ZNPID_product(double value_1, double value_2);
+uint32_t znpid_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void znpid_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t znpid_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
 /*** ZNPID Procedure & Function Definition ***/
 ZNPID ZNPIDenable(void)
@@ -127,13 +130,36 @@ double ZNPID_product(double value_1, double value_2)
 	return (value_1 * value_2);
 }
 
-uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+uint32_t znpid_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0; uint32_t tmp = 0;
-
+	uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
-	tmp = mask & reg;
+	tmp &= mask;
+	value = (tmp >> bit);
+	return value;
+}
+
+void znpid_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	value = (value << bit);
+	*reg = value;
+}
+
+uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	 uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
+	tmp &= mask;
 	value = (tmp >> bit);
 	return value;
 }
@@ -141,12 +167,23 @@ uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = data & mask;
+	value &= mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
+}
+
+uint32_t znpid_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = *(reg + n );
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= (mask << bit);
+	value = (value >> bit);
+	return value;
 }
 
 /***File Interrupt***/

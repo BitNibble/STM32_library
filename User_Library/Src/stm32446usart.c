@@ -21,9 +21,11 @@ uint32_t usart_getplln(void);
 uint32_t usart_getpllp(void);
 uint32_t usart_getpllr(void);
 uint32_t usart_getsysclk(void);
+uint32_t usart_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void usart_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
 /*** USART Procedure & Function Definition ***/
 /*** USART1 ***/
@@ -203,13 +205,11 @@ uint8_t STM32446Usart1_pe(void)
 // DR
 void STM32446Usart1_dr(uint32_t data)
 {
-	uint32_t mask = 0x01FF;
-	uint32_t value = data & mask;
-	USART1->DR = value;
+	usart_writereg(&USART1->DR, 9, 0, data);
 }
 uint32_t STM32446Usart1_get_dr(void)
 {
-	return USART1->DR;
+	return usart_readreg(USART1->DR, 9, 0);
 }
 
 // BRR
@@ -2151,12 +2151,35 @@ uint32_t usart_getsysclk(void)
 	return value;
 }
 
-uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+uint32_t usart_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0; uint32_t tmp = 0;
+	uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
 	mask = (mask << bit);
-	tmp = reg;
+	tmp &= mask;
+	value = (tmp >> bit);
+	return value;
+}
+
+void usart_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	value = (value << bit);
+	*reg = value;
+}
+
+uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	 uint32_t value = 0;
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t tmp = reg;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	mask = (mask << bit);
 	tmp &= mask;
 	value = (tmp >> bit);
 	return value;
@@ -2165,10 +2188,9 @@ uint32_t usart_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = data;
 	value &= mask;
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
@@ -2177,10 +2199,9 @@ void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); }
-	uint32_t value = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = *(reg + n );
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value = *(reg + n );
 	value &= (mask << bit);
 	value = (value >> bit);
 	return value;

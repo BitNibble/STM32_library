@@ -17,6 +17,8 @@ Comment:
 /*** GPIO TypeDef ***/
 typedef struct
 {
+	uint32_t (*readreg)(uint32_t reg, uint32_t size_block, uint32_t bit);
+	void (*writereg)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 	uint32_t (*getbit)(uint32_t reg, uint32_t size_block, uint32_t bit);
 	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 	uint32_t (*getsetbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
@@ -232,6 +234,8 @@ void STM32446GpioHset( unsigned int data );
 void STM32446GpioHafr( unsigned int data, unsigned int pin );
 
 /*** Procedure & Function Header ***/
+uint32_t gpio_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void gpio_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
 void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
