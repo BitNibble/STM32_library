@@ -535,13 +535,11 @@ uint8_t STM32446Usart2_pe(void)
 // DR
 void STM32446Usart2_dr(uint32_t data)
 {
-	uint32_t mask = 0x01FF;
-	uint32_t value = data & mask;
-	USART2->DR = value;
+	usart_writereg(&USART2->DR, 9, 0, data);
 }
 uint32_t STM32446Usart2_get_dr(void)
 {
-	return USART2->DR;
+	return usart_readreg(USART2->DR, 9, 0);
 }
 
 // BRR
@@ -866,13 +864,11 @@ uint8_t STM32446Usart3_pe(void)
 // DR
 void STM32446Usart3_dr(uint32_t data)
 {
-	uint32_t mask = 0x01FF;
-	uint32_t value = data & mask;
-	USART3->DR = value;
+	usart_writereg(&USART3->DR, 9, 0, data);
 }
 uint32_t STM32446Usart3_get_dr(void)
 {
-	return USART3->DR;
+	return usart_readreg(USART3->DR, 9, 0);
 }
 
 // BRR
@@ -1197,13 +1193,11 @@ uint8_t STM32446Uart4_pe(void)
 // DR
 void STM32446Uart4_dr(uint32_t data)
 {
-	uint32_t mask = 0x01FF;
-	uint32_t value = data & mask;
-	UART4->DR = value;
+	usart_writereg(&UART4->DR, 9, 0, data);
 }
 uint32_t STM32446Uart4_get_dr(void)
 {
-	return UART4->DR;
+	return usart_readreg(UART4->DR, 9, 0);
 }
 
 // BRR
@@ -1528,13 +1522,11 @@ uint8_t STM32446Uart5_pe(void)
 // DR
 void STM32446Uart5_dr(uint32_t data)
 {
-	uint32_t mask = 0x01FF;
-	uint32_t value = data & mask;
-	UART5->DR = value;
+	usart_writereg(&UART5->DR, 9, 0, data);
 }
 uint32_t STM32446Uart5_get_dr(void)
 {
-	return UART5->DR;
+	return usart_readreg(UART5->DR, 9, 0);
 }
 
 // BRR
@@ -1859,13 +1851,11 @@ uint8_t STM32446Usart6_pe(void)
 // DR
 void STM32446Usart6_dr(uint32_t data)
 {
-	uint32_t mask = 0x01FF;
-	uint32_t value = data & mask;
-	USART6->DR = value;
+	usart_writereg(&USART6->DR, 9, 0, data);
 }
 uint32_t STM32446Usart6_get_dr(void)
 {
-	return USART6->DR;
+	return usart_readreg(USART6->DR, 9, 0);
 }
 
 // BRR
