@@ -53,8 +53,7 @@ uint8_t STM32446NVIC_active( uint8_t IRQn ) // Query
 void STM32446NVIC_priority(uint32_t IRQn, uint32_t priority)
 {
 	volatile uint8_t* reg = (uint8_t*) NVIC->IP;
-	*(reg + IRQn ) = 0;
-	*(reg + IRQn ) |= priority;
+	*(reg + IRQn ) = priority;
 }
 
 void STM32446NVIC_trigger(uint32_t IRQn)

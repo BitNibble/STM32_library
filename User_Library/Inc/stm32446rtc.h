@@ -38,7 +38,8 @@ typedef struct
 		void (*Second)(uint8_t second);
 		void (*dr2vec)(char* rtc_vect);
 		void (*tr2vec)(char* rtc_vect);
-		void (*RegWrite)(volatile uint32_t* reg, uint32_t data);
+		void (*RegWrite)(uint8_t n, uint8_t data);
+		uint8_t (*RegRead)(uint8_t n);
 	#endif
 }STM32446RTCobj;
 
@@ -54,7 +55,8 @@ void STM32446RtcMinute(uint8_t minute);
 void STM32446RtcSecond(uint8_t second);
 void STM32446Rtcdr2vec(char* rtc_vect);
 void STM32446Rtctr2vec(char* rtc_vect);
-void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data);
+void STM32446RtcRegWrite(uint8_t n, uint8_t data);
+uint8_t STM32446RtcRegRead(uint8_t n);
 
 #endif
 

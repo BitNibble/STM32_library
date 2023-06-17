@@ -178,7 +178,7 @@ void STM32446RtcDay(uint8_t day)
 	STM32446RtcSetDr();
 }
 
-void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data)
+void STM32446RtcRegWrite(uint8_t n, uint8_t data)
 {
 	//1 - Enable access to the RTC registers
 	PWR->CR |= (1 << 8); // Disable backup domain write protection
@@ -186,11 +186,21 @@ void STM32446RtcRegWrite(volatile uint32_t* reg, uint32_t data)
 	RTC->WPR |= RTC_KEY1;
 	RTC->WPR |= RTC_KEY2;
 	//3 - Write
-	
-	*reg = data;
-	
+	//reg -> RTC_BKPxR. x [0 .. 20]
+	if(n < 80){
+		rtc_setbit(&RTC->BKP0R, 8, (n * 8), data);
+	}
 	//4 - Disable access to RTC registers	
 	PWR->CR &= (uint32_t) ~(1 << 8);
+}
+
+uint8_t STM32446RtcRegRead(uint8_t n)
+{
+	uint8_t value = 0;
+	if(n < 80){
+		value = rtc_getsetbit(&RTC->BKP0R, 8, (n * 8));
+	}
+	return value;
 }
 
 void STM32446Rtcdr2vec(char* rtc_vect)

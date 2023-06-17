@@ -1211,6 +1211,7 @@ STM32446 STM32446enable(void){
 		stm32446.rtc.dr2vec = STM32446Rtcdr2vec;
 		stm32446.rtc.tr2vec = STM32446Rtctr2vec;
 		stm32446.rtc.RegWrite = STM32446RtcRegWrite;
+		stm32446.rtc.RegRead = STM32446RtcRegRead;
 
 	#endif
 	
