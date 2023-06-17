@@ -15,7 +15,7 @@ Comment:
 /*** File Procedure & Function Header ***/
 uint32_t crc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
 void crc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t crc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void crc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void crc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t crc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
@@ -44,13 +44,11 @@ void STM32446CRC_reset(void)
 /*** CRC Procedure & Function Definition ***/
 uint32_t crc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0;
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
+	uint32_t value = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
+	value &= (mask << bit);
+	value = (value >> bit);
 	return value;
 }
 
@@ -72,18 +70,6 @@ void crc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	value &= mask;
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
-}
-
-uint32_t crc_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
-{
-	 uint32_t value = 0;
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
-	return value;
 }
 
 void crc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)

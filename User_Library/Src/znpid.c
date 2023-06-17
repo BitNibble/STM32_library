@@ -31,7 +31,7 @@ double ZNPID_sum(double value_1, double value_2);
 double ZNPID_product(double value_1, double value_2);
 uint32_t znpid_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
 void znpid_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void znpid_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t znpid_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
@@ -132,13 +132,11 @@ double ZNPID_product(double value_1, double value_2)
 
 uint32_t znpid_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0;
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
+	uint32_t value = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
+	value &= (mask << bit);
+	value = (value >> bit);
 	return value;
 }
 
@@ -160,18 +158,6 @@ void znpid_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value &= mask;
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
-}
-
-uint32_t znpid_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
-{
-	 uint32_t value = 0;
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
-	return value;
 }
 
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)

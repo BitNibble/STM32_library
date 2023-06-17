@@ -35,7 +35,7 @@ static uint32_t nen[4];
 /*** TOP ***/
 uint32_t STM32446_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
 void STM32446_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t STM32446_getbit(uint32_t reg, uint32_t size_block, uint32_t bit);
+void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
@@ -674,9 +674,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpioa.set = STM32446GpioAset;
 		stm32446.gpioa.afr = STM32446GpioAafr;
 		/*** Other ***/
-		stm32446.gpioa.func.getbit = gpio_getbit;
-		stm32446.gpioa.func.setbit = gpio_setbit;
-		stm32446.gpioa.func.getsetbit = gpio_getsetbit;
+		stm32446.gpioa.func.readreg = STM32446_readreg;
+		stm32446.gpioa.func.writereg = STM32446_writereg;
+		stm32446.gpioa.func.setreg = STM32446_setreg;
+		stm32446.gpioa.func.setbit = STM32446_setbit;
+		stm32446.gpioa.func.getsetbit = STM32446_getsetbit;
 
 
 	#endif
@@ -693,9 +695,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpiob.set = STM32446GpioBset;
 		stm32446.gpiob.afr = STM32446GpioBafr;
 		/*** Other ***/
-		stm32446.gpiob.func.getbit = gpio_getbit;
-		stm32446.gpiob.func.setbit = gpio_setbit;
-		stm32446.gpiob.func.getsetbit = gpio_getsetbit;
+		stm32446.gpiob.func.readreg = STM32446_readreg;
+		stm32446.gpiob.func.writereg = STM32446_writereg;
+		stm32446.gpiob.func.setreg = STM32446_setreg;
+		stm32446.gpiob.func.setbit = STM32446_setbit;
+		stm32446.gpiob.func.getsetbit = STM32446_getsetbit;
 
 	#endif
 
@@ -711,9 +715,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpioc.set = STM32446GpioCset;
 		stm32446.gpioc.afr = STM32446GpioCafr;
 		/*** Other ***/
-		stm32446.gpioc.func.getbit = gpio_getbit;
-		stm32446.gpioc.func.setbit = gpio_setbit;
-		stm32446.gpioc.func.getsetbit = gpio_getsetbit;
+		stm32446.gpioc.func.readreg = STM32446_readreg;
+		stm32446.gpioc.func.writereg = STM32446_writereg;
+		stm32446.gpioc.func.setreg = STM32446_setreg;
+		stm32446.gpioc.func.setbit = STM32446_setbit;
+		stm32446.gpioc.func.getsetbit = STM32446_getsetbit;
 
 	#endif
 
@@ -729,9 +735,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpiod.set = STM32446GpioDset;
 		stm32446.gpiod.afr = STM32446GpioDafr;
 		/*** Other ***/
-		stm32446.gpiod.func.getbit = gpio_getbit;
-		stm32446.gpiod.func.setbit = gpio_setbit;
-		stm32446.gpiod.func.getsetbit = gpio_getsetbit;
+		stm32446.gpiod.func.readreg = STM32446_readreg;
+		stm32446.gpiod.func.writereg = STM32446_writereg;
+		stm32446.gpiod.func.setreg = STM32446_setreg;
+		stm32446.gpiod.func.setbit = STM32446_setbit;
+		stm32446.gpiod.func.getsetbit = STM32446_getsetbit;
 
 	#endif
 
@@ -747,9 +755,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpioe.set = STM32446GpioEset;
 		stm32446.gpioe.afr = STM32446GpioEafr;
 		/*** Other ***/
-		stm32446.gpioe.func.getbit = gpio_getbit;
-		stm32446.gpioe.func.setbit = gpio_setbit;
-		stm32446.gpioe.func.getsetbit = gpio_getsetbit;
+		stm32446.gpioe.func.readreg = STM32446_readreg;
+		stm32446.gpioe.func.writereg = STM32446_writereg;
+		stm32446.gpioe.func.setreg = STM32446_setreg;
+		stm32446.gpioe.func.setbit = STM32446_setbit;
+		stm32446.gpioe.func.getsetbit = STM32446_getsetbit;
 
 	#endif
 
@@ -765,7 +775,9 @@ STM32446 STM32446enable(void){
 		stm32446.gpiof.set = NULL;
 		stm32446.gpiof.afr = NULL;
 		/*** Other ***/
-		stm32446.gpiof.func.getbit = NULL;
+		stm32446.gpioa.func.readreg = NULL;
+		stm32446.gpioa.func.writereg = NULL;
+		stm32446.gpioa.func.setreg = NULL;
 		stm32446.gpiof.func.setbit = NULL;
 		stm32446.gpiof.func.getsetbit = NULL;
 
@@ -783,7 +795,9 @@ STM32446 STM32446enable(void){
 		stm32446.gpiog.set = NULL;
 		stm32446.gpiog.afr = NULL;
 		/*** Other ***/
-		stm32446.gpiog.func.getbit = NULL;
+		stm32446.gpiog.func.readreg = NULL;
+		stm32446.gpiog.func.writereg = NULL;
+		stm32446.gpiog.func.setreg = NULL;
 		stm32446.gpiog.func.setbit = NULL;
 		stm32446.gpiog.func.getsetbit = NULL;
 
@@ -801,9 +815,11 @@ STM32446 STM32446enable(void){
 		stm32446.gpioh.set = STM32446GpioHset;
 		stm32446.gpioh.afr = STM32446GpioHafr;
 		/*** Other ***/
-		stm32446.gpioh.func.getbit = gpio_getbit;
-		stm32446.gpioh.func.setbit = gpio_setbit;
-		stm32446.gpioh.func.getsetbit = gpio_getsetbit;
+		stm32446.gpioa.func.readreg = STM32446_readreg;
+		stm32446.gpioa.func.writereg = STM32446_writereg;
+		stm32446.gpioa.func.setreg = STM32446_setreg;
+		stm32446.gpioh.func.setbit = STM32446_setbit;
+		stm32446.gpioh.func.getsetbit = STM32446_getsetbit;
 
 	#endif
 
@@ -1865,7 +1881,7 @@ STM32446 STM32446enable(void){
 	stm32446.func.vecsetup = STM32446VecSetup;
 	stm32446.func.readreg = STM32446_readreg;
 	stm32446.func.writereg = STM32446_writereg;
-	stm32446.func.getbit = STM32446_getbit;
+	stm32446.func.setreg = STM32446_setreg;
 	stm32446.func.setbit = STM32446_setbit;
 	stm32446.func.getsetbit = STM32446_getsetbit;
 	
@@ -1896,7 +1912,7 @@ uint32_t STM32446_pllsource(void)
 
 uint16_t STM32446_gethpre(void)
 {
-	uint32_t value = STM32446_getbit(RCC->CFGR, 4, 4);
+	uint32_t value = STM32446_readreg(RCC->CFGR, 4, 4);
 
 	switch(value)
 	{
@@ -1933,7 +1949,7 @@ uint16_t STM32446_gethpre(void)
 
 uint8_t STM32446_gethppre1(void)
 {
-	uint32_t value = STM32446_getbit(RCC->CFGR, 3, 10);
+	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 10);
 
 	switch(value)
 	{
@@ -1958,7 +1974,7 @@ uint8_t STM32446_gethppre1(void)
 
 uint8_t STM32446_gethppre2(void)
 {
-	uint32_t value = STM32446_getbit(RCC->CFGR, 3, 13);
+	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 13);
 
 	switch(value)
 	{
@@ -1983,12 +1999,12 @@ uint8_t STM32446_gethppre2(void)
 
 uint8_t STM32446_getrtcpre(void)
 {
-	return STM32446_getbit(RCC->CFGR, 5, 16);
+	return STM32446_readreg(RCC->CFGR, 5, 16);
 }
 
 uint8_t STM32446_gethmco1pre(void)
 {
-	uint32_t value = STM32446_getbit(RCC->CFGR, 3, 24);
+	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 24);
 
 	switch(value)
 	{
@@ -2013,7 +2029,7 @@ uint8_t STM32446_gethmco1pre(void)
 
 uint8_t STM32446_gethmco2pre(void)
 {
-	uint32_t value = STM32446_getbit(RCC->CFGR, 3, 27);
+	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 27);
 
 	switch(value)
 	{
@@ -2038,17 +2054,17 @@ uint8_t STM32446_gethmco2pre(void)
 
 uint8_t STM32446_getpllm(void)
 {
-	return STM32446_getbit(RCC->PLLCFGR, 6, 0);
+	return STM32446_readreg(RCC->PLLCFGR, 6, 0);
 }
 
 uint16_t STM32446_getplln(void)
 {
-	return STM32446_getbit(RCC->PLLCFGR, 9, 6);
+	return STM32446_readreg(RCC->PLLCFGR, 9, 6);
 }
 
 uint8_t STM32446_getpllp(void)
 {
-	uint32_t value = STM32446_getbit(RCC->PLLCFGR, 2, 16);
+	uint32_t value = STM32446_readreg(RCC->PLLCFGR, 2, 16);
 
 	switch(value)
 	{
@@ -2072,17 +2088,17 @@ uint8_t STM32446_getpllp(void)
 
 uint8_t STM32446_getpllq(void)
 {
-	return STM32446_getbit(RCC->PLLCFGR, 4, 24);
+	return STM32446_readreg(RCC->PLLCFGR, 4, 24);
 }
 
 uint8_t STM32446_getpllr(void)
 {
-	return STM32446_getbit(RCC->PLLCFGR, 3, 28);
+	return STM32446_readreg(RCC->PLLCFGR, 3, 28);
 }
 
 uint32_t STM32446_getsysclk(void)
 {
-	uint32_t value = STM32446_getbit(RCC->CFGR, 2, 2);
+	uint32_t value = STM32446_readreg(RCC->CFGR, 2, 2);
 
 	switch(value) // SWS[2]: System clock switch status
 	{
@@ -2105,13 +2121,11 @@ uint32_t STM32446_getsysclk(void)
 /*** File Procedure & Function Definition ***/
 uint32_t STM32446_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0;
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
+	uint32_t value = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
+	value &= (mask << bit);
+	value = (value >> bit);
 	return value;
 }
 
@@ -2133,18 +2147,6 @@ void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 	value &= mask;
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
-}
-
-uint32_t STM32446_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
-{
-	 uint32_t value = 0;
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
-	return value;
 }
 
 void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)

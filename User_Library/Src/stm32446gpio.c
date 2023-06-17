@@ -14,6 +14,13 @@ Comment:
 #include "stm32446gpio.h"
 #include "math.h"
 
+/*** File Procedure & Function Header ***/
+uint32_t gpio_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void gpio_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+void gpio_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+
 /*** GPIO Procedure & Function Definition ***/
 /*** GPIOA ***/
 void STM32446GpioAclock( void )
@@ -463,16 +470,14 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 	}
 }
 
-/*** Procedure & Function Definition ***/
+/*** File Procedure & Function Definition ***/
 uint32_t gpio_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
-	uint32_t value = 0;
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
+	uint32_t value = reg;
 	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
+	value &= (mask << bit);
+	value = (value >> bit);
 	return value;
 }
 
@@ -494,18 +499,6 @@ void gpio_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint
 	value &= mask;
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
-}
-
-uint32_t gpio_getbit(uint32_t reg, uint32_t size_block, uint32_t bit)
-{
-	 uint32_t value = 0;
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t tmp = reg;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	mask = (mask << bit);
-	tmp &= mask;
-	value = (tmp >> bit);
-	return value;
 }
 
 void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
