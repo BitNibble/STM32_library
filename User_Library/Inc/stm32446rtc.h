@@ -26,21 +26,20 @@ Comment:
 typedef struct
 {
 	RTC_TypeDef* reg;
-	#if defined(_STM32446RTC_H_)
-		void (*clock)(void);
-		uint8_t (*inic)(uint8_t clock);
-		void (*Day)(uint8_t day);
-		void (*Month)(uint8_t month);
-		void (*WeekDay)(uint8_t weekday);
-		void (*Year)(uint8_t year);
-		void (*Hour)(uint8_t hour);
-		void (*Minute)(uint8_t minute);
-		void (*Second)(uint8_t second);
-		void (*dr2vec)(char* rtc_vect);
-		void (*tr2vec)(char* rtc_vect);
-		void (*RegWrite)(uint8_t n, uint8_t data);
-		uint8_t (*RegRead)(uint8_t n);
-	#endif
+	void (*clock)(void);
+	uint8_t (*inic)(uint8_t clock);
+	void (*Day)(uint8_t day);
+	void (*Month)(uint8_t month);
+	void (*WeekDay)(uint8_t weekday);
+	void (*Year)(uint8_t year);
+	void (*Hour)(uint8_t hour);
+	void (*Minute)(uint8_t minute);
+	void (*Second)(uint8_t second);
+	void (*dr2vec)(char* rtc_vect);
+	void (*tr2vec)(char* rtc_vect);
+	void (*RegWrite)(uint8_t n, uint8_t data);
+	uint8_t (*RegRead)(uint8_t n);
+
 }STM32446RTCobj;
 
 STM32446RTCobj rtc_inic(void);

@@ -17,11 +17,10 @@ Comment:
 /*** SRAM TypeDef ***/
 typedef struct
 {
-	#if defined(_STM32446SRAM_H_)
-		/*** Bit Mapping ***/
-		/*** Other ***/
-		void (*access)(void);
-	#endif
+	/*** Bit Mapping ***/
+	/*** Other ***/
+	void (*access)(void);
+
 }STM32446SRAMobj;
 
 STM32446SRAMobj sram_inic(void);

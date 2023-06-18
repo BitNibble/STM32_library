@@ -18,15 +18,14 @@ Comment:
 typedef struct
 {
 	CRC_TypeDef* reg;
-	#if defined(_STM32446CRC_H_)
-		/*** Bit Mapping ***/
-		void (*dr)(uint32_t value);
-		uint32_t (*get_dr)(void);
-		void (*idr)(uint8_t value);
-		uint8_t (*get_idr)(void);
-		void (*reset)(void);
-		/*** Other ***/
-	#endif
+	/*** Bit Mapping ***/
+	void (*dr)(uint32_t value);
+	uint32_t (*get_dr)(void);
+	void (*idr)(uint8_t value);
+	uint8_t (*get_idr)(void);
+	void (*reset)(void);
+	/*** Other ***/
+
 }STM32446CRCobj;
 
 STM32446CRCobj crc_inic(void);

@@ -91,70 +91,67 @@ typedef struct{
 typedef struct
 {
 	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		/*** Bit Mapping ***/
-		STM32446USART_SR sr;
-		STM32446USART_BRR brr;
-		STM32446USART_CR1 cr1;
-		STM32446USART_CR2 cr2;
-		STM32446USART_CR3 cr3;
-		STM32446USART_GTPR gtpr;
-		void (*dr)(uint32_t data);
-		uint32_t (*get_dr)(void);
-		/*** Other ***/
-		void (*clock)(void);
-		void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-		void (*transmit)(void);
-		void (*receive)(void);
-		void (*stop)(void);
-	#endif
+	/*** Bit Mapping ***/
+	STM32446USART_SR sr;
+	STM32446USART_BRR brr;
+	STM32446USART_CR1 cr1;
+	STM32446USART_CR2 cr2;
+	STM32446USART_CR3 cr3;
+	STM32446USART_GTPR gtpr;
+	void (*dr)(uint32_t data);
+	uint32_t (*get_dr)(void);
+	/*** Other ***/
+	void (*clock)(void);
+	void (*inic)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+	void (*transmit)(void);
+	void (*receive)(void);
+	void (*stop)(void);
+
 }STM32446USART1obj;
 
 // USART -> USART2
 typedef struct
 {
 	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		/*** Bit Mapping ***/
-		STM32446USART_SR sr;
-		STM32446USART_BRR brr;
-		STM32446USART_CR1 cr1;
-		STM32446USART_CR2 cr2;
-		STM32446USART_CR3 cr3;
-		STM32446USART_GTPR gtpr;
-		void (*dr)(uint32_t data);
-		uint32_t (*get_dr)(void);
-		/*** Other ***/
-		void (*clock)(void);
-		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-		void (*transmit)(void);
-		void (*receive)(void);
-		void (*stop)(void);
-	#endif
+	/*** Bit Mapping ***/
+	STM32446USART_SR sr;
+	STM32446USART_BRR brr;
+	STM32446USART_CR1 cr1;
+	STM32446USART_CR2 cr2;
+	STM32446USART_CR3 cr3;
+	STM32446USART_GTPR gtpr;
+	void (*dr)(uint32_t data);
+	uint32_t (*get_dr)(void);
+	/*** Other ***/
+	void (*clock)(void);
+	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+	void (*transmit)(void);
+	void (*receive)(void);
+	void (*stop)(void);
+
 }STM32446USART2obj;
 
 // USART -> USART3
 typedef struct
 {
 	USART_TypeDef* reg;
-	#if defined(_STM32446USART_H_)
-		/*** Bit Mapping ***/
-		STM32446USART_SR sr;
-		STM32446USART_BRR brr;
-		STM32446USART_CR1 cr1;
-		STM32446USART_CR2 cr2;
-		STM32446USART_CR3 cr3;
-		STM32446USART_GTPR gtpr;
-		void (*dr)(uint32_t data);
-		uint32_t (*get_dr)(void);
-		/*** Other ***/
-		void (*clock)(void);
-		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
-		void (*transmit)(void);
-		void (*receive)(void);
-		void (*stop)(void);
-	#endif
+	/*** Bit Mapping ***/
+	STM32446USART_SR sr;
+	STM32446USART_BRR brr;
+	STM32446USART_CR1 cr1;
+	STM32446USART_CR2 cr2;
+	STM32446USART_CR3 cr3;
+	STM32446USART_GTPR gtpr;
+	void (*dr)(uint32_t data);
+	uint32_t (*get_dr)(void);
+	/*** Other ***/
+	void (*clock)(void);
+	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+	void (*transmit)(void);
+	void (*receive)(void);
+	void (*stop)(void);
+
 }STM32446USART3obj;
 
 // USART -> UART4

@@ -60,12 +60,11 @@ typedef struct
 typedef struct
 {
 	PWR_TypeDef* reg;
-	#if defined(_STM32446PWR_H_)
-		/*** Bit Mapping ***/
-		STM32446PWR_cr cr;
-		STM32446PWR_csr csr;
-		/*** Other ***/
-	#endif
+	/*** Bit Mapping ***/
+	STM32446PWR_cr cr;
+	STM32446PWR_csr csr;
+	/*** Other ***/
+
 }STM32446PWRobj;
 
 STM32446PWRobj pwr_inic(void);

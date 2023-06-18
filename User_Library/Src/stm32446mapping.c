@@ -28,8 +28,6 @@ Comment:
 /*** File Variable ***/
 static STM32446 stm32446;
 static uint32_t DelayCounter;
-static uint32_t mem[4];
-static uint32_t nen[4];
 
 /*** File Header ***/
 /*** TOP ***/
@@ -38,14 +36,6 @@ void STM32446_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
-
-/*** SYSTICK ***/
-void SystickInic(void);
-void STM32446delay_ms(uint32_t ms);
-void STM32446delay_10us(uint32_t ten_us);
-void STM32446delay_us(uint32_t us);
-// INTERRUPT
-void SysTick_Handler(void);
 
 // QUERY CLOCK
 uint32_t STM32446_getclocksource(void);
@@ -63,35 +53,16 @@ uint8_t STM32446_getpllq(void);
 uint8_t STM32446_getpllr(void);
 uint32_t STM32446_getsysclk(void);
 
-/*** MISCELLANEOUS ***/
-// MCU
-void STM32446RegSetBits( unsigned int* reg, int n_bits, ... );
-void STM32446RegResetBits( unsigned int* reg, int n_bits, ... );
-void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
-// BUTTON
-uint32_t STM32446triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter);
-uint32_t STM32446triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter);
-// BYTE
-uint16_t STM32ReadHLByte(STM32HighLowByte reg);
-uint16_t STM32ReadLHByte(STM32HighLowByte reg);
-STM32HighLowByte STM32WriteHLByte(uint16_t val);
-STM32HighLowByte STM32WriteLHByte(uint16_t val);
-uint16_t STM32SwapByte(uint16_t num);
-// GENERIC
-char* STM32446FUNCftoa(double num, char* res, uint8_t afterpoint);
-char* STM32446FUNCprint( char* str, uint8_t size_str, const char* format, ... );
-char STM32446bcd2dec(char num);
-char STM32446dec2bcd(char num);
-//COMMON
-void STM32446Reverse(char s[]);
-int STM32446StringLength (const char string[]);
-uint8_t STM32446FUNCintinvstr(int32_t num, char* res, uint8_t n_digit);
+/*** SYSTICK ***/
+void SystickInic(void);
+void STM32446delay_ms(uint32_t ms);
+void STM32446delay_10us(uint32_t ten_us);
+void STM32446delay_us(uint32_t us);
+// INTERRUPT
+void SysTick_Handler(void);
 
 /******* STM32F446RE Procedure & Function Definition *******/
 STM32446 STM32446enable(void){
-	/*** DEFAULT ***/
-	mem[0] = 0;
-	nen[0] = 0;
 	/************* CORE ************/
 	// Coprocessor Access Control Register
 	stm32446.scb.reg = ((SCB_Type*) STM32446_SCB_BASE;
@@ -204,26 +175,10 @@ STM32446 STM32446enable(void){
 	stm32446.query.PLL_parameter.R = STM32446_getpllr;
 	stm32446.query.SystemClock = STM32446_getsysclk;
 
-	// FUNC
-	stm32446.func.bcd2dec = STM32446bcd2dec;
-	stm32446.func.dec2bcd = STM32446dec2bcd;
-	stm32446.func.triggerA = STM32446triggerA;
-	stm32446.func.triggerB = STM32446triggerB;
-	stm32446.func.ReadHLByte = STM32ReadHLByte;
-	stm32446.func.ReadLHByte = STM32ReadLHByte;
-	stm32446.func.WriteHLByte = STM32WriteHLByte;
-	stm32446.func.WriteLHByte = STM32WriteLHByte;
-	stm32446.func.SwapByte = STM32SwapByte;
-	stm32446.func.ftoa = STM32446FUNCftoa;
-	stm32446.func.print = STM32446FUNCprint;
-	stm32446.func.regsetbits = STM32446RegSetBits;
-	stm32446.func.regresetbits = STM32446RegResetBits;
-	stm32446.func.vecsetup = STM32446VecSetup;
-	stm32446.func.readreg = STM32446_readreg;
-	stm32446.func.writereg = STM32446_writereg;
-	stm32446.func.setreg = STM32446_setreg;
-	stm32446.func.setbit = STM32446_setbit;
-	stm32446.func.getsetbit = STM32446_getsetbit;
+	// PRIVATE
+	#if defined(_FUNCTION_H_)
+		stm32446.func = FUNCenable();
+	#endif
 	
 	SystickInic(); // Polling delay source.
 
@@ -458,6 +413,50 @@ uint32_t STM32446_getsysclk(void)
 	return value;
 }
 
+/************************ SYSTICK ************************/
+void SystickInic(void)
+{
+	SysTick->LOAD = (uint32_t)( stm32446.query.SystemClock() - 1);
+	SysTick->VAL = 0UL;
+	SysTick->CTRL |= ((1 << 1) | (1 << 2));
+}
+
+void STM32446delay_ms(uint32_t ms)
+{
+	SysTick->LOAD = (uint32_t)(( stm32446.query.SystemClock() / 1000 ) - 1);
+	// Enable the SysTick timer
+	SysTick->CTRL |= (1 << 0);
+	// Wait for a specified number of milliseconds
+	DelayCounter = 0;
+	while (DelayCounter < ms);
+	// Disable the SysTick timer
+	SysTick->CTRL &= (uint32_t) ~(1 << 0);
+}
+
+void STM32446delay_10us(uint32_t ten_us)
+{
+	SysTick->LOAD = (uint32_t)(( stm32446.query.SystemClock() / 100000) - 1);
+	// Enable the SysTick timer
+	SysTick->CTRL |= (1 << 0);
+	// Wait for a specified number of milliseconds
+	DelayCounter = 0;
+	while (DelayCounter < ten_us);
+	// Disable the SysTick timer
+	SysTick->CTRL &= (uint32_t) ~(1 << 0);
+}
+
+void STM32446delay_us(uint32_t us)
+{
+	SysTick->LOAD = (uint32_t)(( stm32446.query.SystemClock() / 1000000) - 1);
+	// Enable the SysTick timer
+	SysTick->CTRL |= (1 << 0);
+	// Wait for a specified number of milliseconds
+	DelayCounter = 0;
+	while (DelayCounter < us);
+	// Disable the SysTick timer
+	SysTick->CTRL &= (uint32_t) ~(1 << 0);
+}
+
 /*** File Procedure & Function Definition ***/
 uint32_t STM32446_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
@@ -511,7 +510,6 @@ uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_
 	return value;
 }
 
-/*** MISCELLANEOUS ***/
 void STM32446RegSetBits( unsigned int* reg, int n_bits, ... )
 {
 	uint8_t i;
@@ -546,223 +544,6 @@ void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, u
 	data &= mask;
 	vec[index] &= ~( mask << ((block_n * size_block) - (index * n_bits)) );
 	vec[index] |= ( data << ((block_n * size_block) - (index * n_bits)) );
-}
-
-// Convert Binary Coded Decimal (BCD) to Decimal
-char STM32446bcd2dec(char num)
-{
-	return ((num / 16 * 10) + (num % 16));
-}
-
-// Convert Decimal to Binary Coded Decimal (BCD)
-char STM32446dec2bcd(char num)
-{
-	return ((num / 10 * 16) + (num % 10));
-}
-
-// triggerA
-uint32_t STM32446triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter)
-{
-	mem[3] = 0;
-	
-	switch(mem[0]){
-		case 0:
-			if(hllh_io & (1 << pin)){
-				mem[1] = counter;
-				mem[0] = 1;
-			}
-		break;
-		case 1:
-			if(hllh_io & (1 << pin)){
-				mem[2] = counter;
-				if((mem[2] + 1) > mem[1]){
-					mem[3] = mem[2] - mem[1];
-				}else{
-					mem[3] = ((uint32_t) ~0 - mem[1]) + mem[2];
-				}
-				mem[0] = 0;
-			}
-		break;
-		default:
-		break;
-	}
-	return mem[3];
-}
-
-// triggerB
-uint32_t STM32446triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter)
-{
-	nen[3] = 0;
-	
-	switch(nen[0]){ // Start value
-		case 0:
-			nen[1] = counter;
-			if(hl_io & (1 << pin))
-				nen[0] = 1;
-		break;
-		case 1:
-			nen[2] = counter;
-			if(nen[2] == nen[1])
-				nen[2] += sizeof(nen[0]) * 8;
-			if(lh_io & (1 << pin)){
-				nen[3] = nen[2] - nen[1];
-				nen[0] = 0;
-			}
-		break;
-		default:
-		break;
-	}
-	return nen[3];
-}
-
-uint16_t STM32ReadHLByte(STM32HighLowByte reg)
-{
-	return (uint16_t)(reg.H << 8) | reg.L;
-}
-
-uint16_t STM32ReadLHByte(STM32HighLowByte reg)
-{
-	return (uint16_t)(reg.L << 8) | reg.H;
-}
-
-STM32HighLowByte STM32WriteHLByte(uint16_t val)
-{
-	STM32HighLowByte reg; reg.H = (uint8_t)(val >> 8); reg.L = (uint8_t)val;
-	return reg;
-}
-
-STM32HighLowByte STM32WriteLHByte(uint16_t val)
-{
-	STM32HighLowByte reg; reg.L = (uint8_t)(val >> 8); reg.H = (uint8_t)val; 
-	return reg;
-}
-
-uint16_t STM32SwapByte(uint16_t num)
-{
-	uint16_t tp;
-	tp = (uint16_t)(num << 8);
-	return (num >> 8) | tp;
-}
-
-// ftoa
-char* STM32446FUNCftoa(double num, char* res, uint8_t afterpoint)
-{
-	uint32_t ipart;
-	double n, fpart;
-	uint8_t k = 0;
-	int8_t sign;
-	if (num < 0){
-		n = -num; sign = -1;
-	}else{
-		n = num; sign = 1;
-	}
-	ipart = (uint32_t) n; fpart = n - (double)ipart;
-	k = STM32446FUNCintinvstr((int)ipart, res, 1);
-	if (sign < 0) res[k++] = '-'; else res[k++] = ' ';
-	res[k] = '\0';
-	STM32446Reverse(res);
-	if (afterpoint > 0 && afterpoint < (8 + 1)){
-		res[k++] = '.';
-		STM32446FUNCintinvstr( (int32_t)(fpart * pow(10, afterpoint)), (res + k), afterpoint );
-		STM32446Reverse(res + k);
-	}else{
-		res[k++] = '.';
-		STM32446FUNCintinvstr( (int32_t)(fpart * pow(10, 2)), (res + k), 2 );
-		STM32446Reverse(res + k);
-	}
-	return res;
-}
-
-// print
-char* STM32446FUNCprint( char* str, uint8_t size_str, const char* format, ... )
-{
-	va_list aptr;
-	int ret;
-
-	va_start(aptr, format);
-	ret = vsnprintf( str, size_str, (const char*) format, aptr );
-	//ret = vsnprintf( ptr, size_str, format, aptr );
-	va_end(aptr);
-
-	if(ret < 0){
-		return NULL;
-		//str[0]='/0';str[1]='/0';str[2]='/0';str[3]='/0';
-	}else
-		return str;
-}
-
-// Function to count the number of characters in a string
-int STM32446StringLength (const char string[])
-{
-	int count;
-	for (count = 0; string[count] != '\0'; count++ ) ;
-	return count;
-}
-
-// reverse: reverse string s in place
-void STM32446Reverse(char s[])
-{
-	char c;
-	int i, j;
-	for ( i = 0, j = STM32446StringLength(s) - 1; i < j ; i++, j-- ){
-		c = s[i];
-		s[i] = s[j];
-		s[j] = c;
-	}
-}
-
-// intinvstr
-uint8_t STM32446FUNCintinvstr(int32_t num, char* res, uint8_t n_digit)
-{
-	uint8_t k = 0;
-	for(res[k++] = (char)((num % 10) + '0'); (num /= 10) > 0 ; res[k++] = (char)((num % 10) + '0'));
-	for( ; k < n_digit ; res[k++] = '0');
-	res[k] = '\0';
-	return k;
-}
-
-/************************ SYSTICK ************************/
-void SystickInic(void)
-{
-	SysTick->LOAD = (uint32_t)( stm32446.query.SystemClock() - 1);
-	SysTick->VAL = 0UL;
-	SysTick->CTRL |= ((1 << 1) | (1 << 2));
-}
-
-void STM32446delay_ms(uint32_t ms)
-{
-	SysTick->LOAD = (uint32_t)(( stm32446.query.SystemClock() / 1000 ) - 1);
-	// Enable the SysTick timer
-	SysTick->CTRL |= (1 << 0);
-	// Wait for a specified number of milliseconds
-	DelayCounter = 0;
-	while (DelayCounter < ms);
-	// Disable the SysTick timer
-	SysTick->CTRL &= (uint32_t) ~(1 << 0);
-}
-
-void STM32446delay_10us(uint32_t ten_us)
-{
-	SysTick->LOAD = (uint32_t)(( stm32446.query.SystemClock() / 100000) - 1);
-	// Enable the SysTick timer
-	SysTick->CTRL |= (1 << 0);
-	// Wait for a specified number of milliseconds
-	DelayCounter = 0;
-	while (DelayCounter < ten_us);
-	// Disable the SysTick timer
-	SysTick->CTRL &= (uint32_t) ~(1 << 0);
-}
-
-void STM32446delay_us(uint32_t us)
-{
-	SysTick->LOAD = (uint32_t)(( stm32446.query.SystemClock() / 1000000) - 1);
-	// Enable the SysTick timer
-	SysTick->CTRL |= (1 << 0);
-	// Wait for a specified number of milliseconds
-	DelayCounter = 0;
-	while (DelayCounter < us);
-	// Disable the SysTick timer
-	SysTick->CTRL &= (uint32_t) ~(1 << 0);
 }
 
 /*** File Interrupt Definition ***/

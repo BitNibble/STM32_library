@@ -469,74 +469,73 @@ typedef struct
 typedef struct
 {
 	RCC_TypeDef* reg;
-	#if defined(_STM32446RCC_H_)
-		/*** Bit Mapping ***/
-		// CR
-		STM32446RCC_cr cr;
-		// PLLCFGR
-		STM32446RCC_pllcfgr pllcfgr;
-		// CFGR
-		STM32446RCC_cfgr cfgr;
-		// CIR
-		STM32446RCC_cir cir;
-		// AHB1RSTR
-		STM32446RCC_ahb1rstr ahb1rstr;
-		// AHB2RSTR
-		STM32446RCC_ahb2rstr ahb2rstr;
-		// AHB3RSTR
-		STM32446RCC_ahb3rstr ahb3rstr;
-		// APB1RSTR
-		STM32446RCC_apb1rstr apb1rstr;
-		// APB2RSTR
-		STM32446RCC_apb2rstr apb2rstr;
-		// AHB1ENR
-		STM32446RCC_ahb1enr ahb1enr;
-		// AHB2ENR
-		STM32446RCC_ahb2enr ahb2enr;
-		// AHB3ENR
-		STM32446RCC_ahb3enr ahb3enr;
-		// APB1ENR
-		STM32446RCC_apb1enr apb1enr;
-		// APB2ENR
-		STM32446RCC_apb2enr apb2enr;
-		// AHB1LPENR
-		STM32446RCC_ahb1lpenr ahb1lpenr;
-		// AHB2LPENR
-		STM32446RCC_ahb2lpenr ahb2lpenr;
-		// AHB3LPENR
-		STM32446RCC_ahb3lpenr ahb3lpenr;
-		// APB1LPENR
-		STM32446RCC_apb1lpenr apb1lpenr;
-		// APB2LPENR
-		STM32446RCC_apb2lpenr apb2lpenr;
-		// BDCR
-		STM32446RCC_bdcr bdcr;
-		// CSR
-		STM32446RCC_csr csr;
-		// SSCGR
-		STM32446RCC_sscgr sscgr;
-		// PLLI2SCFGR
-		STM32446RCC_plli2scfgr plli2scfgr;
-		// PLLSAICFGR
-		STM32446RCC_pllsaicfgr pllsaicfgr;
-		// DCKCFGR
-		STM32446RCC_dckcfgr dckcfgr;
-		// CKGATENR
-		STM32446RCC_ckgatenr ckgatenr;
-		// DCKCFGR2
-		STM32446RCC_dckcfgr2 dckcfgr2;
-		/*** Extended ***/
-		STM32446RCCPLL pll;
-		STM32446RCCPLLI2S plli2s;
-		STM32446RCCPLLSAI pllsai;
-		/*** Other ***/
-		uint8_t (*inic)(void);
-		void (*henable)(uint8_t hclock);
-		uint8_t (*hselect)(uint8_t sysclk);
-		void (*lenable)(uint8_t lclock);
-		void (*lselect)(uint8_t lclock);
-		void (*prescaler)(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre);
-	#endif
+	/*** Bit Mapping ***/
+	// CR
+	STM32446RCC_cr cr;
+	// PLLCFGR
+	STM32446RCC_pllcfgr pllcfgr;
+	// CFGR
+	STM32446RCC_cfgr cfgr;
+	// CIR
+	STM32446RCC_cir cir;
+	// AHB1RSTR
+	STM32446RCC_ahb1rstr ahb1rstr;
+	// AHB2RSTR
+	STM32446RCC_ahb2rstr ahb2rstr;
+	// AHB3RSTR
+	STM32446RCC_ahb3rstr ahb3rstr;
+	// APB1RSTR
+	STM32446RCC_apb1rstr apb1rstr;
+	// APB2RSTR
+	STM32446RCC_apb2rstr apb2rstr;
+	// AHB1ENR
+	STM32446RCC_ahb1enr ahb1enr;
+	// AHB2ENR
+	STM32446RCC_ahb2enr ahb2enr;
+	// AHB3ENR
+	STM32446RCC_ahb3enr ahb3enr;
+	// APB1ENR
+	STM32446RCC_apb1enr apb1enr;
+	// APB2ENR
+	STM32446RCC_apb2enr apb2enr;
+	// AHB1LPENR
+	STM32446RCC_ahb1lpenr ahb1lpenr;
+	// AHB2LPENR
+	STM32446RCC_ahb2lpenr ahb2lpenr;
+	// AHB3LPENR
+	STM32446RCC_ahb3lpenr ahb3lpenr;
+	// APB1LPENR
+	STM32446RCC_apb1lpenr apb1lpenr;
+	// APB2LPENR
+	STM32446RCC_apb2lpenr apb2lpenr;
+	// BDCR
+	STM32446RCC_bdcr bdcr;
+	// CSR
+	STM32446RCC_csr csr;
+	// SSCGR
+	STM32446RCC_sscgr sscgr;
+	// PLLI2SCFGR
+	STM32446RCC_plli2scfgr plli2scfgr;
+	// PLLSAICFGR
+	STM32446RCC_pllsaicfgr pllsaicfgr;
+	// DCKCFGR
+	STM32446RCC_dckcfgr dckcfgr;
+	// CKGATENR
+	STM32446RCC_ckgatenr ckgatenr;
+	// DCKCFGR2
+	STM32446RCC_dckcfgr2 dckcfgr2;
+	/*** Extended ***/
+	STM32446RCCPLL pll;
+	STM32446RCCPLLI2S plli2s;
+	STM32446RCCPLLSAI pllsai;
+	/*** Other ***/
+	uint8_t (*inic)(void);
+	void (*henable)(uint8_t hclock);
+	uint8_t (*hselect)(uint8_t sysclk);
+	void (*lenable)(uint8_t lclock);
+	void (*lselect)(uint8_t lclock);
+	void (*prescaler)(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre);
+
 }STM32446RCCobj;
 
 STM32446RCCobj rcc_inic(void);

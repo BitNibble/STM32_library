@@ -29,18 +29,17 @@ typedef struct
 typedef struct
 {
 	GPIO_TypeDef* reg;
-	#if defined(_STM32446GPIO_H_)
-		/*** Bit Mapping ***/
-		void (*moder)( unsigned int data, unsigned int pin );
-		void (*ospeedr)( unsigned int data, unsigned int pin );
-		void (*pupdr)( unsigned int data, unsigned int pin );
-		void (*afr)( unsigned int data, unsigned int pin );
-		void (*reset)( unsigned int data );
-		void (*set)( unsigned int data );
-		/*** Other ***/
-		void (*clock)(void);
-		STM32446GpioFunc func;
-	#endif
+	/*** Bit Mapping ***/
+	void (*moder)( unsigned int data, unsigned int pin );
+	void (*ospeedr)( unsigned int data, unsigned int pin );
+	void (*pupdr)( unsigned int data, unsigned int pin );
+	void (*afr)( unsigned int data, unsigned int pin );
+	void (*reset)( unsigned int data );
+	void (*set)( unsigned int data );
+	/*** Other ***/
+	void (*clock)(void);
+	STM32446GpioFunc func;
+
 }STM32446GpioAobj;
 
 // GPIO -> GPIOB

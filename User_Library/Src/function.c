@@ -4,14 +4,15 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com> 
 License: GNU General Public License
 Hardware: all
-Date: 06082022
+Date: 18062023
 Comment:
-	Tested Atemga128 16Mhz and Atmega328 8Mhz and STM32F446RE
+	Tested ->  Atemga128, Atmega328, Atmega32U4, Atmega324, Atmega8535, Atmega88, STM32F446RE
+	Very Stable
 *************************************************************************/
 /*** File Library ***/
 #include "function.h"
 #include <stdio.h>
-//#include <stdlib.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
 #include <math.h>
@@ -23,63 +24,67 @@ Comment:
 
 /*** File Variable ***/
 static char FUNCstr[FUNCSTRSIZE + 1];
+static uint32_t mem[4];
+static uint32_t nen[4];
 
 /*** File Header ***/
-int StringLength (const char string[]);
-void Reverse(char s[]);
-uint8_t  bintobcd(uint8_t bin);
+uint8_t function_intinvstr(int32_t num, char* res, uint8_t n_digit);
+unsigned int function_mayia(unsigned int xi, unsigned int xf, uint8_t nbits);
 uint8_t leap_year_check(uint16_t year);
-unsigned int FUNCmayia(unsigned int xi, unsigned int xf, uint8_t nbits);
-void FUNCswap(long *px, long *py);
-void FUNCcopy(char to[], char from[]);
-void FUNCsqueeze(char s[], int c);
-void FUNCshellsort(int v[], int n);
-char* FUNCi16toa(int16_t n);
-char* FUNCui16toa(uint16_t n);
-char* FUNCi32toa(int32_t n);
-int FUNCtrim(char s[]);
-int FUNCpmax(int a1, int a2);
-int FUNCgcd (int u, int v);
-int FUNCstrToInt (const char string[]);
-uint8_t FUNCfilter(uint8_t mask, uint8_t data);
-unsigned int FUNCticks(unsigned int num);
-int FUNCtwocomptoint8bit(int twoscomp);
-int FUNCtwocomptoint10bit(int twoscomp);
-int FUNCtwocomptointnbit(int twoscomp, uint8_t nbits);
-char FUNCdec2bcd(char num);
-char FUNCbcd2dec(char num);
-char* FUNCresizestr(char *string, int size);
-long FUNCtrimmer(long x, long in_min, long in_max, long out_min, long out_max);
-unsigned char FUNCbcd2bin(unsigned char val);
-unsigned char FUNCbin2bcd(unsigned val);
-long FUNCgcd1(long a, long b);
-uint8_t FUNCpincheck(uint8_t port, uint8_t pin);
-char* FUNCprint_binary(unsigned int n_bits, unsigned int number);
-void FUNCreverse(char* str, int len);
-uint8_t FUNCintinvstr(int64_t num, char* res, uint8_t n_digit);
-char* FUNCftoa(double num, char* res, uint8_t afterpoint);
-char* FUNCdectohex(int32_t num);
-uint16_t FUNCReadHLByte(FUNCHighLowByte reg);
-uint16_t FUNCReadLHByte(FUNCHighLowByte reg);
-FUNCHighLowByte FUNCWriteHLByte(uint16_t val);
-FUNCHighLowByte FUNCWriteLHByte(uint16_t val);
-uint16_t FUNCSwapByte(uint16_t num);
-char* FUNCprint(const char *format, ... );
+/*** 1 ***/
+uint16_t function_ReadHLByte(FUNCHighLowByte reg);
+uint16_t function_ReadLHByte(FUNCHighLowByte reg);
+FUNCHighLowByte function_WriteHLByte(uint16_t val);
+FUNCHighLowByte function_WriteLHByte(uint16_t val);
+uint16_t function_SwapByte(uint16_t num);
+/*** 2 ***/
+int function_StringLength (const char string[]);
+void function_Reverse(char s[]);
+void function_swap(long *px, long *py);
+void function_copy(char to[], char from[]);
+void function_squeeze(char s[], int c);
+void function_shellsort(int v[], int n);
+char* function_resizestr(char *string, int size);
+int function_trim(char s[]);
+/*** 3 ***/
+uint8_t function_bcd2dec(uint8_t num);
+uint8_t function_dec2bcd(uint8_t num);
+char* function_dectohex(int32_t num);
+uint8_t function_bcd2bin(uint8_t val);
+uint8_t function_bin2bcd(uint8_t val);
+/*** 4 ***/
+char* function_print_v1( char* str, uint8_t size_str, const char* format, ... );
+char* function_print_v2(const char *format, ... );
+char* function_print_binary(unsigned int n_bits, unsigned int number);
+/*** 5 ***/
+char* function_i16toa(int16_t n);
+char* function_ui16toa(uint16_t n);
+char* function_i32toa(int32_t n);
+char* function_ftoa(double num, char* res, uint8_t afterpoint);
+int function_StrToInt (const char string[]);
+/*** 6 ***/
+long function_trimmer(long x, long in_min, long in_max, long out_min, long out_max);
+int function_pmax(int a1, int a2);
+int function_gcd_v1 (int u, int v);
+long function_gcd_v2(long a, long b);
+/*** 7 ***/
+int function_twocomptoint8bit(int twoscomp);
+int function_twocomptoint10bit(int twoscomp);
+int function_twocomptointnbit(int twoscomp, uint8_t nbits);
+/*** 8 ***/
 uint32_t function_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
 void function_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void function_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void function_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t function_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
-/***pc use***
-char* FUNCfltos(FILE* stream);
-char* FUNCftos(FILE* stream);
-int FUNCstrtotok(char* line,char* token[], const char* parser);
-char* FUNCputstr(char* str);
-int FUNCgetnum(char* x);
-unsigned int FUNCgetnumv2(char* x);
-int FUNCreadint(int nmin, int nmax);
-***/
-// uint8_t TRANupdate(struct TRAN *tr, uint8_t idata);
+void function_RegSetBits( unsigned int* reg, int n_bits, ... );
+void function_RegResetBits( unsigned int* reg, int n_bits, ... );
+void function_VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
+/*** 9 ***/
+uint32_t function_triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter);
+uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter);
+/*** COMMON ***/
+uint8_t function_intinvstr(int32_t num, char* res, uint8_t n_digit);
 
 /*** FUNC Procedure & Function Definition ***/
 FUNC FUNCenable( void )
@@ -89,72 +94,113 @@ FUNC FUNCenable( void )
 	FUNC func;
 	// Inic FUNCstr
 	FUNCstr[FUNCSTRSIZE] = '\0';
-	// function pointers
-	func.stringlength = StringLength;
-	func.reverse = Reverse;
-	func.mayia = FUNCmayia;
-	func.swap = FUNCswap;
-	func.copy = FUNCcopy;
-	func.squeeze = FUNCsqueeze;
-	func.shellsort = FUNCshellsort;
-	func.i16toa = FUNCi16toa;
-	func.ui16toa = FUNCui16toa;
-	func.i32toa = FUNCi32toa;
-	func.trim = FUNCtrim;
-	func.pmax = FUNCpmax;
-	func.gcd = FUNCgcd;
-	func.strToInt = FUNCstrToInt;
-	func.filter = FUNCfilter;
-	func.ticks = FUNCticks;
-	func.twocomptoint8bit = FUNCtwocomptoint8bit;
-	func.twocomptoint10bit = FUNCtwocomptoint10bit;
-	func.twocomptointnbit = FUNCtwocomptointnbit;
-	func.dec2bcd = FUNCdec2bcd;
-	func.bcd2dec = FUNCbcd2dec;
-	func.resizestr = FUNCresizestr;
-	func.trimmer = FUNCtrimmer;
-	func.bcd2bin = FUNCbcd2bin;
-	func.bin2bcd = FUNCbin2bcd;
-	func.gcd1 = FUNCgcd1;
-	func.pincheck = FUNCpincheck;
-	func.print_binary = FUNCprint_binary;
-	func.ftoa = FUNCftoa;
-	func.dectohex = FUNCdectohex;
-	// Low Byte High Byte
-	func.ReadHLByte = FUNCReadHLByte;
-	func.ReadLHByte = FUNCReadLHByte;
-	func.WriteHLByte = FUNCWriteHLByte;
-	func.WriteLHByte = FUNCWriteLHByte;
-	func.SwapByte = FUNCSwapByte;
-	func.print = FUNCprint;
-	/***pc use***
-	func.fltos = FUNCfltos;
-	func.ftos = FUNCftos;
-	func.strtotok = FUNCstrtotok;
-	func.putstr = FUNCputstr;
-	func.getnum = FUNCgetnum;
-	func.getnumv2 = FUNCgetnumv2;
-	func.readint = FUNCreadint;
-	***/
+	mem[0] = 0; nen[0] = 0;
+	// 1
+	func.ReadHLByte = function_ReadHLByte;
+	func.ReadLHByte = function_ReadLHByte;
+	func.WriteHLByte = function_WriteHLByte;
+	func.WriteLHByte = function_WriteLHByte;
+	func.SwapByte = function_SwapByte;
+	// 2
+	func.stringlength = function_StringLength;
+	func.reverse = function_Reverse;
+	func.swap = function_swap;
+	func.copy = function_copy;
+	func.squeeze = function_squeeze;
+	func.shellsort = function_shellsort;
+	func.resizestr = function_resizestr;
+	func.trim = function_trim;
+	// 3
+	func.bcd2dec = function_bcd2dec;
+	func.dec2bcd = function_dec2bcd;
+	func.dectohex = function_dectohex;
+	func.bcd2bin = function_bcd2bin;
+	// 4
+	func.print_v1 = function_print_v1;
+	func.print_v2 = function_print_v2;
+	func.print_binary = function_print_binary;
+	// 5
+	func.i16toa = function_i16toa;
+	func.ui16toa = function_ui16toa;
+	func.i32toa = function_i32toa;
+	func.ftoa = function_ftoa;
+	func.strToInt = function_StrToInt;
+	// 6
+	func.trimmer = function_trimmer;
+	func.pmax = function_pmax;
+	func.gcd_v1 = function_gcd_v1;
+	func.gcd_v2 = function_gcd_v2;
+	// 7
+	func.twocomptoint8bit = function_twocomptoint8bit;
+	func.twocomptoint10bit = function_twocomptoint10bit;
+	func.twocomptointnbit = function_twocomptointnbit;
+	// 8
+	func.readreg = function_readreg;
+	func.writereg = function_writereg;
+	func.setreg = function_setreg;
+	func.setbit = function_setbit;
+	func.getsetbit = function_getsetbit;
+	func.regsetbits = function_RegSetBits;
+	func.regresetbits = function_RegResetBits;
+	func.vecsetup = function_VecSetup;
+	// 9
+	func.triggerA = function_triggerA;
+	func.triggerB = function_triggerB;
+
 	return func;
 }
 
-// mayia
-unsigned int FUNCmayia(unsigned int xi, unsigned int xf, uint8_t nbits)
-{// magic formula
-	unsigned int mask;
-	unsigned int diff;
-	unsigned int trans;
-	mask = (unsigned int)(pow(2, nbits) - 1);
-	xi &= mask;
-	xf &= mask;
-	diff = xf ^ xi;
-	trans = diff & xf;
-	return (trans << nbits) | diff;
+/*** FUNC Procedure & Function Definition***/
+/******/
+uint16_t function_ReadHLByte(FUNCHighLowByte reg)
+{
+	return (uint16_t)(reg.H << 8) | reg.L;
 }
 
-// interchange *px and *py
-void FUNCswap(long *px, long *py)
+uint16_t function_ReadLHByte(FUNCHighLowByte reg)
+{
+	return (uint16_t)(reg.L << 8) | reg.H;
+}
+
+FUNCHighLowByte function_WriteHLByte(uint16_t val)
+{
+	FUNCHighLowByte reg; reg.H = (uint8_t)(val >> 8); reg.L = (uint8_t)val;
+	return reg;
+}
+
+FUNCHighLowByte function_WriteLHByte(uint16_t val)
+{
+	FUNCHighLowByte reg; reg.L = (uint8_t)(val >> 8); reg.H = (uint8_t)val;
+	return reg;
+}
+
+uint16_t function_SwapByte(uint16_t num)
+{
+	uint16_t tp;
+	tp = (uint16_t)(num << 8);
+	return (num >> 8) | tp;
+}
+
+/******/
+int function_StringLength (const char string[])
+{
+	int count;
+	for (count = 0; string[count] != '\0'; count++ ) ;
+	return count;
+}
+// Reverse: reverse string s in place
+void function_Reverse(char s[])
+{
+	char c;
+	int i, j;
+	for ( i = 0, j = function_StringLength(s) - 1; i < j ; i++, j-- ){
+		c = s[i];
+		s[i] = s[j];
+		s[j] = c;
+	}
+}
+
+void function_swap(long *px, long *py)
 {
 	long temp;
 	temp = *px;
@@ -162,8 +208,7 @@ void FUNCswap(long *px, long *py)
 	*py = temp;
 }
 
-// copy: copy 'from' into 'to'; assume to is big enough
-void FUNCcopy(char to[], char from[])
+void function_copy(char to[], char from[])
 {
 	int i;
 	i = 0;
@@ -171,8 +216,7 @@ void FUNCcopy(char to[], char from[])
 		++i;
 }
 
-// squeeze: delete all c from s
-void FUNCsqueeze(char s[], int c)
+void function_squeeze(char s[], int c)
 {
 	int i, j;
 	for (i = 0, j = 0; (s[i] != '\0'); i++){
@@ -182,8 +226,7 @@ void FUNCsqueeze(char s[], int c)
 	s[j] = '\0';
 }
 
-// shellsort: sort v[0]...v[n-1] into increasing order
-void FUNCshellsort(int v[], int n)
+void function_shellsort(int v[], int n)
 {
 	int gap, i, j, temp;
 	for (gap = n / 2; gap > 0; gap /= 2)
@@ -195,26 +238,109 @@ void FUNCshellsort(int v[], int n)
 			}
 }
 
-// i32toa: convert n to characters in s
-char* FUNCi32toa(int32_t n)
+char* function_resizestr(char *string, int size)
 {
-	uint8_t i;
-	int32_t sign;
-	if ((sign = n) < 0) // record sign
-	n = -n; // make n positive
-	i = 0;
-	do { // generate digits in reverse order
-		FUNCstr[i++] = (char) (n % 10 + '0'); // get next digit
-	}while ((n /= 10) > 0); // delete it
-	if (sign < 0)
-		FUNCstr[i++] = '-';
-	FUNCstr[i] = '\0';
-	Reverse(FUNCstr);
+	int i;
+	FUNCstr[size] = '\0';
+	for(i = 0; i < size; i++){
+		if(*(string + i) == '\0'){
+			for(; i < size; i++){
+				FUNCstr[i] = ' ';
+			}
+			break;
+		}
+		FUNCstr[i] = *(string + i);
+	}
 	return FUNCstr;
 }
 
-// i16toa: convert n to characters in s
-char* FUNCi16toa(int16_t n)
+int function_trim(char s[])
+{
+	int n;
+	for (n = function_StringLength(s) - 1; n >= 0; n--)
+		if (s[n] != ' ' && s[n] != '\t' && s[n] != '\n')
+			break;
+	s[n + 1] = '\0';
+	return n;
+}
+
+/******/
+uint8_t function_bcd2dec(uint8_t num)
+{
+	return ((num / 16 * 10) + (num % 16));
+}
+// Convert Decimal to Binary Coded Decimal (BCD)
+uint8_t function_dec2bcd(uint8_t num)
+{
+	return ((num / 10 * 16) + (num % 10));
+}
+// dectohex
+char* function_dectohex(int32_t num)
+{
+	int32_t remainder;
+	uint8_t j;
+	for(j = 0, FUNCstr[j] = '\0'; num; FUNCstr[j] = '\0', num = num / 16){
+		remainder = num % 16;
+		if (remainder < 10)
+			FUNCstr[j++] = (char) (48 + remainder);
+		else
+			FUNCstr[j++] = (char) (55 + remainder);
+	}
+	function_Reverse(FUNCstr);
+	return FUNCstr;
+}
+
+uint8_t function_bcd2bin(uint8_t val)
+{
+	return (val & 0x0f) + (val >> 4) * 10;
+}
+
+/******/
+char* function_print_v1( char* str, uint8_t size_str, const char* format, ... )
+{
+	va_list aptr;
+	int ret;
+
+	va_start(aptr, format);
+	ret = vsnprintf( str, size_str, (const char*) format, aptr );
+	//ret = vsnprintf( ptr, size_str, format, aptr );
+	va_end(aptr);
+
+	if(ret < 0){
+		return NULL;
+		//str[0]='/0';str[1]='/0';str[2]='/0';str[3]='/0';
+	}else
+		return str;
+}
+
+char* function_print_v2( const char* format, ... )
+{
+	va_list aptr;
+	int ret;
+
+	va_start(aptr, format);
+	ret = vsnprintf( FUNCstr, FUNCSTRSIZE, (const char*) format, aptr );
+	// ret = vsnprintf( ptr, FUNCSTRSIZE, format, aptr );
+	va_end(aptr);
+
+	if(ret < 0){
+		return NULL;
+		// FUNCstr[0]='/0';FUNCstr[1]='/0';FUNCstr[2]='/0';FUNCstr[3]='/0';
+	}else
+		return FUNCstr;
+}
+
+char* function_print_binary(unsigned int n_bits, unsigned int number)
+{
+	unsigned int i, c;
+	for(i = (1 << (n_bits - 1)), c = 0; i; i >>= 1, c++)
+		(number & i) ? (FUNCstr[c] = '1') : (FUNCstr[c] = '0');
+	FUNCstr[c] = '\0';
+	return FUNCstr;
+}
+
+/******/
+char* function_i16toa(int16_t n)
 {
 	uint8_t i;
 	int16_t sign;
@@ -227,33 +353,82 @@ char* FUNCi16toa(int16_t n)
 	if (sign < 0)
 		FUNCstr[i++] = '-';
 	FUNCstr[i] = '\0';
-	Reverse(FUNCstr);
+	function_Reverse(FUNCstr);
 	return FUNCstr;
 }
 
-// ui16toa: convert n to characters in s
-char* FUNCui16toa(uint16_t n)
+char* function_ui16toa(uint16_t n)
 {
 	uint8_t i;
 	for(i = 0, FUNCstr[i++] = n % 10 + '0'; (n /= 10) > 0; FUNCstr[i++] = n % 10 + '0');
 	FUNCstr[i] = '\0';
-	Reverse(FUNCstr);
+	function_Reverse(FUNCstr);
 	return FUNCstr;
 }
 
-// trim: remove trailing blanks, tabs, newlines
-int FUNCtrim(char s[])
+char* function_i32toa(int32_t n)
 {
-	int n;
-	for (n = StringLength(s) - 1; n >= 0; n--)
-		if (s[n] != ' ' && s[n] != '\t' && s[n] != '\n')
-			break;
-	s[n + 1] = '\0';
-	return n;
+	uint8_t i;
+	int32_t sign;
+	if ((sign = n) < 0) // record sign
+	n = -n; // make n positive
+	i = 0;
+	do { // generate digits in reverse order
+		FUNCstr[i++] = (char) (n % 10 + '0'); // get next digit
+	}while ((n /= 10) > 0); // delete it
+	if (sign < 0)
+		FUNCstr[i++] = '-';
+	FUNCstr[i] = '\0';
+	function_Reverse(FUNCstr);
+	return FUNCstr;
 }
 
-// larger number of two
-int FUNCpmax(int a1, int a2)
+char* function_ftoa(double num, char* res, uint8_t afterpoint)
+{
+	uint32_t ipart;
+	double n, fpart;
+	uint8_t k = 0;
+	int8_t sign;
+	if (num < 0){
+		n = -num; sign = -1;
+	}else{
+		n = num; sign = 1;
+	}
+	ipart = (uint32_t) n; fpart = n - (double)ipart;
+	k = function_intinvstr((int)ipart, res, 1);
+	if (sign < 0) res[k++] = '-'; else res[k++] = ' ';
+	res[k] = '\0';
+	function_Reverse(res);
+	if (afterpoint > 0 && afterpoint < (8 + 1)){
+		res[k++] = '.';
+		function_intinvstr( (int32_t)(fpart * pow(10, afterpoint)), (res + k), afterpoint );
+		function_Reverse(res + k);
+	}else{
+		res[k++] = '.';
+		function_intinvstr( (int32_t)(fpart * pow(10, 2)), (res + k), 2 );
+		function_Reverse(res + k);
+	}
+	return res;
+}
+
+int function_StrToInt (const char string[])
+{
+	int i, intValue, result = 0;
+	for ( i = 0; string[i] >= '0' && string[i] <= '9'; ++i ){
+		intValue = string[i] - '0';
+		result = result * 10 + intValue;
+	}
+	return result;
+}
+
+/******/
+long function_trimmer(long x, long in_min, long in_max, long out_min, long out_max)
+// same as arduino map function
+{
+	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
+
+int function_pmax(int a1, int a2)
 {
 	int biggest;
 	if(a1 > a2){
@@ -264,8 +439,7 @@ int FUNCpmax(int a1, int a2)
 	return biggest;
 }
 
-// common divisor
-int FUNCgcd (int u, int v)
+int function_gcd_v1 (int u, int v)
 {
 	int temp;
 	while ( v != 0 ) {
@@ -276,33 +450,22 @@ int FUNCgcd (int u, int v)
 	return u;
 }
 
-// Function to convert a string to an integer
-int FUNCstrToInt (const char string[])
+long function_gcd_v2(long a, long b)
 {
-	int i, intValue, result = 0;
-	for ( i = 0; string[i] >= '0' && string[i] <= '9'; ++i ){
-		intValue = string[i] - '0';
-		result = result * 10 + intValue;
+	long r;
+	if (a < b)
+		function_swap(&a, &b);
+	if (!b){
+		while ((r = a % b) != 0) {
+			a = b;
+			b = r;
+		}
 	}
-	return result;
+	return b;
 }
 
-// filter
-uint8_t FUNCfilter(uint8_t mask, uint8_t data)
-{
-	return mask & data;
-}
-
-// ticks
-unsigned int FUNCticks(unsigned int num)
-{
-	unsigned int count;
-	for(count = 0; count < num; count++) ;
-	return count;
-}
-
-// Two's Complement function
-int FUNCtwocomptoint8bit(int twoscomp){
+/******/
+int function_twocomptoint8bit(int twoscomp){
   
   int value;
 	// Let's see if the byte is negative
@@ -322,9 +485,8 @@ int FUNCtwocomptoint8bit(int twoscomp){
     return value;
   }
 }
-
 // Two's Complement function, shifts 10 bit binary to signed integers (-512 to 512)
-int FUNCtwocomptoint10bit(int twoscomp){
+int function_twocomptoint10bit(int twoscomp){
 	int value;
   // Let's see if the byte is negative
   if (twoscomp & 0x200){
@@ -344,9 +506,8 @@ int FUNCtwocomptoint10bit(int twoscomp){
     return value;
   }
 }
-
 // Two's Complement function, nbits
-int FUNCtwocomptointnbit(int twoscomp, uint8_t nbits){
+int function_twocomptointnbit(int twoscomp, uint8_t nbits){
   unsigned int signmask;
   unsigned int mask;
   signmask = (1 << (nbits - 1));
@@ -361,222 +522,7 @@ int FUNCtwocomptointnbit(int twoscomp, uint8_t nbits){
   return twoscomp;
 }
 
-// Convert Decimal to Binary Coded Decimal (BCD)
-char FUNCdec2bcd(char num)
-{
-	return ((num / 10 * 16) + (num % 10));
-}
-
-// Convert Binary Coded Decimal (BCD) to Decimal
-char FUNCbcd2dec(char num)
-{
-	return ((num / 16 * 10) + (num % 16));
-}
-
-char* FUNCresizestr(char *string, int size)
-{
-	int i;
-	FUNCstr[size] = '\0';
-	for(i = 0; i < size; i++){
-		if(*(string + i) == '\0'){
-			for(; i < size; i++){
-				FUNCstr[i] = ' ';
-			}
-			break;
-		}
-		FUNCstr[i] = *(string + i);
-	}
-	return FUNCstr;
-}
-long FUNCtrimmer(long x, long in_min, long in_max, long out_min, long out_max)
-// same as arduino map function
-{
-	return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-}
-
-// Function to count the number of characters in a string
-int StringLength (const char string[])
-{
-	int count;
-	for (count = 0; string[count] != '\0'; count++ ) ;
-	return count;
-}
-
-// reverse: reverse string s in place
-void Reverse(char s[])
-{
-	char c;
-	int i, j;
-	for (i = 0, j = StringLength(s) - 1; i < j; i++, j--){
-		c = s[i];
-		s[i] = s[j];
-		s[j] = c;
-	}
-}
-
-unsigned char FUNCbcd2bin(unsigned char val)
-{
-	return (val & 0x0f) + (val >> 4) * 10;
-}
-
-unsigned char FUNCbin2bcd(unsigned int val)
-{
-	return (unsigned char)(((val / 10) << 4) + val % 10);
-}
-
-long FUNCgcd1(long a, long b)
-{
-	long r;
-	if (a < b)
-		FUNCswap(&a, &b);
-	if (!b){
-		while ((r = a % b) != 0) {
-			a = b;
-			b = r;
-		}
-	}	
-	return b;
-}
-
-uint8_t FUNCpincheck(uint8_t port, uint8_t pin)
-{
-	uint8_t lh;
-	if(port & (1 << pin))
-		lh = 1;
-	else
-		lh = 0;
-	return lh;
-}
-
-char* FUNCprint_binary(unsigned int n_bits, unsigned int number)
-{
-	unsigned int i, c;
-	for(i = (1 << (n_bits - 1)), c = 0; i; i >>= 1, c++)
-		(number & i) ? (FUNCstr[c] = '1') : (FUNCstr[c] = '0');
-	FUNCstr[c] = '\0';
-	return FUNCstr;
-}
-
-uint8_t leap_year_check(uint16_t year){
-	uint8_t i;
-	if (!(year % 400))
-    	i = 1;
-  	else if (!(year % 100))
-    	i = 0;
-  	else if (!(year % 4) )
-    	i = 1;
-  	else
-    	i = 0;
-	return i;
-}
-
-uint8_t bintobcd(uint8_t bin)
-{
-	return (uint8_t)((((bin) / 10) << 4) + ((bin) % 10));
-}
-
-// intinvstr
-uint8_t FUNCintinvstr(int64_t num, char* res, uint8_t n_digit)
-{
-	uint8_t k = 0;
-	for(res[k++] = (char)((num % 10) + '0'); (num /= 10) > 0 ; res[k++] = (char)((num % 10) + '0'));
-	for( ; k < n_digit ; res[k++] = '0');
-	res[k] = '\0';
-	return k;
-}
-
-// ftoa
-char* FUNCftoa(double num, char* res, uint8_t afterpoint)
-{
-	uint32_t ipart;
-	double n, fpart;
-	uint8_t k = 0;
-	int8_t sign;
-	if (num < 0){
-		n = -num; sign = -1;
-	}else{
-		n = num; sign = 1;
-	}
-	ipart = (uint64_t) n; fpart = n - (double)ipart;
-	k = FUNCintinvstr((int)ipart, res, 1);
-	if (sign < 0) res[k++] = '-'; else res[k++] = ' ';
-	res[k] = '\0';
-	Reverse(res);
-	if (afterpoint > 0 && afterpoint < (MAXafterpoint + 1)){ // it is only a 8 bit mcu
-		res[k++] = '.';
-		FUNCintinvstr( (int64_t)(fpart * pow(10, afterpoint)), (res + k), afterpoint );
-		Reverse(res + k);
-	}else{
-		res[k++] = '.';
-		FUNCintinvstr( (int64_t)(fpart * pow(10, DEFAULTafterpoint)), (res + k), DEFAULTafterpoint );
-		Reverse(res + k);
-	}
-	return res;
-}
-
-// dectohex
-char* FUNCdectohex(int32_t num)
-{
-	int32_t remainder;
-	uint8_t j;
-	for(j = 0, FUNCstr[j] = '\0'; num; FUNCstr[j] = '\0', num = num / 16){
-		remainder = num % 16;
-		if (remainder < 10)
-			FUNCstr[j++] = (char) (48 + remainder);
-		else
-			FUNCstr[j++] = (char) (55 + remainder);
-	}
-	Reverse(FUNCstr);
-	return FUNCstr;
-}
-
-uint16_t FUNCReadHLByte(FUNCHighLowByte reg)
-{
-	return (uint16_t)(reg.H << 8) | reg.L;
-}
-
-uint16_t FUNCReadLHByte(FUNCHighLowByte reg)
-{
-	return (uint16_t)(reg.L << 8) | reg.H;
-}
-
-FUNCHighLowByte FUNCWriteHLByte(uint16_t val)
-{
-	FUNCHighLowByte reg; reg.H = (uint8_t)(val >> 8); reg.L = (uint8_t)val;
-	return reg;
-}
-
-FUNCHighLowByte FUNCWriteLHByte(uint16_t val)
-{
-	FUNCHighLowByte reg; reg.L = (uint8_t)(val >> 8); reg.H = (uint8_t)val; 
-	return reg;
-}
-
-uint16_t FUNCSwapByte(uint16_t num)
-{
-	uint16_t tp;
-	tp = (uint16_t)(num << 8);
-	return (num >> 8) | tp;
-}
-
-// print
-char* FUNCprint( const char* format, ... )
-{
-	va_list aptr;
-	int ret;
-	
-	va_start(aptr, format);
-	ret = vsnprintf( FUNCstr, FUNCSTRSIZE, (const char*) format, aptr );
-	// ret = vsnprintf( ptr, FUNCSTRSIZE, format, aptr );
-	va_end(aptr);
-	
-	if(ret < 0){
-		return NULL;
-		// FUNCstr[0]='/0';FUNCstr[1]='/0';FUNCstr[2]='/0';FUNCstr[3]='/0';
-	}else
-		return FUNCstr;
-}
-
+/******/
 uint32_t function_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -629,176 +575,137 @@ uint32_t function_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_
 	return value;
 }
 
-/******
-int gcd( int a, int b ) {
-    int result ;
-    // Compute Greatest Common Divisor using Euclid's Algorithm
-    __asm__ __volatile__ ( "movl %1, %%eax;"
-                          "movl %2, %%ebx;"
-                          "CONTD: cmpl $0, %%ebx;"
-                          "je DONE;"
-                          "xorl %%edx, %%edx;"
-                          "idivl %%ebx;"
-                          "movl %%ebx, %%eax;"
-                          "movl %%edx, %%ebx;"
-                          "jmp CONTD;"
-                          "DONE: movl %%eax, %0;" : "=g" (result) : "g" (a), "g" (b)
-    );
-    return result ;
-}
-//
-float sinx( float degree ) {
-    float result, two_right_angles = 180.0f ;
-    // Convert angle from degrees to radians and then calculate sin value
-    __asm__ __volatile__ ( "fld %1;"
-                            "fld %2;"
-                            "fldpi;"
-                            "fmul;"
-                            "fdiv;"
-                            "fsin;"
-                            "fstp %0;" : "=g" (result) : 
-				"g"(two_right_angles), "g" (degree)
-    ) ;
-    return result ;
-}
-//
-float cosx( float degree ) {
-    float result, two_right_angles = 180.0f, radians ;
-    // Convert angle from degrees to radians and then calculate cos value
-    __asm__ __volatile__ ( "fld %1;"
-                            "fld %2;"
-                            "fldpi;"
-                            "fmul;"
-                            "fdiv;"
-                            "fstp %0;" : "=g" (radians) : 
-				"g"(two_right_angles), "g" (degree)
-    ) ;
-    __asm__ __volatile__ ( "fld %1;"
-                            "fcos;"
-                            "fstp %0;" : "=g" (result) : "g" (radians)
-    ) ;
-    return result ;
-}
-//
-float square_root( float val ) {
-    float result ;
-    __asm__ __volatile__ ( "fld %1;"
-                            "fsqrt;"
-                            "fstp %0;" : "=g" (result) : "g" (val)
-    ) ;
-    return result ;
-}
-*/
-/***pc use***
-char* FUNCfltos(FILE* stream)
+void function_RegSetBits( unsigned int* reg, int n_bits, ... )
 {
-	int i, block, NBytes;
-	char caracter;
-	char* value = NULL;
-	for(i=0, block=4, NBytes=0; (caracter = getc(stream)) != EOF; i++){
-		if(i == NBytes){
-			NBytes += block;
-			value = (char*)realloc(value, NBytes * sizeof(char));
-			if(value == NULL){
-				perror("fltos at calloc");
-				break;
+	uint8_t i;
+	if(n_bits > 0 && n_bits < 33){ // Filter input
+		va_list list;
+		va_start(list, n_bits);
+		for(i = 0; i < n_bits; i++){
+			*reg |= (unsigned int)(1 << va_arg(list, int));
+		}
+		va_end(list);
+	}
+}
+
+void function_RegResetBits( unsigned int* reg, int n_bits, ... )
+{
+	uint8_t i;
+	if(n_bits > 0 && n_bits < 33){ // Filter input
+		va_list list;
+		va_start(list, n_bits);
+		for(i = 0; i < n_bits; i++){
+			*reg &= (unsigned int)~((1 << va_arg(list, int)) << 16);
+		}
+		va_end(list);
+	}
+}
+
+void function_VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n )
+{
+	const unsigned int n_bits = sizeof(data) * 8;
+	const unsigned int mask = (unsigned int) (pow(2, size_block) - 1);
+	unsigned int index = (block_n * size_block) / n_bits;
+	data &= mask;
+	vec[index] &= ~( mask << ((block_n * size_block) - (index * n_bits)) );
+	vec[index] |= ( data << ((block_n * size_block) - (index * n_bits)) );
+}
+
+/******/
+// triggerA
+uint32_t function_triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter)
+{
+	mem[3] = 0;
+
+	switch(mem[0]){
+		case 0:
+			if(hllh_io & (1 << pin)){
+				mem[1] = counter;
+				mem[0] = 1;
 			}
-		}
-		*(value + i) = caracter;
-		if(caracter == '\n'){
-			*(value + i) = '\0';
-			break;
-		}
-	}
-	return value;
-}
-char* FUNCftos(FILE* stream)
-{
-	int i, block, NBytes;
-	char caracter;
-	char* value = NULL;
-	for(i = 0, block = 8, NBytes = 0; (caracter = getc(stream)) != EOF; i++){
-		if(i == NBytes){
-			NBytes += block;
-			value = (char*)realloc(value, NBytes * sizeof(char));
-			if(value == NULL){
-				perror("ftos at calloc");
-				break;
+		break;
+		case 1:
+			if(hllh_io & (1 << pin)){
+				mem[2] = counter;
+				if((mem[2] + 1) > mem[1]){
+					mem[3] = mem[2] - mem[1];
+				}else{
+					mem[3] = ((uint32_t) ~0 - mem[1]) + mem[2];
+				}
+				mem[0] = 0;
 			}
-		}
-		*(value + i) = caracter;
+		break;
+		default:
+		break;
 	}
-	return value;
+	return mem[3];
 }
-int FUNCstrtotok(char* line, char* token[], const char* parser)
+// triggerB
+uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter)
 {
-	int i;
-	char *str;
-	str=(char*)calloc(strlen(line),sizeof(char));
-	for (i = 0, strcpy(str, line); ; i++, str = NULL) {
-		token[i] = strtok(str, parser);
-		if (token[i] == NULL)
-			break;
-		printf("%d: %s\n", i, token[i]);
+	nen[3] = 0;
+
+	switch(nen[0]){ // Start value
+		case 0:
+			nen[1] = counter;
+			if(hl_io & (1 << pin))
+				nen[0] = 1;
+		break;
+		case 1:
+			nen[2] = counter;
+			if(nen[2] == nen[1])
+				nen[2] += sizeof(nen[0]) * 8;
+			if(lh_io & (1 << pin)){
+				nen[3] = nen[2] - nen[1];
+				nen[0] = 0;
+			}
+		break;
+		default:
+		break;
 	}
-	free(str);
+	return nen[3];
+}
+
+/*** COMMON ***/
+// intinvstr
+uint8_t function_intinvstr(int32_t num, char* res, uint8_t n_digit)
+{
+	uint8_t k = 0;
+	for(res[k++] = (char)((num % 10) + '0'); (num /= 10) > 0 ; res[k++] = (char)((num % 10) + '0'));
+	for( ; k < n_digit ; res[k++] = '0');
+	res[k] = '\0';
+	return k;
+}
+
+/*** Not Used ***/
+unsigned int function_mayia(unsigned int xi, unsigned int xf, uint8_t nbits)
+{// magic formula
+	unsigned int mask;
+	unsigned int diff;
+	unsigned int trans;
+	mask = (unsigned int)(pow(2, nbits) - 1);
+	xi &= mask;
+	xf &= mask;
+	diff = xf ^ xi;
+	trans = diff & xf;
+	return (trans << nbits) | diff;
+}
+
+uint8_t leap_year_check(uint16_t year){
+	uint8_t i;
+	if (!(year % 400))
+    	i = 1;
+  	else if (!(year % 100))
+    	i = 0;
+  	else if (!(year % 4) )
+    	i = 1;
+  	else
+    	i = 0;
 	return i;
 }
-char* FUNCputstr(char* str)
-{
-	int i; char* ptr;
-	ptr = (char*)calloc(strlen(str), sizeof(char));
-	if(ptr == NULL){
-		perror("NULL!\n");
-		return NULL;
-	}
-	for(i = 0; (ptr[i] = str[i]); i++){
-		if(ptr[i] == '\0')
-			break;
-	}
-	return (ptr);
-}
-int FUNCgetnum(char* x)
-{
-	int num;
-	if(!sscanf(x, "%d", &num))
-		num = 0;
-	return num;
-}
-unsigned int FUNCgetnumv2(char* x)
-{
-	unsigned int RETURN;
-	unsigned int value;
-	unsigned int n;
-	errno = 0;
-	n = sscanf(x, "%d", &value);
-	if(n == 1){
-		RETURN = value;
-	}else if(errno != 0){
-		perror("getnum at sscanf");
-		RETURN = 0;
-	}else{
-		RETURN = 0;
-	}
-	return RETURN;
-}
-int FUNCreadint(int nmin, int nmax)
-{
-	int num;
-	int flag;
-	for(flag = 1; flag; ){
-		for( num = 0; !scanf("%d", &num); getchar())
-			;
-		//printf("num: %d nmin: %d nmax: %d\n",num, nmin, nmax);
-		if((num < nmin) || (num > nmax))
-			continue;
-		flag = 0;
-	}
-		return num;
-}
-***/
 
 /*** File Interrupt ***/
 
 /***EOF***/
+
 

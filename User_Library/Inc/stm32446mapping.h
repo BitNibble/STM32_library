@@ -52,6 +52,7 @@ Comment:
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
 #include "stm32446tim.h"
+#include "function.h"
 
 /************ STM32F446RE ************/
 /********** Global TypeDef ***********/
@@ -368,31 +369,6 @@ typedef struct
 	USB_OTG_HostChannelTypeDef* reg;
 }STM32446USB_OTG_HostChannelobj;
 
-/*************** MISCELLANEOUS TypeDef ***************/
-// FUNC
-typedef struct
-{
-	char (*bcd2dec)(char num);
-	char (*dec2bcd)(char num);
-	uint32_t (*triggerA)(uint32_t hllh_io, uint8_t pin, uint32_t counter);
-	uint32_t (*triggerB)(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter);
-	uint16_t (*ReadHLByte)(STM32HighLowByte reg);
-	uint16_t (*ReadLHByte)(STM32HighLowByte reg);
-	STM32HighLowByte (*WriteHLByte)(uint16_t val);
-	STM32HighLowByte (*WriteLHByte)(uint16_t val);
-	uint16_t (*SwapByte)(uint16_t num);
-	char* (*ftoa)(double num, char* res, uint8_t afterpoint);
-	char* (*print)( char* str, uint8_t size_str, const char* format, ... );
-	void (*regsetbits)( unsigned int* reg, int n_bits, ... );
-	void (*regresetbits)( unsigned int* reg, int n_bits, ... );
-	void (*vecsetup)( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n );
-	uint32_t (*readreg)(uint32_t reg, uint32_t size_block, uint32_t bit);
-	void (*writereg)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-	void (*setreg)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-	void (*setbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-	uint32_t (*getsetbit)(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
-}STM32446_function;
-
 /***************** STM32F446 TypeDef *****************/
 typedef struct
 {
@@ -464,8 +440,11 @@ typedef struct
 		STM32446USART5obj uart5;
 		STM32446USART6obj usart6;
 	#endif
-	//FUNCTION
-	STM32446_function func;
+	//PRIVATE
+	#if defined(_FUNCTION_H_)
+		FUNC func;
+	#endif
+
 }STM32446;
 
 STM32446 STM32446enable(void);
