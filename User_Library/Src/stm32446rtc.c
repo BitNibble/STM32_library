@@ -14,6 +14,7 @@ Comment:
 
 static uint32_t STM32446TimeTr;
 static uint32_t STM32446DateDr;
+static uint32_t rtc_time_out;
 
 /*** File Procedure & Function Header ***/
 uint32_t rtc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
@@ -58,7 +59,7 @@ uint8_t STM32446RtcInic(uint8_t clock)
 
 	// 6 - Set INIT bit and wait for ready flag
 	RTC->ISR |= (1 << 7); // INIT: Initialisation mode
-	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialisation flag
+	for( rtc_time_out = 100; !(RTC->ISR & (1 << 6)) && rtc_time_out; rtc_time_out-- ); // INITF: Initialisation flag
 	status = 6;
 
 	// 7 - Adjust prescaler values for RTC to obtain 1 Hz
@@ -298,7 +299,7 @@ void STM32446RtcSetTr(void)
 	RTC->WPR |= RTC_KEY2;
 	//3 - Set INIT bit and wait for ready flag
 	RTC->ISR |= (1 << 7); // INIT: Initialisation mode
-	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialisation flag
+	for( rtc_time_out = 100; !(RTC->ISR & (1 << 6)) && rtc_time_out; rtc_time_out-- ); // INITF: Initialisation flag
 	//4 - Setup
 	
 	RTC->TR = STM32446TimeTr;
@@ -318,7 +319,7 @@ void STM32446RtcSetDr(void)
 	RTC->WPR |= RTC_KEY2;
 	//3 - Set INIT bit and wait for ready flag
 	RTC->ISR |= (1 << 7); // INIT: Initialisation mode
-	while( !(RTC->ISR & (1 << 6)) ); // INITF: Initialisation flag
+	for( rtc_time_out = 100; !(RTC->ISR & (1 << 6)) && rtc_time_out; rtc_time_out-- ); // INITF: Initialisation flag
 	//4 - Setup
 	
 	RTC->DR = STM32446DateDr;
