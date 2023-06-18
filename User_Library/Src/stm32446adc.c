@@ -1674,7 +1674,7 @@ STM32446ADC2obj adc2_inic(void)
 	// JOFR4
 	stm32446_adc2.jofr4 = STM32446ADC2_jofr4;
 	// HTR
-	stm32446_adc2_setup.htr = STM32446ADC2_htr;
+	stm32446_adc2.htr = STM32446ADC2_htr;
 	// LTR
 	stm32446_adc2.ltr = STM32446ADC2_ltr;
 	// SQR1
