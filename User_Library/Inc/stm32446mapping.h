@@ -42,7 +42,7 @@ Comment:
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446flash.h"
-#include "stm32446crc.h"
+//#include "stm32446crc.h"
 #include "stm32446pwr.h"
 #include "stm32446rcc.h"
 #include "stm32446nvic.h"
