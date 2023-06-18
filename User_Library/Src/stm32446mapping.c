@@ -176,7 +176,7 @@ STM32446 STM32446enable(void){
 		stm32446.tim11 = tim11_inic();
 		stm32446.tim12 = tim12_inic();
 		stm32446.tim13 = tim13_inic();
-		stm32446.tim1 = tim1_inic();
+		stm32446.tim14 = tim14_inic();
 	#endif
 
 	#if defined(_STM32446USART_H_)
