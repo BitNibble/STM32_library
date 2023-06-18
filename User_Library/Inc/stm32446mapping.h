@@ -61,13 +61,6 @@ typedef struct
 	uint8_t H;
 } STM32HighLowByte;
 
-// Low Word High Word
-//typedef struct
-//{
-//	uint16_t H;
-//	uint16_t L;
-//}STM32446HighLowWord;
-
 /************** QUERY TypeDef ****************/
 typedef struct
 {
@@ -408,49 +401,69 @@ typedef struct
 	STM32446Query query;
 	// CORE
 	STM32446SCBobj scb;
-	STM32446NVICobj nvic;
+	#if defined(_STM32446NVIC_H_)
+		STM32446NVICobj nvic;
+	#endif
 	STM32446SysTickobj systick;
 	// MCU
-	STM32446ADC1obj adc1;
-	STM32446ADC2obj adc2;
-	STM32446ADC3obj adc3;
-	STM32446CRCobj crc;
+	#if defined(_STM32446ADC_H_)
+		STM32446ADC1obj adc1;
+		STM32446ADC2obj adc2;
+		STM32446ADC3obj adc3;
+	#endif
+	#if defined(_STM32446CRC_H_)
+		STM32446CRCobj crc;
+	#endif
 	STM32446DMA1obj dma1;
 	STM32446DMA2obj dma2;
-	STM32446FLASHobj flash;
-	STM32446GpioAobj gpioa;
-	STM32446GpioBobj gpiob;
-	STM32446GpioCobj gpioc;
-	STM32446GpioDobj gpiod;
-	STM32446GpioEobj gpioe;
-	STM32446GpioFobj gpiof;
-	STM32446GpioGobj gpiog;
-	STM32446GpioHobj gpioh;
+	#if defined(_STM32446FLASH_H_)
+		STM32446FLASHobj flash;
+	#endif
+	#if defined(_STM32446GPIO_H_)
+		STM32446GpioAobj gpioa;
+		STM32446GpioBobj gpiob;
+		STM32446GpioCobj gpioc;
+		STM32446GpioDobj gpiod;
+		STM32446GpioEobj gpioe;
+		STM32446GpioHobj gpioh;
+	#endif
 	STM32446SYSCFGobj syscfg;
-	STM32446PWRobj pwr;
-	STM32446RCCobj rcc;
-	STM32446RTCobj rtc;
-	STM32446SRAMobj sram;
-	STM32446TIM1obj tim1;
-	STM32446TIM2obj tim2;
-	STM32446TIM3obj tim3;
-	STM32446TIM4obj tim4;
-	STM32446TIM5obj tim5;
-	STM32446TIM6obj tim6;
-	STM32446TIM7obj tim7;
-	STM32446TIM8obj tim8;
-	STM32446TIM9obj tim9;
-	STM32446TIM10obj tim10;
-	STM32446TIM11obj tim11;
-	STM32446TIM12obj tim12;
-	STM32446TIM13obj tim13;
-	STM32446TIM14obj tim14;
-	STM32446USART1obj usart1;
-	STM32446USART2obj usart2;
-	STM32446USART3obj usart3;
-	STM32446USART4obj uart4;
-	STM32446USART5obj uart5;
-	STM32446USART6obj usart6;
+	#if defined(_STM32446PWR_H_)
+		STM32446PWRobj pwr;
+	#endif
+	#if defined(_STM32446RCC_H_)
+		STM32446RCCobj rcc;
+	#endif
+	#if defined(_STM32446RTC_H_)
+		STM32446RTCobj rtc;
+	#endif
+	#if defined(_STM32446SRAM_H_)
+		STM32446SRAMobj sram;
+	#endif
+	#if defined(_STM32446TIM_H_)
+		STM32446TIM1obj tim1;
+		STM32446TIM2obj tim2;
+		STM32446TIM3obj tim3;
+		STM32446TIM4obj tim4;
+		STM32446TIM5obj tim5;
+		STM32446TIM6obj tim6;
+		STM32446TIM7obj tim7;
+		STM32446TIM8obj tim8;
+		STM32446TIM9obj tim9;
+		STM32446TIM10obj tim10;
+		STM32446TIM11obj tim11;
+		STM32446TIM12obj tim12;
+		STM32446TIM13obj tim13;
+		STM32446TIM14obj tim14;
+	#endif
+	#if defined(_STM32446USART_H_)
+		STM32446USART1obj usart1;
+		STM32446USART2obj usart2;
+		STM32446USART3obj usart3;
+		STM32446USART4obj uart4;
+		STM32446USART5obj uart5;
+		STM32446USART6obj usart6;
+	#endif
 	//FUNCTION
 	STM32446_function func;
 }STM32446;

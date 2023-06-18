@@ -61,6 +61,24 @@ void STM32446NVIC_trigger(uint32_t IRQn)
 	nvic_writereg(&NVIC->STIR, 9, 0, IRQn);
 }
 
+/*** INIC Procedure & Function Definition ***/
+STM32446NVICobj nvic_inic(void)
+{
+	STM32446NVICobj stm32446_nvic;
+
+	stm32446_nvic.reg = NVIC;
+	/*** NVIC Bit Mapping Link ***/
+	stm32446_nvic.set_enable = STM32446NVIC_set_enable;
+	stm32446_nvic.clear_enable = STM32446NVIC_clear_enable;
+	stm32446_nvic.set_pending = STM32446NVIC_set_pending;
+	stm32446_nvic.clear_pending = STM32446NVIC_clear_pending;
+	stm32446_nvic.active = STM32446NVIC_active;
+	stm32446_nvic.priority = STM32446NVIC_priority;
+	stm32446_nvic.trigger = STM32446NVIC_trigger;
+
+	return stm32446_nvic;
+}
+
 /*** File Procedure & Function Definition ***/
 uint32_t nvic_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {

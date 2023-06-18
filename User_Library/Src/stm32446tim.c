@@ -9,7 +9,7 @@ Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
-#include <stm32446mapping.h>
+#include "stm32446mapping.h"
 #include "stm32446tim.h"
 
 /*** File Procedure & Function Header ***/
@@ -337,6 +337,168 @@ void STM32446Tim9_psc(uint16_t value)
 
 /*** TIM 10 ***/
 // Future Implementation
+
+/*** INIC Procedure & Function Definition ***/
+STM32446TIM1obj tim1_inic(void)
+{
+	STM32446TIM1obj stm32446_tim1;
+	stm32446_tim1.reg = TIM1;
+	return stm32446_tim1;
+}
+STM32446TIM2obj tim2_inic(void)
+{
+	STM32446TIM2obj stm32446_tim2;
+	stm32446_tim2.reg = TIM2;
+	return stm32446_tim2;
+}
+STM32446TIM3obj tim3_inic(void)
+{
+	STM32446TIM3obj stm32446_tim3;
+	stm32446_tim3.reg = TIM3;
+	return stm32446_tim3;
+}
+STM32446TIM4obj tim4_inic(void)
+{
+	STM32446TIM4obj stm32446_tim4;
+	stm32446_tim4.reg = TIM4;
+	return stm32446_tim4;
+}
+STM32446TIM5obj tim5_inic(void)
+{
+	STM32446TIM5obj stm32446_tim5;
+	stm32446_tim5.reg = TIM5;
+	return stm32446_tim5;
+}
+STM32446TIM6obj tim6_inic(void)
+{
+	STM32446TIM6obj stm32446_tim6;
+	stm32446_tim6.reg = TIM6;
+	return stm32446_tim6;
+}
+STM32446TIM7obj tim7_inic(void)
+{
+	STM32446TIM7obj stm32446_tim7;
+	stm32446_tim7.reg = TIM7;
+	return stm32446_tim7;
+}
+STM32446TIM8obj tim8_inic(void)
+{
+	STM32446TIM8obj stm32446_tim8;
+	stm32446_tim8.reg = TIM8;
+	return stm32446_tim8;
+}
+STM32446TIM9obj tim9_inic(void)
+{
+	STM32446TIM9obj stm32446_tim9;
+
+	stm32446_tim9.reg = TIM9;
+	// CLOCK
+	stm32446_tim9.clock = STM32446Tim9Clock;
+	// INIC
+	stm32446_tim9.inic = STM32446Tim9Inic;
+	/*** TIM9 Bit Mapping Link ***/
+	// CR1
+	stm32446_tim9.cr1.get_ckd = STM32446Tim9_get_ckd;
+	stm32446_tim9.cr1.apre = STM32446Tim9_set_apre;
+	stm32446_tim9.cr1.opm = STM32446Tim9_set_opm;
+	stm32446_tim9.cr1.urs = STM32446Tim9_set_urs;
+	stm32446_tim9.cr1.udis = STM32446Tim9_set_udis;
+	stm32446_tim9.cr1.cen = STM32446Tim9_cen;
+	// SMCR
+	stm32446_tim9.smcr.msm = STM32446Tim9_msm;
+	stm32446_tim9.smcr.ts = STM32446Tim9_ts;
+	stm32446_tim9.smcr.sms = STM32446Tim9_sms;
+	// DIER
+	stm32446_tim9.dier.tie = STM32446Tim9_tie;
+	stm32446_tim9.dier.cc2ie = STM32446Tim9_cc2ie;
+	stm32446_tim9.dier.cc1ie = STM32446Tim9_cc1ie;
+	stm32446_tim9.dier.uie = STM32446Tim9_uie;
+	// SR
+	stm32446_tim9.sr.cc2of = STM32446Tim9_cc2of;
+	stm32446_tim9.sr.clear_cc2of = STM32446Tim9_clear_cc2of;
+	stm32446_tim9.sr.cc1of = STM32446Tim9_cc1of;
+	stm32446_tim9.sr.clear_cc1of = STM32446Tim9_clear_cc1of;
+	stm32446_tim9.sr.tif = STM32446Tim9_tif;
+	stm32446_tim9.sr.clear_tif = STM32446Tim9_clear_tif;
+	stm32446_tim9.sr.cc2if = STM32446Tim9_cc2if;
+	stm32446_tim9.sr.clear_cc2if = STM32446Tim9_clear_cc2if;
+	stm32446_tim9.sr.cc1if = STM32446Tim9_cc1if;
+	stm32446_tim9.sr.clear_cc1if = STM32446Tim9_clear_cc1if;
+	stm32446_tim9.sr.uif = STM32446Tim9_uif;
+	stm32446_tim9.sr.clear_uif = STM32446Tim9_clear_uif;
+	// EGR
+	stm32446_tim9.egr.tg = STM32446Tim9_tg;
+	stm32446_tim9.egr.cc2g = STM32446Tim9_cc2g;
+	stm32446_tim9.egr.cc1g = STM32446Tim9_cc1g;
+	stm32446_tim9.egr.ug = STM32446Tim9_ug;
+	// CCMR1
+	stm32446_tim9.ccmr1.oc2m = STM32446Tim9_oc2m;
+	stm32446_tim9.ccmr1.ic2f = STM32446Tim9_ic2f;
+	stm32446_tim9.ccmr1.oc2pe = STM32446Tim9_oc2pe;
+	stm32446_tim9.ccmr1.oc2fe = STM32446Tim9_oc2fe;
+	stm32446_tim9.ccmr1.ic2psc = STM32446Tim9_ic2psc;
+	stm32446_tim9.ccmr1.cc2s = STM32446Tim9_cc2s;
+	stm32446_tim9.ccmr1.oc1m = STM32446Tim9_oc1m;
+	stm32446_tim9.ccmr1.ic1f = STM32446Tim9_ic1f;
+	stm32446_tim9.ccmr1.oc1pe = STM32446Tim9_oc1pe;
+	stm32446_tim9.ccmr1.oc1fe = STM32446Tim9_oc1fe;
+	stm32446_tim9.ccmr1.ic1psc = STM32446Tim9_ic1psc;
+	stm32446_tim9.ccmr1.cc1s = STM32446Tim9_cc1s;
+	// CCER
+	stm32446_tim9.ccer.cc2np = STM32446Tim9_cc2np;
+	stm32446_tim9.ccer.cc2p = STM32446Tim9_cc2p;
+	stm32446_tim9.ccer.cc2e = STM32446Tim9_cc2e;
+	stm32446_tim9.ccer.cc1np = STM32446Tim9_cc1np;
+	stm32446_tim9.ccer.cc1p = STM32446Tim9_cc1p;
+	stm32446_tim9.ccer.cc1e = STM32446Tim9_cc1e;
+	// CNT
+	stm32446_tim9.cnt = STM32446Tim9_cnt;
+	stm32446_tim9.get_cnt = STM32446Tim9_get_cnt;
+	// ARR
+	stm32446_tim9.arr = STM32446Tim9_arr;
+	// CCR1
+	stm32446_tim9.ccr1 = STM32446Tim9_ccr1;
+	// CCR2
+	stm32446_tim9.ccr2 = STM32446Tim9_ccr2;
+	// PSC
+	stm32446_tim9.psc = STM32446Tim9_psc;
+	// INIC
+	stm32446_tim9.inic = STM32446Tim9Inic;
+	// INTERRUPT
+	stm32446_tim9.nvict1t9 = STM32446Tim9EnableInterrupt;
+
+	return stm32446_tim9;
+}
+STM32446TIM10obj tim10_inic(void)
+{
+	STM32446TIM10obj stm32446_tim10;
+	stm32446_tim10.reg = TIM10;
+	return stm32446_tim10;
+}
+STM32446TIM11obj tim11_inic(void)
+{
+	STM32446TIM11obj stm32446_tim11;
+	stm32446_tim11.reg = TIM11;
+	return stm32446_tim11;
+}
+STM32446TIM12obj tim12_inic(void)
+{
+	STM32446TIM12obj stm32446_tim12;
+	stm32446_tim12.reg = TIM12;
+	return stm32446_tim12;
+}
+STM32446TIM13obj tim13_inic(void)
+{
+	STM32446TIM13obj stm32446_tim13;
+	stm32446_tim13.reg = TIM13;
+	return stm32446_tim13;
+}
+STM32446TIM14obj tim14_inic(void)
+{
+	STM32446TIM14obj stm32446_tim14;
+	stm32446_tim14.reg = TIM14;
+	return stm32446_tim14;
+}
 
 /*** File Procedure & Function Definition***/
 uint32_t tim_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)

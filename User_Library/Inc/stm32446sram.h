@@ -24,6 +24,8 @@ typedef struct
 	#endif
 }STM32446SRAMobj;
 
+STM32446SRAMobj sram_inic(void);
+
 /***** SRAM Procedure & Function Header ******/
 void STM32446SramAccess(void);
 /*** SRAM Bit Mapping Header ***/

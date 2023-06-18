@@ -30,6 +30,8 @@ typedef struct
 	#endif
 }STM32446NVICobj;
 
+STM32446NVICobj nvic_inic(void);
+
 /*** NVIC Bit Mapping Header ***/
 // NVIC
 void STM32446NVIC_set_enable( uint8_t IRQn );

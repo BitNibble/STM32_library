@@ -297,6 +297,10 @@ typedef struct
 	#endif
 }STM32446ADC3obj;
 
+STM32446ADC1obj adc1_inic(void);
+STM32446ADC2obj adc2_inic(void);
+STM32446ADC3obj adc3_inic(void);
+
 /***** ADC1 Procedure & Function Header ******/
 /*** ADC1 ***/
 void STM32446Adc1Clock(void);

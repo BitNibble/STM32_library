@@ -42,6 +42,17 @@ void STM32446SramAccess(void)
 
 /*** SRAM Bit Mapping Definition ***/
 
+/*** INIC Procedure & Function Definition ***/
+STM32446SRAMobj sram_inic(void)
+{
+	STM32446SRAMobj stm32446_sram;
+
+	stm32446_sram.access = STM32446SramAccess;
+
+	return stm32446_sram;
+}
+
+
 /*** File Procedure & Function Definition ***/
 uint32_t sram_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {

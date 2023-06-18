@@ -470,6 +470,151 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 	}
 }
 
+/*** INIC Procedure & Function Definition ***/
+STM32446GpioAobj gpioa_inic(void)
+{
+	STM32446GpioAobj stm32446_gpioa;
+	// GPIOA
+	stm32446_gpioa.reg = GPIOA;
+	/*** GPIOA RCC Clock Enable ***/
+	stm32446_gpioa.clock = STM32446GpioAclock;
+	/*** GPIOA Bit Mapping Link ***/
+	stm32446_gpioa.moder = STM32446GpioAmoder;
+	stm32446_gpioa.ospeedr = STM32446GpioAospeedr;
+	stm32446_gpioa.pupdr = STM32446GpioApupdr;
+	stm32446_gpioa.reset = STM32446GpioAreset;
+	stm32446_gpioa.set = STM32446GpioAset;
+	stm32446_gpioa.afr = STM32446GpioAafr;
+	/*** Other ***/
+	stm32446_gpioa.func.readreg = gpio_readreg;
+	stm32446_gpioa.func.writereg = gpio_writereg;
+	stm32446_gpioa.func.setreg = gpio_setreg;
+	stm32446_gpioa.func.setbit = gpio_setbit;
+	stm32446_gpioa.func.getsetbit = gpio_getsetbit;
+
+	return stm32446_gpioa;
+}
+
+STM32446GpioBobj gpiob_inic(void)
+{
+	STM32446GpioBobj stm32446_gpiob;
+	// GPIOB
+	stm32446_gpiob.reg = GPIOB;
+	/*** GPIOB RCC Clock Enable ***/
+	stm32446_gpiob.clock = STM32446GpioBclock;
+	/*** GPIOB Bit Mapping Link ***/
+	stm32446_gpiob.moder = STM32446GpioBmoder;
+	stm32446_gpiob.ospeedr = STM32446GpioBospeedr;
+	stm32446_gpiob.pupdr = STM32446GpioBpupdr;
+	stm32446_gpiob.reset = STM32446GpioBreset;
+	stm32446_gpiob.set = STM32446GpioBset;
+	stm32446_gpiob.afr = STM32446GpioBafr;
+	/*** Other ***/
+	stm32446_gpiob.func.readreg = gpio_readreg;
+	stm32446_gpiob.func.writereg = gpio_writereg;
+	stm32446_gpiob.func.setreg = gpio_setreg;
+	stm32446_gpiob.func.setbit = gpio_setbit;
+	stm32446_gpiob.func.getsetbit = gpio_getsetbit;
+
+	return stm32446_gpiob;
+}
+
+STM32446GpioCobj gpioc_inic(void)
+{
+	STM32446GpioCobj stm32446_gpioc;
+	// GPIOC
+	stm32446_gpioc.reg = GPIOC;
+	/*** GPIOC RCC Clock Enable ***/
+	stm32446_gpioc.clock = STM32446GpioCclock;
+	/*** GPIOC Bit Mapping Link ***/
+	stm32446_gpioc.moder = STM32446GpioCmoder;
+	stm32446_gpioc.ospeedr = STM32446GpioCospeedr;
+	stm32446_gpioc.pupdr = STM32446GpioCpupdr;
+	stm32446_gpioc.reset = STM32446GpioCreset;
+	stm32446_gpioc.set = STM32446GpioCset;
+	stm32446_gpioc.afr = STM32446GpioCafr;
+	/*** Other ***/
+	stm32446_gpioc.func.readreg = gpio_readreg;
+	stm32446_gpioc.func.writereg = gpio_writereg;
+	stm32446_gpioc.func.setreg = gpio_setreg;
+	stm32446_gpioc.func.setbit = gpio_setbit;
+	stm32446_gpioc.func.getsetbit = gpio_getsetbit;
+
+	return stm32446_gpioc;
+}
+
+STM32446GpioDobj gpiod_inic(void)
+{
+	STM32446GpioDobj stm32446_gpiod;
+	// GPIOD
+	stm32446_gpiod.reg = GPIOD;
+	/*** GPIOD RCC Clock Enable ***/
+	stm32446_gpiod.clock = STM32446GpioDclock;
+	/*** GPIOD Bit Mapping Link ***/
+	stm32446_gpiod.moder = STM32446GpioDmoder;
+	stm32446_gpiod.ospeedr = STM32446GpioDospeedr;
+	stm32446_gpiod.pupdr = STM32446GpioDpupdr;
+	stm32446_gpiod.reset = STM32446GpioDreset;
+	stm32446_gpiod.set = STM32446GpioDset;
+	stm32446_gpiod.afr = STM32446GpioDafr;
+	/*** Other ***/
+	stm32446_gpiod.func.readreg = gpio_readreg;
+	stm32446_gpiod.func.writereg = gpio_writereg;
+	stm32446_gpiod.func.setreg = gpio_setreg;
+	stm32446_gpiod.func.setbit = gpio_setbit;
+	stm32446_gpiod.func.getsetbit = gpio_getsetbit;
+
+	return stm32446_gpiod;
+}
+
+STM32446GpioEobj gpioe_inic(void)
+{
+	STM32446GpioEobj stm32446_gpioe;
+	// GPIOE
+	stm32446_gpioe.reg = GPIOE;
+	/*** GPIOE RCC Clock Enable ***/
+	stm32446_gpioe.clock = STM32446GpioEclock;
+	/*** GPIOE Bit Mapping Link ***/
+	stm32446_gpioe.moder = STM32446GpioEmoder;
+	stm32446_gpioe.ospeedr = STM32446GpioEospeedr;
+	stm32446_gpioe.pupdr = STM32446GpioEpupdr;
+	stm32446_gpioe.reset = STM32446GpioEreset;
+	stm32446_gpioe.set = STM32446GpioEset;
+	stm32446_gpioe.afr = STM32446GpioEafr;
+	/*** Other ***/
+	stm32446_gpioe.func.readreg = gpio_readreg;
+	stm32446_gpioe.func.writereg = gpio_writereg;
+	stm32446_gpioe.func.setreg = gpio_setreg;
+	stm32446_gpioe.func.setbit = gpio_setbit;
+	stm32446_gpioe.func.getsetbit = gpio_getsetbit;
+
+	return stm32446_gpioe;
+}
+
+STM32446GpioHobj gpioh_inic(void)
+{
+	STM32446GpioHobj stm32446_gpioh;
+	// GPIOH
+	stm32446_gpioh.reg = GPIOH;
+	/*** GPIOH RCC Clock Enable ***/
+	stm32446_gpioh.clock = STM32446GpioHclock;
+	/*** GPIOH Bit Mapping Link ***/
+	stm32446_gpioh.moder = STM32446GpioHmoder;
+	stm32446_gpioh.ospeedr = STM32446GpioHospeedr;
+	stm32446_gpioh.pupdr = STM32446GpioHpupdr;
+	stm32446_gpioh.reset = STM32446GpioHreset;
+	stm32446_gpioh.set = STM32446GpioHset;
+	stm32446_gpioh.afr = STM32446GpioHafr;
+	/*** Other ***/
+	stm32446_gpioh.func.readreg = gpio_readreg;
+	stm32446_gpioh.func.writereg = gpio_writereg;
+	stm32446_gpioh.func.setreg = gpio_setreg;
+	stm32446_gpioh.func.setbit = gpio_setbit;
+	stm32446_gpioh.func.getsetbit = gpio_getsetbit;
+
+	return stm32446_gpioh;
+}
+
 /*** File Procedure & Function Definition ***/
 uint32_t gpio_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {

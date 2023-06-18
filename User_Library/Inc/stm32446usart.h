@@ -226,6 +226,13 @@ typedef struct
 	#endif
 }STM32446USART6obj;
 
+STM32446USART1obj usart1_inic(void);
+STM32446USART2obj usart2_inic(void);
+STM32446USART3obj usart3_inic(void);
+STM32446USART4obj uart4_inic(void);
+STM32446USART5obj uart5_inic(void);
+STM32446USART6obj usart6_inic(void);
+
 /*** USART1 Bit Mapping Header ***/
 // SR
 uint8_t STM32446Usart1_cts(void);

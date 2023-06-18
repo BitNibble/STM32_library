@@ -19,7 +19,7 @@ void crc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 void crc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t crc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
-/*** FLASH Bit Mapping ***/
+/*** CRC Bit Mapping ***/
 void STM32446CRC_dr(uint32_t value)
 {
 	CRC->DR = value;
@@ -41,7 +41,23 @@ void STM32446CRC_reset(void)
 	CRC->CR = 1;
 }
 
-/*** CRC Procedure & Function Definition ***/
+/*** INIC Procedure & Function Definition ***/
+STM32446CRCobj crc_inic(void)
+{
+	STM32446CRCobj stm32446_crc;
+
+	stm32446_crc.reg = CRC;
+	/***CRC Bit Mapping Link***/
+	stm32446_crc.dr = STM32446CRC_dr;
+	stm32446_crc.get_dr = STM32446CRC_get_dr;
+	stm32446_crc.idr = STM32446CRC_idr;
+	stm32446_crc.get_idr = STM32446CRC_get_idr;
+	stm32446_crc.reset = STM32446CRC_reset;
+
+	return stm32446_crc;
+}
+
+/*** File Procedure & Function Definition ***/
 uint32_t crc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}

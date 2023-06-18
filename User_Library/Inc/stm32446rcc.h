@@ -539,6 +539,8 @@ typedef struct
 	#endif
 }STM32446RCCobj;
 
+STM32446RCCobj rcc_inic(void);
+
 /*** RCC Procedure & Function Header ***/
 // PLL
 void STM32446PLLDivision(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr);

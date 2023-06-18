@@ -43,6 +43,8 @@ typedef struct
 	#endif
 }STM32446RTCobj;
 
+STM32446RTCobj rtc_inic(void);
+
 /*** RTC Procedure & Function Header ***/
 void STM32446RtcClock(void);
 uint8_t STM32446RtcInic(uint8_t clock);

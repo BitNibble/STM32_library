@@ -264,6 +264,29 @@ void STM32446Rtctr2vec(char* rtc_vect)
 	}
 }
 
+/*** INIC Procedure & Function Definition ***/
+STM32446RTCobj rtc_inic(void)
+{
+	STM32446RTCobj stm32446_rtc;
+
+	stm32446_rtc.reg = RTC;
+	stm32446_rtc.clock = STM32446RtcClock;
+	stm32446_rtc.inic = STM32446RtcInic;
+	stm32446_rtc.Day = STM32446RtcDay;
+	stm32446_rtc.Month = STM32446RtcMonth;
+	stm32446_rtc.WeekDay = STM32446RtcWeekDay;
+	stm32446_rtc.Year = STM32446RtcYear;
+	stm32446_rtc.Hour = STM32446RtcHour;
+	stm32446_rtc.Minute = STM32446RtcMinute;
+	stm32446_rtc.Second = STM32446RtcSecond;
+	stm32446_rtc.dr2vec = STM32446Rtcdr2vec;
+	stm32446_rtc.tr2vec = STM32446Rtctr2vec;
+	stm32446_rtc.RegWrite = STM32446RtcRegWrite;
+	stm32446_rtc.RegRead = STM32446RtcRegRead;
+
+	return stm32446_rtc;
+}
+
 /*** File Procedure & Function Definition ***/
 //RTC
 void STM32446RtcSetTr(void)

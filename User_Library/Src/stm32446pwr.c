@@ -144,7 +144,50 @@ uint8_t STM32446PWR_csr_wuf(void)
 	return pwr_readreg(PWR->CSR, 1, 0);
 }
 
-/*** PWR Procedure & Function Definition ***/
+/*** INIC Procedure & Function Definition ***/
+STM32446PWRobj pwr_inic(void)
+{
+	STM32446PWRobj stm32446_pwr;
+
+	stm32446_pwr.reg = PWR;
+	/*** PWR Bit Mapping Link ***/
+	// CR
+	stm32446_pwr.cr.fissr = STM32446PWR_cr_fissr;
+	stm32446_pwr.cr.fmssr = STM32446PWR_cr_fmssr;
+	stm32446_pwr.cr.uden = STM32446PWR_cr_uden;
+	stm32446_pwr.cr.odswen = STM32446PWR_cr_odswen;
+	stm32446_pwr.cr.oden = STM32446PWR_cr_oden;
+	stm32446_pwr.cr.vos = STM32446PWR_cr_vos;
+	stm32446_pwr.cr.adcdc1 = STM32446PWR_cr_adcdc1;
+	stm32446_pwr.cr.mruds = STM32446PWR_cr_mruds;
+	stm32446_pwr.cr.lpuds = STM32446PWR_cr_lpuds;
+	stm32446_pwr.cr.fpds = STM32446PWR_cr_fpds;
+	stm32446_pwr.cr.dbp = STM32446PWR_cr_dbp;
+	stm32446_pwr.cr.pls = STM32446PWR_cr_pls;
+	stm32446_pwr.cr.get_pls = STM32446PWR_cr_get_pls;
+	stm32446_pwr.cr.pvde = STM32446PWR_cr_pvde;
+	stm32446_pwr.cr.clear_csbf = STM32446PWR_cr_clear_csbf;
+	stm32446_pwr.cr.clear_cwuf = STM32446PWR_cr_clear_cwuf;
+	stm32446_pwr.cr.pdds =STM32446PWR_cr_pdds;
+	stm32446_pwr.cr.lpds = STM32446PWR_cr_lpds;
+	// CSR
+	stm32446_pwr.csr.udrdy = STM32446PWR_udrdy;
+	stm32446_pwr.csr.clear_udrdy = STM32446PWR_csr_clear_udrdy;
+	stm32446_pwr.csr.odswrdy = STM32446PWR_csr_odswrdy;
+	stm32446_pwr.csr.odrdy = STM32446PWR_csr_odrdy;
+	stm32446_pwr.csr.vosrdy = STM32446PWR_csr_vosrdy;
+	stm32446_pwr.csr.bre = STM32446PWR_csr_bre;
+	stm32446_pwr.csr.ewup1 = STM32446PWR_csr_ewup1;
+	stm32446_pwr.csr.ewup2 = STM32446PWR_csr_ewup2;
+	stm32446_pwr.csr.brr = STM32446PWR_csr_brr;
+	stm32446_pwr.csr.pvdo = STM32446PWR_csr_pvdo;
+	stm32446_pwr.csr.sbf = STM32446PWR_csr_sbf;
+	stm32446_pwr.csr.wuf = STM32446PWR_csr_wuf;
+
+	return stm32446_pwr;
+}
+
+/*** File Procedure & Function Definition ***/
 uint32_t pwr_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}

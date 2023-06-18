@@ -1445,6 +1445,337 @@ void STM32446RCC_DCKCFGR2_fmpi2c1sel(uint8_t value)
 	rcc_setreg(&RCC->DCKCFGR2, 2, 22, value);
 }
 
+/*** INIC Procedure & Function Definition ***/
+STM32446RCCobj rcc_inic(void)
+{
+	STM32446RCCobj stm32446_rcc;
+
+	stm32446_rcc.reg = RCC;
+	/*** RCC Bit Mapping Link ***/
+	// CR
+	stm32446_rcc.cr.get_pllsairdy = STM32446RCC_CR_get_pllsairdy;
+	stm32446_rcc.cr.pllsaion = STM32446RCC_CR_pllsaion;
+	stm32446_rcc.cr.get_plli2srdy = STM32446RCC_CR_get_plli2srdy;
+	stm32446_rcc.cr.plli2son = STM32446RCC_CR_plli2son;
+	stm32446_rcc.cr.get_pllrdy = STM32446RCC_CR_get_pllrdy;
+	stm32446_rcc.cr.pllon = STM32446RCC_CR_pllon;
+	stm32446_rcc.cr.csson = STM32446RCC_CR_csson;
+	stm32446_rcc.cr.hsebyp = STM32446RCC_CR_hsebyp;
+	stm32446_rcc.cr.get_hserdy = STM32446RCC_CR_get_hserdy;
+	stm32446_rcc.cr.hseon = STM32446RCC_CR_hseon;
+	stm32446_rcc.cr.get_hsical = STM32446RCC_CR_get_hsical;
+	stm32446_rcc.cr.hsitrim = STM32446RCC_CR_hsitrim;
+	stm32446_rcc.cr.get_hsirdy = STM32446RCC_CR_get_hsirdy;
+	stm32446_rcc.cr.hsion = STM32446RCC_CR_hsion;
+	// PLLCFGR
+	stm32446_rcc.pllcfgr.pllr = STM32446RCC_PLLCFGR_pllr;
+	stm32446_rcc.pllcfgr.pllq = STM32446RCC_PLLCFGR_pllq;
+	stm32446_rcc.pllcfgr.pllsrc = STM32446RCC_PLLCFGR_pllsrc;
+	stm32446_rcc.pllcfgr.pllp = STM32446RCC_PLLCFGR_pllp;
+	stm32446_rcc.pllcfgr.plln = STM32446RCC_PLLCFGR_plln;
+	stm32446_rcc.pllcfgr.pllm = STM32446RCC_PLLCFGR_pllm;
+	// CFGR
+	stm32446_rcc.cfgr.mco2 = STM32446RCC_CFGR_mco2;
+	stm32446_rcc.cfgr.mco2pre = STM32446RCC_CFGR_mco2pre;
+	stm32446_rcc.cfgr.mco1pre = STM32446RCC_CFGR_mco1pre;
+	stm32446_rcc.cfgr.mco1 = STM32446RCC_CFGR_mco1;
+	stm32446_rcc.cfgr.rtcpre = STM32446RCC_CFGR_rtcpre;
+	stm32446_rcc.cfgr.ppre2 = STM32446RCC_CFGR_ppre2;
+	stm32446_rcc.cfgr.ppre1 = STM32446RCC_CFGR_ppre1;
+	stm32446_rcc.cfgr.hpre = STM32446RCC_CFGR_hpre;
+	stm32446_rcc.cfgr.get_sws = STM32446RCC_CFGR_get_sws;
+	stm32446_rcc.cfgr.sw = STM32446RCC_CFGR_sw;
+	// CIR
+	stm32446_rcc.cir.clear_cssc = STM32446RCC_CIR_clear_cssc;
+	stm32446_rcc.cir.clear_pllsairdyc = STM32446RCC_CIR_clear_pllsairdyc;
+	stm32446_rcc.cir.clear_plli2srdyc = STM32446RCC_CIR_clear_plli2srdyc;
+	stm32446_rcc.cir.clear_pllrdyc = STM32446RCC_CIR_clear_pllrdyc;
+	stm32446_rcc.cir.clear_hserdyc = STM32446RCC_CIR_clear_hserdyc;
+	stm32446_rcc.cir.clear_hsirdyc = STM32446RCC_CIR_clear_hsirdyc;
+	stm32446_rcc.cir.clear_lserdyc = STM32446RCC_CIR_clear_lserdyc;
+	stm32446_rcc.cir.clear_lsirdyc = STM32446RCC_CIR_clear_lsirdyc;
+	stm32446_rcc.cir.pllsairdyie = STM32446RCC_CIR_pllsairdyie;
+	stm32446_rcc.cir.plli2srdyie = STM32446RCC_CIR_plli2srdyie;
+	stm32446_rcc.cir.pllrdyie = STM32446RCC_CIR_pllrdyie;
+	stm32446_rcc.cir.hserdyie = STM32446RCC_CIR_hserdyie;
+	stm32446_rcc.cir.hsirdyie = STM32446RCC_CIR_hsirdyie;
+	stm32446_rcc.cir.lserdyie = STM32446RCC_CIR_lserdyie;
+	stm32446_rcc.cir.lsirdyie = STM32446RCC_CIR_lsirdyie;
+	stm32446_rcc.cir.get_cssf = STM32446RCC_CIR_get_cssf;
+	stm32446_rcc.cir.get_pllsairdyf = STM32446RCC_CIR_get_pllsairdyf;
+	stm32446_rcc.cir.get_plli2srdyf = STM32446RCC_CIR_get_plli2srdyf;
+	stm32446_rcc.cir.get_pllrdyf = STM32446RCC_CIR_get_pllrdyf;
+	stm32446_rcc.cir.get_hserdyf = STM32446RCC_CIR_get_hserdyf;
+	stm32446_rcc.cir.get_hsirdyf = STM32446RCC_CIR_get_hsirdyf;
+	stm32446_rcc.cir.get_lserdyf = STM32446RCC_CIR_get_lserdyf;
+	stm32446_rcc.cir.get_lsirdyf = STM32446RCC_CIR_get_lsirdyf;
+	// AHB1RSTR
+	stm32446_rcc.ahb1rstr.otghsrst = STM32446RCC_AHB1RSTR_otghsrst;
+	stm32446_rcc.ahb1rstr.dma2rst = STM32446RCC_AHB1RSTR_dma2rst;
+	stm32446_rcc.ahb1rstr.dma1rst = STM32446RCC_AHB1RSTR_dma1rst;
+	stm32446_rcc.ahb1rstr.crcrst = STM32446RCC_AHB1RSTR_crcrst;
+	stm32446_rcc.ahb1rstr.gpiohrst = STM32446RCC_AHB1RSTR_gpiohrst;
+	stm32446_rcc.ahb1rstr.gpiogrst = STM32446RCC_AHB1RSTR_gpiogrst;
+	stm32446_rcc.ahb1rstr.gpiofrst = STM32446RCC_AHB1RSTR_gpiofrst;
+	stm32446_rcc.ahb1rstr.gpioerst = STM32446RCC_AHB1RSTR_gpioerst;
+	stm32446_rcc.ahb1rstr.gpiodrst = STM32446RCC_AHB1RSTR_gpiodrst;
+	stm32446_rcc.ahb1rstr.gpiocrst = STM32446RCC_AHB1RSTR_gpiocrst;
+	stm32446_rcc.ahb1rstr.gpiobrst = STM32446RCC_AHB1RSTR_gpiobrst;
+	stm32446_rcc.ahb1rstr.gpioarst = STM32446RCC_AHB1RSTR_gpioarst;
+	// AHB2RSTR
+	stm32446_rcc.ahb2rstr.otgfsrst = STM32446RCC_AHB2RSTR_otgfsrst;
+	stm32446_rcc.ahb2rstr.dcmirst = STM32446RCC_AHB2RSTR_dcmirst;
+	// AHB3RSTR
+	stm32446_rcc.ahb3rstr.qspirst = STM32446RCC_AHB3RSTR_qspirst;
+	stm32446_rcc.ahb3rstr.fmcrst = STM32446RCC_AHB3RSTR_fmcrst;
+	// APB1RSTR
+	stm32446_rcc.apb1rstr.dacrst = STM32446RCC_APB1RSTR_dacrst;
+	stm32446_rcc.apb1rstr.pwrrst = STM32446RCC_APB1RSTR_pwrrst;
+	stm32446_rcc.apb1rstr.cecrst = STM32446RCC_APB1RSTR_cecrst;
+	stm32446_rcc.apb1rstr.can2rst = STM32446RCC_APB1RSTR_can2rst;
+	stm32446_rcc.apb1rstr.can1rst = STM32446RCC_APB1RSTR_can1rst;
+	stm32446_rcc.apb1rstr.fmpi2c1rst = STM32446RCC_APB1RSTR_fmpi2c1rst;
+	stm32446_rcc.apb1rstr.i2c3rst = STM32446RCC_APB1RSTR_i2c3rst;
+	stm32446_rcc.apb1rstr.i2c2rst = STM32446RCC_APB1RSTR_i2c2rst;
+	stm32446_rcc.apb1rstr.i2c1rst = STM32446RCC_APB1RSTR_i2c1rst;
+	stm32446_rcc.apb1rstr.uart5rst = STM32446RCC_APB1RSTR_uart5rst;
+	stm32446_rcc.apb1rstr.uart4rst = STM32446RCC_APB1RSTR_uart4rst;
+	stm32446_rcc.apb1rstr.usart3rst = STM32446RCC_APB1RSTR_usart3rst;
+	stm32446_rcc.apb1rstr.usart2rst = STM32446RCC_APB1RSTR_usart2rst;
+	stm32446_rcc.apb1rstr.spdifrxrst = STM32446RCC_APB1RSTR_spdifrxrst;
+	stm32446_rcc.apb1rstr.spi3rst = STM32446RCC_APB1RSTR_spi3rst;
+	stm32446_rcc.apb1rstr.spi2rst = STM32446RCC_APB1RSTR_spi2rst;
+	stm32446_rcc.apb1rstr.wwdgrst = STM32446RCC_APB1RSTR_wwdgrst;
+	stm32446_rcc.apb1rstr.tim14rst = STM32446RCC_APB1RSTR_tim14rst;
+	stm32446_rcc.apb1rstr.tim13rst = STM32446RCC_APB1RSTR_tim13rst;
+	stm32446_rcc.apb1rstr.tim12rst = STM32446RCC_APB1RSTR_tim12rst;
+	stm32446_rcc.apb1rstr.tim7rst = STM32446RCC_APB1RSTR_tim7rst;
+	stm32446_rcc.apb1rstr.tim6rst = STM32446RCC_APB1RSTR_tim6rst;
+	stm32446_rcc.apb1rstr.tim5rst = STM32446RCC_APB1RSTR_tim5rst;
+	stm32446_rcc.apb1rstr.tim4rst = STM32446RCC_APB1RSTR_tim4rst;
+	stm32446_rcc.apb1rstr.tim3rst = STM32446RCC_APB1RSTR_tim3rst;
+	stm32446_rcc.apb1rstr.tim2rst = STM32446RCC_APB1RSTR_tim2rst;
+	// APB2RSTR
+	stm32446_rcc.apb2rstr.sai2rst = STM32446RCC_APB2RSTR_sai2rst;
+	stm32446_rcc.apb2rstr.sai1rst = STM32446RCC_APB2RSTR_sai1rst;
+	stm32446_rcc.apb2rstr.tim11rst = STM32446RCC_APB2RSTR_tim11rst;
+	stm32446_rcc.apb2rstr.tim10rst = STM32446RCC_APB2RSTR_tim10rst;
+	stm32446_rcc.apb2rstr.tim9rst = STM32446RCC_APB2RSTR_tim9rst;
+	stm32446_rcc.apb2rstr.syscfgrst = STM32446RCC_APB2RSTR_syscfgrst;
+	stm32446_rcc.apb2rstr.spi4rst = STM32446RCC_APB2RSTR_spi4rst;
+	stm32446_rcc.apb2rstr.spi1rst = STM32446RCC_APB2RSTR_spi1rst;
+	stm32446_rcc.apb2rstr.sdiorst = STM32446RCC_APB2RSTR_sdiorst;
+	stm32446_rcc.apb2rstr.adcrst = STM32446RCC_APB2RSTR_adcrst;
+	stm32446_rcc.apb2rstr.usart6rst = STM32446RCC_APB2RSTR_usart6rst;
+	stm32446_rcc.apb2rstr.usart1rst = STM32446RCC_APB2RSTR_usart1rst;
+	stm32446_rcc.apb2rstr.tim8rst = STM32446RCC_APB2RSTR_tim8rst;
+	stm32446_rcc.apb2rstr.tim1rst = STM32446RCC_APB2RSTR_tim1rst;
+	// AHB1ENR
+	stm32446_rcc.ahb1enr.otghsulpien = STM32446RCC_AHB1ENR_otghsulpien;
+	stm32446_rcc.ahb1enr.otghsen = STM32446RCC_AHB1ENR_otghsen;
+	stm32446_rcc.ahb1enr.dma2en = STM32446RCC_AHB1ENR_dma2en;
+	stm32446_rcc.ahb1enr.dma1en = STM32446RCC_AHB1ENR_dma1en;
+	stm32446_rcc.ahb1enr.bkpsramen = STM32446RCC_AHB1ENR_bkpsramen;
+	stm32446_rcc.ahb1enr.crcen = STM32446RCC_AHB1ENR_crcen;
+	stm32446_rcc.ahb1enr.gpiohen = STM32446RCC_AHB1ENR_gpiohen;
+	stm32446_rcc.ahb1enr.gpiogen = STM32446RCC_AHB1ENR_gpiogen;
+	stm32446_rcc.ahb1enr.gpiofen = STM32446RCC_AHB1ENR_gpiofen;
+	stm32446_rcc.ahb1enr.gpioeen = STM32446RCC_AHB1ENR_gpioeen;
+	stm32446_rcc.ahb1enr.gpioden = STM32446RCC_AHB1ENR_gpioden;
+	stm32446_rcc.ahb1enr.gpiocen = STM32446RCC_AHB1ENR_gpiocen;
+	stm32446_rcc.ahb1enr.gpioben = STM32446RCC_AHB1ENR_gpioben;
+	stm32446_rcc.ahb1enr.gpioaen = STM32446RCC_AHB1ENR_gpioaen;
+	// AHB2ENR
+	stm32446_rcc.ahb2enr.otgfsen = STM32446RCC_AHB2ENR_otgfsen;
+	stm32446_rcc.ahb2enr.dcmien = STM32446RCC_AHB2ENR_dcmien;
+	// AHB3ENR
+	stm32446_rcc.ahb3enr.qspien = STM32446RCC_AHB3ENR_qspien;
+	stm32446_rcc.ahb3enr.fmcen = STM32446RCC_AHB3ENR_fmcen;
+	// APB1ENR
+	stm32446_rcc.apb1enr.dacen = STM32446RCC_APB1ENR_dacen;
+	stm32446_rcc.apb1enr.pwren = STM32446RCC_APB1ENR_pwren;
+	stm32446_rcc.apb1enr.cecen = STM32446RCC_APB1ENR_cecen;
+	stm32446_rcc.apb1enr.can2en = STM32446RCC_APB1ENR_can2en;
+	stm32446_rcc.apb1enr.can1en = STM32446RCC_APB1ENR_can1en;
+	stm32446_rcc.apb1enr.fmpi2c1en = STM32446RCC_APB1ENR_fmpi2c1en;
+	stm32446_rcc.apb1enr.i2c3en = STM32446RCC_APB1ENR_i2c3en;
+	stm32446_rcc.apb1enr.i2c2en = STM32446RCC_APB1ENR_i2c2en;
+	stm32446_rcc.apb1enr.i2c1en = STM32446RCC_APB1ENR_i2c1en;
+	stm32446_rcc.apb1enr.uart5en = STM32446RCC_APB1ENR_uart5en;
+	stm32446_rcc.apb1enr.uart4en = STM32446RCC_APB1ENR_uart4en;
+	stm32446_rcc.apb1enr.usart3en = STM32446RCC_APB1ENR_usart3en;
+	stm32446_rcc.apb1enr.usart2en = STM32446RCC_APB1ENR_usart2en;
+	stm32446_rcc.apb1enr.spdifrxen = STM32446RCC_APB1ENR_spdifrxen;
+	stm32446_rcc.apb1enr.spi3en = STM32446RCC_APB1ENR_spi3en;
+	stm32446_rcc.apb1enr.spi2en = STM32446RCC_APB1ENR_spi2en;
+	stm32446_rcc.apb1enr.wwdgen = STM32446RCC_APB1ENR_wwdgen;
+	stm32446_rcc.apb1enr.tim14en = STM32446RCC_APB1ENR_tim14en;
+	stm32446_rcc.apb1enr.tim13en = STM32446RCC_APB1ENR_tim13en;
+	stm32446_rcc.apb1enr.tim12en = STM32446RCC_APB1ENR_tim12en;
+	stm32446_rcc.apb1enr.tim7en = STM32446RCC_APB1ENR_tim7en;
+	stm32446_rcc.apb1enr.tim6en = STM32446RCC_APB1ENR_tim6en;
+	stm32446_rcc.apb1enr.tim5en = STM32446RCC_APB1ENR_tim5en;
+	stm32446_rcc.apb1enr.tim4en = STM32446RCC_APB1ENR_tim4en;
+	stm32446_rcc.apb1enr.tim3en = STM32446RCC_APB1ENR_tim3en;
+	stm32446_rcc.apb1enr.tim2en = STM32446RCC_APB1ENR_tim2en;
+	// APB2ENR
+	stm32446_rcc.apb2enr.sai2en = STM32446RCC_APB2ENR_sai2en;
+	stm32446_rcc.apb2enr.sai1en = STM32446RCC_APB2ENR_sai1en;
+	stm32446_rcc.apb2enr.tim11en = STM32446RCC_APB2ENR_tim11en;
+	stm32446_rcc.apb2enr.tim10en = STM32446RCC_APB2ENR_tim10en;
+	stm32446_rcc.apb2enr.tim9en = STM32446RCC_APB2ENR_tim9en;
+	stm32446_rcc.apb2enr.syscfgen = STM32446RCC_APB2ENR_syscfgen;
+	stm32446_rcc.apb2enr.spi4en = STM32446RCC_APB2ENR_spi4en;
+	stm32446_rcc.apb2enr.spi1en = STM32446RCC_APB2ENR_spi1en;
+	stm32446_rcc.apb2enr.sdioen = STM32446RCC_APB2ENR_sdioen;
+	stm32446_rcc.apb2enr.adc3en = STM32446RCC_APB2ENR_adc3en;
+	stm32446_rcc.apb2enr.adc2en = STM32446RCC_APB2ENR_adc2en;
+	stm32446_rcc.apb2enr.adc1en = STM32446RCC_APB2ENR_adc1en;
+	stm32446_rcc.apb2enr.usart6en = STM32446RCC_APB2ENR_usart6en;
+	stm32446_rcc.apb2enr.usart1en = STM32446RCC_APB2ENR_usart1en;
+	stm32446_rcc.apb2enr.tim8en = STM32446RCC_APB2ENR_tim8en;
+	stm32446_rcc.apb2enr.tim1en = STM32446RCC_APB2ENR_tim1en;
+	//AHB1LPENR
+	stm32446_rcc.ahb1lpenr.otghsulpilpen = STM32446RCC_AHB1LPENR_otghsulpilpen;
+	stm32446_rcc.ahb1lpenr.otghslpen = STM32446RCC_AHB1LPENR_otghslpen;
+	stm32446_rcc.ahb1lpenr.dma2lpen = STM32446RCC_AHB1LPENR_dma2lpen;
+	stm32446_rcc.ahb1lpenr.dma1lpen = STM32446RCC_AHB1LPENR_dma1lpen;
+	stm32446_rcc.ahb1lpenr.bkpsramlpen = STM32446RCC_AHB1LPENR_bkpsramlpen;
+	stm32446_rcc.ahb1lpenr.sram2lpen = STM32446RCC_AHB1LPENR_sram2lpen;
+	stm32446_rcc.ahb1lpenr.sram1lpen = STM32446RCC_AHB1LPENR_sram1lpen;
+	stm32446_rcc.ahb1lpenr.flitflpen = STM32446RCC_AHB1LPENR_flitflpen;
+	stm32446_rcc.ahb1lpenr.crclpen = STM32446RCC_AHB1LPENR_crclpen;
+	stm32446_rcc.ahb1lpenr.gpiohlpen = STM32446RCC_AHB1LPENR_gpiohlpen;
+	stm32446_rcc.ahb1lpenr.gpioglpen = STM32446RCC_AHB1LPENR_gpioglpen;
+	stm32446_rcc.ahb1lpenr.gpioflpen = STM32446RCC_AHB1LPENR_gpioflpen;
+	stm32446_rcc.ahb1lpenr.gpioelpen = STM32446RCC_AHB1LPENR_gpioelpen;
+	stm32446_rcc.ahb1lpenr.gpiodlpen = STM32446RCC_AHB1LPENR_gpiodlpen;
+	stm32446_rcc.ahb1lpenr.gpioclpen = STM32446RCC_AHB1LPENR_gpioclpen;
+	stm32446_rcc.ahb1lpenr.gpioblpen = STM32446RCC_AHB1LPENR_gpioblpen;
+	stm32446_rcc.ahb1lpenr.gpioalpen = STM32446RCC_AHB1LPENR_gpioalpen;
+	// AHB2LPENR
+	stm32446_rcc.ahb2lpenr.otgfslpen = STM32446RCC_AHB2LPENR_otgfslpen;
+	stm32446_rcc.ahb2lpenr.dcmilpen = STM32446RCC_AHB2LPENR_dcmilpen;
+	// AHB3LPENR
+	stm32446_rcc.ahb3lpenr.qspilpen = STM32446RCC_AHB3LPENR_qspilpen;
+	stm32446_rcc.ahb3lpenr.fmclpen = STM32446RCC_AHB3LPENR_fmclpen;
+	// APB1LPENR
+	stm32446_rcc.apb1lpenr.daclpen = STM32446RCC_APB1LPENR_daclpen;
+	stm32446_rcc.apb1lpenr.pwrlpen = STM32446RCC_APB1LPENR_pwrlpen;
+	stm32446_rcc.apb1lpenr.ceclpen = STM32446RCC_APB1LPENR_ceclpen;
+	stm32446_rcc.apb1lpenr.can2lpen = STM32446RCC_APB1LPENR_can2lpen;
+	stm32446_rcc.apb1lpenr.can1lpen = STM32446RCC_APB1LPENR_can1lpen;
+	stm32446_rcc.apb1lpenr.fmpi2c1lpen = STM32446RCC_APB1LPENR_fmpi2c1lpen;
+	stm32446_rcc.apb1lpenr.i2c3lpen = STM32446RCC_APB1LPENR_i2c3lpen;
+	stm32446_rcc.apb1lpenr.i2c2lpen = STM32446RCC_APB1LPENR_i2c2lpen;
+	stm32446_rcc.apb1lpenr.i2c1lpen = STM32446RCC_APB1LPENR_i2c1lpen;
+	stm32446_rcc.apb1lpenr.uart5lpen = STM32446RCC_APB1LPENR_uart5lpen;
+	stm32446_rcc.apb1lpenr.uart4lpen = STM32446RCC_APB1LPENR_uart4lpen;
+	stm32446_rcc.apb1lpenr.usart3lpen = STM32446RCC_APB1LPENR_usart3lpen;
+	stm32446_rcc.apb1lpenr.usart2lpen = STM32446RCC_APB1LPENR_usart2lpen;
+	stm32446_rcc.apb1lpenr.spdifrxlpen = STM32446RCC_APB1LPENR_spdifrxlpen;
+	stm32446_rcc.apb1lpenr.spi3lpen = STM32446RCC_APB1LPENR_spi3lpen;
+	stm32446_rcc.apb1lpenr.spi2lpen = STM32446RCC_APB1LPENR_spi2lpen;
+	stm32446_rcc.apb1lpenr.wwdglpen = STM32446RCC_APB1LPENR_wwdglpen;
+	stm32446_rcc.apb1lpenr.tim14lpen = STM32446RCC_APB1LPENR_tim14lpen;
+	stm32446_rcc.apb1lpenr.tim13lpen = STM32446RCC_APB1LPENR_tim13lpen;
+	stm32446_rcc.apb1lpenr.tim12lpen = STM32446RCC_APB1LPENR_tim12lpen;
+	stm32446_rcc.apb1lpenr.tim7lpen = STM32446RCC_APB1LPENR_tim7lpen;
+	stm32446_rcc.apb1lpenr.tim6lpen = STM32446RCC_APB1LPENR_tim6lpen;
+	stm32446_rcc.apb1lpenr.tim5lpen = STM32446RCC_APB1LPENR_tim5lpen;
+	stm32446_rcc.apb1lpenr.tim4lpen = STM32446RCC_APB1LPENR_tim4lpen;
+	stm32446_rcc.apb1lpenr.tim3lpen = STM32446RCC_APB1LPENR_tim3lpen;
+	stm32446_rcc.apb1lpenr.tim2lpen = STM32446RCC_APB1LPENR_tim2lpen;
+	// APB2LPENR
+	stm32446_rcc.apb2lpenr.sai2lpen = STM32446RCC_APB2LPENR_sai2lpen;
+	stm32446_rcc.apb2lpenr.sai1lpen = STM32446RCC_APB2LPENR_sai1lpen;
+	stm32446_rcc.apb2lpenr.tim11lpen = STM32446RCC_APB2LPENR_tim11lpen;
+	stm32446_rcc.apb2lpenr.tim10lpen = STM32446RCC_APB2LPENR_tim10lpen;
+	stm32446_rcc.apb2lpenr.tim9lpen = STM32446RCC_APB2LPENR_tim9lpen;
+	stm32446_rcc.apb2lpenr.syscfglpen = STM32446RCC_APB2LPENR_syscfglpen;
+	stm32446_rcc.apb2lpenr.spi4lpen = STM32446RCC_APB2LPENR_spi4lpen;
+	stm32446_rcc.apb2lpenr.sai1lpen = STM32446RCC_APB2LPENR_spi1lpen;
+	stm32446_rcc.apb2lpenr.sdiolpen = STM32446RCC_APB2LPENR_sdiolpen;
+	stm32446_rcc.apb2lpenr.adc3lpen = STM32446RCC_APB2LPENR_adc3lpen;
+	stm32446_rcc.apb2lpenr.adc2lpen = STM32446RCC_APB2LPENR_adc2lpen;
+	stm32446_rcc.apb2lpenr.adc1lpen = STM32446RCC_APB2LPENR_adc1lpen;
+	stm32446_rcc.apb2lpenr.usart6lpen = STM32446RCC_APB2LPENR_usart6lpen;
+	stm32446_rcc.apb2lpenr.usart1lpen = STM32446RCC_APB2LPENR_usart1lpen;
+	stm32446_rcc.apb2lpenr.tim8lpen = STM32446RCC_APB2LPENR_tim8lpen;
+	stm32446_rcc.apb2lpenr.tim1lpen = STM32446RCC_APB2LPENR_tim1lpen;
+	// BDCR
+	stm32446_rcc.bdcr.bdrst = STM32446RCC_BDCR_bdrst;
+	stm32446_rcc.bdcr.rtcen = STM32446RCC_BDCR_rtcen;
+	stm32446_rcc.bdcr.rtcsel = STM32446RCC_BDCR_rtcsel;
+	stm32446_rcc.bdcr.lsemod = STM32446RCC_BDCR_lsemod;
+	stm32446_rcc.bdcr.lsebyp = STM32446RCC_BDCR_lsebyp;
+	stm32446_rcc.bdcr.get_lserdy = STM32446RCC_BDCR_get_lserdy;
+	stm32446_rcc.bdcr.lseon = STM32446RCC_BDCR_lseon;
+	// CSR
+	stm32446_rcc.csr.get_lpwrrstf = STM32446RCC_CSR_get_lpwrrstf;
+	stm32446_rcc.csr.get_wwdgrstf = STM32446RCC_CSR_get_wwdgrstf;
+	stm32446_rcc.csr.get_iwdqrstf = STM32446RCC_CSR_get_iwdqrstf;
+	stm32446_rcc.csr.get_sftrstf = STM32446RCC_CSR_get_sftrstf;
+	stm32446_rcc.csr.get_porrstf = STM32446RCC_CSR_get_porrstf;
+	stm32446_rcc.csr.get_pinrstf = STM32446RCC_CSR_get_pinrstf;
+	stm32446_rcc.csr.get_borrstf = STM32446RCC_CSR_get_borrstf;
+	stm32446_rcc.csr.clear_rmvf = STM32446RCC_CSR_clear_rmvf;
+	stm32446_rcc.csr.get_lsirdy = STM32446RCC_CSR_get_lsirdy;
+	stm32446_rcc.csr.lsion = STM32446RCC_CSR_lsion;
+	// SSCGR
+	stm32446_rcc.sscgr.sscgen = STM32446RCC_SSCGR_sscgen;
+	stm32446_rcc.sscgr.spreadsel = STM32446RCC_SSCGR_spreadsel;
+	stm32446_rcc.sscgr.incstep = STM32446RCC_SSCGR_incstep;
+	stm32446_rcc.sscgr.modper = STM32446RCC_SSCGR_modper;
+	// PLLI2SCFGR
+	stm32446_rcc.plli2scfgr.plli2sr = STM32446RCC_PLLI2SCFGR_plli2sr;
+	stm32446_rcc.plli2scfgr.plli2sq = STM32446RCC_PLLI2SCFGR_plli2sq;
+	stm32446_rcc.plli2scfgr.plli2sp = STM32446RCC_PLLI2SCFGR_plli2sp;
+	stm32446_rcc.plli2scfgr.plli2sn = STM32446RCC_PLLI2SCFGR_plli2sn;
+	stm32446_rcc.plli2scfgr.plli2sm = STM32446RCC_PLLI2SCFGR_plli2sm;
+	// PLLSAICFGR
+	stm32446_rcc.pllsaicfgr.pllsaiq = STM32446RCC_PLLSAICFGR_pllsaiq;
+	stm32446_rcc.pllsaicfgr.pllsaip = STM32446RCC_PLLSAICFGR_pllsaip;
+	stm32446_rcc.pllsaicfgr.pllsain = STM32446RCC_PLLSAICFGR_pllsain;
+	stm32446_rcc.pllsaicfgr.pllsaim = STM32446RCC_PLLSAICFGR_pllsaim;
+	// DCKCFGR
+	stm32446_rcc.dckcfgr.i2s2src = STM32446RCC_DCKCFGR_i2s2src;
+	stm32446_rcc.dckcfgr.i2s1src = STM32446RCC_DCKCFGR_i2s1src;
+	stm32446_rcc.dckcfgr.timpre = STM32446RCC_DCKCFGR_timpre;
+	stm32446_rcc.dckcfgr.sai2src = STM32446RCC_DCKCFGR_sai2src;
+	stm32446_rcc.dckcfgr.sai1src = STM32446RCC_DCKCFGR_sai1src;
+	stm32446_rcc.dckcfgr.pllsaidivq = STM32446RCC_DCKCFGR_pllsaidivq;
+	stm32446_rcc.dckcfgr.plli2sdivq = STM32446RCC_DCKCFGR_plli2sdivq;
+	// CKGATENR
+	stm32446_rcc.ckgatenr.rcc_cken = STM32446RCC_CKGATENR_rcc_cken;
+	stm32446_rcc.ckgatenr.flitf_cken = STM32446RCC_CKGATENR_flitf_cken;
+	stm32446_rcc.ckgatenr.sram_cken = STM32446RCC_CKGATENR_sram_cken;
+	stm32446_rcc.ckgatenr.spare_cken = STM32446RCC_CKGATENR_spare_cken;
+	stm32446_rcc.ckgatenr.cm4dbg_cken = STM32446RCC_CKGATENR_cm4dbg_cken;
+	stm32446_rcc.ckgatenr.ahb2apb2_cken = STM32446RCC_CKGATENR_ahb2apb2_cken;
+	stm32446_rcc.ckgatenr.ahb2apb1_cken = STM32446RCC_CKGATENR_ahb2apb1_cken;
+	// DCKCFGR2
+	stm32446_rcc.dckcfgr2.spdifrxsel = STM32446RCC_DCKCFGR2_spdifrxsel;
+	stm32446_rcc.dckcfgr2.sdiosel = STM32446RCC_DCKCFGR2_sdiosel;
+	stm32446_rcc.dckcfgr2.ck48msel = STM32446RCC_DCKCFGR2_ck48msel;
+	stm32446_rcc.dckcfgr2.cecsel = STM32446RCC_DCKCFGR2_cecsel;
+	stm32446_rcc.dckcfgr2.fmpi2c1sel = STM32446RCC_DCKCFGR2_fmpi2c1sel;
+	/*** PLL ***/
+	stm32446_rcc.pll.enable = STM32446RccPLLCLKEnable;
+	stm32446_rcc.plli2s.enable = STM32446RccPLLI2SEnable;
+	stm32446_rcc.pllsai.enable = STM32446RccPLLSAIEnable;
+	stm32446_rcc.pll.division = STM32446PLLDivision;
+	stm32446_rcc.prescaler = STM32446Prescaler;
+	/*** Other ***/
+	stm32446_rcc.inic = STM32446RccInic;
+	stm32446_rcc.henable = STM32446RccHEnable;
+	stm32446_rcc.hselect = STM32446RccHSelect;
+	stm32446_rcc.lenable = STM32446RccLEnable;
+	stm32446_rcc.lselect = STM32446RccLSelect;
+
+	return stm32446_rcc;
+}
+
 /*** File Procedure & Function Definition ***/
 uint32_t rcc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {

@@ -169,6 +169,13 @@ typedef struct
 	#endif
 }STM32446GpioHobj;
 
+STM32446GpioAobj gpioa_inic(void);
+STM32446GpioBobj gpiob_inic(void);
+STM32446GpioCobj gpioc_inic(void);
+STM32446GpioDobj gpiod_inic(void);
+STM32446GpioEobj gpioe_inic(void);
+STM32446GpioHobj gpioh_inic(void);
+
 /***** GPIO Procedure & Funtion Header ******/
 void STM32446GpioAclock( void );
 void STM32446GpioAmoder( unsigned int data, unsigned int pin );

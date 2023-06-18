@@ -68,6 +68,8 @@ typedef struct
 	#endif
 }STM32446PWRobj;
 
+STM32446PWRobj pwr_inic(void);
+
 /***** PWR Procedure & Function Header ******/
 
 /*** PWR Bit Mapping Header ***/

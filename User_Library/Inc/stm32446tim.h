@@ -88,144 +88,118 @@ typedef struct{
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM1obj;
 
 // TIM -> TIM2
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM2obj;
 
 // TIM -> TIM3
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM3obj;
 
 // TIM -> TIM4
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM4obj;
 
 // TIM -> TIM5
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM5obj;
 
 // TIM -> TIM6
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM6obj;
 
 // TIM -> TIM7
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM7obj;
 
 // TIM -> TIM8
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM8obj;
 
 // TIM -> TIM9
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		/*** Bit Mapping ***/
-		STM32446TIM9_CR1 cr1;
-		STM32446TIM9_SMCR smcr;
-		STM32446TIM9_DIER dier;
-		STM32446TIM9_SR sr;
-		STM32446TIM9_EGR egr;
-		STM32446TIM9_CCMR1 ccmr1;
-		STM32446TIM9_CCER ccer;
-		void (*cnt)(uint16_t value);
-		uint16_t (*get_cnt)(void);
-		void (*arr)(uint16_t value);
-		void (*ccr1)(uint16_t value);
-		void (*ccr2)(uint16_t value);
-		void (*psc)(uint16_t value);
-		/*** Other ***/
-		void (*clock)(void);
-		void (*inic)(void);
-		void (*nvict1t9)(void); // IRQ24
-	#endif
+	/*** Bit Mapping ***/
+	STM32446TIM9_CR1 cr1;
+	STM32446TIM9_SMCR smcr;
+	STM32446TIM9_DIER dier;
+	STM32446TIM9_SR sr;
+	STM32446TIM9_EGR egr;
+	STM32446TIM9_CCMR1 ccmr1;
+	STM32446TIM9_CCER ccer;
+	void (*cnt)(uint16_t value);
+	uint16_t (*get_cnt)(void);
+	void (*arr)(uint16_t value);
+	void (*ccr1)(uint16_t value);
+	void (*ccr2)(uint16_t value);
+	void (*psc)(uint16_t value);
+	/*** Other ***/
+	void (*clock)(void);
+	void (*inic)(void);
+	void (*nvict1t9)(void); // IRQ24
 }STM32446TIM9obj;
 
 // TIM -> TIM10
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM10obj;
 
 // TIM -> TIM11
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM11obj;
 
 // TIM -> TIM12
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM12obj;
 
 // TIM -> TIM13
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM13obj;
 
 // TIM -> TIM14
 typedef struct
 {
 	TIM_TypeDef* reg;
-	#if defined(_STM32446TIM_H_)
-		void (*enable)(void);
-	#endif
 }STM32446TIM14obj;
+
+STM32446TIM1obj tim1_inic(void);
+STM32446TIM2obj tim2_inic(void);
+STM32446TIM3obj tim3_inic(void);
+STM32446TIM4obj tim4_inic(void);
+STM32446TIM5obj tim5_inic(void);
+STM32446TIM6obj tim6_inic(void);
+STM32446TIM7obj tim7_inic(void);
+STM32446TIM8obj tim8_inic(void);
+STM32446TIM9obj tim9_inic(void);
+STM32446TIM10obj tim10_inic(void);
+STM32446TIM11obj tim11_inic(void);
+STM32446TIM12obj tim12_inic(void);
+STM32446TIM13obj tim13_inic(void);
+STM32446TIM14obj tim14_inic(void);
 
 /*** TIM9 Procedure & Function Header ***/
 // CLOCK

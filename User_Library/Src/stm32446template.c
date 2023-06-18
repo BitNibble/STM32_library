@@ -34,6 +34,8 @@ void STM32446Template1Inic( uint8_t parameter )
 	
 }
 
+/*** INIC Procedure & Function Definition ***/
+
 /*** File Procedure & Function Definition ***/
 uint32_t template_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {

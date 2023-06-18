@@ -107,6 +107,8 @@ typedef struct
 	#endif
 }STM32446FLASHobj;
 
+STM32446FLASHobj flash_inic(void);
+
 /***** FLASH Procedure & Function Header ******/
 
 /*** FLASH Bit Mapping Header ***/
