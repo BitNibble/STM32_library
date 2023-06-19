@@ -23,6 +23,7 @@ Comment:
 
 /*** File Constant & Macros ***/
 // CORE
+// CPACR is located at address 0xE000ED88
 #define STM32446_SCB_BASE ((0xE000E000UL) + 0x0D00UL))
 
 /*** File Variable ***/

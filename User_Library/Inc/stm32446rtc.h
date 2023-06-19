@@ -27,7 +27,7 @@ typedef struct
 {
 	RTC_TypeDef* reg;
 	void (*clock)(void);
-	uint8_t (*inic)(uint8_t clock);
+	void (*inic)(uint8_t clock);
 	void (*Day)(uint8_t day);
 	void (*Month)(uint8_t month);
 	void (*WeekDay)(uint8_t weekday);
@@ -37,8 +37,8 @@ typedef struct
 	void (*Second)(uint8_t second);
 	void (*dr2vec)(char* rtc_vect);
 	void (*tr2vec)(char* rtc_vect);
-	void (*RegWrite)(uint8_t n, uint8_t data);
-	uint8_t (*RegRead)(uint8_t n);
+	void (*BckWrite)(uint8_t n, uint8_t data);
+	uint8_t (*BckRead)(uint8_t n);
 
 }STM32446RTCobj;
 
@@ -46,7 +46,7 @@ STM32446RTCobj rtc_inic(void);
 
 /*** RTC Procedure & Function Header ***/
 void STM32446RtcClock(void);
-uint8_t STM32446RtcInic(uint8_t clock);
+void STM32446RtcInic(uint8_t clock);
 void STM32446RtcDay(uint8_t day);
 void STM32446RtcMonth(uint8_t month);
 void STM32446RtcWeekDay(uint8_t weekday);
@@ -56,8 +56,8 @@ void STM32446RtcMinute(uint8_t minute);
 void STM32446RtcSecond(uint8_t second);
 void STM32446Rtcdr2vec(char* rtc_vect);
 void STM32446Rtctr2vec(char* rtc_vect);
-void STM32446RtcRegWrite(uint8_t n, uint8_t data);
-uint8_t STM32446RtcRegRead(uint8_t n);
+void STM32446RtcBckWrite(uint8_t n, uint8_t data);
+uint8_t STM32446RtcBckRead(uint8_t n);
 
 #endif
 
