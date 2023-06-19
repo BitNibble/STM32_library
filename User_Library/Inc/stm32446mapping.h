@@ -22,7 +22,6 @@ Comment:
 	#define STM32F446xx
 #endif
 #include "stm32f4xx.h"
-
 /*** Define & Macros***/
 #define HSI_RC 16000000UL
 #define HSE_OSC 25000000UL
@@ -38,7 +37,6 @@ Comment:
 #ifndef no
 	#define no 0
 #endif
-
 /*** Module Library ***/
 // Comment out modules not being used
 #include "stm32446flash.h"
@@ -53,7 +51,6 @@ Comment:
 #include "stm32446usart.h"
 #include "stm32446tim.h"
 #include "function.h"
-
 /************ STM32F446RE ************/
 /********** Global TypeDef ***********/
 typedef struct
@@ -90,14 +87,12 @@ typedef struct
 	uint32_t (*PllSource)(void);
 	uint32_t (*SystemClock)(void);
 }STM32446Query;
-
 /******************* CORE TypeDef ********************/
 // SCB
 typedef struct
 {
 	SCB_Type* reg;
 }STM32446SCBobj;
-
 // SysTick
 typedef struct
 {
@@ -106,280 +101,239 @@ typedef struct
 	void (*delay_10us)(uint32_t ten_us); // It uses Systick
 	void (*delay_us)(uint32_t us);
 }STM32446SysTickobj;
-
 /******************** MCU TypeDef ********************/
 // CAN_TxMailBox
 typedef struct
 {
 	CAN_TxMailBox_TypeDef* reg;
 }STM32446CAN_TxMailBoxobj;
-
 // CAN_FIFOMailBox
 typedef struct
 {
 	CAN_FIFOMailBox_TypeDef* reg;
 }STM32446CAN_FIFOMailBoxobj;
-
 // CAN_FilterRegister
 typedef struct
 {
 	CAN_FilterRegister_TypeDef* reg;
 }STM32446CAN_FilterRegisterobj;
-
 // CAN -> CAN1
 typedef struct
 {
 	CAN_TypeDef* reg;
 }STM32446CAN1obj;
-
 // CAN -> CAN2
 typedef struct
 {
 	CAN_TypeDef* reg;
 }STM32446CAN2obj;
-
 // CEC
 typedef struct
 {
 	CEC_TypeDef* reg;
 }STM32446CECobj;
-
 // DAC
 typedef struct
 {
 	DAC_TypeDef* reg;
 }STM32446DACobj;
-
 // DBGMCU
 typedef struct
 {
 	DBGMCU_TypeDef* reg;
 }STM32446DBGMCUobj;
-
 // DCMI
 typedef struct
 {
 	DCMI_TypeDef* reg;
 }STM32446DCMIobj;
-
 // DMA_Stream
 typedef struct
 {
 	DMA_Stream_TypeDef* reg;
 }STM32446DMAStream;
-
 // DMA -> DMA1
 typedef struct
 {
 	DMA_TypeDef* reg;
 	STM32446DMAStream stream[8];
 }STM32446DMA1obj;
-
 // DMA -> DMA2
 typedef struct
 {
 	DMA_TypeDef* reg;
 	STM32446DMAStream stream[8];
 }STM32446DMA2obj;
-
 // EXTI
 typedef struct
 {
 	EXTI_TypeDef* reg;
 }STM32446EXTIobj;
-
 // FMC_Bank1
 typedef struct
 {
 	FMC_Bank1_TypeDef* reg;
 }STM32446FMC_Bank1obj;
-
 // FMC_Bank1E
 typedef struct
 {
 	FMC_Bank1E_TypeDef* reg;
 }STM32446FMC_Bank1Eobj;
-
 // FMC_Bank3
 typedef struct
 {
 	FMC_Bank3_TypeDef* reg;
 }STM32446FMC_Bank3obj;
-
 // FMC_Bank5_6
 typedef struct
 {
 	FMC_Bank5_6_TypeDef* reg;
 }STM32446FMC_Bank5_6obj;
-
 // SYSCFG
 typedef struct
 {
 	SYSCFG_TypeDef* reg;
 	void (*enable)(void);
 }STM32446SYSCFGobj;
-
 // I2C -> I2C1
 typedef struct
 {
 	I2C_TypeDef* reg;
 }STM32446I2C1obj;
-
 // I2C -> I2C2
 typedef struct
 {
 	I2C_TypeDef* reg;
 }STM32446I2C2obj;
-
 // I2C -> I2C3
 typedef struct
 {
 	I2C_TypeDef* reg;
 }STM32446I2C3obj;
-
 // FMPI2C
 typedef struct
 {
 	FMPI2C_TypeDef* reg;
 }STM32446FMPI2Cobj;
-
 // IWDG
 typedef struct
 {
 	IWDG_TypeDef* reg;
 }STM32446IWDGobj;
-
 // SAI -> SAI1
 typedef struct
 {
 	SAI_TypeDef* reg;
 }STM32446SAI1obj;
-
 // SAI1_Block -> SAI1_BlockA
 typedef struct
 {
 	SAI_Block_TypeDef* reg;
 }STM32446SAI1_BlockAobj;
-
 // SAI1_Block -> SAI1_BlockB
 typedef struct
 {
 	SAI_Block_TypeDef* reg;
 }STM32446SAI1_BlockBobj;
-
 // SAI -> SAI2
 typedef struct
 {
 	SAI_TypeDef* reg;
 }STM32446SAI2obj;
-
 // SAI2_Block -> SAI2_BlockA
 typedef struct
 {
 	SAI_Block_TypeDef* reg;
 }STM32446SAI2_BlockAobj;
-
 // SAI2_Block -> SAI2_BlockB
 typedef struct
 {
 	SAI_Block_TypeDef* reg;
 }STM32446SAI2_BlockBobj;
-
 // SDIO
 typedef struct
 {
 	SDIO_TypeDef* reg;
 }STM32446SDIOobj;
-
 // SPI -> SPI1
 typedef struct
 {
 	SPI_TypeDef* reg;
 }STM32446SPI1obj;
-
 // SPI -> SPI2
 typedef struct
 {
 	SPI_TypeDef* reg;
 }STM32446SPI2obj;
-
 // SPI -> SPI3
 typedef struct
 {
 	SPI_TypeDef* reg;
 }STM32446SPI3obj;
-
 // SPI -> SPI4
 typedef struct
 {
 	SPI_TypeDef* reg;
 }STM32446SPI4obj;
-
 // QUADSPI
 typedef struct
 {
 	QUADSPI_TypeDef* reg;
 }STM32446QUADSPIobj;
-
 // SPDIFRX
 typedef struct
 {
 	SPDIFRX_TypeDef* reg;
 }STM32446SPDIFRXobj;
-
 // WWDG
 typedef struct
 {
 	WWDG_TypeDef* reg;
 }STM32446WWDGobj;
-
 // USB_OTG_Global
 typedef struct
 {
 	USB_OTG_GlobalTypeDef* reg;
 }STM32446USB_OTG_Globalobj;
-
 // USB_OTG_Device
 typedef struct
 {
 	USB_OTG_DeviceTypeDef* reg;
 }STM32446USB_OTG_Deviceobj;
-
 // USB_OTG_INEndpoint
 typedef struct
 {
 	USB_OTG_INEndpointTypeDef* reg;
 }STM32446USB_OTG_INEndpointobj;
-
 // USB_OTG_OUTEndpoint
 typedef struct
 {
 	USB_OTG_OUTEndpointTypeDef* reg;
 }STM32446USB_OTG_OUTEndpointobj;
-
 // USB_OTG_Host
 typedef struct
 {
 	USB_OTG_HostTypeDef* reg;
 }STM32446USB_OTG_Hostobj;
-
 // USB_OTG_HostChannel
 typedef struct
 {
 	USB_OTG_HostChannelTypeDef* reg;
 }STM32446USB_OTG_HostChannelobj;
-
 /***************** STM32F446 TypeDef *****************/
 typedef struct
 {
 	// PARAMETER
 	STM32HighLowByte HLbyte;
+
 	STM32446Query query;
 	// CORE
 	STM32446SCBobj scb;
+
 	#if defined(_STM32446NVIC_H_)
 		STM32446NVICobj nvic;
 	#endif
+
 	STM32446SysTickobj systick;
 	// MCU
 	#if defined(_STM32446ADC_H_)
@@ -387,14 +341,19 @@ typedef struct
 		STM32446ADC2obj adc2;
 		STM32446ADC3obj adc3;
 	#endif
+
 	#if defined(_STM32446CRC_H_)
 		STM32446CRCobj crc;
 	#endif
+
 	STM32446DMA1obj dma1;
+
 	STM32446DMA2obj dma2;
+
 	#if defined(_STM32446FLASH_H_)
 		STM32446FLASHobj flash;
 	#endif
+
 	#if defined(_STM32446GPIO_H_)
 		STM32446GpioAobj gpioa;
 		STM32446GpioBobj gpiob;
@@ -403,19 +362,25 @@ typedef struct
 		STM32446GpioEobj gpioe;
 		STM32446GpioHobj gpioh;
 	#endif
+
 	STM32446SYSCFGobj syscfg;
+
 	#if defined(_STM32446PWR_H_)
 		STM32446PWRobj pwr;
 	#endif
+
 	#if defined(_STM32446RCC_H_)
 		STM32446RCCobj rcc;
 	#endif
+
 	#if defined(_STM32446RTC_H_)
 		STM32446RTCobj rtc;
 	#endif
+
 	#if defined(_STM32446SRAM_H_)
 		STM32446SRAMobj sram;
 	#endif
+
 	#if defined(_STM32446TIM_H_)
 		STM32446TIM1obj tim1;
 		STM32446TIM2obj tim2;
@@ -432,6 +397,7 @@ typedef struct
 		STM32446TIM13obj tim13;
 		STM32446TIM14obj tim14;
 	#endif
+
 	#if defined(_STM32446USART_H_)
 		STM32446USART1obj usart1;
 		STM32446USART2obj usart2;

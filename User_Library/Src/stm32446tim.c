@@ -18,6 +18,13 @@ void tim_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 void tim_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+STM32446TIM9_CR1 stm32446_tim9_cr1_inic(void);
+STM32446TIM9_SMCR stm32446_tim9_smcr_inic(void);
+STM32446TIM9_DIER stm32446_tim9_dier_inic(void);
+STM32446TIM9_SR stm32446_tim9_sr_inic(void);
+STM32446TIM9_EGR stm32446_tim9_egr_inic(void);
+STM32446TIM9_CCMR1 stm32446_tim9_ccmr1_inic(void);
+STM32446TIM9_CCER stm32446_tim9_ccer_inic(void);
 
 /*** TIMER Procedure & Function Definition ***/
 /*** TIM9 ***/
@@ -387,6 +394,97 @@ STM32446TIM8obj tim8_inic(void)
 	stm32446_tim8.reg = TIM8;
 	return stm32446_tim8;
 }
+/*** TIM9 Auxiliar ***/
+STM32446TIM9_CR1 stm32446_tim9_cr1_inic(void)
+{
+	STM32446TIM9_CR1 stm32446_tim9_cr1;
+	// CR1
+	stm32446_tim9_cr1.get_ckd = STM32446Tim9_get_ckd;
+	stm32446_tim9_cr1.apre = STM32446Tim9_set_apre;
+	stm32446_tim9_cr1.opm = STM32446Tim9_set_opm;
+	stm32446_tim9_cr1.urs = STM32446Tim9_set_urs;
+	stm32446_tim9_cr1.udis = STM32446Tim9_set_udis;
+	stm32446_tim9_cr1.cen = STM32446Tim9_cen;
+	return stm32446_tim9_cr1;
+}
+STM32446TIM9_SMCR stm32446_tim9_smcr_inic(void)
+{
+	STM32446TIM9_SMCR stm32446_tim9_smcr;
+	// SMCR
+	stm32446_tim9_smcr.msm = STM32446Tim9_msm;
+	stm32446_tim9_smcr.ts = STM32446Tim9_ts;
+	stm32446_tim9_smcr.sms = STM32446Tim9_sms;
+	return stm32446_tim9_smcr;
+}
+STM32446TIM9_DIER stm32446_tim9_dier_inic(void)
+{
+	STM32446TIM9_DIER stm32446_tim9_dier;
+	// DIER
+	stm32446_tim9_dier.tie = STM32446Tim9_tie;
+	stm32446_tim9_dier.cc2ie = STM32446Tim9_cc2ie;
+	stm32446_tim9_dier.cc1ie = STM32446Tim9_cc1ie;
+	stm32446_tim9_dier.uie = STM32446Tim9_uie;
+	return stm32446_tim9_dier;
+}
+STM32446TIM9_SR stm32446_tim9_sr_inic(void)
+{
+	STM32446TIM9_SR stm32446_tim9_sr;
+	// SR
+	stm32446_tim9_sr.cc2of = STM32446Tim9_cc2of;
+	stm32446_tim9_sr.clear_cc2of = STM32446Tim9_clear_cc2of;
+	stm32446_tim9_sr.cc1of = STM32446Tim9_cc1of;
+	stm32446_tim9_sr.clear_cc1of = STM32446Tim9_clear_cc1of;
+	stm32446_tim9_sr.tif = STM32446Tim9_tif;
+	stm32446_tim9_sr.clear_tif = STM32446Tim9_clear_tif;
+	stm32446_tim9_sr.cc2if = STM32446Tim9_cc2if;
+	stm32446_tim9_sr.clear_cc2if = STM32446Tim9_clear_cc2if;
+	stm32446_tim9_sr.cc1if = STM32446Tim9_cc1if;
+	stm32446_tim9_sr.clear_cc1if = STM32446Tim9_clear_cc1if;
+	stm32446_tim9_sr.uif = STM32446Tim9_uif;
+	stm32446_tim9_sr.clear_uif = STM32446Tim9_clear_uif;
+	return stm32446_tim9_sr;
+}
+STM32446TIM9_EGR stm32446_tim9_egr_inic(void)
+{
+	STM32446TIM9_EGR stm32446_tim9_egr;
+	// EGR
+	stm32446_tim9_egr.tg = STM32446Tim9_tg;
+	stm32446_tim9_egr.cc2g = STM32446Tim9_cc2g;
+	stm32446_tim9_egr.cc1g = STM32446Tim9_cc1g;
+	stm32446_tim9_egr.ug = STM32446Tim9_ug;
+	return stm32446_tim9_egr;
+}
+STM32446TIM9_CCMR1 stm32446_tim9_ccmr1_inic(void)
+{
+	STM32446TIM9_CCMR1 stm32446_tim9_ccmr1;
+	// CCMR1
+	stm32446_tim9_ccmr1.oc2m = STM32446Tim9_oc2m;
+	stm32446_tim9_ccmr1.ic2f = STM32446Tim9_ic2f;
+	stm32446_tim9_ccmr1.oc2pe = STM32446Tim9_oc2pe;
+	stm32446_tim9_ccmr1.oc2fe = STM32446Tim9_oc2fe;
+	stm32446_tim9_ccmr1.ic2psc = STM32446Tim9_ic2psc;
+	stm32446_tim9_ccmr1.cc2s = STM32446Tim9_cc2s;
+	stm32446_tim9_ccmr1.oc1m = STM32446Tim9_oc1m;
+	stm32446_tim9_ccmr1.ic1f = STM32446Tim9_ic1f;
+	stm32446_tim9_ccmr1.oc1pe = STM32446Tim9_oc1pe;
+	stm32446_tim9_ccmr1.oc1fe = STM32446Tim9_oc1fe;
+	stm32446_tim9_ccmr1.ic1psc = STM32446Tim9_ic1psc;
+	stm32446_tim9_ccmr1.cc1s = STM32446Tim9_cc1s;
+	return stm32446_tim9_ccmr1;
+}
+STM32446TIM9_CCER stm32446_tim9_ccer_inic(void)
+{
+	STM32446TIM9_CCER stm32446_tim9_ccer;
+	// CCER
+	stm32446_tim9_ccer.cc2np = STM32446Tim9_cc2np;
+	stm32446_tim9_ccer.cc2p = STM32446Tim9_cc2p;
+	stm32446_tim9_ccer.cc2e = STM32446Tim9_cc2e;
+	stm32446_tim9_ccer.cc1np = STM32446Tim9_cc1np;
+	stm32446_tim9_ccer.cc1p = STM32446Tim9_cc1p;
+	stm32446_tim9_ccer.cc1e = STM32446Tim9_cc1e;
+	return stm32446_tim9_ccer;
+}
+/*** TIM9 INIC Procedure & Function Definition***/
 STM32446TIM9obj tim9_inic(void)
 {
 	STM32446TIM9obj stm32446_tim9;
@@ -397,70 +495,18 @@ STM32446TIM9obj tim9_inic(void)
 	// INIC
 	stm32446_tim9.inic = STM32446Tim9Inic;
 	/*** TIM9 Bit Mapping Link ***/
-	// CR1
-	stm32446_tim9.cr1.get_ckd = STM32446Tim9_get_ckd;
-	stm32446_tim9.cr1.apre = STM32446Tim9_set_apre;
-	stm32446_tim9.cr1.opm = STM32446Tim9_set_opm;
-	stm32446_tim9.cr1.urs = STM32446Tim9_set_urs;
-	stm32446_tim9.cr1.udis = STM32446Tim9_set_udis;
-	stm32446_tim9.cr1.cen = STM32446Tim9_cen;
-	// SMCR
-	stm32446_tim9.smcr.msm = STM32446Tim9_msm;
-	stm32446_tim9.smcr.ts = STM32446Tim9_ts;
-	stm32446_tim9.smcr.sms = STM32446Tim9_sms;
-	// DIER
-	stm32446_tim9.dier.tie = STM32446Tim9_tie;
-	stm32446_tim9.dier.cc2ie = STM32446Tim9_cc2ie;
-	stm32446_tim9.dier.cc1ie = STM32446Tim9_cc1ie;
-	stm32446_tim9.dier.uie = STM32446Tim9_uie;
-	// SR
-	stm32446_tim9.sr.cc2of = STM32446Tim9_cc2of;
-	stm32446_tim9.sr.clear_cc2of = STM32446Tim9_clear_cc2of;
-	stm32446_tim9.sr.cc1of = STM32446Tim9_cc1of;
-	stm32446_tim9.sr.clear_cc1of = STM32446Tim9_clear_cc1of;
-	stm32446_tim9.sr.tif = STM32446Tim9_tif;
-	stm32446_tim9.sr.clear_tif = STM32446Tim9_clear_tif;
-	stm32446_tim9.sr.cc2if = STM32446Tim9_cc2if;
-	stm32446_tim9.sr.clear_cc2if = STM32446Tim9_clear_cc2if;
-	stm32446_tim9.sr.cc1if = STM32446Tim9_cc1if;
-	stm32446_tim9.sr.clear_cc1if = STM32446Tim9_clear_cc1if;
-	stm32446_tim9.sr.uif = STM32446Tim9_uif;
-	stm32446_tim9.sr.clear_uif = STM32446Tim9_clear_uif;
-	// EGR
-	stm32446_tim9.egr.tg = STM32446Tim9_tg;
-	stm32446_tim9.egr.cc2g = STM32446Tim9_cc2g;
-	stm32446_tim9.egr.cc1g = STM32446Tim9_cc1g;
-	stm32446_tim9.egr.ug = STM32446Tim9_ug;
-	// CCMR1
-	stm32446_tim9.ccmr1.oc2m = STM32446Tim9_oc2m;
-	stm32446_tim9.ccmr1.ic2f = STM32446Tim9_ic2f;
-	stm32446_tim9.ccmr1.oc2pe = STM32446Tim9_oc2pe;
-	stm32446_tim9.ccmr1.oc2fe = STM32446Tim9_oc2fe;
-	stm32446_tim9.ccmr1.ic2psc = STM32446Tim9_ic2psc;
-	stm32446_tim9.ccmr1.cc2s = STM32446Tim9_cc2s;
-	stm32446_tim9.ccmr1.oc1m = STM32446Tim9_oc1m;
-	stm32446_tim9.ccmr1.ic1f = STM32446Tim9_ic1f;
-	stm32446_tim9.ccmr1.oc1pe = STM32446Tim9_oc1pe;
-	stm32446_tim9.ccmr1.oc1fe = STM32446Tim9_oc1fe;
-	stm32446_tim9.ccmr1.ic1psc = STM32446Tim9_ic1psc;
-	stm32446_tim9.ccmr1.cc1s = STM32446Tim9_cc1s;
-	// CCER
-	stm32446_tim9.ccer.cc2np = STM32446Tim9_cc2np;
-	stm32446_tim9.ccer.cc2p = STM32446Tim9_cc2p;
-	stm32446_tim9.ccer.cc2e = STM32446Tim9_cc2e;
-	stm32446_tim9.ccer.cc1np = STM32446Tim9_cc1np;
-	stm32446_tim9.ccer.cc1p = STM32446Tim9_cc1p;
-	stm32446_tim9.ccer.cc1e = STM32446Tim9_cc1e;
-	// CNT
+	stm32446_tim9.cr1 = stm32446_tim9_cr1_inic();
+	stm32446_tim9.smcr = stm32446_tim9_smcr_inic();
+	stm32446_tim9.dier = stm32446_tim9_dier_inic();
+	stm32446_tim9.sr = stm32446_tim9_sr_inic();
+	stm32446_tim9.egr = stm32446_tim9_egr_inic();
+	stm32446_tim9.ccmr1 = stm32446_tim9_ccmr1_inic();
+	stm32446_tim9.ccer = stm32446_tim9_ccer_inic();
 	stm32446_tim9.cnt = STM32446Tim9_cnt;
 	stm32446_tim9.get_cnt = STM32446Tim9_get_cnt;
-	// ARR
 	stm32446_tim9.arr = STM32446Tim9_arr;
-	// CCR1
 	stm32446_tim9.ccr1 = STM32446Tim9_ccr1;
-	// CCR2
 	stm32446_tim9.ccr2 = STM32446Tim9_ccr2;
-	// PSC
 	stm32446_tim9.psc = STM32446Tim9_psc;
 	// INIC
 	stm32446_tim9.inic = STM32446Tim9Inic;

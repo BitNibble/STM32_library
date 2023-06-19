@@ -47,17 +47,17 @@ STM32446RTCobj rtc_inic(void);
 /*** RTC Procedure & Function Header ***/
 void STM32446RtcClock(void);
 void STM32446RtcInic(uint8_t clock);
-void STM32446RtcDay(uint8_t day);
-void STM32446RtcMonth(uint8_t month);
-void STM32446RtcWeekDay(uint8_t weekday);
-void STM32446RtcYear(uint8_t year);
+void STM32446RtcBckWrite(uint8_t n, uint8_t data);
+uint8_t STM32446RtcBckRead(uint8_t n);
 void STM32446RtcHour(uint8_t hour);
 void STM32446RtcMinute(uint8_t minute);
 void STM32446RtcSecond(uint8_t second);
+void STM32446RtcDay(uint8_t day);
+void STM32446RtcYear(uint8_t year);
+void STM32446RtcMonth(uint8_t month);
+void STM32446RtcWeekDay(uint8_t weekday);
 void STM32446Rtcdr2vec(char* rtc_vect);
 void STM32446Rtctr2vec(char* rtc_vect);
-void STM32446RtcBckWrite(uint8_t n, uint8_t data);
-uint8_t STM32446RtcBckRead(uint8_t n);
 
 #endif
 

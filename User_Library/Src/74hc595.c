@@ -16,27 +16,31 @@ void HC595_shift_bit(hc595parameter* par, uint8_t bool);
 void HC595_shift_ibyte(hc595parameter* par, uint8_t byte);
 void HC595_shift_byte(hc595parameter* par, uint8_t byte);
 void HC595_shift_out(hc595parameter* par);
+hc595parameter hc595_par_inic(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin);
 
+/*** 74HC595 Auxiliar ***/
+hc595parameter hc595_par_inic(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin)
+{
+	hc595parameter hc595_par;
+	hc595_par.hc595_DDR = ddr;
+	hc595_par.hc595_PORT = port;
+	hc595_par.HC595_datapin = datapin;
+	hc595_par.HC595_clkpin = clkpin;
+	hc595_par.HC595_outpin = outpin;
+	#if defined (STM32F446xx)
+		*hc595_par.hc595_DDR &= (uint32_t) ~((3 << (datapin * 2)) | (3 << (clkpin * 2)) | (3 << (outpin * 2)));
+		*hc595_par.hc595_DDR |= ((1 << (datapin * 2)) | (1 << (clkpin * 2)) | (1 << (outpin * 2)));
+	#else
+		*hc595_par.hc595_DDR |= (1 << datapin) | (1 << clkpin) | (1 << outpin);
+	#endif
+	*hc595_par.hc595_PORT &= ~((1<<datapin) | (1<<clkpin) | (1 << outpin));
+	return hc595_par;
+}
 /*** 74HC595 Procedure & Function Definition ***/
 HC595 HC595enable(volatile uint32_t *ddr, volatile uint32_t *port, uint8_t datapin, uint8_t clkpin, uint8_t outpin)
 {
-	// LOCAL VARIABLES
-	// ALLOCA��O MEMORIA PARA Estrutura
 	HC595 hc595;
-	// import parametros
-	hc595.par.hc595_DDR = ddr;
-	hc595.par.hc595_PORT = port;
-	hc595.par.HC595_datapin = datapin;
-	hc595.par.HC595_clkpin = clkpin;
-	hc595.par.HC595_outpin = outpin;
-	// inic variables
-#if defined (STM32F446xx)
-	*hc595.par.hc595_DDR &= (uint32_t) ~((3 << (datapin * 2)) | (3 << (clkpin * 2)) | (3 << (outpin * 2)));
-	*hc595.par.hc595_DDR |= ((1 << (datapin * 2)) | (1 << (clkpin * 2)) | (1 << (outpin * 2)));
-#else
-	*hc595.par.hc595_DDR |= (1 << datapin) | (1 << clkpin) | (1 << outpin);
-#endif
-	*hc595.par.hc595_PORT &= ~((1<<datapin) | (1<<clkpin) | (1 << outpin));
+	hc595.par = hc595_par_inic(ddr, port, datapin, clkpin, outpin);
 	// Direccionar apontadores para PROTOTIPOS
 	hc595.bit = HC595_shift_bit;
 	hc595.ibyte = HC595_shift_ibyte;

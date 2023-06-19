@@ -20,6 +20,7 @@ void gpio_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, ui
 void gpio_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void gpio_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+STM32446GpioFunc stm32446_gpio_func_inic(void);
 
 /*** GPIO Procedure & Function Definition ***/
 /*** GPIOA ***/
@@ -469,7 +470,18 @@ void STM32446GpioHafr( unsigned int data, unsigned int pin )
 		GPIOH->AFR[index] |= ( data << ((pin * blocksize) - (index * n_bits)) );
 	}
 }
-
+/*** COMMON Auxiliar ***/
+STM32446GpioFunc stm32446_gpio_func_inic(void)
+{
+	STM32446GpioFunc stm32446_gpio_func;
+	/*** Other ***/
+	stm32446_gpio_func.readreg = gpio_readreg;
+	stm32446_gpio_func.writereg = gpio_writereg;
+	stm32446_gpio_func.setreg = gpio_setreg;
+	stm32446_gpio_func.setbit = gpio_setbit;
+	stm32446_gpio_func.getsetbit = gpio_getsetbit;
+	return stm32446_gpio_func;
+}
 /*** INIC Procedure & Function Definition ***/
 STM32446GpioAobj gpioa_inic(void)
 {
@@ -486,11 +498,7 @@ STM32446GpioAobj gpioa_inic(void)
 	stm32446_gpioa.set = STM32446GpioAset;
 	stm32446_gpioa.afr = STM32446GpioAafr;
 	/*** Other ***/
-	stm32446_gpioa.func.readreg = gpio_readreg;
-	stm32446_gpioa.func.writereg = gpio_writereg;
-	stm32446_gpioa.func.setreg = gpio_setreg;
-	stm32446_gpioa.func.setbit = gpio_setbit;
-	stm32446_gpioa.func.getsetbit = gpio_getsetbit;
+	stm32446_gpioa.func = stm32446_gpio_func_inic();
 
 	return stm32446_gpioa;
 }
@@ -510,11 +518,7 @@ STM32446GpioBobj gpiob_inic(void)
 	stm32446_gpiob.set = STM32446GpioBset;
 	stm32446_gpiob.afr = STM32446GpioBafr;
 	/*** Other ***/
-	stm32446_gpiob.func.readreg = gpio_readreg;
-	stm32446_gpiob.func.writereg = gpio_writereg;
-	stm32446_gpiob.func.setreg = gpio_setreg;
-	stm32446_gpiob.func.setbit = gpio_setbit;
-	stm32446_gpiob.func.getsetbit = gpio_getsetbit;
+	stm32446_gpiob.func = stm32446_gpio_func_inic();
 
 	return stm32446_gpiob;
 }
@@ -534,11 +538,7 @@ STM32446GpioCobj gpioc_inic(void)
 	stm32446_gpioc.set = STM32446GpioCset;
 	stm32446_gpioc.afr = STM32446GpioCafr;
 	/*** Other ***/
-	stm32446_gpioc.func.readreg = gpio_readreg;
-	stm32446_gpioc.func.writereg = gpio_writereg;
-	stm32446_gpioc.func.setreg = gpio_setreg;
-	stm32446_gpioc.func.setbit = gpio_setbit;
-	stm32446_gpioc.func.getsetbit = gpio_getsetbit;
+	stm32446_gpioc.func = stm32446_gpio_func_inic();
 
 	return stm32446_gpioc;
 }
@@ -558,11 +558,7 @@ STM32446GpioDobj gpiod_inic(void)
 	stm32446_gpiod.set = STM32446GpioDset;
 	stm32446_gpiod.afr = STM32446GpioDafr;
 	/*** Other ***/
-	stm32446_gpiod.func.readreg = gpio_readreg;
-	stm32446_gpiod.func.writereg = gpio_writereg;
-	stm32446_gpiod.func.setreg = gpio_setreg;
-	stm32446_gpiod.func.setbit = gpio_setbit;
-	stm32446_gpiod.func.getsetbit = gpio_getsetbit;
+	stm32446_gpiod.func = stm32446_gpio_func_inic();
 
 	return stm32446_gpiod;
 }
@@ -582,11 +578,7 @@ STM32446GpioEobj gpioe_inic(void)
 	stm32446_gpioe.set = STM32446GpioEset;
 	stm32446_gpioe.afr = STM32446GpioEafr;
 	/*** Other ***/
-	stm32446_gpioe.func.readreg = gpio_readreg;
-	stm32446_gpioe.func.writereg = gpio_writereg;
-	stm32446_gpioe.func.setreg = gpio_setreg;
-	stm32446_gpioe.func.setbit = gpio_setbit;
-	stm32446_gpioe.func.getsetbit = gpio_getsetbit;
+	stm32446_gpioe.func = stm32446_gpio_func_inic();
 
 	return stm32446_gpioe;
 }
@@ -606,11 +598,7 @@ STM32446GpioHobj gpioh_inic(void)
 	stm32446_gpioh.set = STM32446GpioHset;
 	stm32446_gpioh.afr = STM32446GpioHafr;
 	/*** Other ***/
-	stm32446_gpioh.func.readreg = gpio_readreg;
-	stm32446_gpioh.func.writereg = gpio_writereg;
-	stm32446_gpioh.func.setreg = gpio_setreg;
-	stm32446_gpioh.func.setbit = gpio_setbit;
-	stm32446_gpioh.func.getsetbit = gpio_getsetbit;
+	stm32446_gpioh.func = stm32446_gpio_func_inic();
 
 	return stm32446_gpioh;
 }

@@ -18,6 +18,10 @@ void flash_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, u
 void flash_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void flash_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t flash_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+STM32446FLASH_acr stm32446_flash_acr_inic(void);
+STM32446FLASH_sr stm32446_flash_sr_inic(void);
+STM32446FLASH_cr stm32446_flash_cr_inic(void);
+STM32446FLASH_optcr stm32446_flash_optcr_inic(void);
 
 /*** FLASH Bit Mapping ***/
 // ACR
@@ -198,7 +202,72 @@ void STM32446FLASH_optcr_optlock(uint8_t bool)
 {
 	flash_setreg(&FLASH->OPTCR, 1, 0, bool);
 }
-
+/*** FLASH Auxiliar ***/
+STM32446FLASH_acr stm32446_flash_acr_inic(void)
+{
+	STM32446FLASH_acr stm32446_flash_acr;
+	// ACR
+	stm32446_flash_acr.dcrst = STM32446FLASH_acr_dcrst;
+	stm32446_flash_acr.icrst = STM32446FLASH_acr_icrst;
+	stm32446_flash_acr.dcen = STM32446FLASH_acr_dcen;
+	stm32446_flash_acr.icen = STM32446FLASH_acr_icen;
+	stm32446_flash_acr.prften = STM32446FLASH_acr_prften;
+	stm32446_flash_acr.latency = STM32446FLASH_acr_latency;
+	return stm32446_flash_acr;
+}
+STM32446FLASH_sr stm32446_flash_sr_inic(void)
+{
+	STM32446FLASH_sr stm32446_flash_sr;
+	// SR
+	stm32446_flash_sr.bsy = STM32446FLASH_sr_bsy;
+	stm32446_flash_sr.rderr = STM32446FLASH_sr_rderr;
+	stm32446_flash_sr.clear_rderr = STM32446FLASH_sr_clear_rderr;
+	stm32446_flash_sr.pgserr = STM32446FLASH_sr_pgserr;
+	stm32446_flash_sr.clear_pgserr = STM32446FLASH_sr_clear_pgserr;
+	stm32446_flash_sr.pgperr = STM32446FLASH_sr_pgperr;
+	stm32446_flash_sr.clear_pgperr = STM32446FLASH_sr_clear_pgperr;
+	stm32446_flash_sr.pgaerr = STM32446FLASH_sr_pgaerr;
+	stm32446_flash_sr.clear_pgaerr = STM32446FLASH_sr_clear_pgaerr;
+	stm32446_flash_sr.wrperr = STM32446FLASH_sr_wrperr;
+	stm32446_flash_sr.clear_wrperr = STM32446FLASH_sr_clear_wrperr;
+	stm32446_flash_sr.operr = STM32446FLASH_sr_operr;
+	stm32446_flash_sr.clear_operr = STM32446FLASH_sr_clear_operr;
+	stm32446_flash_sr.eop = STM32446FLASH_sr_eop;
+	stm32446_flash_sr.clear_eop = STM32446FLASH_sr_clear_eop;
+	return stm32446_flash_sr;
+}
+STM32446FLASH_cr stm32446_flash_cr_inic(void)
+{
+	STM32446FLASH_cr stm32446_flash_cr;
+	// CR
+	stm32446_flash_cr.lock = STM32446FLASH_cr_lock;
+	stm32446_flash_cr.errie = STM32446FLASH_cr_errie;
+	stm32446_flash_cr.eopie = STM32446FLASH_cr_eopie;
+	stm32446_flash_cr.strt = STM32446FLASH_cr_strt;
+	stm32446_flash_cr.psize = STM32446FLASH_cr_psize;
+	stm32446_flash_cr.snb = STM32446FLASH_cr_snb;
+	stm32446_flash_cr.mer = STM32446FLASH_cr_mer;
+	stm32446_flash_cr.ser = STM32446FLASH_cr_ser;
+	stm32446_flash_cr.pg = STM32446FLASH_cr_pg;
+	return stm32446_flash_cr;
+}
+STM32446FLASH_optcr stm32446_flash_optcr_inic(void)
+{
+	STM32446FLASH_optcr stm32446_flash_optcr;
+	// OPTCR
+	stm32446_flash_optcr.sprmod = STM32446FLASH_optcr_sprmod;
+	stm32446_flash_optcr.n_wrp = STM32446FLASH_optcr_n_wrp;
+	stm32446_flash_optcr.get_n_wrp = STM32446FLASH_optcr_get_n_wrp;
+	stm32446_flash_optcr.rdp = STM32446FLASH_optcr_rdp;
+	stm32446_flash_optcr.get_rdp = STM32446FLASH_optcr_get_rdp;
+	stm32446_flash_optcr.nrst_stdby = STM32446FLASH_optcr_nrst_stdby;
+	stm32446_flash_optcr.nrst_stop = STM32446FLASH_optcr_nrst_stop;
+	stm32446_flash_optcr.wdg_sw = STM32446FLASH_optcr_wdg_sw;
+	stm32446_flash_optcr.bor_lev = STM32446FLASH_optcr_bor_lev;
+	stm32446_flash_optcr.optstrt = STM32446FLASH_optcr_optstrt;
+	stm32446_flash_optcr.optlock = STM32446FLASH_optcr_optlock;
+	return stm32446_flash_optcr;
+}
 /*** INIC Procedure & Function Definition ***/
 STM32446FLASHobj flash_inic(void)
 {
@@ -206,54 +275,11 @@ STM32446FLASHobj flash_inic(void)
 
 	stm32446_flash.reg = FLASH;
 	/*** FLASH Bit Mapping Link ***/
-	// ACR
-	stm32446_flash.acr.dcrst = STM32446FLASH_acr_dcrst;
-	stm32446_flash.acr.icrst = STM32446FLASH_acr_icrst;
-	stm32446_flash.acr.dcen = STM32446FLASH_acr_dcen;
-	stm32446_flash.acr.icen = STM32446FLASH_acr_icen;
-	stm32446_flash.acr.prften = STM32446FLASH_acr_prften;
-	stm32446_flash.acr.latency = STM32446FLASH_acr_latency;
-	// SR
-	stm32446_flash.sr.bsy = STM32446FLASH_sr_bsy;
-	stm32446_flash.sr.rderr = STM32446FLASH_sr_rderr;
-	stm32446_flash.sr.clear_rderr = STM32446FLASH_sr_clear_rderr;
-	stm32446_flash.sr.pgserr = STM32446FLASH_sr_pgserr;
-	stm32446_flash.sr.clear_pgserr = STM32446FLASH_sr_clear_pgserr;
-	stm32446_flash.sr.pgperr = STM32446FLASH_sr_pgperr;
-	stm32446_flash.sr.clear_pgperr = STM32446FLASH_sr_clear_pgperr;
-	stm32446_flash.sr.pgaerr = STM32446FLASH_sr_pgaerr;
-	stm32446_flash.sr.clear_pgaerr = STM32446FLASH_sr_clear_pgaerr;
-	stm32446_flash.sr.wrperr = STM32446FLASH_sr_wrperr;
-	stm32446_flash.sr.clear_wrperr = STM32446FLASH_sr_clear_wrperr;
-	stm32446_flash.sr.operr = STM32446FLASH_sr_operr;
-	stm32446_flash.sr.clear_operr = STM32446FLASH_sr_clear_operr;
-	stm32446_flash.sr.eop = STM32446FLASH_sr_eop;
-	stm32446_flash.sr.clear_eop = STM32446FLASH_sr_clear_eop;
-	// CR
-	stm32446_flash.cr.lock = STM32446FLASH_cr_lock;
-	stm32446_flash.cr.errie = STM32446FLASH_cr_errie;
-	stm32446_flash.cr.eopie = STM32446FLASH_cr_eopie;
-	stm32446_flash.cr.strt = STM32446FLASH_cr_strt;
-	stm32446_flash.cr.psize = STM32446FLASH_cr_psize;
-	stm32446_flash.cr.snb = STM32446FLASH_cr_snb;
-	stm32446_flash.cr.mer = STM32446FLASH_cr_mer;
-	stm32446_flash.cr.ser = STM32446FLASH_cr_ser;
-	stm32446_flash.cr.pg = STM32446FLASH_cr_pg;
-	// OPTCR
-	stm32446_flash.optcr.sprmod = STM32446FLASH_optcr_sprmod;
-	stm32446_flash.optcr.n_wrp = STM32446FLASH_optcr_n_wrp;
-	stm32446_flash.optcr.get_n_wrp = STM32446FLASH_optcr_get_n_wrp;
-	stm32446_flash.optcr.rdp = STM32446FLASH_optcr_rdp;
-	stm32446_flash.optcr.get_rdp = STM32446FLASH_optcr_get_rdp;
-	stm32446_flash.optcr.nrst_stdby = STM32446FLASH_optcr_nrst_stdby;
-	stm32446_flash.optcr.nrst_stop = STM32446FLASH_optcr_nrst_stop;
-	stm32446_flash.optcr.wdg_sw = STM32446FLASH_optcr_wdg_sw;
-	stm32446_flash.optcr.bor_lev = STM32446FLASH_optcr_bor_lev;
-	stm32446_flash.optcr.optstrt = STM32446FLASH_optcr_optstrt;
-	stm32446_flash.optcr.optlock = STM32446FLASH_optcr_optlock;
-	// KEYR
+	stm32446_flash.acr = stm32446_flash_acr_inic();
+	stm32446_flash.sr = stm32446_flash_sr_inic();
+	stm32446_flash.cr = stm32446_flash_cr_inic();
+	stm32446_flash.optcr = stm32446_flash_optcr_inic();
 	stm32446_flash.keyr = STM32446FLASH_keyr_key;
-	// OPTKEYR
 	stm32446_flash.optkeyr = STM32446FLASH_optkeyr_optkey;
 
 	return stm32446_flash;

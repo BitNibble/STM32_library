@@ -18,17 +18,26 @@ uint8_t CIRC_get(CIRCBUFFER_par* par);
 void CIRC_put(CIRCBUFFER_par* par, CIRCBUFF_var data);
 void CIRC_putstr(CIRCBUFFER_par* par, const CIRCBUFF_var* str);
 void CIRC_getstr(CIRCBUFFER_par* par, CIRCBUFF_var* str);
+CIRCBUFFER_par circ_par_inic( uint8_t size_buff, CIRCBUFF_var* buff );
 
+/*** CIRCBUFF Auxiliar ***/
+CIRCBUFFER_par circ_par_inic( uint8_t size_buff, CIRCBUFF_var* buff )
+{
+	CIRCBUFFER_par circ_par;
+	// inic VAR
+	circ_par.tail = buff;
+	circ_par.head = buff;
+	circ_par.orig = buff;
+	circ_par.end = buff + size_buff; // generic
+	return circ_par;
+}
 /*** CIRCBUFF Procedure & Function Definition ***/
 circbuff CIRCBUFFenable( uint8_t size_buff, CIRCBUFF_var* buff )
 {
 	// OBJECT STRUCT
 	struct circ_buf_template circ;
 	// inic VAR
-	circ.par.tail = buff;
-	circ.par.head = buff;
-	circ.par.orig = buff;
-	circ.par.end = buff + size_buff; // generic
+	circ.par = circ_par_inic( size_buff, buff );
 	// function pointers
 	circ.get = CIRC_get;
 	circ.put = CIRC_put;

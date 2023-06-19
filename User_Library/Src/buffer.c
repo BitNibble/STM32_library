@@ -17,16 +17,25 @@ Comment:
 void BUFF_push(bufferparameter* par, BUFFvar data);
 BUFFvar* BUFF_raw(bufferparameter* par);
 void BUFF_flush(bufferparameter* par);
+bufferparameter buff_par_inic( uint8_t size_buff, BUFFvar* buff );
 
+/*** BUFF Auxiliar ***/
+bufferparameter buff_par_inic( uint8_t size_buff, BUFFvar* buff )
+{
+	bufferparameter buff_par;
+	// inic VAR
+	buff_par.orig = buff;
+	buff_par.head = buff;
+	buff_par.end = buff + ( size_buff ); // generic
+	return buff_par;
+}
 /*** BUFF Procedure & Function Definition ***/
 BUFF BUFFenable( uint8_t size_buff, BUFFvar* buff )
 {
 	// OBJECT STRUCT
 	BUFF ret;
 	// inic VAR
-	ret.par.orig = buff;
-	ret.par.head = buff;
-	ret.par.end = buff + ( size_buff ); // generic
+	ret.par = buff_par_inic( size_buff, buff );
 	// function pointers
 	ret.push = BUFF_push;
 	ret.raw = BUFF_raw;

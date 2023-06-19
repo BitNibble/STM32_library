@@ -18,15 +18,23 @@ uint32_t EXPLODEhh(explodeparameter* par);
 uint32_t EXPLODEll(explodeparameter* par);
 uint32_t EXPLODElh(explodeparameter* par);
 uint32_t EXPLODEhl(explodeparameter* par);
+explodeparameter explode_par_inic(void);
 
+/*** EXPLODE Auxilar ***/
+explodeparameter explode_par_inic(void)
+{
+	explodeparameter explode_par;
+	explode_par.XI = 0;
+	explode_par.XF = 0;
+	return explode_par;
+}
 /*** EXPLODE Procedure & Function Definition ***/
 EXPLODE EXPLODEenable( void )
 {
 	// struct object
 	EXPLODE explode;
 	// inic VAR
-	explode.par.XI = 0;
-	explode.par.XF = 0;
+	explode.par = explode_par_inic();
 	// function pointers
 	explode.update = EXPLODEupdate;
 	return explode;

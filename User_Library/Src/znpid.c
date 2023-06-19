@@ -34,24 +34,33 @@ void znpid_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, u
 void znpid_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void znpid_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t znpid_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+znpidparameter znpid_par_inic(void);
 
+/*** ZNPID Auxiliar  ***/
+znpidparameter znpid_par_inic(void)
+{
+	znpidparameter znpid_par;
+	// initialize variables
+	znpid_par.kc = 1;
+	znpid_par.ki = 0;
+	znpid_par.kd = 0;
+	znpid_par.SetPoint = 0;
+	znpid_par.Err_past = 0;
+	znpid_par.dy = 0;
+	znpid_par.dx = 0;
+	znpid_par.integral = 0;
+	znpid_par.derivative = 0;
+	znpid_par.PV = 0;
+	znpid_par.OP = 0;
+	return znpid_par;
+}
 /*** ZNPID Procedure & Function Definition ***/
 ZNPID ZNPIDenable(void)
 {
 	// LOCAL VARIABLES
 	ZNPID znpid;
 	// initialize variables
-	znpid.par.kc = 1;
-	znpid.par.ki = 0;
-	znpid.par.kd = 0;
-	znpid.par.SetPoint = 0;
-	znpid.par.Err_past = 0;
-	znpid.par.dy = 0;
-	znpid.par.dx = 0;
-	znpid.par.integral = 0;
-	znpid.par.derivative = 0;
-	znpid.par.PV = 0;
-	znpid.par.OP = 0;
+	znpid.par = znpid_par_inic();
 	// Direccionar apontadores para PROTOTIPOS
 	znpid.set_kc = ZNPID_set_kc;
 	znpid.set_ki = ZNPID_set_ki;

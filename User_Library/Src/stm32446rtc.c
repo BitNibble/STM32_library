@@ -20,30 +20,25 @@ void rtc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 void rtc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t rtc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+void STM32446PwrClock(void);
 void STM32446RtcWriteEnable(void);
 void STM32446RtcWriteDisable(void);
 void STM32446RtcRegUnlock(void);
 void STM32446RtcRegWrite(volatile uint32_t* rtc_reg, uint32_t value);
-void STM32446RtcSetTr(uint32_t value);
-void STM32446RtcSetDr(uint32_t value);
-void STM32446RtcClock(void);
 void STM32446RtcReadStop(void);
 void STM32446RtcReadWait(void);
-void STM32446PwrClock(void);
+void STM32446RtcSetTr(uint32_t value);
+void STM32446RtcSetDr(uint32_t value);
 char rtc_bcd2dec(char num);
 char rtc_dec2bcd(char num);
 void rtc_lenable(unsigned int lclock);
 void rtc_lselect(uint8_t lclock);
+/*** Procedure & Function Header ***/
 
-/*** RTC Procedure & Function Definition ***/
+/*** Procedure & Function Definition ***/
 void STM32446RtcClock(void)
 {
 	RCC->BDCR |= (1 << 15); // RTCEN: RTC clock enable
-}
-
-void STM32446PwrClock(void)
-{
-	RCC->APB1ENR |= (1 << 28); // Power interface clock enable
 }
 
 void STM32446RtcInic(uint8_t clock)
@@ -59,30 +54,6 @@ void STM32446RtcInic(uint8_t clock)
 	//STM32446RtcRegWrite(&RTC->DR, 0x215124);
 	//RTC->CR &= (uint32_t) ~(1 << 5); // BYPSHAD: Disable Bypass the shadow registers
 	//STM32446RtcWriteDisable();
-}
-
-void STM32446RtcWriteEnable(void)
-{
-	PWR->CR |= (1 << 8);
-}
-
-void STM32446RtcWriteDisable(void)
-{
-	PWR->CR &= (uint32_t) ~(1 << 8);
-}
-
-void STM32446RtcRegUnlock(void)
-{
-	RTC->WPR |= RTC_KEY1;
-	RTC->WPR |= RTC_KEY2;
-}
-
-void STM32446RtcRegWrite(volatile uint32_t* rtc_reg, uint32_t value)
-{
-	RTC->ISR |= (1 << 7); // INIT
-	for( rtc_time_out = 100; !(RTC->ISR & (1 << 6)) && rtc_time_out; rtc_time_out-- ); // INITF: Initialisation flag
-	*rtc_reg = value;
-	RTC->ISR &= (uint32_t) ~(1 << 7);
 }
 
 void STM32446RtcBckWrite(uint8_t n, uint8_t data)
@@ -101,16 +72,6 @@ uint8_t STM32446RtcBckRead(uint8_t n)
 		value = rtc_getsetbit(&RTC->BKP0R, 8, (n * 8));
 	}
 	return value;
-}
-
-void STM32446RtcReadStop(void)
-{
-	RTC->ISR &= ~(1 << 5);
-}
-
-void STM32446RtcReadWait(void)
-{ // Wait Data Ready
-	for(rtc_time_out = 200; !(RTC->ISR & (1 << 5)) && rtc_time_out; rtc_time_out--);
 }
 
 void STM32446RtcHour(uint8_t hour)
@@ -177,21 +138,6 @@ void STM32446RtcYear(uint8_t year)
 	STM32446RtcSetDr(Date);
 }
 
-void STM32446RtcWeekDay(uint8_t weekday)
-{
-	uint32_t Date;
-	uint8_t u;
-	const uint32_t mask = 0x0000E0000;
-	
-	u = rtc_dec2bcd(weekday % 10);
-	STM32446RtcReadWait();
-	Date = RTC->DR;
-	Date &= (uint32_t) ~mask; // clear WDU
-	// WDU
-	Date |= (uint32_t) (u << 13);
-	STM32446RtcSetDr(Date);
-}
-
 void STM32446RtcMonth(uint8_t month)
 {
 	uint32_t Date;
@@ -205,6 +151,21 @@ void STM32446RtcMonth(uint8_t month)
 	Date &= (uint32_t) ~mask; // clear MT and MU
 	// MU, MT
 	Date |= (uint32_t) ((u << 8) | (t << 12));
+	STM32446RtcSetDr(Date);
+}
+
+void STM32446RtcWeekDay(uint8_t weekday)
+{
+	uint32_t Date;
+	uint8_t u;
+	const uint32_t mask = 0x0000E0000;
+	
+	u = rtc_dec2bcd(weekday % 10);
+	STM32446RtcReadWait();
+	Date = RTC->DR;
+	Date &= (uint32_t) ~mask; // clear WDU
+	// WDU
+	Date |= (uint32_t) (u << 13);
 	STM32446RtcSetDr(Date);
 }
 
@@ -226,9 +187,8 @@ void STM32446RtcDay(uint8_t day)
 
 void STM32446Rtcdr2vec(char* rtc_vect)
 {
-	STM32446RtcReadWait();
-	uint32_t dr = RTC->DR;
 	if(RTC->ISR & (1 << 5)){ // RSF: Registers synchronisation flag
+		uint32_t dr = RTC->DR;
 		// YT
 		rtc_vect[0] = (uint8_t) (dr >> 20) & 0x0F;
 		rtc_vect[0] = rtc_bcd2dec(rtc_vect[0]);
@@ -258,9 +218,8 @@ void STM32446Rtcdr2vec(char* rtc_vect)
 
 void STM32446Rtctr2vec(char* rtc_vect)
 {
-	STM32446RtcReadWait();
-	uint32_t tr = RTC->TR;
 	if(RTC->ISR & (1 << 5)){ // RSF: Registers synchronisation flag
+		uint32_t tr = RTC->TR;
 		// ht
 		rtc_vect[0] = (uint8_t) (tr >> 20) & 0x03;
 		rtc_vect[0] = rtc_bcd2dec(rtc_vect[0]);
@@ -285,7 +244,7 @@ void STM32446Rtctr2vec(char* rtc_vect)
 	}
 }
 
-/*** INIC Procedure & Function Definition ***/
+/*** RTC Procedure & Function Definition ***/
 STM32446RTCobj rtc_inic(void)
 {
 	STM32446RTCobj stm32446_rtc;
@@ -309,72 +268,6 @@ STM32446RTCobj rtc_inic(void)
 }
 
 /*** File Procedure & Function Definition ***/
-//RTC
-void STM32446RtcSetTr(uint32_t value)
-{
-	STM32446RtcWriteEnable();
-	STM32446RtcRegUnlock();
-	STM32446RtcRegWrite(&RTC->TR, value);
-	STM32446RtcWriteDisable();
-}
-
-void STM32446RtcSetDr(uint32_t value)
-{
-	STM32446RtcWriteEnable();
-	STM32446RtcRegUnlock();
-	STM32446RtcRegWrite(&RTC->DR, value);
-	STM32446RtcWriteDisable();
-}
-
-/*** COMMON ***/
-char rtc_bcd2dec(char num)
-{
-	return ((num / 16 * 10) + (num % 16));
-}
-
-char rtc_dec2bcd(char num)
-{
-	return ((num / 10 * 16) + (num % 10));
-}
-
-void rtc_lenable(unsigned int lclock)
-{
-	unsigned int set;
-	unsigned int rdy;
-	for( set = 1, rdy = 1; rdy ; ){
-		if(lclock == 2){ // LSION: Internal low-speed oscillator enable
-			if( set ){ RCC->CSR |= ( 1 << 0); set = 0; }else if( RCC->CSR & ( 1 << 1) ) rdy = 0;
-		}
-		else if(lclock == 1){ // LSEON: External low-speed oscillator enable
-			if( set ){ RCC->BDCR |= ( 1 << 0); set = 0; }else if( RCC->BDCR & ( 1 << 1) ) rdy = 0;
-		}
-		else if(lclock == 4){ // LSEBYP: External low-speed oscillator bypass
-			if( set ) RCC->BDCR |= ( 1 << 2 );
-			lclock = 1;
-		}
-		else lclock = 2; // default
-	}
-}
-
-void rtc_lselect(uint8_t lclock)
-{
-	RCC->BDCR &= (uint32_t) ~((1 << 9) | (1 << 8)); // RTCSEL[1:0]: RTC clock source selection
-	switch(lclock){
-		case 2:
-			RCC->BDCR |= (1 << 9); // LSI oscillator clock used as the RTC clock
-		break;
-		case 1:
-			RCC->BDCR |= (1 << 8); // LSE oscillator clock used as the RTC clock
-		break;
-		case 3:
-			RCC->BDCR |= ((1 << 8) | (1 << 9)); // HSE oscillator clock divided by a programmable prescaler
-		break;
-		default:
-			RCC->BDCR |= (1 << 9); // LSI oscillator clock used as the RTC clock
-		break;
-	}
-}
-
 uint32_t rtc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -425,6 +318,109 @@ uint32_t rtc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 	value &= (mask << bit);
 	value = (value >> bit);
 	return value;
+}
+// Auxiliar
+void STM32446PwrClock(void)
+{
+	RCC->APB1ENR |= (1 << 28); // Power interface clock enable
+}
+
+void STM32446RtcWriteEnable(void)
+{
+	PWR->CR |= (1 << 8);
+}
+
+void STM32446RtcWriteDisable(void)
+{
+	PWR->CR &= (uint32_t) ~(1 << 8);
+}
+
+void STM32446RtcRegUnlock(void)
+{
+	RTC->WPR |= RTC_KEY1;
+	RTC->WPR |= RTC_KEY2;
+}
+
+void STM32446RtcRegWrite(volatile uint32_t* rtc_reg, uint32_t value)
+{
+	RTC->ISR |= (1 << 7); // INIT
+	for( rtc_time_out = 100; !(RTC->ISR & (1 << 6)) && rtc_time_out; rtc_time_out-- ); // INITF: Initialisation flag
+	*rtc_reg = value;
+	RTC->ISR &= (uint32_t) ~(1 << 7);
+}
+
+void STM32446RtcReadStop(void)
+{
+	RTC->ISR &= ~(1 << 5);
+}
+
+void STM32446RtcReadWait(void)
+{ // Wait Data Ready
+	for(rtc_time_out = 200; !(RTC->ISR & (1 << 5)) && rtc_time_out; rtc_time_out--);
+}
+//RTC
+void STM32446RtcSetTr(uint32_t value)
+{
+	STM32446RtcWriteEnable();
+	STM32446RtcRegUnlock();
+	STM32446RtcRegWrite(&RTC->TR, value);
+	STM32446RtcWriteDisable();
+}
+
+void STM32446RtcSetDr(uint32_t value)
+{
+	STM32446RtcWriteEnable();
+	STM32446RtcRegUnlock();
+	STM32446RtcRegWrite(&RTC->DR, value);
+	STM32446RtcWriteDisable();
+}
+/*** COMMON ***/
+char rtc_bcd2dec(char num)
+{
+	return ((num / 16 * 10) + (num % 16));
+}
+
+char rtc_dec2bcd(char num)
+{
+	return ((num / 10 * 16) + (num % 10));
+}
+
+void rtc_lenable(unsigned int lclock)
+{
+	unsigned int set;
+	unsigned int rdy;
+	for( set = 1, rdy = 1; rdy ; ){
+		if(lclock == 2){ // LSION: Internal low-speed oscillator enable
+			if( set ){ RCC->CSR |= ( 1 << 0); set = 0; }else if( RCC->CSR & ( 1 << 1) ) rdy = 0;
+		}
+		else if(lclock == 1){ // LSEON: External low-speed oscillator enable
+			if( set ){ RCC->BDCR |= ( 1 << 0); set = 0; }else if( RCC->BDCR & ( 1 << 1) ) rdy = 0;
+		}
+		else if(lclock == 4){ // LSEBYP: External low-speed oscillator bypass
+			if( set ) RCC->BDCR |= ( 1 << 2 );
+			lclock = 1;
+		}
+		else lclock = 2; // default
+	}
+}
+
+void rtc_lselect(uint8_t lclock)
+{
+	RCC->BDCR &= (uint32_t) ~((1 << 9) | (1 << 8)); // RTCSEL[1:0]: RTC clock source selection
+	switch(lclock){
+		case 2:
+			RCC->BDCR |= (1 << 9); // LSI oscillator clock used as the RTC clock
+		break;
+		case 1:
+			RCC->BDCR |= (1 << 8); // LSE oscillator clock used as the RTC clock
+		break;
+		case 3:
+			RCC->BDCR |= ((1 << 8) | (1 << 9)); // HSE oscillator clock divided by a programmable prescaler
+		break;
+		default:
+			RCC->BDCR |= (1 << 9); // LSI oscillator clock used as the RTC clock
+		break;
+	}
 }
 
 /*** EOF ***/

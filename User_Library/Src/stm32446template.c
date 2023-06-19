@@ -19,6 +19,8 @@ void template_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 void template_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t template_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 
+/*** TEMPLATE Auxiliar ***/
+
 /*** TEMPLATE Procedure & Function Definition ***/
 STM32446TEMPLATE1 STM32446TEMPLATE1enable(void)
 {
