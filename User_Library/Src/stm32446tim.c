@@ -18,13 +18,13 @@ void tim_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 void tim_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
-STM32446TIM9_CR1 stm32446_tim9_cr1_inic(void);
-STM32446TIM9_SMCR stm32446_tim9_smcr_inic(void);
-STM32446TIM9_DIER stm32446_tim9_dier_inic(void);
-STM32446TIM9_SR stm32446_tim9_sr_inic(void);
-STM32446TIM9_EGR stm32446_tim9_egr_inic(void);
-STM32446TIM9_CCMR1 stm32446_tim9_ccmr1_inic(void);
-STM32446TIM9_CCER stm32446_tim9_ccer_inic(void);
+STM32446TIM_CR1 stm32446_tim9_cr1_inic(void);
+STM32446TIM_SMCR stm32446_tim9_smcr_inic(void);
+STM32446TIM_DIER stm32446_tim9_dier_inic(void);
+STM32446TIM_SR stm32446_tim9_sr_inic(void);
+STM32446TIM_EGR stm32446_tim9_egr_inic(void);
+STM32446TIM_CCMR1 stm32446_tim9_ccmr1_inic(void);
+STM32446TIM_CCER stm32446_tim9_ccer_inic(void);
 
 /*** TIMER Procedure & Function Definition ***/
 /*** TIM9 ***/
@@ -38,69 +38,56 @@ uint8_t STM32446Tim9_get_ckd(void)
 {
 	return tim_readreg(TIM9->CR1, 2, 8);
 }
-
 void STM32446Tim9_set_apre(uint8_t bool)
 {
 	tim_setreg(&TIM9->CR1, 1, 7, bool);
 }
-
 void STM32446Tim9_set_opm(uint8_t bool)
 {
 	tim_setreg(&TIM9->CR1, 1, 3, bool);
 }
-
 void STM32446Tim9_set_urs(uint8_t bool)
 {
 	tim_setreg(&TIM9->CR1, 1, 2, bool);
 }
-
 void STM32446Tim9_set_udis(uint8_t bool)
 {
 	tim_setreg(&TIM9->CR1, 1, 1, bool);
 }
-
 void STM32446Tim9_cen(uint8_t bool)
 {
 	tim_setreg(&TIM9->CR1, 1, 0, bool);
 }
-
 // SMCR
 void STM32446Tim9_msm(uint8_t bool)
 {
 	tim_setreg(&TIM9->SMCR, 1, 7, bool);
 }
-
-void STM32446Tim9_ts(uint8_t ts)
+void STM32446Tim9_ts(uint8_t value)
 {
-	tim_setreg(&TIM9->SMCR, 3, 4, ts);
+	tim_setreg(&TIM9->SMCR, 3, 4, value);
 }
-
-void STM32446Tim9_sms(uint8_t sms)
+void STM32446Tim9_sms(uint8_t value)
 {
-	tim_setreg(&TIM9->SMCR, 3, 0, sms);
+	tim_setreg(&TIM9->SMCR, 3, 0, value);
 }
-
 // DIER
 void STM32446Tim9_tie(uint8_t bool)
 {
 	tim_setreg(&TIM9->DIER, 1, 6, bool);
 }
-
 void STM32446Tim9_cc2ie(uint8_t bool)
 {
 	tim_setreg(&TIM9->DIER, 1, 2, bool);
 }
-
 void STM32446Tim9_cc1ie(uint8_t bool)
 {
 	tim_setreg(&TIM9->DIER, 1, 1, bool);
 }
-
 void STM32446Tim9_uie(uint8_t bool)
 {
 	tim_setreg(&TIM9->DIER, 1, 0, bool);
 }
-
 // SR
 uint8_t STM32446Tim9_cc2of(void)
 {
@@ -110,7 +97,6 @@ void STM32446Tim9_clear_cc2of(void)
 {
 	tim_setreg(&TIM9->SR, 1, 10, 0);
 }
-
 uint8_t STM32446Tim9_cc1of(void)
 {
 	return tim_readreg(TIM9->SR, 1, 9);
@@ -119,7 +105,6 @@ void STM32446Tim9_clear_cc1of(void)
 {
 	tim_setreg(&TIM9->SR, 1, 9, 0);
 }
-
 uint8_t STM32446Tim9_tif(void)
 {
 	return tim_readreg(TIM9->SR, 1, 6);
@@ -128,7 +113,6 @@ void STM32446Tim9_clear_tif(void)
 {
 	tim_setreg(&TIM9->SR, 1, 6, 0);
 }
-
 uint8_t STM32446Tim9_cc2if(void)
 {
 	return tim_readreg(TIM9->SR, 1, 2);
@@ -137,7 +121,6 @@ void STM32446Tim9_clear_cc2if(void)
 {
 	tim_setreg(&TIM9->SR, 1, 2, 0);
 }
-
 uint8_t STM32446Tim9_cc1if(void)
 {
 	return tim_readreg(TIM9->SR, 1, 1);
@@ -146,7 +129,6 @@ void STM32446Tim9_clear_cc1if(void)
 {
 	tim_setreg(&TIM9->SR, 1, 1, 0);
 }
-
 uint8_t STM32446Tim9_uif(void)
 {
 	return tim_readreg(TIM9->SR, 1, 0);
@@ -155,38 +137,32 @@ void STM32446Tim9_clear_uif(void)
 {
 	tim_setreg(&TIM9->SR, 1, 0, 0);
 }
-
 // EGR
 void STM32446Tim9_tg(void)
 {
 	tim_setreg(&TIM9->EGR, 1, 6, 1);
 }
-
 void STM32446Tim9_cc2g(void)
 {
 	tim_setreg(&TIM9->EGR, 1, 2, 1);
 }
-
 void STM32446Tim9_cc1g(void)
 {
 	tim_setreg(&TIM9->EGR, 1, 1, 1);
 }
-
 void STM32446Tim9_ug(void)
 {
 	tim_setreg(&TIM9->EGR, 1, 0, 1);
 }
-
 // CCMR1
-void STM32446Tim9_oc2m(uint8_t oc2m)
+void STM32446Tim9_oc2m(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 3, 12, oc2m);
+	tim_setreg(&TIM9->CCMR1, 3, 12, value);
 }
-void STM32446Tim9_ic2f(uint8_t ic2f)
+void STM32446Tim9_ic2f(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 4, 12, ic2f);
+	tim_setreg(&TIM9->CCMR1, 4, 12, value);
 }
-
 void STM32446Tim9_oc2pe(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCMR1, 1, 11, bool);
@@ -195,25 +171,22 @@ void STM32446Tim9_oc2fe(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCMR1, 1, 10, bool);
 }
-void STM32446Tim9_ic2psc(uint8_t ic2psc)
+void STM32446Tim9_ic2psc(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 2, 10, ic2psc);
+	tim_setreg(&TIM9->CCMR1, 2, 10, value);
 }
-
-void STM32446Tim9_cc2s(uint8_t cc2s)
+void STM32446Tim9_cc2s(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 2, 8, cc2s);
+	tim_setreg(&TIM9->CCMR1, 2, 8, value);
 }
-
-void STM32446Tim9_oc1m(uint8_t oc1m)
+void STM32446Tim9_oc1m(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 3, 4, oc1m);
+	tim_setreg(&TIM9->CCMR1, 3, 4, value);
 }
-void STM32446Tim9_ic1f(uint8_t ic1f)
+void STM32446Tim9_ic1f(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 4, 4, ic1f);
+	tim_setreg(&TIM9->CCMR1, 4, 4, value);
 }
-
 void STM32446Tim9_oc1pe(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCMR1, 1, 3, bool);
@@ -222,47 +195,39 @@ void STM32446Tim9_oc1fe(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCMR1, 1, 2, bool);
 }
-void STM32446Tim9_ic1psc(uint8_t ic1psc)
+void STM32446Tim9_ic1psc(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 2, 2, ic1psc);
+	tim_setreg(&TIM9->CCMR1, 2, 2, value);
 }
-
-void STM32446Tim9_cc1s(uint8_t cc1s)
+void STM32446Tim9_cc1s(uint8_t value)
 {
-	tim_setreg(&TIM9->CCMR1, 2, 0, cc1s);
+	tim_setreg(&TIM9->CCMR1, 2, 0, value);
 }
-
 // CCER
 void STM32446Tim9_cc2np(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCER, 1, 7, bool);
 }
-
 void STM32446Tim9_cc2p(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCER, 1, 5, bool);
 }
-
 void STM32446Tim9_cc2e(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCER, 1, 4, bool);
 }
-
 void STM32446Tim9_cc1np(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCER, 1, 3, bool);
 }
-
 void STM32446Tim9_cc1p(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCER, 1, 1, bool);
 }
-
 void STM32446Tim9_cc1e(uint8_t bool)
 {
 	tim_setreg(&TIM9->CCER, 1, 0, bool);
 }
-
 // CNT
 void STM32446Tim9_cnt(uint16_t value)
 {
@@ -272,34 +237,28 @@ uint16_t STM32446Tim9_get_cnt(void)
 {
 	return TIM9->CNT;
 }
-
 // ARR
 void STM32446Tim9_arr(uint16_t value)
 {
 	TIM9->ARR = value;
 }
-
 // CCR1
 void STM32446Tim9_ccr1(uint16_t value)
 {
 	TIM9->CCR1 = value;
 }
-
 // CCR2
 void STM32446Tim9_ccr2(uint16_t value)
 {
 	TIM9->CCR2 = value;
 }
-
 // PSC
 void STM32446Tim9_psc(uint16_t value)
 {
 	TIM9->PSC = value;
 }
-
 /*** TIM 10 ***/
 // Future Implementation
-
 /*** INIC Procedure & Function Definition ***/
 STM32446TIM1obj tim1_inic(void)
 {
@@ -350,9 +309,9 @@ STM32446TIM8obj tim8_inic(void)
 	return stm32446_tim8;
 }
 /*** TIM9 Auxiliar ***/
-STM32446TIM9_CR1 stm32446_tim9_cr1_inic(void)
+STM32446TIM_CR1 stm32446_tim9_cr1_inic(void)
 {
-	STM32446TIM9_CR1 stm32446_tim9_cr1;
+	STM32446TIM_CR1 stm32446_tim9_cr1;
 	// CR1
 	stm32446_tim9_cr1.get_ckd = STM32446Tim9_get_ckd;
 	stm32446_tim9_cr1.apre = STM32446Tim9_set_apre;
@@ -362,18 +321,18 @@ STM32446TIM9_CR1 stm32446_tim9_cr1_inic(void)
 	stm32446_tim9_cr1.cen = STM32446Tim9_cen;
 	return stm32446_tim9_cr1;
 }
-STM32446TIM9_SMCR stm32446_tim9_smcr_inic(void)
+STM32446TIM_SMCR stm32446_tim9_smcr_inic(void)
 {
-	STM32446TIM9_SMCR stm32446_tim9_smcr;
+	STM32446TIM_SMCR stm32446_tim9_smcr;
 	// SMCR
 	stm32446_tim9_smcr.msm = STM32446Tim9_msm;
 	stm32446_tim9_smcr.ts = STM32446Tim9_ts;
 	stm32446_tim9_smcr.sms = STM32446Tim9_sms;
 	return stm32446_tim9_smcr;
 }
-STM32446TIM9_DIER stm32446_tim9_dier_inic(void)
+STM32446TIM_DIER stm32446_tim9_dier_inic(void)
 {
-	STM32446TIM9_DIER stm32446_tim9_dier;
+	STM32446TIM_DIER stm32446_tim9_dier;
 	// DIER
 	stm32446_tim9_dier.tie = STM32446Tim9_tie;
 	stm32446_tim9_dier.cc2ie = STM32446Tim9_cc2ie;
@@ -381,9 +340,9 @@ STM32446TIM9_DIER stm32446_tim9_dier_inic(void)
 	stm32446_tim9_dier.uie = STM32446Tim9_uie;
 	return stm32446_tim9_dier;
 }
-STM32446TIM9_SR stm32446_tim9_sr_inic(void)
+STM32446TIM_SR stm32446_tim9_sr_inic(void)
 {
-	STM32446TIM9_SR stm32446_tim9_sr;
+	STM32446TIM_SR stm32446_tim9_sr;
 	// SR
 	stm32446_tim9_sr.cc2of = STM32446Tim9_cc2of;
 	stm32446_tim9_sr.clear_cc2of = STM32446Tim9_clear_cc2of;
@@ -399,9 +358,9 @@ STM32446TIM9_SR stm32446_tim9_sr_inic(void)
 	stm32446_tim9_sr.clear_uif = STM32446Tim9_clear_uif;
 	return stm32446_tim9_sr;
 }
-STM32446TIM9_EGR stm32446_tim9_egr_inic(void)
+STM32446TIM_EGR stm32446_tim9_egr_inic(void)
 {
-	STM32446TIM9_EGR stm32446_tim9_egr;
+	STM32446TIM_EGR stm32446_tim9_egr;
 	// EGR
 	stm32446_tim9_egr.tg = STM32446Tim9_tg;
 	stm32446_tim9_egr.cc2g = STM32446Tim9_cc2g;
@@ -409,9 +368,9 @@ STM32446TIM9_EGR stm32446_tim9_egr_inic(void)
 	stm32446_tim9_egr.ug = STM32446Tim9_ug;
 	return stm32446_tim9_egr;
 }
-STM32446TIM9_CCMR1 stm32446_tim9_ccmr1_inic(void)
+STM32446TIM_CCMR1 stm32446_tim9_ccmr1_inic(void)
 {
-	STM32446TIM9_CCMR1 stm32446_tim9_ccmr1;
+	STM32446TIM_CCMR1 stm32446_tim9_ccmr1;
 	// CCMR1
 	stm32446_tim9_ccmr1.oc2m = STM32446Tim9_oc2m;
 	stm32446_tim9_ccmr1.ic2f = STM32446Tim9_ic2f;
@@ -427,9 +386,9 @@ STM32446TIM9_CCMR1 stm32446_tim9_ccmr1_inic(void)
 	stm32446_tim9_ccmr1.cc1s = STM32446Tim9_cc1s;
 	return stm32446_tim9_ccmr1;
 }
-STM32446TIM9_CCER stm32446_tim9_ccer_inic(void)
+STM32446TIM_CCER stm32446_tim9_ccer_inic(void)
 {
-	STM32446TIM9_CCER stm32446_tim9_ccer;
+	STM32446TIM_CCER stm32446_tim9_ccer;
 	// CCER
 	stm32446_tim9_ccer.cc2np = STM32446Tim9_cc2np;
 	stm32446_tim9_ccer.cc2p = STM32446Tim9_cc2p;
@@ -492,7 +451,6 @@ STM32446TIM14obj tim14_inic(void)
 	stm32446_tim14.reg = TIM14;
 	return stm32446_tim14;
 }
-
 /*** File Procedure & Function Definition***/
 uint32_t tim_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
@@ -546,5 +504,16 @@ uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 // void TIM1_BRK_TIM9_IRQHandler(void){ // receive interrupt flags }
 
 /*** EOF ***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

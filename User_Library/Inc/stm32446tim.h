@@ -12,68 +12,142 @@ Comment:
 	#define _STM32446TIM_H_
 /*** Library ***/
 #include <inttypes.h>
-/*** TIMER9_Common Bit Mapping TypeDef ***/
+/*** TIMER Bit Mapping TypeDef ***/
 typedef struct{
+	void (*ckd)(uint8_t value);
 	uint8_t (*get_ckd)(void);
 	void (*apre)(uint8_t bool);
+	void (*cms)(uint8_t value);
+	void (*dir)(uint8_t bool);
 	void (*opm)(uint8_t bool);
 	void (*urs)(uint8_t bool);
 	void (*udis)(uint8_t bool);
 	void (*cen)(uint8_t bool);
-}STM32446TIM9_CR1;
+}STM32446TIM_CR1;
 typedef struct{
+	void (*ois4)(uint8_t bool);
+	void (*ois3n)(uint8_t bool);
+	void (*ois3)(uint8_t bool);
+	void (*ois2n)(uint8_t bool);
+	void (*ois2)(uint8_t bool);
+	void (*ois1n)(uint8_t bool);
+	void (*ois1)(uint8_t bool);
+	void (*ti1s)(uint8_t bool);
+	void (*mms)(uint8_t value);
+	void (*ccds)(uint8_t bool);
+	void (*ccus)(uint8_t bool);
+	void (*ccpc)(uint8_t bool);
+}STM32446TIM_CR2;
+typedef struct{
+	void (*etp)(uint8_t bool);
+	void (*ece)(uint8_t bool);
+	void (*etps)(uint8_t value);
+	void (*etf)(uint8_t value);
 	void (*msm)(uint8_t bool);
-	void (*ts)(uint8_t ts);
-	void (*sms)(uint8_t sms);
-}STM32446TIM9_SMCR;
+	void (*ts)(uint8_t value);
+	void (*sms)(uint8_t value);
+}STM32446TIM_SMCR;
 typedef struct{
+	void (*tde)(uint8_t bool);
+	void (*comde)(uint8_t bool);
+	void (*cc4de)(uint8_t bool);
+	void (*cc3de)(uint8_t bool);
+	void (*cc2de)(uint8_t bool);
+	void (*cc1de)(uint8_t bool);
+	void (*ude)(uint8_t bool);
+	void (*bie)(uint8_t bool);
 	void (*tie)(uint8_t bool);
+	void (*comie)(uint8_t bool);
+	void (*cc4ie)(uint8_t bool);
+	void (*cc3ie)(uint8_t bool);
 	void (*cc2ie)(uint8_t bool);
 	void (*cc1ie)(uint8_t bool);
 	void (*uie)(uint8_t bool);
-}STM32446TIM9_DIER;
+}STM32446TIM_DIER;
 typedef struct{
+	uint8_t (*cc4of)(void);
+	void (*clear_cc4of)(void);
+	uint8_t (*cc3of)(void);
+	void (*clear_cc3of)(void);
 	uint8_t (*cc2of)(void);
 	void (*clear_cc2of)(void);
 	uint8_t (*cc1of)(void);
 	void (*clear_cc1of)(void);
+	uint8_t (*bif)(void);
+	void (*clear_bif)(void);
 	uint8_t (*tif)(void);
 	void (*clear_tif)(void);
+	uint8_t (*comif)(void);
+	void (*clear_comif)(void);
+	uint8_t (*cc4if)(void);
+	void (*clear_cc4if)(void);
+	uint8_t (*cc3if)(void);
+	void (*clear_cc3if)(void);
 	uint8_t (*cc2if)(void);
 	void (*clear_cc2if)(void);
 	uint8_t (*cc1if)(void);
 	void (*clear_cc1if)(void);
 	uint8_t (*uif)(void);
 	void (*clear_uif)(void);
-}STM32446TIM9_SR;
+}STM32446TIM_SR;
 typedef struct{
+	void (*bg)(void);
 	void (*tg)(void);
+	void (*comg)(void);
+	void (*cc4g)(void);
+	void (*cc3g)(void);
 	void (*cc2g)(void);
 	void (*cc1g)(void);
 	void (*ug)(void);
-}STM32446TIM9_EGR;
+}STM32446TIM_EGR;
 typedef struct{
-	void (*oc2m)(uint8_t oc2m);
-	void (*ic2f)(uint8_t ic2f);
+	void (*oc2ce)(uint8_t bool);
+	void (*oc2m)(uint8_t value);
+	void (*ic2f)(uint8_t value);
 	void (*oc2pe)(uint8_t bool);
 	void (*oc2fe)(uint8_t bool);
-	void (*ic2psc)(uint8_t ic2psc);
-	void (*cc2s)(uint8_t cc2s);
-	void (*oc1m)(uint8_t oc1m);
-	void (*ic1f)(uint8_t ic1f);
+	void (*ic2psc)(uint8_t value);
+	void (*cc2s)(uint8_t value);
+	void (*oc1ce)(uint8_t bool);
+	void (*oc1m)(uint8_t value);
+	void (*ic1f)(uint8_t value);
 	void (*oc1pe)(uint8_t bool);
 	void (*oc1fe)(uint8_t bool);
-	void (*ic1psc)(uint8_t ic1psc);
-	void (*cc1s)(uint8_t cc1s);
-}STM32446TIM9_CCMR1;
+	void (*ic1psc)(uint8_t value);
+	void (*cc1s)(uint8_t value);
+}STM32446TIM_CCMR1;
 typedef struct{
+	void (*oc4ce)(uint8_t bool);
+	void (*oc4m)(uint8_t value);
+	void (*ic4f)(uint8_t value);
+	void (*oc4pe)(uint8_t bool);
+	void (*oc4fe)(uint8_t bool);
+	void (*ic4psc)(uint8_t value);
+	void (*cc4s)(uint8_t value);
+	void (*oc3ce)(uint8_t bool);
+	void (*oc3m)(uint8_t value);
+	void (*ic3f)(uint8_t value);
+	void (*oc3pe)(uint8_t bool);
+	void (*oc3fe)(uint8_t bool);
+	void (*ic3psc)(uint8_t value);
+	void (*cc3s)(uint8_t value);
+}STM32446TIM_CCMR2;
+typedef struct{
+	void (*cc4p)(uint8_t bool);
+	void (*cc4e)(uint8_t bool);
+	void (*cc3np)(uint8_t bool);
+	void (*cc3ne)(uint8_t bool);
+	void (*cc3p)(uint8_t bool);
+	void (*cc3e)(uint8_t bool);
 	void (*cc2np)(uint8_t bool);
+	void (*cc2ne)(uint8_t bool);
 	void (*cc2p)(uint8_t bool);
 	void (*cc2e)(uint8_t bool);
 	void (*cc1np)(uint8_t bool);
+	void (*cc1ne)(uint8_t bool);
 	void (*cc1p)(uint8_t bool);
 	void (*cc1e)(uint8_t bool);
-}STM32446TIM9_CCER;
+}STM32446TIM_CCER;
 /*** TIMER TypeDef***/
 // TIM -> TIM1
 typedef struct
@@ -120,13 +194,13 @@ typedef struct
 {
 	TIM_TypeDef* reg;
 	/*** Bit Mapping ***/
-	STM32446TIM9_CR1 cr1;
-	STM32446TIM9_SMCR smcr;
-	STM32446TIM9_DIER dier;
-	STM32446TIM9_SR sr;
-	STM32446TIM9_EGR egr;
-	STM32446TIM9_CCMR1 ccmr1;
-	STM32446TIM9_CCER ccer;
+	STM32446TIM_CR1 cr1;
+	STM32446TIM_SMCR smcr;
+	STM32446TIM_DIER dier;
+	STM32446TIM_SR sr;
+	STM32446TIM_EGR egr;
+	STM32446TIM_CCMR1 ccmr1;
+	STM32446TIM_CCER ccer;
 	void (*cnt)(uint16_t value);
 	uint16_t (*get_cnt)(void);
 	void (*arr)(uint16_t value);
@@ -161,6 +235,7 @@ typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM14obj;
+// INIC
 STM32446TIM1obj tim1_inic(void);
 STM32446TIM2obj tim2_inic(void);
 STM32446TIM3obj tim3_inic(void);
@@ -188,8 +263,8 @@ void STM32446Tim9_set_udis(uint8_t bool);
 void STM32446Tim9_cen(uint8_t bool);
 // SMCR
 void STM32446Tim9_msm(uint8_t bool);
-void STM32446Tim9_ts(uint8_t ts);
-void STM32446Tim9_sms(uint8_t sms);
+void STM32446Tim9_ts(uint8_t value);
+void STM32446Tim9_sms(uint8_t value);
 // DIER
 void STM32446Tim9_tie(uint8_t bool);
 void STM32446Tim9_cc2ie(uint8_t bool);
@@ -214,18 +289,18 @@ void STM32446Tim9_cc2g(void);
 void STM32446Tim9_cc1g(void);
 void STM32446Tim9_ug(void);
 // CCMR1
-void STM32446Tim9_oc2m(uint8_t oc2m);
-void STM32446Tim9_ic2f(uint8_t ic2f);
+void STM32446Tim9_oc2m(uint8_t value);
+void STM32446Tim9_ic2f(uint8_t value);
 void STM32446Tim9_oc2pe(uint8_t bool);
 void STM32446Tim9_oc2fe(uint8_t bool);
-void STM32446Tim9_ic2psc(uint8_t ic2psc);
-void STM32446Tim9_cc2s(uint8_t cc2s);
-void STM32446Tim9_oc1m(uint8_t oc1m);
-void STM32446Tim9_ic1f(uint8_t ic1f);
+void STM32446Tim9_ic2psc(uint8_t value);
+void STM32446Tim9_cc2s(uint8_t value);
+void STM32446Tim9_oc1m(uint8_t value);
+void STM32446Tim9_ic1f(uint8_t value);
 void STM32446Tim9_oc1pe(uint8_t bool);
 void STM32446Tim9_oc1fe(uint8_t bool);
-void STM32446Tim9_ic1psc(uint8_t ic1psc);
-void STM32446Tim9_cc1s(uint8_t cc1s);
+void STM32446Tim9_ic1psc(uint8_t value);
+void STM32446Tim9_cc1s(uint8_t value);
 // CCER
 void STM32446Tim9_cc2np(uint8_t bool);
 void STM32446Tim9_cc2p(uint8_t bool);
