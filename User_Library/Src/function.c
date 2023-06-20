@@ -647,16 +647,13 @@ uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t
 {
 	nen[3] = 0;
 
-	switch(nen[0]){ // Start value
+	switch( nen[0] ){ // Start value
 		case 0:
-			if(hl_io & (1 << pin)){ nen[1] = counter; nen[0] = 1; }
+			if( hl_io & (1 << pin) ){ nen[1] = counter; nen[2] = 0; nen[0] = 1; }
 		break;
 		case 1:
-			nen[2] = counter;
-			if(lh_io & (1 << pin)){
-				if(nen[2] > nen[1]){ nen[3] = nen[2] - nen[1]; nen[0] = 0; }
-				else{ nen[1] = 0; nen[3] = nen[2] - nen[1]; nen[0] = 0; }
-			}
+			if( counter != nen[1] ){ nen[2]++; nen[1] = counter; }
+			if( lh_io & (1 << pin) ){ nen[3] = nen[2]; nen[0] = 0; }
 		break;
 		default:
 		break;
@@ -664,7 +661,7 @@ uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t
 	return nen[3];
 }
 
-uint32_t read_value(void){ return (nen[2]-nen[1]);}
+uint32_t read_value(void){ return nen[2];}
 
 
 /*** COMMON ***/
