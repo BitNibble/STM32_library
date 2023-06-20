@@ -30,6 +30,25 @@ STM32446ADC_SQR1 stm32446_adc1_sqr1_inic(void);
 STM32446ADC_SQR2 stm32446_adc1_sqr2_inic(void);
 STM32446ADC_SQR3 stm32446_adc1_sqr3_inic(void);
 STM32446ADC_JSQR stm32446_adc1_jsqr_inic(void);
+STM32446ADC1single stm32446_adc1_single_inic(void);
+STM32446ADC_SR stm32446_adc2_sr_inic(void);
+STM32446ADC_CR1 stm32446_adc2_cr1_inic(void);
+STM32446ADC_CR2 stm32446_adc2_cr2_inic(void);
+STM32446ADC_SMPR1 stm32446_adc2_smpr1_inic(void);
+STM32446ADC_SMPR2 stm32446_adc2_smpr2_inic(void);
+STM32446ADC_SQR1 stm32446_adc2_sqr1_inic(void);
+STM32446ADC_SQR2 stm32446_adc2_sqr2_inic(void);
+STM32446ADC_SQR3 stm32446_adc2_sqr3_inic(void);
+STM32446ADC_JSQR stm32446_adc2_jsqr_inic(void);
+STM32446ADC_SR stm32446_adc3_sr_inic(void);
+STM32446ADC_CR1 stm32446_adc3_cr1_inic(void);
+STM32446ADC_CR2 stm32446_adc3_cr2_inic(void);
+STM32446ADC_SMPR1 stm32446_adc3_smpr1_inic(void);
+STM32446ADC_SMPR2 stm32446_adc3_smpr2_inic(void);
+STM32446ADC_SQR1 stm32446_adc3_sqr1_inic(void);
+STM32446ADC_SQR2 stm32446_adc3_sqr2_inic(void);
+STM32446ADC_SQR3 stm32446_adc3_sqr3_inic(void);
+STM32446ADC_JSQR stm32446_adc3_jsqr_inic(void);
 STM32446ADC_CSR stm32446_adc_common_csr_inic(void);
 STM32446ADC_CCR stm32446_adc_common_ccr_inic(void);
 STM32446ADCCOMMONobj stm32446_adc_common_inic(void);
@@ -482,6 +501,18 @@ void STM32446Adc1Restart(void)
 void STM32446Adc1Stop(void)
 {
 	ADC1->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
+}
+STM32446ADC1single stm32446_adc1_single_inic(void)
+{
+	STM32446ADC1single stm32446_adc1_single;
+	stm32446_adc1_single.inic = STM32446Adc1Inic;
+	stm32446_adc1_single.vbat = STM32446Adc1VBAT;
+	stm32446_adc1_single.temp = STM32446Adc1TEMP;
+	stm32446_adc1_single.start = STM32446Adc1Start;
+	stm32446_adc1_single.read = STM32446Adc1Read;
+	stm32446_adc1_single.restart = STM32446Adc1Restart;
+	stm32446_adc1_single.stop = STM32446Adc1Stop;
+	return stm32446_adc1_single;
 }
 /*** ADC2 Bit Mapping ***/
 // SR
@@ -1612,13 +1643,7 @@ STM32446ADC1obj adc1_inic(void)
 	stm32446_adc1.dr = STM32446ADC1_dr;
 	stm32446_adc1.common = stm32446_adc_common_inic();
 	/*** Other ***/
-	stm32446_adc1.single.inic = STM32446Adc1Inic;
-	stm32446_adc1.single.vbat = STM32446Adc1VBAT;
-	stm32446_adc1.single.temp = STM32446Adc1TEMP;
-	stm32446_adc1.single.start = STM32446Adc1Start;
-	stm32446_adc1.single.read = STM32446Adc1Read;
-	stm32446_adc1.single.restart = STM32446Adc1Restart;
-	stm32446_adc1.single.stop = STM32446Adc1Stop;
+	stm32446_adc1.single = stm32446_adc1_single_inic();
 	stm32446_adc1.clock = STM32446Adc1Clock;
 	return stm32446_adc1;
 }
