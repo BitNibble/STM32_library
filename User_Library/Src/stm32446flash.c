@@ -4,14 +4,13 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 13062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
 #include "stm32446flash.h"
-
 /*** File Procedure & Function Header ***/
 uint32_t flash_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
 void flash_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
@@ -22,7 +21,6 @@ STM32446FLASH_acr stm32446_flash_acr_inic(void);
 STM32446FLASH_sr stm32446_flash_sr_inic(void);
 STM32446FLASH_cr stm32446_flash_cr_inic(void);
 STM32446FLASH_optcr stm32446_flash_optcr_inic(void);
-
 /*** FLASH Bit Mapping ***/
 // ACR
 void STM32446FLASH_acr_dcrst(uint8_t bool)
@@ -284,7 +282,6 @@ STM32446FLASHobj flash_inic(void)
 
 	return stm32446_flash;
 }
-
 /*** File Procedure & Function Definition ***/
 uint32_t flash_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
@@ -295,7 +292,6 @@ uint32_t flash_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void flash_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -305,7 +301,6 @@ void flash_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, u
 	value = (value << bit);
 	*reg = value;
 }
-
 void flash_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -315,7 +310,6 @@ void flash_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void flash_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -326,7 +320,6 @@ void flash_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t flash_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -340,5 +333,15 @@ uint32_t flash_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t b
 
 /*** EOF ***/
 
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

@@ -4,16 +4,14 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 #ifndef _STM32446TIM_H_
 	#define _STM32446TIM_H_
-
 /*** Library ***/
 #include <inttypes.h>
-
 /*** TIMER9_Common Bit Mapping TypeDef ***/
 typedef struct{
 	uint8_t (*get_ckd)(void);
@@ -23,20 +21,17 @@ typedef struct{
 	void (*udis)(uint8_t bool);
 	void (*cen)(uint8_t bool);
 }STM32446TIM9_CR1;
-
 typedef struct{
 	void (*msm)(uint8_t bool);
 	void (*ts)(uint8_t ts);
 	void (*sms)(uint8_t sms);
 }STM32446TIM9_SMCR;
-
 typedef struct{
 	void (*tie)(uint8_t bool);
 	void (*cc2ie)(uint8_t bool);
 	void (*cc1ie)(uint8_t bool);
 	void (*uie)(uint8_t bool);
 }STM32446TIM9_DIER;
-
 typedef struct{
 	uint8_t (*cc2of)(void);
 	void (*clear_cc2of)(void);
@@ -51,14 +46,12 @@ typedef struct{
 	uint8_t (*uif)(void);
 	void (*clear_uif)(void);
 }STM32446TIM9_SR;
-
 typedef struct{
 	void (*tg)(void);
 	void (*cc2g)(void);
 	void (*cc1g)(void);
 	void (*ug)(void);
 }STM32446TIM9_EGR;
-
 typedef struct{
 	void (*oc2m)(uint8_t oc2m);
 	void (*ic2f)(uint8_t ic2f);
@@ -73,7 +66,6 @@ typedef struct{
 	void (*ic1psc)(uint8_t ic1psc);
 	void (*cc1s)(uint8_t cc1s);
 }STM32446TIM9_CCMR1;
-
 typedef struct{
 	void (*cc2np)(uint8_t bool);
 	void (*cc2p)(uint8_t bool);
@@ -82,56 +74,47 @@ typedef struct{
 	void (*cc1p)(uint8_t bool);
 	void (*cc1e)(uint8_t bool);
 }STM32446TIM9_CCER;
-
 /*** TIMER TypeDef***/
 // TIM -> TIM1
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM1obj;
-
 // TIM -> TIM2
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM2obj;
-
 // TIM -> TIM3
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM3obj;
-
 // TIM -> TIM4
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM4obj;
-
 // TIM -> TIM5
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM5obj;
-
 // TIM -> TIM6
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM6obj;
-
 // TIM -> TIM7
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM7obj;
-
 // TIM -> TIM8
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM8obj;
-
 // TIM -> TIM9
 typedef struct
 {
@@ -152,40 +135,32 @@ typedef struct
 	void (*psc)(uint16_t value);
 	/*** Other ***/
 	void (*clock)(void);
-	void (*inic)(void);
-	void (*nvict1t9)(void); // IRQ24
 }STM32446TIM9obj;
-
 // TIM -> TIM10
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM10obj;
-
 // TIM -> TIM11
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM11obj;
-
 // TIM -> TIM12
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM12obj;
-
 // TIM -> TIM13
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM13obj;
-
 // TIM -> TIM14
 typedef struct
 {
 	TIM_TypeDef* reg;
 }STM32446TIM14obj;
-
 STM32446TIM1obj tim1_inic(void);
 STM32446TIM2obj tim2_inic(void);
 STM32446TIM3obj tim3_inic(void);
@@ -200,14 +175,9 @@ STM32446TIM11obj tim11_inic(void);
 STM32446TIM12obj tim12_inic(void);
 STM32446TIM13obj tim13_inic(void);
 STM32446TIM14obj tim14_inic(void);
-
 /*** TIM9 Procedure & Function Header ***/
 // CLOCK
 void STM32446Tim9Clock(void);
-// INIC
-void STM32446Tim9Inic(void);
-// INTERRUPT
-void STM32446Tim9EnableInterrupt(void);
 /*** TIM9 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim9_get_ckd(void);

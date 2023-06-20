@@ -4,16 +4,14 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 11062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 #ifndef _STM32446PWR_H_
 	#define _STM32446PWR_H_
-
 /*** Library ***/
 #include <inttypes.h>
-
 /*** PWR Bit Mapping TypeDef ***/
 // CR
 typedef struct
@@ -54,8 +52,6 @@ typedef struct
 	uint8_t (*wuf)(void);
 }STM32446PWR_csr;
 
-/*** PWR_Common TypeDef ***/
-
 /*** PWR TypeDef ***/
 typedef struct
 {
@@ -64,12 +60,9 @@ typedef struct
 	STM32446PWR_cr cr;
 	STM32446PWR_csr csr;
 	/*** Other ***/
-
 }STM32446PWRobj;
 
 STM32446PWRobj pwr_inic(void);
-
-/***** PWR Procedure & Function Header ******/
 
 /*** PWR Bit Mapping Header ***/
 // CR

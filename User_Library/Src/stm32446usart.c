@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
@@ -12,8 +12,12 @@ Comment:
 #include "stm32446mapping.h"
 #include "stm32446usart.h"
 #include <math.h>
-
 /*** File Procedure & Function Header ***/
+uint32_t usart_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
+void usart_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+void usart_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
+uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 uint32_t usart_getclocksource(void);
 uint32_t usart_gethpre(void);
 uint32_t usart_getpllm(void);
@@ -21,11 +25,6 @@ uint32_t usart_getplln(void);
 uint32_t usart_getpllp(void);
 uint32_t usart_getpllr(void);
 uint32_t usart_getsysclk(void);
-uint32_t usart_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
-void usart_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-void usart_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
-uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 STM32446USART_SR stm32446_usart1_sr_inic(void);
 STM32446USART_BRR stm32446_usart1_brr_inic(void);
 STM32446USART_CR1 stm32446_usart1_cr1_inic(void);
@@ -62,81 +61,23 @@ STM32446USART_CR1 stm32446_usart6_cr1_inic(void);
 STM32446USART_CR2 stm32446_usart6_cr2_inic(void);
 STM32446USART_CR3 stm32446_usart6_cr3_inic(void);
 STM32446USART_GTPR stm32446_usart6_gtpr_inic(void);
-
 /*** USART Procedure & Function Definition ***/
 /*** USART1 ***/
 void STM32446Usart1Clock( void )
 {
 	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
 }
-
-void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
-{
-	// RCC
-	//STM32446Usart1Enable();
-	// RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
-	// Choose GPIO
-	// PA9 - TX		PA10 - RX
-	// PA11 - CTS		PA12 - RTS
-	// AF7 and AF8, activation. therefore
-	usart_setbit(&GPIOA->MODER, 2, 2*9, 2); // Select Alternate Function Pin
-	usart_setbit(&GPIOA->MODER, 2, 2*10, 2);
-	usart_setbit(GPIOA->AFR, 4, 4*9, 7); // Select Alternate Function to be Used [SPI2/3, USART1..3, UART5, SPDIF-IN]
-	usart_setbit(GPIOA->AFR, 4, 4*10, 7);
-	//	Procedure:
-	// 1. Enable the USART by writing the UE bit in USART_CR1 register to 1.
-	// 2. Program the M bit in USART_CR1 to define the word length.
-	// 3. Program the number of stop bits in USART_CR2.
-	// 4. Select DMA enable (DMAT) in USART_CR3 if Multi buffer Communication is to take
-	//   place. Configure the DMA register as explained in multibuffer communication.
-	// 5. Select the desired baud rate using the USART_BRR register.
-
-	USART1->CR1 |= (1 << 13); // UE: USART enable
-	STM32446Usart1Parameter( wordlength, samplingmode, stopbits, baudrate ); // Default
-}
-
-void STM32446Usart1Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in USART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the USART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the USART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	USART1->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	USART1->CR1 |= (1 << 3); // TE: Transmitter enable
-	// USART1->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; USART1->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// USART1->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-	USART1->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Usart1Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register USART_BRR
-	// 6.	Set the RE bit USART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	USART1->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	USART1->CR1 |= (1 << 2); // RE: Receiver enable
-	USART1->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
 {
 	uint8_t sampling;
 	double value, fracpart, intpart;
-
 	if(wordlength == 9)
 		USART1->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
 	else if(wordlength == 8)
 		USART1->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
 	else
 		USART1->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-
 	if(samplingmode == 8){
 		sampling = 8;
 		USART1->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
@@ -147,7 +88,6 @@ void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		sampling = 16;
 		USART1->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
 	}
-
 	USART1->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
 	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
 		USART1->CR2 |= (1 << 12);
@@ -157,10 +97,8 @@ void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART1->CR2 |= ((1 << 13) | (1 << 12));
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART1->CR2 |= (1 << 13);
-
 	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
-
 	USART1->BRR = 0; // clean slate, reset.
 	if(samplingmode == 16){
 		USART1->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
@@ -173,12 +111,6 @@ void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART1->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
 	}
 }
-
-void STM32446Usart1Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	USART1->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-}
-
 /*** USART 1 Bit Mapping ***/
 // SR
 uint8_t STM32446Usart1_cts(void)
@@ -237,7 +169,6 @@ uint8_t STM32446Usart1_pe(void)
 {
 	return usart_readreg(USART1->SR, 1, 0);
 }
-
 // DR
 void STM32446Usart1_dr(uint32_t data)
 {
@@ -247,7 +178,6 @@ uint32_t STM32446Usart1_get_dr(void)
 {
 	return usart_readreg(USART1->DR, 9, 0);
 }
-
 // BRR
 void STM32446Usart1_div_mantissa(uint16_t value)
 {
@@ -257,7 +187,6 @@ void STM32446Usart1_div_fraction(uint8_t value)
 {
 	usart_setreg(&USART1->BRR, 4, 0, value);
 }
-
 // CR1
 void STM32446Usart1_over8(uint8_t bool)
 {
@@ -319,7 +248,6 @@ void STM32446Usart1_sbk(uint8_t bool)
 {
 	usart_setreg(&USART1->CR1, 1, 0, bool);
 }
-
 // CR2
 void STM32446Usart1_linen(uint8_t bool)
 {
@@ -358,7 +286,6 @@ void STM32446Usart1_add(uint8_t value)
 {
 	usart_setreg(&USART1->CR2, 4, 0, value);
 }
-
 // CR3
 void STM32446Usart1_onebit(uint8_t bool)
 {
@@ -408,7 +335,6 @@ void STM32446Usart1_eie(uint8_t bool)
 {
 	usart_setreg(&USART1->CR3, 1, 0, bool);
 }
-
 // GTPR
 void STM32446Usart1_gt(uint8_t value)
 {
@@ -418,55 +344,22 @@ void STM32446Usart1_psc(uint8_t value)
 {
 	usart_setreg(&USART1->GTPR, 8, 0, value);
 }
-
 /*** USART2 ***/
 void STM32446Usart2Clock( void )
 {
 	RCC->APB1ENR |= (1 << 17); // USART2EN: USART2 clock enable
 }
-
-void STM32446Usart2Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in USART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the USART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the USART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	USART2->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	USART2->CR1 |= (1 << 3); // TE: Transmitter enable
-	// USART2->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; USART2->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// USART2->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-	USART2->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Usart2Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register USART_BRR
-	// 6.	Set the RE bit USART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	USART2->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	USART2->CR1 |= (1 << 2); // RE: Receiver enable
-	USART2->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
 void STM32446Usart2Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
 {
 	uint8_t sampling;
 	double value, fracpart, intpart;
-
 	if(wordlength == 9)
 		USART2->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
 	else if(wordlength == 8)
 		USART2->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
 	else
 		USART2->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-
 	if(samplingmode == 8){
 		sampling = 8;
 		USART2->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
@@ -477,7 +370,6 @@ void STM32446Usart2Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		sampling = 16;
 		USART2->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
 	}
-
 	USART2->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
 	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
 		USART2->CR2 |= (1 << 12);
@@ -487,10 +379,8 @@ void STM32446Usart2Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART2->CR2 |= ((1 << 13) | (1 << 12));
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART2->CR2 |= (1 << 13);
-
 	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
-
 	USART2->BRR = 0; // clean slate, reset.
 	if(samplingmode == 16){
 		USART2->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
@@ -503,12 +393,6 @@ void STM32446Usart2Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART2->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
 	}
 }
-
-void STM32446Usart2Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	USART2->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-}
-
 /*** USART 2 Bit Mapping ***/
 // SR
 uint8_t STM32446Usart2_cts(void)
@@ -567,7 +451,6 @@ uint8_t STM32446Usart2_pe(void)
 {
 	return usart_readreg(USART2->SR, 1, 0);
 }
-
 // DR
 void STM32446Usart2_dr(uint32_t data)
 {
@@ -577,7 +460,6 @@ uint32_t STM32446Usart2_get_dr(void)
 {
 	return usart_readreg(USART2->DR, 9, 0);
 }
-
 // BRR
 void STM32446Usart2_div_mantissa(uint16_t value)
 {
@@ -587,7 +469,6 @@ void STM32446Usart2_div_fraction(uint8_t value)
 {
 	usart_setreg(&USART2->BRR, 4, 0, value);
 }
-
 // CR1
 void STM32446Usart2_over8(uint8_t bool)
 {
@@ -649,7 +530,6 @@ void STM32446Usart2_sbk(uint8_t bool)
 {
 	usart_setreg(&USART2->CR1, 1, 0, bool);
 }
-
 // CR2
 void STM32446Usart2_linen(uint8_t bool)
 {
@@ -687,7 +567,6 @@ void STM32446Usart2_add(uint8_t value)
 {
 	usart_setreg(&USART2->CR2, 4, 0, value);
 }
-
 // CR3
 void STM32446Usart2_onebit(uint8_t bool)
 {
@@ -737,7 +616,6 @@ void STM32446Usart2_eie(uint8_t bool)
 {
 	usart_setreg(&USART2->CR3, 1, 0, bool);
 }
-
 // GTPR
 void STM32446Usart2_gt(uint8_t value)
 {
@@ -747,55 +625,22 @@ void STM32446Usart2_psc(uint8_t value)
 {
 	usart_setreg(&USART2->GTPR, 8, 0, value);
 }
-
 /*** USART3 ***/
 void STM32446Usart3Clock( void )
 {
 	RCC->APB1ENR |= (1 << 18); // USART3EN: USART3 clock enable
 }
-
-void STM32446Usart3Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in USART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the USART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the USART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	USART3->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	USART3->CR1 |= (1 << 3); // TE: Transmitter enable
-	// USART3->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; USART3->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// USART3->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-	USART3->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Usart3Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register USART_BRR
-	// 6.	Set the RE bit USART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	USART3->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	USART3->CR1 |= (1 << 2); // RE: Receiver enable
-	USART3->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
 void STM32446Usart3Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
 {
 	uint8_t sampling;
 	double value, fracpart, intpart;
-
 	if(wordlength == 9)
 		USART3->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
 	else if(wordlength == 8)
 		USART3->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
 	else
 		USART3->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-
 	if(samplingmode == 8){
 		sampling = 8;
 		USART3->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
@@ -806,7 +651,6 @@ void STM32446Usart3Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		sampling = 16;
 		USART3->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
 	}
-
 	USART3->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
 	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
 		USART3->CR2 |= (1 << 12);
@@ -816,10 +660,8 @@ void STM32446Usart3Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART3->CR2 |= ((1 << 13) | (1 << 12));
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART3->CR2 |= (1 << 13);
-
 	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
-
 	USART3->BRR = 0; // clean slate, reset.
 	if(samplingmode == 16){
 		USART3->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
@@ -832,12 +674,6 @@ void STM32446Usart3Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART3->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
 	}
 }
-
-void STM32446Usart3Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	USART3->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-}
-
 /*** USART 3 Bit Mapping ***/
 // SR
 uint8_t STM32446Usart3_cts(void)
@@ -896,7 +732,6 @@ uint8_t STM32446Usart3_pe(void)
 {
 	return usart_readreg(USART3->SR, 1, 0);
 }
-
 // DR
 void STM32446Usart3_dr(uint32_t data)
 {
@@ -906,7 +741,6 @@ uint32_t STM32446Usart3_get_dr(void)
 {
 	return usart_readreg(USART3->DR, 9, 0);
 }
-
 // BRR
 void STM32446Usart3_div_mantissa(uint16_t value)
 {
@@ -916,7 +750,6 @@ void STM32446Usart3_div_fraction(uint8_t value)
 {
 	usart_setreg(&USART3->BRR, 4, 0, value);
 }
-
 // CR1
 void STM32446Usart3_over8(uint8_t bool)
 {
@@ -978,7 +811,6 @@ void STM32446Usart3_sbk(uint8_t bool)
 {
 	usart_setreg(&USART3->CR1, 1, 0, bool);
 }
-
 // CR2
 void STM32446Usart3_linen(uint8_t bool)
 {
@@ -1016,7 +848,6 @@ void STM32446Usart3_add(uint8_t value)
 {
 	usart_setreg(&USART3->CR2, 4, 0, value);
 }
-
 // CR3
 void STM32446Usart3_onebit(uint8_t bool)
 {
@@ -1066,7 +897,6 @@ void STM32446Usart3_eie(uint8_t bool)
 {
 	usart_setreg(&USART3->CR3, 1, 0, bool);
 }
-
 // GTPR
 void STM32446Usart3_gt(uint8_t value)
 {
@@ -1076,55 +906,22 @@ void STM32446Usart3_psc(uint8_t value)
 {
 	usart_setreg(&USART3->GTPR, 8, 0, value);
 }
-
 /*** UART4 ***/
 void STM32446Uart4Clock( void )
 {
 	RCC->APB1ENR |= (1 << 19); // UART4EN: UART4 clock enable
 }
-
-void STM32446Uart4Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in UART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the UART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the USART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	UART4->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	UART4->CR1 |= (1 << 3); // TE: Transmitter enable
-	// UART4->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; UART4->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// UART4->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-	UART4->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Uart4Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register UART_BRR
-	// 6.	Set the RE bit UART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	UART4->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	UART4->CR1 |= (1 << 2); // RE: Receiver enable
-	UART4->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
 void STM32446Uart4Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the uart parameters, using real values.
 {
 	uint8_t sampling;
 	double value, fracpart, intpart;
-
 	if(wordlength == 9)
 		UART4->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
 	else if(wordlength == 8)
 		UART4->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
 	else
 		UART4->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-
 	if(samplingmode == 8){
 		sampling = 8;
 		UART4->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
@@ -1135,7 +932,6 @@ void STM32446Uart4Parameter( uint8_t wordlength, uint8_t samplingmode, double st
 		sampling = 16;
 		UART4->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
 	}
-
 	UART4->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
 	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
 		UART4->CR2 |= (1 << 12);
@@ -1145,10 +941,8 @@ void STM32446Uart4Parameter( uint8_t wordlength, uint8_t samplingmode, double st
 		UART4->CR2 |= ((1 << 13) | (1 << 12));
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		UART4->CR2 |= (1 << 13);
-
 	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
-
 	UART4->BRR = 0; // clean slate, reset.
 	if(samplingmode == 16){
 		UART4->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
@@ -1161,12 +955,6 @@ void STM32446Uart4Parameter( uint8_t wordlength, uint8_t samplingmode, double st
 		UART4->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
 	}
 }
-
-void STM32446Uart4Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	UART4->CR1 &= (uint32_t) ~(1 << 13); // UE: UART disable
-}
-
 /*** UART 4 Bit Mapping ***/
 // SR
 uint8_t STM32446Uart4_cts(void)
@@ -1225,7 +1013,6 @@ uint8_t STM32446Uart4_pe(void)
 {
 	return usart_readreg(UART4->SR, 1, 0);
 }
-
 // DR
 void STM32446Uart4_dr(uint32_t data)
 {
@@ -1235,7 +1022,6 @@ uint32_t STM32446Uart4_get_dr(void)
 {
 	return usart_readreg(UART4->DR, 9, 0);
 }
-
 // BRR
 void STM32446Uart4_div_mantissa(uint16_t value)
 {
@@ -1245,7 +1031,6 @@ void STM32446Uart4_div_fraction(uint8_t value)
 {
 	usart_setreg(&UART4->BRR, 4, 0, value);
 }
-
 // CR1
 void STM32446Uart4_over8(uint8_t bool)
 {
@@ -1307,7 +1092,6 @@ void STM32446Uart4_sbk(uint8_t bool)
 {
 	usart_setreg(&UART4->CR1, 1, 0, bool);
 }
-
 // CR2
 void STM32446Uart4_linen(uint8_t bool)
 {
@@ -1345,7 +1129,6 @@ void STM32446Uart4_add(uint8_t value)
 {
 	usart_setreg(&UART4->CR2, 4, 0, value);
 }
-
 // CR3
 void STM32446Uart4_onebit(uint8_t bool)
 {
@@ -1395,7 +1178,6 @@ void STM32446Uart4_eie(uint8_t bool)
 {
 	usart_setreg(&UART4->CR3, 1, 0, bool);
 }
-
 // GTPR
 void STM32446Uart4_gt(uint8_t value)
 {
@@ -1405,55 +1187,22 @@ void STM32446Uart4_psc(uint8_t value)
 {
 	usart_setreg(&UART4->GTPR, 8, 0, value);
 }
-
 /*** UART5 ***/
 void STM32446Uart5Clock( void )
 {
 	RCC->APB1ENR |= (1 << 20); // UART5EN: UART5 clock enable
 }
-
-void STM32446Uart5Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in UART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the UART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the UART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the UART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	UART5->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	UART5->CR1 |= (1 << 3); // TE: Transmitter enable
-	// UART5->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; UART5->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// UART5->CR1 &= (uint32_t) ~(1 << 13); // UE: UART disable
-	UART5->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Uart5Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register UART_BRR
-	// 6.	Set the RE bit UART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	UART5->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	UART5->CR1 |= (1 << 2); // RE: Receiver enable
-	UART5->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
 void STM32446Uart5Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the uart parameters, using real values.
 {
 	uint8_t sampling;
 	double value, fracpart, intpart;
-
 	if(wordlength == 9)
 		UART5->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
 	else if(wordlength == 8)
 		UART5->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
 	else
 		UART5->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-
 	if(samplingmode == 8){
 		sampling = 8;
 		UART5->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
@@ -1464,7 +1213,6 @@ void STM32446Uart5Parameter( uint8_t wordlength, uint8_t samplingmode, double st
 		sampling = 16;
 		UART5->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
 	}
-
 	UART5->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
 	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
 		UART5->CR2 |= (1 << 12);
@@ -1474,10 +1222,8 @@ void STM32446Uart5Parameter( uint8_t wordlength, uint8_t samplingmode, double st
 		UART5->CR2 |= ((1 << 13) | (1 << 12));
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		UART5->CR2 |= (1 << 13);
-
 	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
-
 	UART5->BRR = 0; // clean slate, reset.
 	if(samplingmode == 16){
 		UART5->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
@@ -1490,12 +1236,6 @@ void STM32446Uart5Parameter( uint8_t wordlength, uint8_t samplingmode, double st
 		UART5->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
 	}
 }
-
-void STM32446Uart5Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	UART5->CR1 &= (uint32_t) ~(1 << 13); // UE: UART disable
-}
-
 /*** UART 5 Bit Mapping ***/
 // SR
 uint8_t STM32446Uart5_cts(void)
@@ -1554,7 +1294,6 @@ uint8_t STM32446Uart5_pe(void)
 {
 	return usart_readreg(UART5->SR, 1, 0);
 }
-
 // DR
 void STM32446Uart5_dr(uint32_t data)
 {
@@ -1564,7 +1303,6 @@ uint32_t STM32446Uart5_get_dr(void)
 {
 	return usart_readreg(UART5->DR, 9, 0);
 }
-
 // BRR
 void STM32446Uart5_div_mantissa(uint16_t value)
 {
@@ -1574,7 +1312,6 @@ void STM32446Uart5_div_fraction(uint8_t value)
 {
 	usart_setreg(&UART5->BRR, 4, 0, value);
 }
-
 // CR1
 void STM32446Uart5_over8(uint8_t bool)
 {
@@ -1636,7 +1373,6 @@ void STM32446Uart5_sbk(uint8_t bool)
 {
 	usart_setreg(&UART5->CR1, 1, 0, bool);
 }
-
 // CR2
 void STM32446Uart5_linen(uint8_t bool)
 {
@@ -1674,7 +1410,6 @@ void STM32446Uart5_add(uint8_t value)
 {
 	usart_setreg(&UART5->CR2, 4, 0, value);
 }
-
 // CR3
 void STM32446Uart5_onebit(uint8_t bool)
 {
@@ -1724,7 +1459,6 @@ void STM32446Uart5_eie(uint8_t bool)
 {
 	usart_setreg(&UART5->CR3, 1, 0, bool);
 }
-
 // GTPR
 void STM32446Uart5_gt(uint8_t value)
 {
@@ -1734,55 +1468,22 @@ void STM32446Uart5_psc(uint8_t value)
 {
 	usart_setreg(&UART5->GTPR, 8, 0, value);
 }
-
 /*** USART6 ***/
 void STM32446Usart6Clock( void )
 {
 	RCC->APB2ENR |= (1 << 5); // USART6EN: USART6 clock enable
 }
-
-void STM32446Usart6Transmit(void) // RM0390 pg801
-{
-	//	Procedure:
-	// 6. Set the TE bit in USART_CR1 to send an idle frame as first transmission.
-	// 7. Write the data to send in the USART_DR register (this clears the TXE bit). Repeat this
-	//	for each data to be transmitted in case of single buffer.
-	// 8. After writing the last data into the USART_DR register, wait until TC=1. This indicates
-	//	that the transmission of the last frame is complete. This is required for instance when
-	//	the USART is disabled or enters the Halt mode to avoid corrupting the last transmission.
-	USART6->CR3 &= (uint32_t) ~(1 << 7); // DMAT: DMA enable transmitter - disabled
-	USART6->CR1 |= (1 << 3); // TE: Transmitter enable
-	// USART6->DR = 'A';
-	// on real application, use fall threw method in main
-	// for( ; USART6->SR & (1 << 6); ); // TC: Transmission complete
-	// added this as disable after confirmed end of transmission [9]
-	// USART6->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-	USART6->SR &= ~(1 << 6); // TC: Transmission complete
-}
-
-void STM32446Usart6Receive(void) // RM0390 pg804
-{
-	//	Procedure: baud rate register USART_BRR
-	// 6.	Set the RE bit USART_CR1. This enables the receiver that begins searching for a start
-	//	bit.
-	USART6->CR3 &= (uint32_t) ~(1 << 6); // DMAR: DMA enable receiver - disabled
-	USART6->CR1 |= (1 << 2); // RE: Receiver enable
-	USART6->SR &= ~(1 << 5); // RXNE: Read data register not empty
-}
-
 void STM32446Usart6Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
 {
 	uint8_t sampling;
 	double value, fracpart, intpart;
-
 	if(wordlength == 9)
 		USART6->CR1 |= (1 << 12); // M: Word length, 1 - 9bit.
 	else if(wordlength == 8)
 		USART6->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit.
 	else
 		USART6->CR1 &= (uint32_t) ~(1 << 12); // M: Word length, 0 - 8bit, default.
-
 	if(samplingmode == 8){
 		sampling = 8;
 		USART6->CR1 |= (1 << 15); // OVER8: Oversampling mode, 1 - 8.
@@ -1793,7 +1494,6 @@ void STM32446Usart6Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		sampling = 16;
 		USART6->CR1 &= (uint32_t) ~(1 << 15); // OVER8: Oversampling mode, 0 - 16, default.
 	}
-
 	USART6->CR2 &= (uint32_t) ~((1 << 13) | (1 << 12)); // STOP: STOP bits 00 - 1stopbit, default.
 	if(fabs(stopbits - 0.5) < 0.00001) // STOP: STOP bits, 01: 0.5 Stop bit
 		USART6->CR2 |= (1 << 12);
@@ -1803,10 +1503,8 @@ void STM32446Usart6Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART6->CR2 |= ((1 << 13) | (1 << 12));
 	else if(fabs(stopbits - 2) < 0.00001) // STOP: STOP bits, 10: 2 Stop bits
 		USART6->CR2 |= (1 << 13);
-
 	value = (double) usart_getsysclk() / ( usart_gethpre() * sampling * baudrate );
 	fracpart = modf(value, &intpart);
-
 	USART6->BRR = 0; // clean slate, reset.
 	if(samplingmode == 16){
 		USART6->BRR = (uint32_t) (round(fracpart * 16)); // DIV_Fraction
@@ -1819,12 +1517,6 @@ void STM32446Usart6Parameter( uint8_t wordlength, uint8_t samplingmode, double s
 		USART6->BRR |= ((uint32_t) intpart << 4); // DIV_Mantissa[11:0], default.
 	}
 }
-
-void STM32446Usart6Stop(void){
-	// added this as disable after confirmed end of transmission [9]
-	USART6->CR1 &= (uint32_t) ~(1 << 13); // UE: USART disable
-}
-
 /*** USART 6 Bit Mapping ***/
 // SR
 uint8_t STM32446Usart6_cts(void)
@@ -1883,7 +1575,6 @@ uint8_t STM32446Usart6_pe(void)
 {
 	return usart_readreg(USART6->SR, 1, 0);
 }
-
 // DR
 void STM32446Usart6_dr(uint32_t data)
 {
@@ -1893,7 +1584,6 @@ uint32_t STM32446Usart6_get_dr(void)
 {
 	return usart_readreg(USART6->DR, 9, 0);
 }
-
 // BRR
 void STM32446Usart6_div_mantissa(uint16_t value)
 {
@@ -1903,7 +1593,6 @@ void STM32446Usart6_div_fraction(uint8_t value)
 {
 	usart_setreg(&USART6->BRR, 4, 0, value);
 }
-
 // CR1
 void STM32446Usart6_over8(uint8_t bool)
 {
@@ -1965,7 +1654,6 @@ void STM32446Usart6_sbk(uint8_t bool)
 {
 	usart_setreg(&USART6->CR1, 1, 0, bool);
 }
-
 // CR2
 void STM32446Usart6_linen(uint8_t bool)
 {
@@ -2003,7 +1691,6 @@ void STM32446Usart6_add(uint8_t value)
 {
 	usart_setreg(&USART6->CR2, 4, 0, value);
 }
-
 // CR3
 void STM32446Usart6_onebit(uint8_t bool)
 {
@@ -2053,7 +1740,6 @@ void STM32446Usart6_eie(uint8_t bool)
 {
 	usart_setreg(&USART6->CR3, 1, 0, bool);
 }
-
 // GTPR
 void STM32446Usart6_gt(uint8_t value)
 {
@@ -2154,12 +1840,10 @@ STM32446USART_GTPR stm32446_usart1_gtpr_inic(void)
 	stm32446_usart1_gtpr.psc = STM32446Usart1_psc;
 	return stm32446_usart1_gtpr;
 }
-
 /*** USART1 INIC Procedure & Function Definition ***/
 STM32446USART1obj usart1_inic(void)
 {
 	STM32446USART1obj stm32446_usart1;
-
 	stm32446_usart1.reg = USART1;
 	/*** USART1 Bit Mapping Link ***/
 	stm32446_usart1.sr = stm32446_usart1_sr_inic();
@@ -2172,12 +1856,7 @@ STM32446USART1obj usart1_inic(void)
 	stm32446_usart1.gtpr = stm32446_usart1_gtpr_inic();
 	// Other
 	stm32446_usart1.clock = STM32446Usart1Clock;
-	stm32446_usart1.inic = STM32446Usart1Inic;
 	stm32446_usart1.parameter = STM32446Usart1Parameter;
-	stm32446_usart1.transmit = STM32446Usart1Transmit;
-	stm32446_usart1.receive = STM32446Usart1Receive;
-	stm32446_usart1.stop = STM32446Usart1Stop;
-
 	return stm32446_usart1;
 }
 /*** USART2 Auxiliar ***/
@@ -2271,12 +1950,10 @@ STM32446USART_GTPR stm32446_usart2_gtpr_inic(void)
 	stm32446_usart2_gtpr.psc = STM32446Usart2_psc;
 	return stm32446_usart2_gtpr;
 }
-
 /*** USART2 INIC Procedure & Function Definition ***/
 STM32446USART2obj usart2_inic(void)
 {
 	STM32446USART2obj stm32446_usart2;
-
 	stm32446_usart2.reg = USART2;
 	/*** USART2 Bit Mapping Link ***/
 	stm32446_usart2.sr = stm32446_usart2_sr_inic();
@@ -2290,10 +1967,6 @@ STM32446USART2obj usart2_inic(void)
 	// Other
 	stm32446_usart2.clock = STM32446Usart2Clock;
 	stm32446_usart2.parameter = STM32446Usart2Parameter;
-	stm32446_usart2.transmit = STM32446Usart2Transmit;
-	stm32446_usart2.receive = STM32446Usart2Receive;
-	stm32446_usart2.stop = STM32446Usart2Stop;
-
 	return stm32446_usart2;
 }
 /*** USART3 Auxiliar ***/
@@ -2387,12 +2060,10 @@ STM32446USART_GTPR stm32446_usart3_gtpr_inic(void)
 	stm32446_usart3_gtpr.psc = STM32446Usart3_psc;
 	return stm32446_usart3_gtpr;
 }
-
 /*** USART3 INIC Procedure & Function Definition ***/
 STM32446USART3obj usart3_inic(void)
 {
 	STM32446USART3obj stm32446_usart3;
-
 	stm32446_usart3.reg = USART3;
 	/*** USART3 Bit Mapping Link ***/
 	stm32446_usart3.sr = stm32446_usart3_sr_inic();
@@ -2406,10 +2077,6 @@ STM32446USART3obj usart3_inic(void)
 	// Other
 	stm32446_usart3.clock = STM32446Usart3Clock;
 	stm32446_usart3.parameter = STM32446Usart3Parameter;
-	stm32446_usart3.transmit = STM32446Usart3Transmit;
-	stm32446_usart3.receive = STM32446Usart3Receive;
-	stm32446_usart3.stop = STM32446Usart3Stop;
-
 	return stm32446_usart3;
 }
 /*** UART4 Auxiliar ***/
@@ -2503,12 +2170,10 @@ STM32446USART_GTPR stm32446_uart4_gtpr_inic(void)
 	stm32446_uart4_gtpr.psc = STM32446Uart4_psc;
 	return stm32446_uart4_gtpr;
 }
-
 /*** UART4 INIC Procedure & Function Definition ***/
 STM32446USART4obj uart4_inic(void)
 {
 	STM32446USART4obj stm32446_uart4;
-
 	stm32446_uart4.reg = UART4;
 	/*** UART4 Bit Mapping Link ***/
 	stm32446_uart4.sr = stm32446_uart4_sr_inic();
@@ -2522,10 +2187,6 @@ STM32446USART4obj uart4_inic(void)
 	// Other
 	stm32446_uart4.clock = STM32446Uart4Clock;
 	stm32446_uart4.parameter = STM32446Uart4Parameter;
-	stm32446_uart4.transmit = STM32446Uart4Transmit;
-	stm32446_uart4.receive = STM32446Uart4Receive;
-	stm32446_uart4.stop = STM32446Uart4Stop;
-
 	return stm32446_uart4;
 }
 /*** UART5 Auxiliar ***/
@@ -2619,12 +2280,10 @@ STM32446USART_GTPR stm32446_uart5_gtpr_inic(void)
 	stm32446_uart5_gtpr.psc = STM32446Uart5_psc;
 	return stm32446_uart5_gtpr;
 }
-
 /*** UART5 INIC Procedure & Function Definition ***/
 STM32446USART5obj uart5_inic(void)
 {
 	STM32446USART5obj stm32446_uart5;
-
 	stm32446_uart5.reg = UART5;
 	/*** UART5 Bit Mapping Link ***/
 	stm32446_uart5.sr = stm32446_uart5_sr_inic();
@@ -2638,10 +2297,6 @@ STM32446USART5obj uart5_inic(void)
 	// Other
 	stm32446_uart5.clock = STM32446Uart5Clock;
 	stm32446_uart5.parameter = STM32446Uart5Parameter;
-	stm32446_uart5.transmit = STM32446Uart5Transmit;
-	stm32446_uart5.receive = STM32446Uart5Receive;
-	stm32446_uart5.stop = STM32446Uart5Stop;
-
 	return stm32446_uart5;
 }
 /*** USART6 Auxiliar ***/
@@ -2735,12 +2390,10 @@ STM32446USART_GTPR stm32446_usart6_gtpr_inic(void)
 	stm32446_usart6_gtpr.psc = STM32446Usart6_psc;
 	return stm32446_usart6_gtpr;
 }
-
 /*** USART6 INIC Procedure & Function Definition ***/
 STM32446USART6obj usart6_inic(void)
 {
 	STM32446USART6obj stm32446_usart6;
-
 	stm32446_usart6.reg = USART6;
 	/*** USART6 Bit Mapping Link ***/
 	stm32446_usart6.sr = stm32446_usart6_sr_inic();
@@ -2754,27 +2407,19 @@ STM32446USART6obj usart6_inic(void)
 	// Other
 	stm32446_usart6.clock = STM32446Usart6Clock;
 	stm32446_usart6.parameter = STM32446Usart6Parameter;
-	stm32446_usart6.transmit = STM32446Usart6Transmit;
-	stm32446_usart6.receive = STM32446Usart6Receive;
-	stm32446_usart6.stop = STM32446Usart6Stop;
-
 	return stm32446_usart6;
 }
-
 /*** File Procedure & Function Definition ***/
 uint32_t usart_getclocksource(void)
 {
 	uint32_t reg = RCC->CR;
 	uint32_t source;
 	if(reg & (1 << 1)){source = HSI_RC;}else if(reg & (1 << 17)){source = HSE_OSC;}
-
 	return source;
 }
-
 uint32_t usart_gethpre(void)
 {
 	uint32_t value = usart_readreg(RCC->CFGR, 4, 4);
-
 	switch(value)
 	{
 		case 0b1000:
@@ -2807,21 +2452,17 @@ uint32_t usart_gethpre(void)
 	}
 	return value;
 }
-
 uint32_t usart_getpllm(void)
 {
 	return usart_readreg(RCC->PLLCFGR, 6, 0);
 }
-
 uint32_t usart_getplln(void)
 {
 	return usart_readreg(RCC->PLLCFGR, 9, 6);
 }
-
 uint32_t usart_getpllp(void)
 {
 	uint32_t value = usart_readreg(RCC->PLLCFGR, 2, 16);
-
 	switch(value)
 	{
 		case 0b00:
@@ -2841,16 +2482,13 @@ uint32_t usart_getpllp(void)
 	}
 	return value;
 }
-
 uint32_t usart_getpllr(void)
 {
 	return usart_readreg(RCC->PLLCFGR, 3, 28);
 }
-
 uint32_t usart_getsysclk(void)
 {
 	uint32_t value = usart_readreg(RCC->CFGR, 2, 2);
-
 	switch(value) // SWS[2]: System clock switch status
 	{
 		case 1: // 01: HSE oscillator used as the system clock
@@ -2868,7 +2506,6 @@ uint32_t usart_getsysclk(void)
 	}
 	return value;
 }
-
 uint32_t usart_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2878,7 +2515,6 @@ uint32_t usart_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void usart_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2888,7 +2524,6 @@ void usart_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, u
 	value = (value << bit);
 	*reg = value;
 }
-
 void usart_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2898,7 +2533,6 @@ void usart_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -2909,7 +2543,6 @@ void usart_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t usart_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;

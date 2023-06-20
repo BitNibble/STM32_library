@@ -83,6 +83,7 @@ void function_VecSetup( volatile uint32_t vec[], const unsigned int size_block, 
 /*** 9 ***/
 uint32_t function_triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter);
 uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t counter);
+uint32_t read_value(void);
 /*** COMMON ***/
 uint8_t function_intinvstr(int32_t num, char* res, uint8_t n_digit);
 
@@ -146,6 +147,7 @@ FUNC FUNCenable( void )
 	// 9
 	func.triggerA = function_triggerA;
 	func.triggerB = function_triggerB;
+	func.value = read_value;
 
 	return func;
 }
@@ -627,10 +629,10 @@ uint32_t function_triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter)
 		case 1:
 			if(hllh_io & (1 << pin)){
 				mem[2] = counter;
-				if((mem[2] + 1) > mem[1]){
+				if(mem[2] > mem[1]){
 					mem[3] = mem[2] - mem[1];
 				}else{
-					mem[3] = ((uint32_t) ~0 - mem[1]) + mem[2];
+					mem[1] = 0; mem[3] = mem[2] - mem[1];
 				}
 				mem[0] = 0;
 			}
@@ -647,17 +649,13 @@ uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t
 
 	switch(nen[0]){ // Start value
 		case 0:
-			nen[1] = counter;
-			if(hl_io & (1 << pin))
-				nen[0] = 1;
+			if(hl_io & (1 << pin)){ nen[1] = counter; nen[0] = 1; }
 		break;
 		case 1:
 			nen[2] = counter;
-			if(nen[2] == nen[1])
-				nen[2] += sizeof(nen[0]) * 8;
 			if(lh_io & (1 << pin)){
-				nen[3] = nen[2] - nen[1];
-				nen[0] = 0;
+				if(nen[2] > nen[1]){ nen[3] = nen[2] - nen[1]; nen[0] = 0; }
+				else{ nen[1] = 0; nen[3] = nen[2] - nen[1]; nen[0] = 0; }
 			}
 		break;
 		default:
@@ -665,6 +663,9 @@ uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t
 	}
 	return nen[3];
 }
+
+uint32_t read_value(void){ return (nen[2]-nen[1]);}
+
 
 /*** COMMON ***/
 // intinvstr

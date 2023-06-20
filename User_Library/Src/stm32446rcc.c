@@ -4,13 +4,15 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
 #include "stm32446rcc.h"
+
+static uint32_t rcc_time_out;
 
 /*** File Procedure & Function Header ***/
 uint32_t rcc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
@@ -51,9 +53,8 @@ STM32446RCCPLLI2S stm32446_rcc_plli2s_inic(void);
 STM32446RCCPLLSAI stm32446_rcc_pllsai_inic(void);
 
 /*** RCC Procedure & Function Definition ***/
-uint8_t STM32446RccInic(void)
+void STM32446RccInic(void)
 {
-	uint8_t clkused; // First turn it on then select it or enable it.
 	// Setup PLL
 	// PLLDIVISION parameters
 	// source 0 or 1		M 2 to 63		N 50 to 432		P 2,4,6,8
@@ -73,15 +74,13 @@ uint8_t STM32446RccInic(void)
 	// System Clock Source
 	STM32446RccHEnable(0);
 	// System Clock Select or Enable
-	clkused = STM32446RccHSelect(0); // SW[1:0]: System clock switch 00 - HSI, 01 - HSE pg133
+	STM32446RccHSelect(0); // SW[1:0]: System clock switch 00 - HSI, 01 - HSE pg133
 	// Low Speed Internal Clock turned on as default
 	// Internal low-speed oscillator enable and Internal low-speed oscillator ready
 	STM32446RccLEnable(2);
 	// Low speed oscillator select
 	STM32446RccLSelect(2);
-	return clkused;
 }
-
 // RCC
 void STM32446RccHEnable(uint8_t hclock)
 {
@@ -101,7 +100,6 @@ void STM32446RccHEnable(uint8_t hclock)
 		else hclock = 0; // default
 	}
 }
-
 uint8_t STM32446RccHSelect(uint8_t hclock)
 { // SW[1:0]: System clock switch 00 - HSI, 01 - HSE pg133
 	RCC->CFGR &= (unsigned int) ~(3); // 00: HSI oscillator selected as system clock
@@ -120,7 +118,6 @@ uint8_t STM32446RccHSelect(uint8_t hclock)
 	}
 	return (RCC->CFGR >> 2) & 3;
 }
-
 void STM32446RccLEnable(uint8_t lclock)
 {
 	uint8_t set;
@@ -139,7 +136,6 @@ void STM32446RccLEnable(uint8_t lclock)
 		else lclock = 2; // default
 	}
 }
-
 void STM32446RccLSelect(uint8_t lclock)
 {
 	RCC->BDCR &= (uint32_t) ~((1 << 9) | (1 << 8)); // RTCSEL[1:0]: RTC clock source selection
@@ -158,15 +154,12 @@ void STM32446RccLSelect(uint8_t lclock)
 		break;
 	}
 }
-
 void STM32446Prescaler(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre)
 {
 	const unsigned int mask = 0x001FFCF0;
 	RCC->CFGR &= (unsigned int) ~mask; // clear args
-
 	if(rtcpre > 1 && rtcpre < 32) // 16
 		RCC->CFGR |= (rtcpre << 16);
-
 	switch(ppre2){ // 13
 		case 2:
 			RCC->CFGR |= (4 << 13);
@@ -183,7 +176,6 @@ void STM32446Prescaler(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rt
 		default:
 		break;
 	}
-
 	switch(ppre1){ // 10
 	case 2:
 		RCC->CFGR |= (4 << 10);
@@ -200,7 +192,6 @@ void STM32446Prescaler(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rt
 	default:
 	break;
 	}
-
 	switch(ahbpre){ // 4
 	case 2:
 		RCC->CFGR |= (8 << 4);
@@ -230,13 +221,11 @@ void STM32446Prescaler(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rt
 	break;
 	}
 }
-
 // PLL
 void STM32446PLLDivision(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr)
 {
 	const unsigned int mask = 0x7F437FFF;
 	RCC->PLLCFGR &= (unsigned int) ~mask; // clear args
-
 
 	if(pllr > 1 && pllr < 8){ // PLLR[28]: Main PLL division factor for I2Ss, SAIs, SYSTEM and SPDIF-Rx clocks
 		RCC->PLLCFGR |= (pllr << 28);
@@ -271,32 +260,28 @@ void STM32446PLLDivision(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pl
 		RCC->PLLCFGR |= pllm;
 	}
 }
-
 void STM32446RccPLLCLKEnable(void)
 {
 	//if(onoff){
-		for( RCC->CR |= (1 << 24) ; !(RCC->CR & (1 << 25)) ; ); // PLLON: Main PLL (PLL) enable
+		for( rcc_time_out = 100, RCC->CR |= (1 << 24) ; !(RCC->CR & (1 << 25)) && rcc_time_out; rcc_time_out-- ); // PLLON: Main PLL (PLL) enable
 	//}else{
 		//RCC->CR &= (unsigned int) ~(1 << 24);
 	//}
 }
-
 void STM32446RccPLLI2SEnable(void)
 {
 	//if(onoff)
-		for( RCC->CR |= (1 << 26) ; !(RCC->CR & (1 << 27)) ; ); // PLLI2SON: PLLI2S enable
+		for( rcc_time_out = 100, RCC->CR |= (1 << 26) ; !(RCC->CR & (1 << 27)) && rcc_time_out; rcc_time_out-- ); // PLLI2SON: PLLI2S enable
 	//else
 		//RCC->CR &= (unsigned int) ~(1 << 26);
 }
-
 void STM32446RccPLLSAIEnable(void)
 {
 	//if(onoff)
-		for( RCC->CR |= (1 << 28) ; !(RCC->CR & (1 << 29)) ; ); // PLLSAION: PLLSAI enable
+		for( rcc_time_out = 100, RCC->CR |= (1 << 28) ; !(RCC->CR & (1 << 29)) && rcc_time_out; rcc_time_out-- ); // PLLSAION: PLLSAI enable
 	//else
 		//RCC->CR &= (unsigned int) ~(1 << 28);
 }
-
 /*** RCC Bit Mapping Definition ***/
 // CR
 uint8_t STM32446RCC_CR_get_pllsairdy(void)
@@ -355,7 +340,6 @@ void STM32446RCC_CR_hsion(uint8_t bool)
 {
 	rcc_setreg(&RCC->CR, 1, 0, bool);
 }
-
 // PLLCFGR
 void STM32446RCC_PLLCFGR_pllr(uint8_t value)
 {
@@ -381,7 +365,6 @@ void STM32446RCC_PLLCFGR_pllm(uint8_t value)
 {
 	rcc_setreg(&RCC->CR, 6, 0, value);
 }
-
 // CFGR
 void STM32446RCC_CFGR_mco2(uint8_t value)
 {
@@ -423,7 +406,6 @@ void STM32446RCC_CFGR_sw(uint8_t value)
 {
 	rcc_setreg(&RCC->CFGR, 2, 0, value);
 }
-
 // CIR
 void STM32446RCC_CIR_clear_cssc(void)
 {
@@ -517,7 +499,6 @@ uint8_t STM32446RCC_CIR_get_lsirdyf(void)
 {
 	return rcc_readreg(RCC->CIR, 1, 0);
 }
-
 // AHB1RSTR
 void STM32446RCC_AHB1RSTR_otghsrst(uint8_t bool)
 {
@@ -567,7 +548,6 @@ void STM32446RCC_AHB1RSTR_gpioarst(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB1RSTR, 1, 0, bool);
 }
-
 // AHB2RSTR
 void STM32446RCC_AHB2RSTR_otgfsrst(uint8_t bool)
 {
@@ -577,7 +557,6 @@ void STM32446RCC_AHB2RSTR_dcmirst(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB2RSTR, 1, 0, bool);
 }
-
 // AHB3RSTR
 void STM32446RCC_AHB3RSTR_qspirst(uint8_t bool)
 {
@@ -587,7 +566,6 @@ void STM32446RCC_AHB3RSTR_fmcrst(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB3RSTR, 1, 0, bool);
 }
-
 // APB1RSTR
 void STM32446RCC_APB1RSTR_dacrst(uint8_t bool)
 {
@@ -693,7 +671,6 @@ void STM32446RCC_APB1RSTR_tim2rst(uint8_t bool)
 {
 	rcc_setreg(&RCC->APB1RSTR, 1, 0, bool);
 }
-
 // APB2RSTR
 void STM32446RCC_APB2RSTR_sai2rst(uint8_t bool)
 {
@@ -751,7 +728,6 @@ void STM32446RCC_APB2RSTR_tim1rst(uint8_t bool)
 {
 	rcc_setreg(&RCC->APB2RSTR, 1, 0, bool);
 }
-
 // AHB1ENR
 void STM32446RCC_AHB1ENR_otghsulpien(uint8_t bool)
 {
@@ -809,7 +785,6 @@ void STM32446RCC_AHB1ENR_gpioaen(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB1ENR, 1, 0, bool);
 }
-
 // AHB2ENR
 void STM32446RCC_AHB2ENR_otgfsen(uint8_t bool)
 {
@@ -819,7 +794,6 @@ void STM32446RCC_AHB2ENR_dcmien(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB2ENR, 1, 0, bool);
 }
-
 // AHB3ENR
 void STM32446RCC_AHB3ENR_qspien(uint8_t bool)
 {
@@ -829,7 +803,6 @@ void STM32446RCC_AHB3ENR_fmcen(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB3ENR, 1, 0, bool);
 }
-
 // APB1ENR
 void STM32446RCC_APB1ENR_dacen(uint8_t bool)
 {
@@ -935,7 +908,6 @@ void STM32446RCC_APB1ENR_tim2en(uint8_t bool)
 {
 	rcc_setreg(&RCC->APB1ENR, 1, 0, bool);
 }
-
 // APB2ENR
 void STM32446RCC_APB2ENR_sai2en(uint8_t bool)
 {
@@ -1001,7 +973,6 @@ void STM32446RCC_APB2ENR_tim1en(uint8_t bool)
 {
 	rcc_setreg(&RCC->APB2ENR, 1, 0, bool);
 }
-
 //AHB1LPENR
 void STM32446RCC_AHB1LPENR_otghsulpilpen(uint8_t bool)
 {
@@ -1071,7 +1042,6 @@ void STM32446RCC_AHB1LPENR_gpioalpen(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB1LPENR, 1, 0, bool);
 }
-
 // AHB2LPENR
 void STM32446RCC_AHB2LPENR_otgfslpen(uint8_t bool)
 {
@@ -1081,7 +1051,6 @@ void STM32446RCC_AHB2LPENR_dcmilpen(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB2LPENR, 1, 0, bool);
 }
-
 // AHB3LPENR
 void STM32446RCC_AHB3LPENR_qspilpen(uint8_t bool)
 {
@@ -1091,7 +1060,6 @@ void STM32446RCC_AHB3LPENR_fmclpen(uint8_t bool)
 {
 	rcc_setreg(&RCC->AHB3LPENR, 1, 0, bool);
 }
-
 // APB1LPENR
 void STM32446RCC_APB1LPENR_daclpen(uint8_t bool)
 {
@@ -1197,7 +1165,6 @@ void STM32446RCC_APB1LPENR_tim2lpen(uint8_t bool)
 {
 	rcc_setreg(&RCC->APB1LPENR, 1, 0, bool);
 }
-
 // APB2LPENR
 void STM32446RCC_APB2LPENR_sai2lpen(uint8_t bool)
 {
@@ -1263,7 +1230,6 @@ void STM32446RCC_APB2LPENR_tim1lpen(uint8_t bool)
 {
 	rcc_setreg(&RCC->APB2LPENR, 1, 0, bool);
 }
-
 // BDCR
 void STM32446RCC_BDCR_bdrst(uint8_t bool)
 {
@@ -1293,7 +1259,6 @@ void STM32446RCC_BDCR_lseon(uint8_t bool)
 {
 	rcc_setreg(&RCC->BDCR, 1, 0, bool);
 }
-
 // CSR
 uint8_t STM32446RCC_CSR_get_lpwrrstf(void)
 {
@@ -1335,7 +1300,6 @@ void STM32446RCC_CSR_lsion(uint8_t bool)
 {
 	rcc_setreg(&RCC->CSR, 1, 0, bool);
 }
-
 // SSCGR
 void STM32446RCC_SSCGR_sscgen(uint8_t bool)
 {
@@ -1353,7 +1317,6 @@ void STM32446RCC_SSCGR_modper(uint8_t value)
 {
 	rcc_setreg(&RCC->SSCGR, 13, 0, value);
 }
-
 // PLLI2SCFGR
 void STM32446RCC_PLLI2SCFGR_plli2sr(uint8_t value)
 {
@@ -1375,7 +1338,6 @@ void STM32446RCC_PLLI2SCFGR_plli2sm(uint8_t value)
 {
 	rcc_setreg(&RCC->PLLI2SCFGR, 6, 0, value);
 }
-
 // PLLSAICFGR
 void STM32446RCC_PLLSAICFGR_pllsaiq(uint8_t value)
 {
@@ -1393,7 +1355,6 @@ void STM32446RCC_PLLSAICFGR_pllsaim(uint8_t value)
 {
 	rcc_setreg(&RCC->PLLSAICFGR, 6, 0, value);
 }
-
 // DCKCFGR
 void STM32446RCC_DCKCFGR_i2s2src(uint8_t value)
 {
@@ -1423,7 +1384,6 @@ void STM32446RCC_DCKCFGR_plli2sdivq(uint8_t value)
 {
 	rcc_setreg(&RCC->DCKCFGR, 5, 0, value);
 }
-
 // CKGATENR
 void STM32446RCC_CKGATENR_rcc_cken(uint8_t bool)
 {
@@ -1453,7 +1413,6 @@ void STM32446RCC_CKGATENR_ahb2apb1_cken(uint8_t bool)
 {
 	rcc_setreg(&RCC->CKGATENR, 1, 0, bool);
 }
-
 // DCKCFGR2
 void STM32446RCC_DCKCFGR2_spdifrxsel(uint8_t bool)
 {
@@ -1941,12 +1900,10 @@ STM32446RCCPLLSAI stm32446_rcc_pllsai_inic(void)
 	stm32446_rcc_pllsai.enable = STM32446RccPLLSAIEnable;
 	return stm32446_rcc_pllsai;
 }
-
 /*** INIC Procedure & Function Definition ***/
 STM32446RCCobj rcc_inic(void)
 {
 	STM32446RCCobj stm32446_rcc;
-
 	stm32446_rcc.reg = RCC;
 	/*** RCC Bit Mapping Link ***/
 	stm32446_rcc.cr = stm32446_rcc_cr_inic();
@@ -1982,15 +1939,17 @@ STM32446RCCobj rcc_inic(void)
 	stm32446_rcc.pllsai = stm32446_rcc_pllsai_inic();
 	stm32446_rcc.prescaler = STM32446Prescaler;
 	/*** Other ***/
+	stm32446_rcc.pll_division = STM32446PLLDivision;
+	stm32446_rcc.pllclk_enable = STM32446RccPLLCLKEnable;
+	stm32446_rcc.plli2s_enable = STM32446RccPLLI2SEnable;
+	stm32446_rcc.pllsai_enable = STM32446RccPLLSAIEnable;
 	stm32446_rcc.inic = STM32446RccInic;
 	stm32446_rcc.henable = STM32446RccHEnable;
 	stm32446_rcc.hselect = STM32446RccHSelect;
 	stm32446_rcc.lenable = STM32446RccLEnable;
 	stm32446_rcc.lselect = STM32446RccLSelect;
-
 	return stm32446_rcc;
 }
-
 /*** File Procedure & Function Definition ***/
 uint32_t rcc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
@@ -2001,7 +1960,6 @@ uint32_t rcc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void rcc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2011,7 +1969,6 @@ void rcc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value = (value << bit);
 	*reg = value;
 }
-
 void rcc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2021,7 +1978,6 @@ void rcc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void rcc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -2032,7 +1988,6 @@ void rcc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t rcc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -2046,11 +2001,15 @@ uint32_t rcc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 
 /*** EOF ***/
 
-/*
- * Everytime a library header is called, it is a copy.
- *
- *
- */
-
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

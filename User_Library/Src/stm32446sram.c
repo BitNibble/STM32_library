@@ -4,13 +4,15 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 13062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
 #include "stm32446sram.h"
+
+static uint32_t sram_time_out;
 
 /*** File Procedure & Function Header ***/
 uint32_t sram_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
@@ -27,7 +29,7 @@ void STM32446SramAccess(void)
 	// 0 - Power Up SRAM
 	PWR->CSR |= (1 << 9); // BRE: Backup regulator enable
 	// Check ready flag Bit 3 BRR: Backup regulator ready
-	for( ; !(PWR->CSR & (1 << 3) )  ; ); // BRR: Backup regulator ready
+	for( sram_time_out = 100; !(PWR->CSR & (1 << 3)) && sram_time_out; sram_time_out-- ); // BRR: Backup regulator ready
 
 	// 1 - Enable the power interface clock by setting the PWREN bits in the RCC_APB1ENR
 	RCC->APB1ENR |= (1 << 28); // Power interface clock enable
@@ -46,12 +48,9 @@ void STM32446SramAccess(void)
 STM32446SRAMobj sram_inic(void)
 {
 	STM32446SRAMobj stm32446_sram;
-
 	stm32446_sram.access = STM32446SramAccess;
-
 	return stm32446_sram;
 }
-
 
 /*** File Procedure & Function Definition ***/
 uint32_t sram_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
@@ -63,7 +62,6 @@ uint32_t sram_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void sram_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -73,7 +71,6 @@ void sram_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, ui
 	value = (value << bit);
 	*reg = value;
 }
-
 void sram_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -83,7 +80,6 @@ void sram_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void sram_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -94,7 +90,6 @@ void sram_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t sram_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -107,5 +102,16 @@ uint32_t sram_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bi
 }
 
 /*** EOF ***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

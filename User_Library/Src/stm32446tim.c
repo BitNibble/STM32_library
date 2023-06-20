@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
@@ -32,51 +32,6 @@ void STM32446Tim9Clock(void)
 {
 	RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
 }
-
-void STM32446Tim9Inic(void)
-{
-	// Interrupt NVIC
-	STM32446Tim9EnableInterrupt();
-	//tim9.nvict1t9();
-
-	// Frequency
-	STM32446Tim9_arr(45535);
-	//tim9.arr(45535);
-
-	// Compare
-	STM32446Tim9_ccr1(7530); // gives problems why ?
-	//tim9.ccr1(7530);
-
-	// prescaller
-	STM32446Tim9_psc(20);
-	//tim9.psc(20);
-
-	// interrupt
-	STM32446Tim9_cc1ie(1);
-	//tim9.dier.cc1ie(1);
-	//TIM9->DIER |= 3; //3 | (1 << 6);
-	//TIM9->CCMR1 |= (3 << 2);
-	//TIM9->CCMR1 |= (3 << 4);
-	//TIM9->CCER |= 1;
-
-	// Enable (Start/Stop)
-	STM32446Tim9_set_apre(1);
-	//tim9.cr1.apre(1);
-	STM32446Tim9_cen(1);
-	//tim9.cr1.cen(1);
-}
-
-// INTERRUPT
-void STM32446Tim9EnableInterrupt(void)
-{
-	tim_setbit(NVIC->ISER,1,24,1); // enable interrupt tim 1 brk and tim 9 global (IRGn 24)
-}
-
-void STM32446Tim9DisableInterrupt(void)
-{
-	tim_setbit(NVIC->ICER,1,24,1); // disable interrupt tim 1 brk and tim 9 global (IRGn 24)
-}
-
 /*** TIM9 Bit Mapping ***/
 // CR1
 uint8_t STM32446Tim9_get_ckd(void)
@@ -488,12 +443,9 @@ STM32446TIM9_CCER stm32446_tim9_ccer_inic(void)
 STM32446TIM9obj tim9_inic(void)
 {
 	STM32446TIM9obj stm32446_tim9;
-
 	stm32446_tim9.reg = TIM9;
 	// CLOCK
 	stm32446_tim9.clock = STM32446Tim9Clock;
-	// INIC
-	stm32446_tim9.inic = STM32446Tim9Inic;
 	/*** TIM9 Bit Mapping Link ***/
 	stm32446_tim9.cr1 = stm32446_tim9_cr1_inic();
 	stm32446_tim9.smcr = stm32446_tim9_smcr_inic();
@@ -508,11 +460,6 @@ STM32446TIM9obj tim9_inic(void)
 	stm32446_tim9.ccr1 = STM32446Tim9_ccr1;
 	stm32446_tim9.ccr2 = STM32446Tim9_ccr2;
 	stm32446_tim9.psc = STM32446Tim9_psc;
-	// INIC
-	stm32446_tim9.inic = STM32446Tim9Inic;
-	// INTERRUPT
-	stm32446_tim9.nvict1t9 = STM32446Tim9EnableInterrupt;
-
 	return stm32446_tim9;
 }
 STM32446TIM10obj tim10_inic(void)
@@ -556,7 +503,6 @@ uint32_t tim_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void tim_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -566,7 +512,6 @@ void tim_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value = (value << bit);
 	*reg = value;
 }
-
 void tim_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -576,7 +521,6 @@ void tim_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -587,7 +531,6 @@ void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;

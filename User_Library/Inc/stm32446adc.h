@@ -4,16 +4,14 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 #ifndef _STM32446ADC_H_
 	#define _STM32446ADC_H_
-
 /*** Library ***/
 #include <inttypes.h>
-
 /*** ADC Bit Mapping TypeDef ***/
 // SR
 typedef struct
@@ -31,7 +29,6 @@ typedef struct
 	uint8_t (*awd)(void);
 	void (*clear_awd)(void);
 }STM32446ADC_SR;
-
 // CR1
 typedef struct
 {
@@ -50,7 +47,6 @@ typedef struct
 	void (*eocie)(uint8_t bool);
 	void (*awdch)(uint8_t value);
 }STM32446ADC_CR1;
-
 // CR2
 typedef struct
 {
@@ -67,7 +63,6 @@ typedef struct
 	void (*cont)(uint8_t bool);
 	void (*adon)(uint8_t bool);
 }STM32446ADC_CR2;
-
 // SMPR1
 typedef struct
 {
@@ -82,7 +77,6 @@ typedef struct
 	void (*smp11)(uint8_t value);
 	void (*smp10)(uint8_t value);
 }STM32446ADC_SMPR1;
-
 // SMPR2
 typedef struct
 {
@@ -98,7 +92,6 @@ typedef struct
 	void (*smp1)(uint8_t value);
 	void (*smp0)(uint8_t value);
 }STM32446ADC_SMPR2;
-
 // SQR1
 typedef struct
 {
@@ -109,7 +102,6 @@ typedef struct
 	void (*sq14)(uint8_t value);
 	void (*sq13)(uint8_t value);
 }STM32446ADC_SQR1;
-
 // SQR2
 typedef struct
 {
@@ -121,7 +113,6 @@ typedef struct
 	void (*sq8)(uint8_t value);
 	void (*sq7)(uint8_t value);
 }STM32446ADC_SQR2;
-
 // SQR3
 typedef struct
 {
@@ -133,7 +124,6 @@ typedef struct
 	void (*sq2)(uint8_t value);
 	void (*sq1)(uint8_t value);
 }STM32446ADC_SQR3;
-
 // JSQR
 typedef struct
 {
@@ -144,7 +134,6 @@ typedef struct
 	void (*jsq2)(uint8_t value);
 	void (*jsq1)(uint8_t value);
 }STM32446ADC_JSQR;
-
 // CSR
 typedef struct
 {
@@ -167,7 +156,6 @@ typedef struct
 	uint8_t (*eoc1)(void);
 	uint8_t (*awd1)(void);
 }STM32446ADC_CSR;
-
 // CCR
 typedef struct
 {
@@ -179,7 +167,6 @@ typedef struct
 	void (*delay)(uint8_t value);
 	void (*multi)(uint8_t value);
 }STM32446ADC_CCR;
-
 /*** ADC_Common TypeDef ***/
 typedef struct
 {
@@ -190,7 +177,6 @@ typedef struct
 		uint32_t (*cdr)(void);
 	#endif
 }STM32446ADCCOMMONobj;
-
 /*** ADC1 Procedure & Function TypeDef ***/
 typedef struct
 {
@@ -202,7 +188,6 @@ typedef struct
 	void (*restart)(void);
 	void (*stop)(void);
 }STM32446ADC1single;
-
 /*** ADC TypeDef ***/
 // ADC -> ADC1
 typedef struct
@@ -233,9 +218,7 @@ typedef struct
 	/*** Other ***/
 	STM32446ADC1single single;
 	void (*clock)(void);
-
 }STM32446ADC1obj;
-
 // ADC -> ADC2
 typedef struct
 {
@@ -265,7 +248,6 @@ typedef struct
 		void (*clock)(void);
 	#endif
 }STM32446ADC2obj;
-
 // ADC -> ADC3
 typedef struct
 {
@@ -295,11 +277,10 @@ typedef struct
 		void (*clock)(void);
 	#endif
 }STM32446ADC3obj;
-
+// INIC
 STM32446ADC1obj adc1_inic(void);
 STM32446ADC2obj adc2_inic(void);
 STM32446ADC3obj adc3_inic(void);
-
 /***** ADC1 Procedure & Function Header ******/
 /*** ADC1 ***/
 void STM32446Adc1Clock(void);
@@ -310,7 +291,6 @@ void STM32446Adc1Start(void);
 double STM32446Adc1Read(void);
 void STM32446Adc1Restart(void);
 void STM32446Adc1Stop(void);
-
 /*** ADC1 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC1_sr_ovr(void);
@@ -419,10 +399,8 @@ uint16_t STM32446ADC1_jdr2(void);
 uint16_t STM32446ADC1_jdr3(void);
 uint16_t STM32446ADC1_jdr4(void);
 uint16_t STM32446ADC1_dr(void);
-
 /*** ADC2 ***/
 void STM32446Adc2Clock(void);
-
 /*** ADC2 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC2_sr_ovr(void);
@@ -531,10 +509,8 @@ uint16_t STM32446ADC2_jdr2(void);
 uint16_t STM32446ADC2_jdr3(void);
 uint16_t STM32446ADC2_jdr4(void);
 uint16_t STM32446ADC2_dr(void);
-
 /*** ADC3 ***/
 void STM32446Adc3Clock(void);
-
 /*** ADC3 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC3_sr_ovr(void);
@@ -643,7 +619,6 @@ uint16_t STM32446ADC3_jdr2(void);
 uint16_t STM32446ADC3_jdr3(void);
 uint16_t STM32446ADC3_jdr4(void);
 uint16_t STM32446ADC3_dr(void);
-
 /*** ADC Common Header ***/
 // CSR
 uint8_t STM32446ADC_csr_ovr3(void);

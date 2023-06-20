@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
@@ -33,7 +33,6 @@ STM32446ADC_JSQR stm32446_adc1_jsqr_inic(void);
 STM32446ADC_CSR stm32446_adc_common_csr_inic(void);
 STM32446ADC_CCR stm32446_adc_common_ccr_inic(void);
 STM32446ADCCOMMONobj stm32446_adc_common_inic(void);
-
 /*** ADC Procedure & Function Definition ***/
 /*** ADC1 Bit Mapping ***/
 // SR
@@ -85,7 +84,6 @@ void STM32446ADC1_sr_clear_awd(void)
 {
 	adc_setreg(&ADC1->SR, 1, 0, 0);
 }
-
 // CR1
 void STM32446ADC1_cr1_ovrie(uint8_t bool)
 {
@@ -143,7 +141,6 @@ void STM32446ADC1_cr1_awdch(uint8_t value)
 {
 	adc_setreg(&ADC1->CR1, 5, 0, value);
 }
-
 // CR2
 void STM32446ADC1_cr2_swstart(uint8_t bool)
 {
@@ -193,7 +190,6 @@ void STM32446ADC1_cr2_adon(uint8_t bool)
 {
 	adc_setreg(&ADC1->CR2, 1, 0, bool);
 }
-
 // SMPR1
 void STM32446ADC1_smpr1_smp18(uint8_t value)
 {
@@ -235,7 +231,6 @@ void STM32446ADC1_smpr1_smp10(uint8_t value)
 {
 	adc_setreg(&ADC1->SMPR1, 3, 0, value);
 }
-
 // SMPR2
 void STM32446ADC1_smpr2_smp9(uint8_t value)
 {
@@ -281,7 +276,6 @@ void STM32446ADC1_smpr2_smp0(uint8_t value)
 {
 	adc_setreg(&ADC1->SMPR2, 3, 0, value);
 }
-
 // Other
 void STM32446ADC1_jofr1(uint16_t value)
 {
@@ -307,7 +301,6 @@ void STM32446ADC1_ltr(uint16_t value)
 {
 	adc_setreg(&ADC1->LTR, 12, 0, value);
 }
-
 // SQR1
 void STM32446ADC1_sqr1_l(uint8_t value)
 {
@@ -333,7 +326,6 @@ void STM32446ADC1_sqr1_sq13(uint8_t value)
 {
 	adc_setreg(&ADC1->SQR1, 5, 0, value);
 }
-
 // SQR2
 void STM32446ADC1_sqr2_sq12(uint8_t value)
 {
@@ -363,7 +355,6 @@ void STM32446ADC1_sqr2_sq7(uint8_t value)
 {
 	adc_setreg(&ADC1->SQR2, 5, 0, value);
 }
-
 // SQR3
 void STM32446ADC1_sqr3_sq6(uint8_t value)
 {
@@ -393,7 +384,6 @@ void STM32446ADC1_sqr3_sq1(uint8_t value)
 {
 	adc_setreg(&ADC1->SQR3, 5, 0, value);
 }
-
 // JSQR
 void STM32446ADC1_jsqr_jl(uint8_t value)
 {
@@ -419,7 +409,6 @@ void STM32446ADC1_jsqr_jsq1(uint8_t value)
 {
 	adc_setreg(&ADC1->JSQR, 5, 0, value);
 }
-
 // Other
 uint16_t STM32446ADC1_jdr1(void)
 {
@@ -441,13 +430,11 @@ uint16_t STM32446ADC1_dr(void)
 {
 	return adc_readreg(ADC1->DR, 16, 0);
 }
-
 /*** ADC1 ***/
 void STM32446Adc1Clock(void)
 {
 	RCC->APB2ENR |= (1 << 8); // ADC1EN: ADC1 clock enable
 }
-
 void STM32446Adc1Inic(void)
 {
 	// ADC Clock
@@ -461,18 +448,15 @@ void STM32446Adc1Inic(void)
 	ADC1->CR1 |= (1 << 11); // DISCEN: Discontinuous mode on regular channels
 	ADC1->SQR3 |= 18; // SQ1[4:0]: 1st conversion in regular sequence
 }
-
 void STM32446Adc1VBAT(void) // vbat overrides temperature
 {
 	ADC123_COMMON->CCR |= (1 << 22); // VBATE: VBAT enable
 }
-
 void STM32446Adc1TEMP(void)
 {
 	// Temperature (in degrees) = {(VSENSE V25) / Avg_Slope} + 25
 	ADC123_COMMON->CCR |= (1 << 23); // TSVREFE: Temperature sensor and VREFINT enable
 }
-
 void STM32446Adc1Start()
 {
 	// turn on select source and start reading
@@ -480,7 +464,6 @@ void STM32446Adc1Start()
 	//
 	ADC1->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels
 }
-
 double STM32446Adc1Read(void)
 {
 	if(ADC123_COMMON->CSR & (1 << 1)){ // EOC1: End of conversion of ADC1
@@ -489,7 +472,6 @@ double STM32446Adc1Read(void)
 	}
 	return STM32446temperature;
 }
-
 void STM32446Adc1Restart(void)
 {
 	if(ADC123_COMMON->CSR & (1 << 4)) // STRT1: Regular channel Start flag of ADC1
@@ -497,12 +479,10 @@ void STM32446Adc1Restart(void)
 	else
 		ADC1->CR2 |= (1 << 30); // SWSTART: Start conversion of regular channels;
 }
-
 void STM32446Adc1Stop(void)
 {
 	ADC1->CR2 |= (1 << 0); // ADON: A/D Converter ON / OFF
 }
-
 /*** ADC2 Bit Mapping ***/
 // SR
 uint8_t STM32446ADC2_sr_ovr(void)
@@ -553,7 +533,6 @@ void STM32446ADC2_sr_clear_awd(void)
 {
 	adc_setreg(&ADC2->SR, 1, 0, 0);
 }
-
 // CR1
 void STM32446ADC2_cr1_ovrie(uint8_t bool)
 {
@@ -611,7 +590,6 @@ void STM32446ADC2_cr1_awdch(uint8_t value)
 {
 	adc_setreg(&ADC2->CR1, 5, 0, value);
 }
-
 // CR2
 void STM32446ADC2_cr2_swstart(uint8_t bool)
 {
@@ -661,7 +639,6 @@ void STM32446ADC2_cr2_adon(uint8_t bool)
 {
 	adc_setreg(&ADC2->CR2, 1, 0, bool);
 }
-
 // SMPR1
 void STM32446ADC2_smpr1_smp18(uint8_t value)
 {
@@ -703,7 +680,6 @@ void STM32446ADC2_smpr1_smp10(uint8_t value)
 {
 	adc_setreg(&ADC2->SMPR1, 3, 0, value);
 }
-
 // SMPR2
 void STM32446ADC2_smpr2_smp9(uint8_t value)
 {
@@ -749,7 +725,6 @@ void STM32446ADC2_smpr2_smp0(uint8_t value)
 {
 	adc_setreg(&ADC2->SMPR2, 3, 0, value);
 }
-
 // Other
 void STM32446ADC2_jofr1(uint16_t value)
 {
@@ -775,7 +750,6 @@ void STM32446ADC2_ltr(uint16_t value)
 {
 	adc_setreg(&ADC2->LTR, 12, 0, value);
 }
-
 // SQR1
 void STM32446ADC2_sqr1_l(uint8_t value)
 {
@@ -801,7 +775,6 @@ void STM32446ADC2_sqr1_sq13(uint8_t value)
 {
 	adc_setreg(&ADC2->SQR1, 5, 0, value);
 }
-
 // SQR2
 void STM32446ADC2_sqr2_sq12(uint8_t value)
 {
@@ -831,7 +804,6 @@ void STM32446ADC2_sqr2_sq7(uint8_t value)
 {
 	adc_setreg(&ADC2->SQR2, 5, 0, value);
 }
-
 // SQR3
 void STM32446ADC2_sqr3_sq6(uint8_t value)
 {
@@ -861,7 +833,6 @@ void STM32446ADC2_sqr3_sq1(uint8_t value)
 {
 	adc_setreg(&ADC2->SQR3, 5, 0, value);
 }
-
 // JSQR
 void STM32446ADC2_jsqr_jl(uint8_t value)
 {
@@ -887,7 +858,6 @@ void STM32446ADC2_jsqr_jsq1(uint8_t value)
 {
 	adc_setreg(&ADC2->JSQR, 5, 0, value);
 }
-
 // Other
 uint16_t STM32446ADC2_jdr1(void)
 {
@@ -909,13 +879,11 @@ uint16_t STM32446ADC2_dr(void)
 {
 	return adc_readreg(ADC2->DR, 16, 0);
 }
-
 /*** ADC2 ***/
 void STM32446Adc2Clock(void)
 {
 	RCC->APB2ENR |= (1 << 9); // ADC1EN: ADC1 clock enable
 }
-
 /*** ADC3 Bit Mapping ***/
 // SR
 uint8_t STM32446ADC3_sr_ovr(void)
@@ -967,7 +935,6 @@ void STM32446ADC3_sr_clear_awd(void)
 {
 	adc_setreg(&ADC3->SR, 1, 0, 0);
 }
-
 // CR1
 void STM32446ADC3_cr1_ovrie(uint8_t bool)
 {
@@ -1025,7 +992,6 @@ void STM32446ADC3_cr1_awdch(uint8_t value)
 {
 	adc_setreg(&ADC3->CR1, 5, 0, value);
 }
-
 // CR2
 void STM32446ADC3_cr2_swstart(uint8_t bool)
 {
@@ -1075,7 +1041,6 @@ void STM32446ADC3_cr2_adon(uint8_t bool)
 {
 	adc_setreg(&ADC3->CR2, 1, 0, bool);
 }
-
 // SMPR1
 void STM32446ADC3_smpr1_smp18(uint8_t value)
 {
@@ -1117,7 +1082,6 @@ void STM32446ADC3_smpr1_smp10(uint8_t value)
 {
 	adc_setreg(&ADC3->SMPR1, 3, 0, value);
 }
-
 // SMPR2
 void STM32446ADC3_smpr2_smp9(uint8_t value)
 {
@@ -1163,7 +1127,6 @@ void STM32446ADC3_smpr2_smp0(uint8_t value)
 {
 	adc_setreg(&ADC3->SMPR2, 3, 0, value);
 }
-
 // Other
 void STM32446ADC3_jofr1(uint16_t value)
 {
@@ -1189,7 +1152,6 @@ void STM32446ADC3_ltr(uint16_t value)
 {
 	adc_setreg(&ADC3->LTR, 12, 0, value);
 }
-
 // SQR1
 void STM32446ADC3_sqr1_l(uint8_t value)
 {
@@ -1215,7 +1177,6 @@ void STM32446ADC3_sqr1_sq13(uint8_t value)
 {
 	adc_setreg(&ADC3->SQR1, 5, 0, value);
 }
-
 // SQR2
 void STM32446ADC3_sqr2_sq12(uint8_t value)
 {
@@ -1245,7 +1206,6 @@ void STM32446ADC3_sqr2_sq7(uint8_t value)
 {
 	adc_setreg(&ADC3->SQR2, 5, 0, value);
 }
-
 // SQR3
 void STM32446ADC3_sqr3_sq6(uint8_t value)
 {
@@ -1275,7 +1235,6 @@ void STM32446ADC3_sqr3_sq1(uint8_t value)
 {
 	adc_setreg(&ADC3->SQR3, 5, 0, value);
 }
-
 // JSQR
 void STM32446ADC3_jsqr_jl(uint8_t value)
 {
@@ -1301,7 +1260,6 @@ void STM32446ADC3_jsqr_jsq1(uint8_t value)
 {
 	adc_setreg(&ADC3->JSQR, 5, 0, value);
 }
-
 // Other
 uint16_t STM32446ADC3_jdr1(void)
 {
@@ -1323,7 +1281,6 @@ uint16_t STM32446ADC3_dr(void)
 {
 	return adc_readreg(ADC3->DR, 16, 0);
 }
-
 /*** COMMON ***/
 // CSR
 uint8_t STM32446ADC_csr_ovr3(void)
@@ -1398,7 +1355,6 @@ uint8_t STM32446ADC_csr_awd1(void)
 {
 	return adc_readreg(ADC->CSR, 1, 0);
 }
-
 // CCR
 void STM32446ADC_ccr_tsvrefe(uint8_t bool)
 {
@@ -1428,19 +1384,16 @@ void STM32446ADC_ccr_multi(uint8_t value)
 {
 	adc_setreg(&ADC->CCR, 5, 0, value);
 }
-
 // CDR
 uint32_t STM32446ADC_cdr(void)
 {
 	return adc_readreg(ADC->CDR, 32, 0);
 }
-
 /*** ADC3 ***/
 void STM32446Adc3Clock(void)
 {
 	RCC->APB2ENR |= (1 << 10); // ADC1EN: ADC1 clock enable
 }
-
 /*** COMMON Auxiliar ***/
 STM32446ADC_CSR stm32446_adc_common_csr_inic(void)
 {
@@ -1635,7 +1588,6 @@ STM32446ADC_JSQR stm32446_adc1_jsqr_inic(void)
 STM32446ADC1obj adc1_inic(void)
 {
 	STM32446ADC1obj stm32446_adc1;
-
 	stm32446_adc1.reg = ADC1;
 	/*** ADC1 Bit Mapping Link ***/
 	stm32446_adc1.sr = stm32446_adc1_sr_inic();
@@ -1668,7 +1620,6 @@ STM32446ADC1obj adc1_inic(void)
 	stm32446_adc1.single.restart = STM32446Adc1Restart;
 	stm32446_adc1.single.stop = STM32446Adc1Stop;
 	stm32446_adc1.clock = STM32446Adc1Clock;
-
 	return stm32446_adc1;
 }
 /*** ADC2 Auxiliar ***/
@@ -1988,7 +1939,6 @@ STM32446ADC_JSQR stm32446_adc3_jsqr_inic(void)
 STM32446ADC3obj adc3_inic(void)
 {
 	STM32446ADC3obj stm32446_adc3;
-
 	stm32446_adc3.reg = ADC3;
 	/*** ADC3 Bit Mapping Link ***/
 	stm32446_adc3.sr = stm32446_adc3_sr_inic();
@@ -2014,10 +1964,8 @@ STM32446ADC3obj adc3_inic(void)
 	stm32446_adc3.common = stm32446_adc_common_inic();
 	// Other
 	stm32446_adc3.clock = STM32446Adc3Clock;
-
 	return stm32446_adc3;
 }
-
 /*** File Procedure & Function Definition ***/
 uint32_t adc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {
@@ -2028,7 +1976,6 @@ uint32_t adc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void adc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2038,7 +1985,6 @@ void adc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value = (value << bit);
 	*reg = value;
 }
-
 void adc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -2048,7 +1994,6 @@ void adc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -2059,7 +2004,6 @@ void adc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t adc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -2072,5 +2016,16 @@ uint32_t adc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 }
 
 /*** EOF ***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

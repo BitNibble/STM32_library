@@ -4,7 +4,7 @@ Author: Sergio Manuel Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 15062023
+Date: 19062023
 Comment:
 	-manual um1724, m0390, pm0056, pm0214, and other sources.
 	-Virtual Image STM32-446, mapping.
@@ -14,7 +14,6 @@ Comment:
 *******************************************************************************/
 #ifndef _STM32446MAPPING_H_
 	#define _STM32446MAPPING_H_
-
 /*** Global Libraries ***/
 #include <inttypes.h>
 // SELECTION OF CHIP (CMSIS Access to its libraries)
@@ -58,7 +57,6 @@ typedef struct
 	uint8_t L;
 	uint8_t H;
 } STM32HighLowByte;
-
 /************** QUERY TypeDef ****************/
 typedef struct
 {
@@ -69,7 +67,6 @@ typedef struct
 	uint8_t (*MCO1)(void);
 	uint8_t (*MCO2)(void);
 }STM32446CLOCK_prescaler;
-
 typedef struct
 {
 	uint8_t (*M)(void);
@@ -78,7 +75,6 @@ typedef struct
 	uint8_t (*Q)(void);
 	uint8_t (*R)(void);
 }STM32446PLL_parameter;
-
 typedef struct
 {
 	STM32446CLOCK_prescaler CLOCK_prescaler;
@@ -428,8 +424,6 @@ STM32446 STM32446enable(void);
 	- Precedence Scope
 3º Pointer and Variable
 4º Casting
-
-Make more query functions into the system especially about the clock and pll, so it can be reached threw out all the code, done.
 ******/
 
 

@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
@@ -248,7 +248,6 @@ void STM32446Rtctr2vec(char* rtc_vect)
 STM32446RTCobj rtc_inic(void)
 {
 	STM32446RTCobj stm32446_rtc;
-
 	stm32446_rtc.reg = RTC;
 	stm32446_rtc.clock = STM32446RtcClock;
 	stm32446_rtc.inic = STM32446RtcInic;
@@ -263,7 +262,6 @@ STM32446RTCobj rtc_inic(void)
 	stm32446_rtc.tr2vec = STM32446Rtctr2vec;
 	stm32446_rtc.BckWrite = STM32446RtcBckWrite;
 	stm32446_rtc.BckRead = STM32446RtcBckRead;
-
 	return stm32446_rtc;
 }
 
@@ -277,7 +275,6 @@ uint32_t rtc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void rtc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -287,7 +284,6 @@ void rtc_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value = (value << bit);
 	*reg = value;
 }
-
 void rtc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -297,7 +293,6 @@ void rtc_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -308,7 +303,6 @@ void rtc_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t rtc_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -324,23 +318,19 @@ void STM32446PwrClock(void)
 {
 	RCC->APB1ENR |= (1 << 28); // Power interface clock enable
 }
-
 void STM32446RtcWriteEnable(void)
 {
 	PWR->CR |= (1 << 8);
 }
-
 void STM32446RtcWriteDisable(void)
 {
 	PWR->CR &= (uint32_t) ~(1 << 8);
 }
-
 void STM32446RtcRegUnlock(void)
 {
 	RTC->WPR |= RTC_KEY1;
 	RTC->WPR |= RTC_KEY2;
 }
-
 void STM32446RtcRegWrite(volatile uint32_t* rtc_reg, uint32_t value)
 {
 	RTC->ISR |= (1 << 7); // INIT
@@ -348,12 +338,10 @@ void STM32446RtcRegWrite(volatile uint32_t* rtc_reg, uint32_t value)
 	*rtc_reg = value;
 	RTC->ISR &= (uint32_t) ~(1 << 7);
 }
-
 void STM32446RtcReadStop(void)
 {
 	RTC->ISR &= ~(1 << 5);
 }
-
 void STM32446RtcReadWait(void)
 { // Wait Data Ready
 	for(rtc_time_out = 200; !(RTC->ISR & (1 << 5)) && rtc_time_out; rtc_time_out--);
@@ -366,7 +354,6 @@ void STM32446RtcSetTr(uint32_t value)
 	STM32446RtcRegWrite(&RTC->TR, value);
 	STM32446RtcWriteDisable();
 }
-
 void STM32446RtcSetDr(uint32_t value)
 {
 	STM32446RtcWriteEnable();
@@ -379,12 +366,10 @@ char rtc_bcd2dec(char num)
 {
 	return ((num / 16 * 10) + (num % 16));
 }
-
 char rtc_dec2bcd(char num)
 {
 	return ((num / 10 * 16) + (num % 10));
 }
-
 void rtc_lenable(unsigned int lclock)
 {
 	unsigned int set;
@@ -403,7 +388,6 @@ void rtc_lenable(unsigned int lclock)
 		else lclock = 2; // default
 	}
 }
-
 void rtc_lselect(uint8_t lclock)
 {
 	RCC->BDCR &= (uint32_t) ~((1 << 9) | (1 << 8)); // RTCSEL[1:0]: RTC clock source selection
@@ -424,5 +408,16 @@ void rtc_lselect(uint8_t lclock)
 }
 
 /*** EOF ***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

@@ -4,16 +4,14 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 02062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 #ifndef _STM32446RCC_H_
 	#define _STM32446RCC_H_
-
 /*** Library ***/
 #include <inttypes.h>
-
 /*** Define & Macros***/
 #ifndef on
 	#define on 1
@@ -27,7 +25,6 @@ Comment:
 #ifndef no
 	#define no 0
 #endif
-
 /*** RCC_Common TypeDef ***/
 // RCC -> PLL
 typedef struct
@@ -35,19 +32,16 @@ typedef struct
 	void (*division)(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr);
 	void (*enable)(void);
 }STM32446RCCPLL;
-
 // RCC -> PLLI2S
 typedef struct
 {
 	void (*enable)(void);
 }STM32446RCCPLLI2S;
-
 // RCC -> PLLSAI
 typedef struct
 {
 	void (*enable)(void);
 }STM32446RCCPLLSAI;
-
 /*** RCC Bit Mapping TypeDef ***/
 // CR
 typedef struct
@@ -67,7 +61,6 @@ typedef struct
 	uint8_t (*get_hsirdy)(void);
 	void (*hsion)(uint8_t bool);
 }STM32446RCC_cr;
-
 // PLLCFGR
 typedef struct
 {
@@ -78,7 +71,6 @@ typedef struct
 	void (*plln)(uint16_t value);
 	void (*pllm)(uint8_t value);
 }STM32446RCC_pllcfgr;
-
 // CFGR
 typedef struct
 {
@@ -93,7 +85,6 @@ typedef struct
 	uint8_t (*get_sws)(void);
 	void (*sw)(uint8_t value);
 }STM32446RCC_cfgr;
-
 // CIR
 typedef struct
 {
@@ -121,7 +112,6 @@ typedef struct
 	uint8_t (*get_lserdyf)(void);
 	uint8_t (*get_lsirdyf)(void);
 }STM32446RCC_cir;
-
 // AHB1RSTR
 typedef struct
 {
@@ -138,21 +128,18 @@ typedef struct
 	void (*gpiobrst)(uint8_t bool);
 	void (*gpioarst)(uint8_t bool);
 }STM32446RCC_ahb1rstr;
-
 // AHB2RSTR
 typedef struct
 {
 	void (*otgfsrst)(uint8_t bool);
 	void (*dcmirst)(uint8_t bool);
 }STM32446RCC_ahb2rstr;
-
 // AHB3RSTR
 typedef struct
 {
 	void (*qspirst)(uint8_t bool);
 	void (*fmcrst)(uint8_t bool);
 }STM32446RCC_ahb3rstr;
-
 // APB1RSTR
 typedef struct
 {
@@ -183,7 +170,6 @@ typedef struct
 	void (*tim3rst)(uint8_t bool);
 	void (*tim2rst)(uint8_t bool);
 }STM32446RCC_apb1rstr;
-
 // APB2RSTR
 typedef struct
 {
@@ -202,7 +188,6 @@ typedef struct
 	void (*tim8rst)(uint8_t bool);
 	void (*tim1rst)(uint8_t bool);
 }STM32446RCC_apb2rstr;
-
 // AHB1ENR
 typedef struct
 {
@@ -221,21 +206,18 @@ typedef struct
 	void (*gpioben)(uint8_t bool);
 	void (*gpioaen)(uint8_t bool);
 }STM32446RCC_ahb1enr;
-
 // AHB2ENR
 typedef struct
 {
 	void (*otgfsen)(uint8_t bool);
 	void (*dcmien)(uint8_t bool);
 }STM32446RCC_ahb2enr;
-
 // AHB3ENR
 typedef struct
 {
 	void (*qspien)(uint8_t bool);
 	void (*fmcen)(uint8_t bool);
 }STM32446RCC_ahb3enr;
-
 // APB1ENR
 typedef struct
 {
@@ -266,7 +248,6 @@ typedef struct
 	void (*tim3en)(uint8_t bool);
 	void (*tim2en)(uint8_t bool);
 }STM32446RCC_apb1enr;
-
 // APB2ENR
 typedef struct
 {
@@ -287,7 +268,6 @@ typedef struct
 	void (*tim8en)(uint8_t bool);
 	void (*tim1en)(uint8_t bool);
 }STM32446RCC_apb2enr;
-
 // AHB1LPENR
 typedef struct
 {
@@ -309,21 +289,18 @@ typedef struct
 	void (*gpioblpen)(uint8_t bool);
 	void (*gpioalpen)(uint8_t bool);
 }STM32446RCC_ahb1lpenr;
-
 // AHB2LPENR
 typedef struct
 {
 	void (*otgfslpen)(uint8_t bool);
 	void (*dcmilpen)(uint8_t bool);
 }STM32446RCC_ahb2lpenr;
-
 // AHB3LPENR
 typedef struct
 {
 	void (*qspilpen)(uint8_t bool);
 	void (*fmclpen)(uint8_t bool);
 }STM32446RCC_ahb3lpenr;
-
 // APB1LPENR
 typedef struct
 {
@@ -354,7 +331,6 @@ typedef struct
 	void (*tim3lpen)(uint8_t bool);
 	void (*tim2lpen)(uint8_t bool);
 }STM32446RCC_apb1lpenr;
-
 // APB2LPENR
 typedef struct
 {
@@ -375,7 +351,6 @@ typedef struct
 	void (*tim8lpen)(uint8_t bool);
 	void (*tim1lpen)(uint8_t bool);
 }STM32446RCC_apb2lpenr;
-
 // BDCR
 typedef struct
 {
@@ -387,7 +362,6 @@ typedef struct
 	uint8_t (*get_lserdy)(void);
 	void (*lseon)(uint8_t bool);
 }STM32446RCC_bdcr;
-
 // CSR
 typedef struct
 {
@@ -402,7 +376,6 @@ typedef struct
 	uint8_t (*get_lsirdy)(void);
 	void (*lsion)(uint8_t bool);
 }STM32446RCC_csr;
-
 // SSCGR
 typedef struct
 {
@@ -411,7 +384,6 @@ typedef struct
 	void (*incstep)(uint8_t value);
 	void (*modper)(uint8_t value);
 }STM32446RCC_sscgr;
-
 // PLLI2SCFGR
 typedef struct
 {
@@ -421,7 +393,6 @@ typedef struct
 	void (*plli2sn)(uint16_t value);
 	void (*plli2sm)(uint8_t value);
 }STM32446RCC_plli2scfgr;
-
 // PLLSAICFGR
 typedef struct
 {
@@ -430,7 +401,6 @@ typedef struct
 	void (*pllsain)(uint16_t value);
 	void (*pllsaim)(uint8_t value);
 }STM32446RCC_pllsaicfgr;
-
 // DCKCFGR
 typedef struct
 {
@@ -442,7 +412,6 @@ typedef struct
 	void (*pllsaidivq)(uint8_t value);
 	void (*plli2sdivq)(uint8_t value);
 }STM32446RCC_dckcfgr;
-
 // CKGATENR
 typedef struct
 {
@@ -454,7 +423,6 @@ typedef struct
 	void (*ahb2apb2_cken)(uint8_t bool);
 	void (*ahb2apb1_cken)(uint8_t bool);
 }STM32446RCC_ckgatenr;
-
 // DCKCFGR2
 typedef struct
 {
@@ -464,7 +432,6 @@ typedef struct
 	void (*cecsel)(uint8_t bool);
 	void (*fmpi2c1sel)(uint8_t value);
 }STM32446RCC_dckcfgr2;
-
 /*** RCC TypeDef ***/
 typedef struct
 {
@@ -502,13 +469,16 @@ typedef struct
 	STM32446RCCPLLI2S plli2s;
 	STM32446RCCPLLSAI pllsai;
 	/*** Other ***/
-	uint8_t (*inic)(void);
+	void (*pll_division)(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr);
+	void (*pllclk_enable)(void);
+	void (*plli2s_enable)(void);
+	void (*pllsai_enable)(void);
+	void (*inic)(void);
 	void (*henable)(uint8_t hclock);
 	uint8_t (*hselect)(uint8_t sysclk);
 	void (*lenable)(uint8_t lclock);
 	void (*lselect)(uint8_t lclock);
 	void (*prescaler)(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre);
-
 }STM32446RCCobj;
 
 STM32446RCCobj rcc_inic(void);
@@ -520,7 +490,7 @@ void STM32446RccPLLCLKEnable(void);
 void STM32446RccPLLI2SEnable(void);
 void STM32446RccPLLSAIEnable(void);
 // RCC
-uint8_t STM32446RccInic(void);
+void STM32446RccInic(void);
 void STM32446RccHEnable(uint8_t hclock);
 uint8_t STM32446RccHSelect(uint8_t hclock);
 void STM32446RccLEnable(uint8_t lclock);
@@ -542,7 +512,6 @@ uint8_t STM32446RCC_CR_get_hsical(void);
 void STM32446RCC_CR_hsitrim(uint8_t value);
 uint8_t STM32446RCC_CR_get_hsirdy(void);
 void STM32446RCC_CR_hsion(uint8_t bool);
-
 // PLLCFGR
 void STM32446RCC_PLLCFGR_pllr(uint8_t value);
 void STM32446RCC_PLLCFGR_pllq(uint8_t value);
@@ -550,7 +519,6 @@ void STM32446RCC_PLLCFGR_pllsrc(uint8_t bool);
 void STM32446RCC_PLLCFGR_pllp(uint8_t value);
 void STM32446RCC_PLLCFGR_plln(uint16_t value);
 void STM32446RCC_PLLCFGR_pllm(uint8_t value);
-
 // CFGR
 void STM32446RCC_CFGR_mco2(uint8_t value);
 void STM32446RCC_CFGR_mco2pre(uint8_t value);
@@ -562,7 +530,6 @@ void STM32446RCC_CFGR_ppre1(uint8_t value);
 void STM32446RCC_CFGR_hpre(uint8_t value);
 uint8_t STM32446RCC_CFGR_get_sws(void);
 void STM32446RCC_CFGR_sw(uint8_t value);
-
 // CIR
 void STM32446RCC_CIR_clear_cssc(void);
 void STM32446RCC_CIR_clear_pllsairdyc(void);
@@ -587,7 +554,6 @@ uint8_t STM32446RCC_CIR_get_hserdyf(void);
 uint8_t STM32446RCC_CIR_get_hsirdyf(void);
 uint8_t STM32446RCC_CIR_get_lserdyf(void);
 uint8_t STM32446RCC_CIR_get_lsirdyf(void);
-
 // AHB1RSTR
 void STM32446RCC_AHB1RSTR_otghsrst(uint8_t bool);
 void STM32446RCC_AHB1RSTR_dma2rst(uint8_t bool);
@@ -601,15 +567,12 @@ void STM32446RCC_AHB1RSTR_gpiodrst(uint8_t bool);
 void STM32446RCC_AHB1RSTR_gpiocrst(uint8_t bool);
 void STM32446RCC_AHB1RSTR_gpiobrst(uint8_t bool);
 void STM32446RCC_AHB1RSTR_gpioarst(uint8_t bool);
-
 // AHB2RSTR
 void STM32446RCC_AHB2RSTR_otgfsrst(uint8_t bool);
 void STM32446RCC_AHB2RSTR_dcmirst(uint8_t bool);
-
 // AHB3RSTR
 void STM32446RCC_AHB3RSTR_qspirst(uint8_t bool);
 void STM32446RCC_AHB3RSTR_fmcrst(uint8_t bool);
-
 // APB1RSTR
 void STM32446RCC_APB1RSTR_dacrst(uint8_t bool);
 void STM32446RCC_APB1RSTR_pwrrst(uint8_t bool);
@@ -637,7 +600,6 @@ void STM32446RCC_APB1RSTR_tim5rst(uint8_t bool);
 void STM32446RCC_APB1RSTR_tim4rst(uint8_t bool);
 void STM32446RCC_APB1RSTR_tim3rst(uint8_t bool);
 void STM32446RCC_APB1RSTR_tim2rst(uint8_t bool);
-
 // APB2RSTR
 void STM32446RCC_APB2RSTR_sai2rst(uint8_t bool);
 void STM32446RCC_APB2RSTR_sai1rst(uint8_t bool);
@@ -653,7 +615,6 @@ void STM32446RCC_APB2RSTR_usart6rst(uint8_t bool);
 void STM32446RCC_APB2RSTR_usart1rst(uint8_t bool);
 void STM32446RCC_APB2RSTR_tim8rst(uint8_t bool);
 void STM32446RCC_APB2RSTR_tim1rst(uint8_t bool);
-
 // AHB1ENR
 void STM32446RCC_AHB1ENR_otghsulpien(uint8_t bool);
 void STM32446RCC_AHB1ENR_otghsen(uint8_t bool);
@@ -669,15 +630,12 @@ void STM32446RCC_AHB1ENR_gpioden(uint8_t bool);
 void STM32446RCC_AHB1ENR_gpiocen(uint8_t bool);
 void STM32446RCC_AHB1ENR_gpioben(uint8_t bool);
 void STM32446RCC_AHB1ENR_gpioaen(uint8_t bool);
-
 // AHB2ENR
 void STM32446RCC_AHB2ENR_otgfsen(uint8_t bool);
 void STM32446RCC_AHB2ENR_dcmien(uint8_t bool);
-
 // AHB3ENR
 void STM32446RCC_AHB3ENR_qspien(uint8_t bool);
 void STM32446RCC_AHB3ENR_fmcen(uint8_t bool);
-
 // APB1ENR
 void STM32446RCC_APB1ENR_dacen(uint8_t bool);
 void STM32446RCC_APB1ENR_pwren(uint8_t bool);
@@ -705,7 +663,6 @@ void STM32446RCC_APB1ENR_tim5en(uint8_t bool);
 void STM32446RCC_APB1ENR_tim4en(uint8_t bool);
 void STM32446RCC_APB1ENR_tim3en(uint8_t bool);
 void STM32446RCC_APB1ENR_tim2en(uint8_t bool);
-
 // APB2ENR
 void STM32446RCC_APB2ENR_sai2en(uint8_t bool);
 void STM32446RCC_APB2ENR_sai1en(uint8_t bool);
@@ -723,7 +680,6 @@ void STM32446RCC_APB2ENR_usart6en(uint8_t bool);
 void STM32446RCC_APB2ENR_usart1en(uint8_t bool);
 void STM32446RCC_APB2ENR_tim8en(uint8_t bool);
 void STM32446RCC_APB2ENR_tim1en(uint8_t bool);
-
 //AHB1LPENR
 void STM32446RCC_AHB1LPENR_otghsulpilpen(uint8_t bool);
 void STM32446RCC_AHB1LPENR_otghslpen(uint8_t bool);
@@ -742,15 +698,12 @@ void STM32446RCC_AHB1LPENR_gpiodlpen(uint8_t bool);
 void STM32446RCC_AHB1LPENR_gpioclpen(uint8_t bool);
 void STM32446RCC_AHB1LPENR_gpioblpen(uint8_t bool);
 void STM32446RCC_AHB1LPENR_gpioalpen(uint8_t bool);
-
 // AHB2LPENR
 void STM32446RCC_AHB2LPENR_otgfslpen(uint8_t bool);
 void STM32446RCC_AHB2LPENR_dcmilpen(uint8_t bool);
-
 // AHB3LPENR
 void STM32446RCC_AHB3LPENR_qspilpen(uint8_t bool);
 void STM32446RCC_AHB3LPENR_fmclpen(uint8_t bool);
-
 // APB1LPENR
 void STM32446RCC_APB1LPENR_daclpen(uint8_t bool);
 void STM32446RCC_APB1LPENR_pwrlpen(uint8_t bool);
@@ -778,7 +731,6 @@ void STM32446RCC_APB1LPENR_tim5lpen(uint8_t bool);
 void STM32446RCC_APB1LPENR_tim4lpen(uint8_t bool);
 void STM32446RCC_APB1LPENR_tim3lpen(uint8_t bool);
 void STM32446RCC_APB1LPENR_tim2lpen(uint8_t bool);
-
 // APB2LPENR
 void STM32446RCC_APB2LPENR_sai2lpen(uint8_t bool);
 void STM32446RCC_APB2LPENR_sai1lpen(uint8_t bool);
@@ -796,7 +748,6 @@ void STM32446RCC_APB2LPENR_usart6lpen(uint8_t bool);
 void STM32446RCC_APB2LPENR_usart1lpen(uint8_t bool);
 void STM32446RCC_APB2LPENR_tim8lpen(uint8_t bool);
 void STM32446RCC_APB2LPENR_tim1lpen(uint8_t bool);
-
 // BDCR
 void STM32446RCC_BDCR_bdrst(uint8_t bool);
 void STM32446RCC_BDCR_rtcen(uint8_t bool);
@@ -805,7 +756,6 @@ void STM32446RCC_BDCR_lsemod(uint8_t bool);
 void STM32446RCC_BDCR_lsebyp(uint8_t bool);
 uint8_t STM32446RCC_BDCR_get_lserdy(void);
 void STM32446RCC_BDCR_lseon(uint8_t bool);
-
 // CSR
 uint8_t STM32446RCC_CSR_get_lpwrrstf(void);
 uint8_t STM32446RCC_CSR_get_wwdgrstf(void);
@@ -817,26 +767,22 @@ uint8_t STM32446RCC_CSR_get_borrstf(void);
 void STM32446RCC_CSR_clear_rmvf(void);
 uint8_t STM32446RCC_CSR_get_lsirdy(void);
 void STM32446RCC_CSR_lsion(uint8_t bool);
-
 // SSCGR
 void STM32446RCC_SSCGR_sscgen(uint8_t bool);
 void STM32446RCC_SSCGR_spreadsel(uint8_t bool);
 void STM32446RCC_SSCGR_incstep(uint8_t value);
 void STM32446RCC_SSCGR_modper(uint8_t value);
-
 // PLLI2SCFGR
 void STM32446RCC_PLLI2SCFGR_plli2sr(uint8_t value);
 void STM32446RCC_PLLI2SCFGR_plli2sq(uint8_t value);
 void STM32446RCC_PLLI2SCFGR_plli2sp(uint8_t value);
 void STM32446RCC_PLLI2SCFGR_plli2sn(uint16_t value);
 void STM32446RCC_PLLI2SCFGR_plli2sm(uint8_t value);
-
 // PLLSAICFGR
 void STM32446RCC_PLLSAICFGR_pllsaiq(uint8_t value);
 void STM32446RCC_PLLSAICFGR_pllsaip(uint8_t value);
 void STM32446RCC_PLLSAICFGR_pllsain(uint16_t value);
 void STM32446RCC_PLLSAICFGR_pllsaim(uint8_t value);
-
 // DCKCFGR
 void STM32446RCC_DCKCFGR_i2s2src(uint8_t value);
 void STM32446RCC_DCKCFGR_i2s1src(uint8_t value);
@@ -845,7 +791,6 @@ void STM32446RCC_DCKCFGR_sai2src(uint8_t value);
 void STM32446RCC_DCKCFGR_sai1src(uint8_t value);
 void STM32446RCC_DCKCFGR_pllsaidivq(uint8_t value);
 void STM32446RCC_DCKCFGR_plli2sdivq(uint8_t value);
-
 // CKGATENR
 void STM32446RCC_CKGATENR_rcc_cken(uint8_t bool);
 void STM32446RCC_CKGATENR_flitf_cken(uint8_t bool);
@@ -854,7 +799,6 @@ void STM32446RCC_CKGATENR_spare_cken(uint8_t bool);
 void STM32446RCC_CKGATENR_cm4dbg_cken(uint8_t bool);
 void STM32446RCC_CKGATENR_ahb2apb2_cken(uint8_t bool);
 void STM32446RCC_CKGATENR_ahb2apb1_cken(uint8_t bool);
-
 // DCKCFGR2
 void STM32446RCC_DCKCFGR2_spdifrxsel(uint8_t bool);
 void STM32446RCC_DCKCFGR2_sdiosel(uint8_t bool);

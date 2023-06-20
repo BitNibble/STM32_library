@@ -4,15 +4,14 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 04062023
+Date: 19062023
 Comment:
 	Interrupt Vector
 *******************************************************************************/
 #ifndef _STM32446NVIC_H_
 	#define _STM32446NVIC_H_
-
+/*** Library ***/
 #include <inttypes.h>
-
 /*** NVIC TypeDef ***/
 typedef struct
 {
@@ -26,7 +25,6 @@ typedef struct
 	void (*priority)(uint32_t IRQn, uint32_t priority);
 	void (*trigger)(uint32_t IRQn);
 	/*** Other ***/
-
 }STM32446NVICobj;
 
 STM32446NVICobj nvic_inic(void);
@@ -55,7 +53,5 @@ void STM32446NVIC_trigger(uint32_t IRQn);
 3º Pointer and Variable
 4º Casting
 ******/
-
-
 
 

@@ -139,8 +139,6 @@ double ZNPID_product(double value_1, double value_2)
 	return (value_1 * value_2);
 }
 
-/*** INIC Procedure & Function Definition ***/
-
 /*** File Procedure & Function Definition ***/
 uint32_t znpid_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 {

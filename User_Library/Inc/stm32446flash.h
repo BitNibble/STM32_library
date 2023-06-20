@@ -4,13 +4,12 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 13062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 #ifndef _STM32446FLASH_H_
 	#define _STM32446FLASH_H_
-
 /*** Library ***/
 #include <inttypes.h>
 #ifndef FLASH_KEY1
@@ -31,7 +30,6 @@ Comment:
 #ifndef FLASH_READPROTECTL2
 	#define FLASH_READPROTECTL2  0xCC
 #endif
-
 /*** FLASH Bit Mapping TypeDef ***/
 // ACR
 typedef struct
@@ -90,7 +88,6 @@ typedef struct
 	void (*optstrt)(uint8_t bool);
 	void (*optlock)(uint8_t bool);
 }STM32446FLASH_optcr;
-
 /*** FLASH TypeDef ***/
 typedef struct
 {
@@ -103,12 +100,9 @@ typedef struct
 	void (*keyr)(uint32_t);
 	void (*optkeyr)(uint32_t);
 	/*** Other ***/
-
 }STM32446FLASHobj;
 
 STM32446FLASHobj flash_inic(void);
-
-/***** FLASH Procedure & Function Header ******/
 
 /*** FLASH Bit Mapping Header ***/
 // ACR

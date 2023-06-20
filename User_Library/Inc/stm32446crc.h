@@ -4,16 +4,14 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 13062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 #ifndef _STM32446CRC_H_
 	#define _STM32446CRC_H_
-
 /*** Library ***/
 #include <inttypes.h>
-
 /*** CRC TypeDef ***/
 typedef struct
 {
@@ -25,7 +23,6 @@ typedef struct
 	uint8_t (*get_idr)(void);
 	void (*reset)(void);
 	/*** Other ***/
-
 }STM32446CRCobj;
 
 STM32446CRCobj crc_inic(void);

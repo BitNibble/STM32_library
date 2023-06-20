@@ -4,14 +4,13 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 11062023
+Date: 19062023
 Comment:
 	
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
 #include "stm32446pwr.h"
-
 /*** File Procedure & Function Header ***/
 uint32_t pwr_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
 void pwr_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
@@ -20,7 +19,6 @@ void pwr_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 uint32_t pwr_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
 STM32446PWR_cr stm32446_pwr_cr_inic(void);
 STM32446PWR_csr stm32446_pwr_csr_inic(void);
-
 /*** PWR Bit Mapping ***/
 // CR
 void STM32446PWR_cr_fissr(uint8_t bool)
@@ -95,7 +93,6 @@ void STM32446PWR_cr_lpds(uint8_t bool)
 {
 	pwr_setreg(&PWR->CR, 1, 0, bool);
 }
-
 // CSR
 uint8_t STM32446PWR_udrdy(void)
 {
@@ -192,12 +189,10 @@ STM32446PWR_csr stm32446_pwr_csr_inic(void)
 STM32446PWRobj pwr_inic(void)
 {
 	STM32446PWRobj stm32446_pwr;
-
 	stm32446_pwr.reg = PWR;
 	/*** PWR Bit Mapping Link ***/
 	stm32446_pwr.cr = stm32446_pwr_cr_inic();
 	stm32446_pwr.csr = stm32446_pwr_csr_inic();
-
 	return stm32446_pwr;
 }
 /*** File Procedure & Function Definition ***/
@@ -210,7 +205,6 @@ uint32_t pwr_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void pwr_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -220,7 +214,6 @@ void pwr_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 	value = (value << bit);
 	*reg = value;
 }
-
 void pwr_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -230,7 +223,6 @@ void pwr_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void pwr_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -241,7 +233,6 @@ void pwr_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint3
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t pwr_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -255,5 +246,15 @@ uint32_t pwr_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 
 /*** EOF ***/
 
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 
