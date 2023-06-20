@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 19062023
+Date: 20062023
 Comment:
 	
 *******************************************************************************/
@@ -222,7 +222,8 @@ typedef struct
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446TIM9obj;
 // TIM -> TIM10 ( 9 to 14 same config)
 typedef struct
@@ -243,7 +244,8 @@ typedef struct
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446TIM10obj;
 // TIM -> TIM11 ( 9 to 14 same config)
 typedef struct
@@ -264,7 +266,8 @@ typedef struct
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446TIM11obj;
 // TIM -> TIM12 ( 9 to 14 same config)
 typedef struct
@@ -285,7 +288,8 @@ typedef struct
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446TIM12obj;
 // TIM -> TIM13 ( 9 to 14 same config)
 typedef struct
@@ -306,7 +310,8 @@ typedef struct
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446TIM13obj;
 // TIM -> TIM14 ( 9 to 14 same config)
 typedef struct
@@ -327,7 +332,8 @@ typedef struct
 	void (*ccr2)(uint16_t value);
 	void (*psc)(uint16_t value);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446TIM14obj;
 // INIC
 STM32446TIM1obj tim1_inic(void);
@@ -346,7 +352,8 @@ STM32446TIM13obj tim13_inic(void);
 STM32446TIM14obj tim14_inic(void);
 /*** TIM9 Procedure & Function Header ***/
 // CLOCK
-void STM32446Tim9Clock(void);
+void STM32446Tim9Clock(uint8_t bool);
+void STM32446Tim9Nvic(uint8_t bool);
 /*** TIM9 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim9_get_ckd(void);
@@ -415,7 +422,8 @@ void STM32446Tim9_ccr2(uint16_t value);
 void STM32446Tim9_psc(uint16_t value);
 /*** TIM10 Procedure & Function Header ***/
 // CLOCK
-void STM32446Tim10Clock(void);
+void STM32446Tim10Clock(uint8_t bool);
+void STM32446Tim10Nvic(uint8_t bool);
 /*** TIM10 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim10_get_ckd(void);
@@ -484,7 +492,8 @@ void STM32446Tim10_ccr2(uint16_t value);
 void STM32446Tim10_psc(uint16_t value);
 /*** TIM11 Procedure & Function Header ***/
 // CLOCK
-void STM32446Tim11Clock(void);
+void STM32446Tim11Clock(uint8_t bool);
+void STM32446Tim11Nvic(uint8_t bool);
 /*** TIM11 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim11_get_ckd(void);
@@ -553,7 +562,8 @@ void STM32446Tim11_ccr2(uint16_t value);
 void STM32446Tim11_psc(uint16_t value);
 /*** TIM12 Procedure & Function Header ***/
 // CLOCK
-void STM32446Tim12Clock(void);
+void STM32446Tim12Clock(uint8_t bool);
+void STM32446Tim12Nvic(uint8_t bool);
 /*** TIM12 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim12_get_ckd(void);
@@ -622,7 +632,8 @@ void STM32446Tim12_ccr2(uint16_t value);
 void STM32446Tim12_psc(uint16_t value);
 /*** TIM13 Procedure & Function Header ***/
 // CLOCK
-void STM32446Tim13Clock(void);
+void STM32446Tim13Clock(uint8_t bool);
+void STM32446Tim13Nvic(uint8_t bool);
 /*** TIM13 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim13_get_ckd(void);
@@ -691,7 +702,8 @@ void STM32446Tim13_ccr2(uint16_t value);
 void STM32446Tim13_psc(uint16_t value);
 /*** TIM14 Procedure & Function Header ***/
 // CLOCK
-void STM32446Tim14Clock(void);
+void STM32446Tim14Clock(uint8_t bool);
+void STM32446Tim14Nvic(uint8_t bool);
 /*** TIM14 Bit Mapping Header ***/
 // CR1
 uint8_t STM32446Tim14_get_ckd(void);
