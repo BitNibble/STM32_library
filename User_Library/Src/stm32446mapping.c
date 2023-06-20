@@ -565,4 +565,13 @@ void SysTick_Handler(void)
 4º Casting
 ******/
 
+/*********
+1º Make struct
+2º Make SUB struct with vars
+3º Make Function pointers
+3º Make Function that returns SUB struct with initialised vars
+4º Make Functions that initialises struct links
+5º Make Function that returns the struct with the above functions
+*********/
+
 

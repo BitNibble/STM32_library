@@ -18,7 +18,6 @@ Comment:
 #include <math.h>
 
 /*** File Constant & Macro ***/
-#define FUNCSTRSIZE 95
 #define MAXafterpoint 6
 #define DEFAULTafterpoint 2
 
@@ -86,72 +85,77 @@ uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t
 uint32_t read_value(void);
 /*** COMMON ***/
 uint8_t function_intinvstr(int32_t num, char* res, uint8_t n_digit);
+void FUNC_var(void);
+void FUNC_link(FUNC* func);
 
 /*** FUNC Procedure & Function Definition ***/
 FUNC FUNCenable( void )
 {
-	// Comment out links not being used, in order to release memmory.
-	// struct object
 	FUNC func;
-	// Inic FUNCstr
-	FUNCstr[FUNCSTRSIZE] = '\0';
-	mem[0] = 0; nen[0] = 0;
-	// 1
-	func.ReadHLByte = function_ReadHLByte;
-	func.ReadLHByte = function_ReadLHByte;
-	func.WriteHLByte = function_WriteHLByte;
-	func.WriteLHByte = function_WriteLHByte;
-	func.SwapByte = function_SwapByte;
-	// 2
-	func.stringlength = function_StringLength;
-	func.reverse = function_Reverse;
-	func.swap = function_swap;
-	func.copy = function_copy;
-	func.squeeze = function_squeeze;
-	func.shellsort = function_shellsort;
-	func.resizestr = function_resizestr;
-	func.trim = function_trim;
-	// 3
-	func.bcd2dec = function_bcd2dec;
-	func.dec2bcd = function_dec2bcd;
-	func.dectohex = function_dectohex;
-	func.bcd2bin = function_bcd2bin;
-	// 4
-	func.print_v1 = function_print_v1;
-	func.print_v2 = function_print_v2;
-	func.print_binary = function_print_binary;
-	// 5
-	func.i16toa = function_i16toa;
-	func.ui16toa = function_ui16toa;
-	func.i32toa = function_i32toa;
-	func.ftoa = function_ftoa;
-	func.strToInt = function_StrToInt;
-	// 6
-	func.trimmer = function_trimmer;
-	func.pmax = function_pmax;
-	func.gcd_v1 = function_gcd_v1;
-	func.gcd_v2 = function_gcd_v2;
-	// 7
-	func.twocomptoint8bit = function_twocomptoint8bit;
-	func.twocomptoint10bit = function_twocomptoint10bit;
-	func.twocomptointnbit = function_twocomptointnbit;
-	// 8
-	func.readreg = function_readreg;
-	func.writereg = function_writereg;
-	func.setreg = function_setreg;
-	func.setbit = function_setbit;
-	func.getsetbit = function_getsetbit;
-	func.regsetbits = function_RegSetBits;
-	func.regresetbits = function_RegResetBits;
-	func.vecsetup = function_VecSetup;
-	// 9
-	func.triggerA = function_triggerA;
-	func.triggerB = function_triggerB;
-	func.value = read_value;
-
+	FUNC_var();
+	FUNC_link(&func);
 	return func;
 }
-
+void FUNC_var(void)
+{
+	FUNCstr[FUNCSTRSIZE + 1] = '\0';
+	mem[0] = 0; nen[0] = 0;
+}
+void FUNC_link(FUNC* func)
+{
+	// 1
+	func->ReadHLByte = function_ReadHLByte;
+	func->ReadLHByte = function_ReadLHByte;
+	func->WriteHLByte = function_WriteHLByte;
+	func->WriteLHByte = function_WriteLHByte;
+	func->SwapByte = function_SwapByte;
+	// 2
+	func->stringlength = function_StringLength;
+	func->reverse = function_Reverse;
+	func->swap = function_swap;
+	func->copy = function_copy;
+	func->squeeze = function_squeeze;
+	func->shellsort = function_shellsort;
+	func->resizestr = function_resizestr;
+	func->trim = function_trim;
+	// 3
+	func->bcd2dec = function_bcd2dec;
+	func->dec2bcd = function_dec2bcd;
+	func->dectohex = function_dectohex;
+	func->bcd2bin = function_bcd2bin;
+	// 4
+	func->print_v1 = function_print_v1;
+	func->print_v2 = function_print_v2;
+	func->print_binary = function_print_binary;
+	// 5
+	func->i16toa = function_i16toa;
+	func->ui16toa = function_ui16toa;
+	func->i32toa = function_i32toa;
+	func->ftoa = function_ftoa;
+	func->strToInt = function_StrToInt;
+	// 6
+	func->trimmer = function_trimmer;
+	func->pmax = function_pmax;
+	func->gcd_v1 = function_gcd_v1;
+	func->gcd_v2 = function_gcd_v2;
+	// 7
+	func->twocomptoint8bit = function_twocomptoint8bit;
+	func->twocomptoint10bit = function_twocomptoint10bit;
+	func->twocomptointnbit = function_twocomptointnbit;
+	// 8
+	func->readreg = function_readreg;
+	func->writereg = function_writereg;
+	func->setreg = function_setreg;
+	func->setbit = function_setbit;
+	func->getsetbit = function_getsetbit;
+	func->regsetbits = function_RegSetBits;
+	func->regresetbits = function_RegResetBits;
+	func->vecsetup = function_VecSetup;
+	// 9
+	func->triggerA = function_triggerA;
+	func->triggerB = function_triggerB;
+	func->value = read_value;
+}
 /*** FUNC Procedure & Function Definition***/
 /******/
 uint16_t function_ReadHLByte(FUNCHighLowByte reg)
@@ -615,30 +619,15 @@ void function_VecSetup( volatile uint32_t vec[], const unsigned int size_block, 
 
 /******/
 // triggerA
-uint32_t function_triggerA(uint32_t hllh_io, uint8_t pin, uint32_t counter)
+uint32_t function_triggerA(uint32_t ll_io, uint8_t pin, uint32_t counter)
 {
 	mem[3] = 0;
-
-	switch(mem[0]){
-		case 0:
-			if(hllh_io & (1 << pin)){
-				mem[1] = counter;
-				mem[0] = 1;
-			}
-		break;
-		case 1:
-			if(hllh_io & (1 << pin)){
-				mem[2] = counter;
-				if(mem[2] > mem[1]){
-					mem[3] = mem[2] - mem[1];
-				}else{
-					mem[1] = 0; mem[3] = mem[2] - mem[1];
-				}
-				mem[0] = 0;
-			}
-		break;
-		default:
-		break;
+	if(mem[0] == 0){
+		if( ll_io & (1 << pin) ){ mem[1] = counter; mem[2] = 0; mem[0] = 1; }
+	}
+	if(mem[0] == 1){
+		if( ll_io & (1 << pin) ){ if( counter != mem[1] ){ mem[2]++; mem[1] = counter; } }
+		else{ mem[3] = mem[2]; mem[0] = 0; }
 	}
 	return mem[3];
 }
@@ -661,7 +650,7 @@ uint32_t function_triggerB(uint32_t hl_io, uint32_t lh_io, uint8_t pin, uint32_t
 	return nen[3];
 }
 
-uint32_t read_value(void){ return nen[2];}
+uint32_t read_value(void){ return mem[2];}
 
 
 /*** COMMON ***/
@@ -705,5 +694,16 @@ uint8_t leap_year_check(uint16_t year){
 /*** File Interrupt ***/
 
 /***EOF***/
+
+/******
+1º Sequence
+2º Scope
+	- Library Scope
+	- File Scope
+	- Function Scope
+	- Precedence Scope
+3º Pointer and Variable
+4º Casting
+******/
 
 

@@ -14,6 +14,8 @@ Comment:
 
 /*** Global Library ***/
 #include <inttypes.h>
+/*** Global Define & Macro ***/
+#define FUNCSTRSIZE 95
 
 /*** Global TypeDef ***/
 // Low Byte High Byte
@@ -22,7 +24,6 @@ typedef struct
 	uint8_t H;
 	uint8_t L;
 } FUNCHighLowByte;
-
 /*** PROCEDURE & FUNCTION TypeDef ***/
 typedef struct
 {
