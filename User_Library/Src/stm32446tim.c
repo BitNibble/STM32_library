@@ -18,6 +18,16 @@ void tim_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uin
 void tim_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 void tim_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data);
 uint32_t tim_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit);
+STM32446TIM_CR1 stm32446_tim6_cr1_inic(void);
+STM32446TIM_CR2 stm32446_tim6_cr2_inic(void);
+STM32446TIM_DIER stm32446_tim6_dier_inic(void);
+STM32446TIM_SR stm32446_tim6_sr_inic(void);
+STM32446TIM_EGR stm32446_tim6_egr_inic(void);
+STM32446TIM_CR1 stm32446_tim7_cr1_inic(void);
+STM32446TIM_CR2 stm32446_tim7_cr2_inic(void);
+STM32446TIM_DIER stm32446_tim7_dier_inic(void);
+STM32446TIM_SR stm32446_tim7_sr_inic(void);
+STM32446TIM_EGR stm32446_tim7_egr_inic(void);
 STM32446TIM_CR1 stm32446_tim9_cr1_inic(void);
 STM32446TIM_SMCR stm32446_tim9_smcr_inic(void);
 STM32446TIM_DIER stm32446_tim9_dier_inic(void);
@@ -61,7 +71,181 @@ STM32446TIM_EGR stm32446_tim14_egr_inic(void);
 STM32446TIM_CCMR1 stm32446_tim14_ccmr1_inic(void);
 STM32446TIM_CCER stm32446_tim14_ccer_inic(void);
 /*** TIMER Procedure & Function Definition ***/
+/************/
+/*** TIM6 ***/
+/************/
+void STM32446Tim6Clock(uint8_t bool)
+{
+	if(bool){
+		RCC->APB1ENR |= (1 << 4); //timer 6 clock enabled
+	}else{
+		RCC->APB1ENR &= ~(1 << 4); //timer 6 clock disabled
+	}
+}
+void STM32446Tim6Nvic(uint8_t bool)
+{ // 54
+	if(bool){tim_setbit(NVIC->ISER, 1, 54, 1);}else{tim_setbit(NVIC->ICER, 1, 54, 1);}
+}
+/************************/
+/*** TIM6 Bit Mapping ***/
+/************************/
+// CR1
+void STM32446Tim6_set_apre(uint8_t bool)
+{
+	tim_setreg(&TIM6->CR1, 1, 7, bool);
+}
+void STM32446Tim6_set_opm(uint8_t bool)
+{
+	tim_setreg(&TIM6->CR1, 1, 3, bool);
+}
+void STM32446Tim6_set_urs(uint8_t bool)
+{
+	tim_setreg(&TIM6->CR1, 1, 2, bool);
+}
+void STM32446Tim6_set_udis(uint8_t bool)
+{
+	tim_setreg(&TIM6->CR1, 1, 1, bool);
+}
+void STM32446Tim6_cen(uint8_t bool)
+{
+	tim_setreg(&TIM6->CR1, 1, 0, bool);
+}
+// CR2
+void STM32446Tim6_mms(uint8_t value)
+{
+	tim_setreg(&TIM6->CR2, 3, 4, value);
+}
+// DIER
+void STM32446Tim6_ude(uint8_t bool)
+{
+	tim_setreg(&TIM6->DIER, 1, 8, bool);
+}
+void STM32446Tim6_uie(uint8_t bool)
+{
+	tim_setreg(&TIM6->DIER, 1, 0, bool);
+}
+// SR
+uint8_t STM32446Tim6_uif(void)
+{
+	return tim_readreg(TIM6->SR, 1, 0);
+}
+void STM32446Tim6_clear_uif(void)
+{
+	tim_setreg(&TIM6->SR, 1, 0, 0);
+}
+// EGR
+void STM32446Tim6_ug(void)
+{
+	tim_setreg(&TIM6->EGR, 1, 0, 1);
+}
+// CNT
+void STM32446Tim6_cnt(uint16_t value)
+{
+	TIM6->CNT = value;
+}
+uint16_t STM32446Tim6_get_cnt(void)
+{
+	return TIM6->CNT;
+}
+// PSC
+void STM32446Tim6_psc(uint16_t value)
+{
+	TIM6->PSC = value;
+}
+// ARR
+void STM32446Tim6_arr(uint16_t value)
+{
+	TIM6->ARR = value;
+}
+/************/
+/*** TIM7 ***/
+/************/
+void STM32446Tim7Clock(uint8_t bool)
+{
+	if(bool){
+		RCC->APB1ENR |= (1 << 5); //timer 7 clock enabled
+	}else{
+		RCC->APB1ENR &= ~(1 << 5); //timer 7 clock disabled
+	}
+}
+void STM32446Tim7Nvic(uint8_t bool)
+{ // 55
+	if(bool){tim_setbit(NVIC->ISER, 1, 55, 1);}else{tim_setbit(NVIC->ICER, 1, 55, 1);}
+}
+/************************/
+/*** TIM7 Bit Mapping ***/
+/************************/
+// CR1
+void STM32446Tim7_set_apre(uint8_t bool)
+{
+	tim_setreg(&TIM7->CR1, 1, 7, bool);
+}
+void STM32446Tim7_set_opm(uint8_t bool)
+{
+	tim_setreg(&TIM7->CR1, 1, 3, bool);
+}
+void STM32446Tim7_set_urs(uint8_t bool)
+{
+	tim_setreg(&TIM7->CR1, 1, 2, bool);
+}
+void STM32446Tim7_set_udis(uint8_t bool)
+{
+	tim_setreg(&TIM7->CR1, 1, 1, bool);
+}
+void STM32446Tim7_cen(uint8_t bool)
+{
+	tim_setreg(&TIM7->CR1, 1, 0, bool);
+}
+// CR2
+void STM32446Tim7_mms(uint8_t value)
+{
+	tim_setreg(&TIM7->CR2, 3, 4, value);
+}
+// DIER
+void STM32446Tim7_ude(uint8_t bool)
+{
+	tim_setreg(&TIM7->DIER, 1, 8, bool);
+}
+void STM32446Tim7_uie(uint8_t bool)
+{
+	tim_setreg(&TIM7->DIER, 1, 0, bool);
+}
+// SR
+uint8_t STM32446Tim7_uif(void)
+{
+	return tim_readreg(TIM7->SR, 1, 0);
+}
+void STM32446Tim7_clear_uif(void)
+{
+	tim_setreg(&TIM7->SR, 1, 0, 0);
+}
+// EGR
+void STM32446Tim7_ug(void)
+{
+	tim_setreg(&TIM7->EGR, 1, 0, 1);
+}
+// CNT
+void STM32446Tim7_cnt(uint16_t value)
+{
+	TIM7->CNT = value;
+}
+uint16_t STM32446Tim7_get_cnt(void)
+{
+	return TIM7->CNT;
+}
+// PSC
+void STM32446Tim7_psc(uint16_t value)
+{
+	TIM7->PSC = value;
+}
+// ARR
+void STM32446Tim7_arr(uint16_t value)
+{
+	TIM7->ARR = value;
+}
+/************/
 /*** TIM9 ***/
+/************/
 void STM32446Tim9Clock(uint8_t bool)
 {
 	if(bool){
@@ -301,7 +485,9 @@ void STM32446Tim9_psc(uint16_t value)
 {
 	TIM9->PSC = value;
 }
+/*************/
 /*** TIM10 ***/
+/*************/
 void STM32446Tim10Clock(uint8_t bool)
 {
 	if(bool){
@@ -541,7 +727,9 @@ void STM32446Tim10_psc(uint16_t value)
 {
 	TIM10->PSC = value;
 }
+/*************/
 /*** TIM11 ***/
+/*************/
 void STM32446Tim11Clock(uint8_t bool)
 {
 	if(bool){
@@ -781,7 +969,9 @@ void STM32446Tim11_psc(uint16_t value)
 {
 	TIM11->PSC = value;
 }
+/*************/
 /*** TIM12 ***/
+/*************/
 void STM32446Tim12Clock(uint8_t bool)
 {
 	if(bool){
@@ -1021,7 +1211,9 @@ void STM32446Tim12_psc(uint16_t value)
 {
 	TIM12->PSC = value;
 }
+/*************/
 /*** TIM13 ***/
+/*************/
 void STM32446Tim13Clock(uint8_t bool)
 {
 	if(bool){
@@ -1261,7 +1453,9 @@ void STM32446Tim13_psc(uint16_t value)
 {
 	TIM13->PSC = value;
 }
+/*************/
 /*** TIM14 ***/
+/*************/
 void STM32446Tim14Clock(uint8_t bool)
 {
 	if(bool){
@@ -1504,48 +1698,168 @@ void STM32446Tim14_psc(uint16_t value)
 /********************************************/
 /*** INIC Procedure & Function Definition ***/
 /********************************************/
+/*** TIM1 INIC Procedure & Function Definition ***/
 STM32446TIM1obj tim1_inic(void)
 {
 	STM32446TIM1obj stm32446_tim;
 	stm32446_tim.reg = TIM1;
 	return stm32446_tim;
 }
+/*** TIM2 INIC Procedure & Function Definition ***/
 STM32446TIM2obj tim2_inic(void)
 {
 	STM32446TIM2obj stm32446_tim;
 	stm32446_tim.reg = TIM2;
 	return stm32446_tim;
 }
+/*** TIM3 INIC Procedure & Function Definition ***/
 STM32446TIM3obj tim3_inic(void)
 {
 	STM32446TIM3obj stm32446_tim;
 	stm32446_tim.reg = TIM3;
 	return stm32446_tim;
 }
+/*** TIM4 INIC Procedure & Function Definition ***/
 STM32446TIM4obj tim4_inic(void)
 {
 	STM32446TIM4obj stm32446_tim;
 	stm32446_tim.reg = TIM4;
 	return stm32446_tim;
 }
+/*** TIM5 INIC Procedure & Function Definition ***/
 STM32446TIM5obj tim5_inic(void)
 {
 	STM32446TIM5obj stm32446_tim;
 	stm32446_tim.reg = TIM5;
 	return stm32446_tim;
 }
+/*** TIM6 Auxiliar ***/
+STM32446TIM_CR1 stm32446_tim6_cr1_inic(void)
+{
+	STM32446TIM_CR1 stm32446_tim_cr1;
+	// CR1
+	stm32446_tim_cr1.apre = STM32446Tim6_set_apre;
+	stm32446_tim_cr1.opm = STM32446Tim6_set_opm;
+	stm32446_tim_cr1.urs = STM32446Tim6_set_urs;
+	stm32446_tim_cr1.udis = STM32446Tim6_set_udis;
+	stm32446_tim_cr1.cen = STM32446Tim6_cen;
+	return stm32446_tim_cr1;
+}
+STM32446TIM_CR2 stm32446_tim6_cr2_inic(void)
+{
+	STM32446TIM_CR2 stm32446_tim_cr2;
+	// CR2
+	stm32446_tim_cr2.mms = STM32446Tim6_mms;
+	return stm32446_tim_cr2;
+}
+STM32446TIM_DIER stm32446_tim6_dier_inic(void)
+{
+	STM32446TIM_DIER stm32446_tim_dier;
+	// DIER
+	stm32446_tim_dier.ude = STM32446Tim6_ude;
+	stm32446_tim_dier.uie = STM32446Tim6_uie;
+	return stm32446_tim_dier;
+}
+STM32446TIM_SR stm32446_tim6_sr_inic(void)
+{
+	STM32446TIM_SR stm32446_tim_sr;
+	// SR
+	stm32446_tim_sr.uif = STM32446Tim6_uif;
+	stm32446_tim_sr.clear_uif = STM32446Tim6_clear_uif;
+	return stm32446_tim_sr;
+}
+STM32446TIM_EGR stm32446_tim6_egr_inic(void)
+{
+	STM32446TIM_EGR stm32446_tim_egr;
+	// EGR
+	stm32446_tim_egr.ug = STM32446Tim6_ug;
+	return stm32446_tim_egr;
+}
+/*** TIM6 INIC Procedure & Function Definition ***/
 STM32446TIM6obj tim6_inic(void)
 {
 	STM32446TIM6obj stm32446_tim;
 	stm32446_tim.reg = TIM6;
+	// CLOCK
+	stm32446_tim.clock = STM32446Tim6Clock;
+	// NVIC
+	stm32446_tim.nvic = STM32446Tim6Nvic;
+	/*** TIM9 Bit Mapping Link ***/
+	stm32446_tim.cr1 = stm32446_tim6_cr1_inic();
+	stm32446_tim.cr2 = stm32446_tim6_cr2_inic();
+	stm32446_tim.dier = stm32446_tim6_dier_inic();
+	stm32446_tim.sr = stm32446_tim6_sr_inic();
+	stm32446_tim.egr = stm32446_tim6_egr_inic();
+	stm32446_tim.cnt = STM32446Tim6_cnt;
+	stm32446_tim.get_cnt = STM32446Tim6_get_cnt;
+	stm32446_tim.psc = STM32446Tim6_psc;
+	stm32446_tim.arr = STM32446Tim6_arr;
 	return stm32446_tim;
 }
+/*** TIM7 Auxiliar ***/
+STM32446TIM_CR1 stm32446_tim7_cr1_inic(void)
+{
+	STM32446TIM_CR1 stm32446_tim_cr1;
+	// CR1
+	stm32446_tim_cr1.apre = STM32446Tim7_set_apre;
+	stm32446_tim_cr1.opm = STM32446Tim7_set_opm;
+	stm32446_tim_cr1.urs = STM32446Tim7_set_urs;
+	stm32446_tim_cr1.udis = STM32446Tim7_set_udis;
+	stm32446_tim_cr1.cen = STM32446Tim7_cen;
+	return stm32446_tim_cr1;
+}
+STM32446TIM_CR2 stm32446_tim7_cr2_inic(void)
+{
+	STM32446TIM_CR2 stm32446_tim_cr2;
+	// CR2
+	stm32446_tim_cr2.mms = STM32446Tim7_mms;
+	return stm32446_tim_cr2;
+}
+STM32446TIM_DIER stm32446_tim7_dier_inic(void)
+{
+	STM32446TIM_DIER stm32446_tim_dier;
+	// DIER
+	stm32446_tim_dier.ude = STM32446Tim7_ude;
+	stm32446_tim_dier.uie = STM32446Tim7_uie;
+	return stm32446_tim_dier;
+}
+STM32446TIM_SR stm32446_tim7_sr_inic(void)
+{
+	STM32446TIM_SR stm32446_tim_sr;
+	// SR
+	stm32446_tim_sr.uif = STM32446Tim7_uif;
+	stm32446_tim_sr.clear_uif = STM32446Tim7_clear_uif;
+	return stm32446_tim_sr;
+}
+STM32446TIM_EGR stm32446_tim7_egr_inic(void)
+{
+	STM32446TIM_EGR stm32446_tim_egr;
+	// EGR
+	stm32446_tim_egr.ug = STM32446Tim7_ug;
+	return stm32446_tim_egr;
+}
+/*** TIM7 INIC Procedure & Function Definition ***/
 STM32446TIM7obj tim7_inic(void)
 {
 	STM32446TIM7obj stm32446_tim;
 	stm32446_tim.reg = TIM7;
+	// CLOCK
+	stm32446_tim.clock = STM32446Tim7Clock;
+	// NVIC
+	stm32446_tim.nvic = STM32446Tim7Nvic;
+	/*** TIM9 Bit Mapping Link ***/
+	stm32446_tim.cr1 = stm32446_tim7_cr1_inic();
+	stm32446_tim.cr2 = stm32446_tim7_cr2_inic();
+	stm32446_tim.dier = stm32446_tim7_dier_inic();
+	stm32446_tim.sr = stm32446_tim7_sr_inic();
+	stm32446_tim.egr = stm32446_tim7_egr_inic();
+	stm32446_tim.cnt = STM32446Tim7_cnt;
+	stm32446_tim.get_cnt = STM32446Tim7_get_cnt;
+	stm32446_tim.psc = STM32446Tim7_psc;
+	stm32446_tim.arr = STM32446Tim7_arr;
 	return stm32446_tim;
 }
+/*** TIM8 INIC Procedure & Function Definition ***/
 STM32446TIM8obj tim8_inic(void)
 {
 	STM32446TIM8obj stm32446_tim;
@@ -1642,7 +1956,7 @@ STM32446TIM_CCER stm32446_tim9_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim9_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM9 INIC Procedure & Function Definition***/
+/*** TIM9 INIC Procedure & Function Definition ***/
 STM32446TIM9obj tim9_inic(void)
 {
 	STM32446TIM9obj stm32446_tim;
