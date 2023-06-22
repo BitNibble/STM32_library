@@ -89,7 +89,7 @@ STM32446 STM32446enable(void){
 	#if defined(_STM32446FLASH_H_)
 		stm32446.flash = flash_inic();
 	#endif
-
+	// GPIO
 	#if defined(_STM32446GPIO_H_)
 		stm32446.gpioa = gpioa_inic();
 		stm32446.gpiob = gpiob_inic();
@@ -104,19 +104,19 @@ STM32446 STM32446enable(void){
 	#if defined(_STM32446PWR_H_)
 		stm32446.pwr = pwr_inic();
 	#endif
-
+	// RCC
 	#if defined(_STM32446RCC_H_)
 		stm32446.rcc = rcc_inic();
 	#endif
-
+	// RTC
 	#if defined(_STM32446RTC_H_)
 		stm32446.rtc = rtc_inic();
 	#endif
-
+	// SRAM
 	#if defined(_STM32446SRAM_H_)
 		stm32446.sram = sram_inic();
 	#endif
-
+	// TIM
 	#if defined(_STM32446TIM1AND8_H_)
 		stm32446.tim1 = tim1_inic();
 		stm32446.tim8 = tim8_inic();
@@ -139,7 +139,7 @@ STM32446 STM32446enable(void){
 		stm32446.tim13 = tim13_inic();
 		stm32446.tim14 = tim14_inic();
 	#endif
-		
+	// USART
 	#if defined(_STM32446USART_H_)
 		stm32446.usart1 = usart1_inic();
 		stm32446.usart2 = usart2_inic();
@@ -170,7 +170,6 @@ uint32_t STM32446_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
 	value = (value >> bit);
 	return value;
 }
-
 void STM32446_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -180,7 +179,6 @@ void STM32446_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 	value = (value << bit);
 	*reg = value;
 }
-
 void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
@@ -190,7 +188,6 @@ void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 	*reg &= ~(mask << bit);
 	*reg |= (value << bit);
 }
-
 void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
 {
 	uint32_t n = 0;
@@ -201,7 +198,6 @@ void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, 
 	*(reg + n ) &= ~(mask << bit);
 	*(reg + n ) |= (value << bit);
 }
-
 uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
 {
 	uint32_t n = 0;
@@ -212,7 +208,6 @@ uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_
 	value = (value >> bit);
 	return value;
 }
-
 void STM32446RegSetBits( unsigned int* reg, int n_bits, ... )
 {
 	uint8_t i;
@@ -225,7 +220,6 @@ void STM32446RegSetBits( unsigned int* reg, int n_bits, ... )
 		va_end(list);
 	}
 }
-
 void STM32446RegResetBits( unsigned int* reg, int n_bits, ... )
 {
 	uint8_t i;
@@ -238,7 +232,6 @@ void STM32446RegResetBits( unsigned int* reg, int n_bits, ... )
 		va_end(list);
 	}
 }
-
 void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n )
 {
 	const unsigned int n_bits = sizeof(data) * 8;
@@ -260,7 +253,6 @@ STM32446CLOCK_prescaler CLOCK_prescaler_inic(void)
 	stm32446_CLOCK_prescaler.MCO2 = STM32446_gethmco2pre;
 	return stm32446_CLOCK_prescaler;
 }
-
 STM32446PLL_parameter PLL_parameter_inic(void)
 {
 	STM32446PLL_parameter stm32446_PLL_parameter;
@@ -271,7 +263,6 @@ STM32446PLL_parameter PLL_parameter_inic(void)
 	stm32446_PLL_parameter.R = STM32446_getpllr;
 	return stm32446_PLL_parameter;
 }
-
 STM32446Query query_inic(void)
 {
 	STM32446Query stm32446_query;
@@ -282,7 +273,6 @@ STM32446Query query_inic(void)
 	stm32446_query.SystemClock = STM32446_getsysclk;
 	return stm32446_query;
 }
-
 uint32_t STM32446_getclocksource(void)
 {
 	uint32_t reg = RCC->CR;
@@ -290,7 +280,6 @@ uint32_t STM32446_getclocksource(void)
 	if(reg & (1 << 1)){source = HSI_RC;}else if(reg & (1 << 17)){source = HSE_OSC;}
 	return source;
 }
-
 uint32_t STM32446_getpllsource(void)
 {
 	uint32_t reg = RCC->CFGR;
@@ -298,7 +287,6 @@ uint32_t STM32446_getpllsource(void)
 	if(reg & (1 << 22)) source = HSE_OSC; else source = HSI_RC;
 	return source;
 }
-
 uint16_t STM32446_gethpre(void)
 {
 	uint32_t value = STM32446_readreg(RCC->CFGR, 4, 4);
@@ -334,7 +322,6 @@ uint16_t STM32446_gethpre(void)
 	}
 	return value;
 }
-
 uint8_t STM32446_gethppre1(void)
 {
 	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 10);
@@ -358,7 +345,6 @@ uint8_t STM32446_gethppre1(void)
 	}
 	return value;
 }
-
 uint8_t STM32446_gethppre2(void)
 {
 	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 13);
@@ -382,12 +368,10 @@ uint8_t STM32446_gethppre2(void)
 	}
 	return value;
 }
-
 uint8_t STM32446_getrtcpre(void)
 {
 	return STM32446_readreg(RCC->CFGR, 5, 16);
 }
-
 uint8_t STM32446_gethmco1pre(void)
 {
 	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 24);
@@ -411,7 +395,6 @@ uint8_t STM32446_gethmco1pre(void)
 	}
 	return value;
 }
-
 uint8_t STM32446_gethmco2pre(void)
 {
 	uint32_t value = STM32446_readreg(RCC->CFGR, 3, 27);
@@ -435,17 +418,14 @@ uint8_t STM32446_gethmco2pre(void)
 		}
 	return value;
 }
-
 uint8_t STM32446_getpllm(void)
 {
 	return STM32446_readreg(RCC->PLLCFGR, 6, 0);
 }
-
 uint16_t STM32446_getplln(void)
 {
 	return STM32446_readreg(RCC->PLLCFGR, 9, 6);
 }
-
 uint8_t STM32446_getpllp(void)
 {
 	uint32_t value = STM32446_readreg(RCC->PLLCFGR, 2, 16);
@@ -468,17 +448,14 @@ uint8_t STM32446_getpllp(void)
 	}
 	return value;
 }
-
 uint8_t STM32446_getpllq(void)
 {
 	return STM32446_readreg(RCC->PLLCFGR, 4, 24);
 }
-
 uint8_t STM32446_getpllr(void)
 {
 	return STM32446_readreg(RCC->PLLCFGR, 3, 28);
 }
-
 uint32_t STM32446_getsysclk(void)
 {
 	uint32_t value = STM32446_readreg(RCC->CFGR, 2, 2);
@@ -509,14 +486,12 @@ STM32446SysTickobj systick_inic(void)
 	stm32446_systick.delay_us = STM32446delay_us;
 	return stm32446_systick;
 }
-
 void SystickInic(void)
 {
 	SysTick->LOAD = (uint32_t)( STM32446_getsysclk() - 1);
 	SysTick->VAL = 0UL;
 	SysTick->CTRL |= ((1 << 1) | (1 << 2));
 }
-
 void STM32446delay_ms(uint32_t ms)
 {
 	SysTick->LOAD = (uint32_t)(( STM32446_getsysclk() / 1000 ) - 1);
@@ -528,7 +503,6 @@ void STM32446delay_ms(uint32_t ms)
 	// Disable the SysTick timer
 	SysTick->CTRL &= (uint32_t) ~(1 << 0);
 }
-
 void STM32446delay_10us(uint32_t ten_us)
 {
 	SysTick->LOAD = (uint32_t)(( STM32446_getsysclk() / 100000) - 1);
@@ -540,7 +514,6 @@ void STM32446delay_10us(uint32_t ten_us)
 	// Disable the SysTick timer
 	SysTick->CTRL &= (uint32_t) ~(1 << 0);
 }
-
 void STM32446delay_us(uint32_t us)
 {
 	SysTick->LOAD = (uint32_t)(( STM32446_getsysclk() / 1000000) - 1);

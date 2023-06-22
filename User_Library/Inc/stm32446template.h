@@ -13,20 +13,44 @@ Comment:
 
 /*** File Library ***/
 #include <inttypes.h>
+/***************************************/
+/***** Template Bit Mapping TypeDef ****/
+/***************************************/
+typedef struct
+{
+	uint8_t a;
+}TEMPLATE_A, TEMPLATE_B;
+typedef struct
+{
+	uint16_t a;
+}TEMPLATE_C, TEMPLATE_D;
 
-/*** TEMPLATE1 TypeDef ***/
+/***************************************/
+/********** TEMPLATE1 TypeDef **********/
+/***************************************/
 typedef struct{
 	/*** Bit Mapping ***/
 
 	/*** Other ***/
-	void (*inic)( uint8_t parameter );
+	void (*group1)( uint8_t parameter );
 }STM32446TEMPLATE1;
 
-STM32446TEMPLATE1 STM32446TEMPLATE1enable(void);
+/*************************************/
+/*********** INIC TEMPLATE ***********/
+/*************************************/
+STM32446TEMPLATE1 STM32446TEMPLATE1_inic(void);
 
-/*** Template1 Procedure & Function Header ***/
-void STM32446Template1Inic( uint8_t parameter );
-/*** Template1 Bit Mapping Header ***/
+
+
+/***********************************************/
+/********* Procedure & Function Header *********/
+/***********************************************/
+void link(void);
+
+
+
+/***********************************************/
+/*** INTERRUPT HEADER ***/
 
 #endif
 
