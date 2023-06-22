@@ -26,7 +26,7 @@ Comment:
 typedef struct
 {
 	RTC_TypeDef* reg;
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
 	void (*inic)(uint8_t clock);
 	void (*Day)(uint8_t day);
 	void (*Month)(uint8_t month);
@@ -45,7 +45,7 @@ typedef struct
 STM32446RTCobj rtc_inic(void);
 
 /*** RTC Procedure & Function Header ***/
-void STM32446RtcClock(void);
+void STM32446RtcClock(uint8_t bool);
 void STM32446RtcInic(uint8_t clock);
 void STM32446RtcBckWrite(uint8_t n, uint8_t data);
 uint8_t STM32446RtcBckRead(uint8_t n);
