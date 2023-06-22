@@ -48,7 +48,7 @@ STM32446TIM8_DCR stm32446_tim8_dcr_inic(void);
 void STM32446Tim1Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB2ENR |= (1 << 0); //timer 1 clock enabled
+		RCC->APB2ENR |= (1 << 0); // timer 1 clock enabled
 	}else{
 		RCC->APB2ENR &= ~(1 << 0); //timer 1 clock disabled
 	}
@@ -669,7 +669,7 @@ uint16_t STM32446Tim1_get_dmab(void)
 void STM32446Tim8Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB2ENR |= (1 << 1); //timer 8 clock enabled
+		RCC->APB2ENR |= (1 << 1); // timer 8 clock enabled
 	}else{
 		RCC->APB2ENR &= ~(1 << 1); //timer 8 clock disabled
 	}
@@ -1698,7 +1698,7 @@ STM32446TIM8_DCR stm32446_tim8_dcr_inic(void)
 	stm32446_tim_dcr.dba = STM32446Tim8_dba;
 	return stm32446_tim_dcr;
 }
-/*** TIM5 INIC Procedure & Function Definition ***/
+/*** TIM8 INIC Procedure & Function Definition ***/
 STM32446TIM8obj tim8_inic(void)
 {
 	STM32446TIM8obj stm32446_tim;

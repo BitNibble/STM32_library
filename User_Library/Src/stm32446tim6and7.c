@@ -36,7 +36,7 @@ STM32446TIM7_EGR stm32446_tim7_egr_inic(void);
 void STM32446Tim6Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 4); //timer 6 clock enabled
+		RCC->APB1ENR |= (1 << 4); // timer 6 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 4); //timer 6 clock disabled
 	}
@@ -122,7 +122,7 @@ void STM32446Tim6_arr(uint16_t value)
 void STM32446Tim7Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 5); //timer 7 clock enabled
+		RCC->APB1ENR |= (1 << 5); // timer 7 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 5); //timer 7 clock disabled
 	}

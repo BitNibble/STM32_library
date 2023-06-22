@@ -64,7 +64,7 @@ STM32446TIM14_CCER stm32446_tim14_ccer_inic(void);
 void STM32446Tim9Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB2ENR |= (1 << 16); //timer 9 clock enabled
+		RCC->APB2ENR |= (1 << 16); // timer 9 clock enabled
 	}else{
 		RCC->APB2ENR &= ~(1 << 16); //timer 9 clock disabled
 	}
@@ -311,7 +311,7 @@ void STM32446Tim9_psc(uint16_t value)
 void STM32446Tim10Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB2ENR |= (1 << 17); //timer 10 clock enabled
+		RCC->APB2ENR |= (1 << 17); // timer 10 clock enabled
 	}else{
 		RCC->APB2ENR &= ~(1 << 17); //timer 10 clock disabled
 	}
@@ -545,7 +545,7 @@ void STM32446Tim10_or(uint8_t value)
 void STM32446Tim11Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB2ENR |= (1 << 18); //timer 11 clock enabled
+		RCC->APB2ENR |= (1 << 18); // timer 11 clock enabled
 	}else{
 		RCC->APB2ENR &= ~(1 << 18); //timer 11 clock disabled
 	}
@@ -779,7 +779,7 @@ void STM32446Tim11_or(uint8_t value)
 void STM32446Tim12Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 6); //timer 12 clock enabled
+		RCC->APB1ENR |= (1 << 6); // timer 12 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 6); //timer 12 clock disabled
 	}
@@ -1025,7 +1025,7 @@ void STM32446Tim12_psc(uint16_t value)
 void STM32446Tim13Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 7); //timer 13 clock enabled
+		RCC->APB1ENR |= (1 << 7); // timer 13 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 7); //timer 13 clock disabled
 	}
@@ -1258,7 +1258,7 @@ void STM32446Tim13_or(uint8_t value)
 void STM32446Tim14Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 8); //timer 14 clock enabled
+		RCC->APB1ENR |= (1 << 8); // timer 14 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 8); //timer 14 clock disabled
 	}

@@ -66,7 +66,7 @@ STM32446TIM5_DCR stm32446_tim5_dcr_inic(void);
 void STM32446Tim2Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 0); //timer 2 clock enabled
+		RCC->APB1ENR |= (1 << 0); // timer 2 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 0); //timer 2 clock disabled
 	}
@@ -544,7 +544,7 @@ void STM32446Tim2_itr1_rmp(uint8_t value)
 void STM32446Tim3Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 1); //timer 3 clock enabled
+		RCC->APB1ENR |= (1 << 1); // timer 3 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 1); //timer 3 clock disabled
 	}
@@ -1017,7 +1017,7 @@ uint16_t STM32446Tim3_get_dmab(void)
 void STM32446Tim4Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 2); //timer 4 clock enabled
+		RCC->APB1ENR |= (1 << 2); // timer 4 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 2); //timer 4 clock disabled
 	}
@@ -1490,7 +1490,7 @@ uint16_t STM32446Tim4_get_dmab(void)
 void STM32446Tim5Clock(uint8_t bool)
 {
 	if(bool){
-		RCC->APB1ENR |= (1 << 3); //timer 5 clock enabled
+		RCC->APB1ENR |= (1 << 3); // timer 5 clock enabled
 	}else{
 		RCC->APB1ENR &= ~(1 << 3); //timer 5 clock disabled
 	}
