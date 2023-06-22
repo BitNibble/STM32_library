@@ -169,8 +169,8 @@ uint8_t STM32446FLASH_optcr_get_n_wrp(void)
 	return flash_readreg(FLASH->OPTCR, 8, 16);
 }
 void STM32446FLASH_optcr_rdp(uint8_t value)
-{
-	flash_setreg(&FLASH->OPTCR, 8, 8, value);
+{ // Do not permit Blocking Chip !!
+	if(value != 0xCC){ flash_setreg(&FLASH->OPTCR, 8, 8, value);}
 }
 uint8_t STM32446FLASH_optcr_get_rdp(void)
 {
