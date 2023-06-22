@@ -4,7 +4,7 @@ Author: Sergio Manuel Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 19062023
+Date: 22062023
 Comment:
 	-manual um1724, m0390, pm0056, pm0214, and other sources.
 	-Virtual Image STM32-446, mapping.
@@ -48,7 +48,10 @@ Comment:
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
-#include "stm32446tim.h"
+#include "stm32446tim1and8.h"
+#include "stm32446tim2to5.h"
+#include "stm32446tim6and7.h"
+#include "stm32446tim9to14.h"
 #include "function.h"
 /************ STM32F446RE ************/
 /********** Global TypeDef ***********/
@@ -377,15 +380,21 @@ typedef struct
 		STM32446SRAMobj sram;
 	#endif
 
-	#if defined(_STM32446TIM_H_)
+	#if defined(_STM32446TIM1AND8_H_)
 		STM32446TIM1obj tim1;
+		STM32446TIM8obj tim8;
+	#endif
+	#if defined(_STM32446TIM2TO5_H_)
 		STM32446TIM2obj tim2;
 		STM32446TIM3obj tim3;
 		STM32446TIM4obj tim4;
 		STM32446TIM5obj tim5;
+	#endif
+	#if defined(_STM32446TIM6AND7_H_)
 		STM32446TIM6obj tim6;
 		STM32446TIM7obj tim7;
-		STM32446TIM8obj tim8;
+	#endif
+	#if defined(_STM32446TIM9TO14_H_)
 		STM32446TIM9obj tim9;
 		STM32446TIM10obj tim10;
 		STM32446TIM11obj tim11;

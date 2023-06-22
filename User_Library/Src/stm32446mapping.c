@@ -4,7 +4,7 @@ Author: Sergio Santos
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 19062023
+Date: 22062023
 Comment:
 	-manual um1724, m0390, pm0056, pm0214, and other sources.
 	-Virtual Image STM32-446, mapping.
@@ -117,15 +117,21 @@ STM32446 STM32446enable(void){
 		stm32446.sram = sram_inic();
 	#endif
 
-	#if defined(_STM32446TIM_H_)
+	#if defined(_STM32446TIM1AND8_H_)
 		stm32446.tim1 = tim1_inic();
+		stm32446.tim8 = tim8_inic();
+	#endif
+	#if defined(_STM32446TIM2TO5_H_)
 		stm32446.tim2 = tim2_inic();
 		stm32446.tim3 = tim3_inic();
 		stm32446.tim4 = tim4_inic();
 		stm32446.tim5 = tim5_inic();
+	#endif
+	#if defined(_STM32446TIM6AND7_H_)
 		stm32446.tim6 = tim6_inic();
 		stm32446.tim7 = tim7_inic();
-		stm32446.tim8 = tim8_inic();
+	#endif
+	#if defined(_STM32446TIM9TO14_H_)
 		stm32446.tim9 = tim9_inic();
 		stm32446.tim10 = tim10_inic();
 		stm32446.tim11 = tim11_inic();
@@ -133,7 +139,7 @@ STM32446 STM32446enable(void){
 		stm32446.tim13 = tim13_inic();
 		stm32446.tim14 = tim14_inic();
 	#endif
-
+		
 	#if defined(_STM32446USART_H_)
 		stm32446.usart1 = usart1_inic();
 		stm32446.usart2 = usart2_inic();
