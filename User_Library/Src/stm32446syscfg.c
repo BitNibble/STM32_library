@@ -151,39 +151,39 @@ SYSCFG_pmc SYSCFG_pmc_inic(void)
 }
 SYSCFG_exticr1 SYSCFG_exticr1_inic(void)
 {
-	SYSCFG_exticr1 exticr1;
-	exticr1.exti3 = SYSCFG_exticr1_exti3;
-	exticr1.exti2 = SYSCFG_exticr1_exti2;
-	exticr1.exti1 = SYSCFG_exticr1_exti1;
-	exticr1.exti0 = SYSCFG_exticr1_exti0;
-	return exticr1;
+	SYSCFG_exticr1 exticr;
+	exticr.exti3 = SYSCFG_exticr1_exti3;
+	exticr.exti2 = SYSCFG_exticr1_exti2;
+	exticr.exti1 = SYSCFG_exticr1_exti1;
+	exticr.exti0 = SYSCFG_exticr1_exti0;
+	return exticr;
 }
 SYSCFG_exticr2 SYSCFG_exticr2_inic(void)
 {
-	SYSCFG_exticr2 exticr2;
-	exticr2.exti7 = SYSCFG_exticr2_exti7;
-	exticr2.exti7 = SYSCFG_exticr2_exti6;
-	exticr2.exti5 = SYSCFG_exticr2_exti5;
-	exticr2.exti4 = SYSCFG_exticr2_exti4;
-	return exticr2;
+	SYSCFG_exticr2 exticr;
+	exticr.exti7 = SYSCFG_exticr2_exti7;
+	exticr.exti7 = SYSCFG_exticr2_exti6;
+	exticr.exti5 = SYSCFG_exticr2_exti5;
+	exticr.exti4 = SYSCFG_exticr2_exti4;
+	return exticr;
 }
 SYSCFG_exticr3 SYSCFG_exticr3_inic(void)
 {
-	SYSCFG_exticr3 exticr3;
-	exticr3.exti11 = SYSCFG_exticr3_exti11;
-	exticr3.exti10 = SYSCFG_exticr3_exti10;
-	exticr3.exti9 = SYSCFG_exticr3_exti9;
-	exticr3.exti8 = SYSCFG_exticr3_exti8;
-	return exticr3;
+	SYSCFG_exticr3 exticr;
+	exticr.exti11 = SYSCFG_exticr3_exti11;
+	exticr.exti10 = SYSCFG_exticr3_exti10;
+	exticr.exti9 = SYSCFG_exticr3_exti9;
+	exticr.exti8 = SYSCFG_exticr3_exti8;
+	return exticr;
 }
 SYSCFG_exticr4 SYSCFG_exticr4_inic(void)
 {
-	SYSCFG_exticr4 exticr4;
-	exticr4.exti15 = SYSCFG_exticr4_exti15;
-	exticr4.exti14 = SYSCFG_exticr4_exti14;
-	exticr4.exti13 = SYSCFG_exticr4_exti13;
-	exticr4.exti12 = SYSCFG_exticr4_exti12;
-	return exticr4;
+	SYSCFG_exticr4 exticr;
+	exticr.exti15 = SYSCFG_exticr4_exti15;
+	exticr.exti14 = SYSCFG_exticr4_exti14;
+	exticr.exti13 = SYSCFG_exticr4_exti13;
+	exticr.exti12 = SYSCFG_exticr4_exti12;
+	return exticr;
 }
 SYSCFG_cmpcr SYSCFG_cmpcr_inic(void)
 {
