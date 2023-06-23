@@ -1,51 +1,55 @@
 /******************************************************************************
-	STM32 446 TEMPLATE
+	STM32 446 SYSCFG
 Author: Sergio Santos 
 	<sergio.salazar.santos@gmail.com>
 License: GNU General Public License
 Hardware: STM32-446
-Date: 28052023
+Date: 23062023
 Comment:
 	
 *******************************************************************************/
-#ifndef _STM32446TEMPLATE_H_
-	#define _STM32446TEMPLATE_H_
+#ifndef _STM32446SYSCFG_H_
+	#define _STM32446SYSCFG_H_
 
 /*** File Library ***/
 #include <inttypes.h>
 /***************************************/
-/***** Template Bit Mapping TypeDef ****/
+/***** SYSCFG Bit Mapping TypeDef ****/
 /***************************************/
 typedef struct
 {
 	uint8_t a;
-}TEMPLATE_A, TEMPLATE_B;
+}SYSCFG_A, SYSCFG_B;
 typedef struct
 {
 	uint16_t a;
-}TEMPLATE_C, TEMPLATE_D;
+}SYSCFG_C, SYSCFG_D;
 
 /***************************************/
-/********** TEMPLATE1 TypeDef **********/
+/********** SYSCFG TypeDef **********/
 /***************************************/
-typedef struct{
+typedef struct
+{
+	SYSCFG_TypeDef* reg;
 	/*** Bit Mapping ***/
 
 	/*** Other ***/
 	void (*group1)( uint8_t parameter );
-}STM32446TEMPLATE1;
+	void (*enable)(void);
+}STM32446SYSCFGobj;
+
 
 /*************************************/
 /*********** INIC TEMPLATE ***********/
 /*************************************/
-STM32446TEMPLATE1 STM32446TEMPLATE1_inic(void);
+STM32446SYSCFGobj STM32446SYSCFG_inic(void);
 
 
 
 /***********************************************/
 /********* Procedure & Function Header *********/
 /***********************************************/
-void template_link(void);
+void syscfg_link(void);
 
 
 

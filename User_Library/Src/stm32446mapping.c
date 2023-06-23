@@ -99,7 +99,9 @@ STM32446 STM32446enable(void){
 		stm32446.gpioh = gpioh_inic();
 	#endif
 	// SYSCFG
-	stm32446.syscfg.reg = SYSCFG;
+	#if defined(_STM32446SYSCFG_H_)
+		stm32446.syscfg.reg = SYSCFG;
+	#endif
 	// PWR
 	#if defined(_STM32446PWR_H_)
 		stm32446.pwr = pwr_inic();

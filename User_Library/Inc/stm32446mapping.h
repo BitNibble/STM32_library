@@ -45,6 +45,7 @@ Comment:
 #include "stm32446nvic.h"
 #include "stm32446sram.h"
 #include "stm32446gpio.h"
+#include "stm32446syscfg.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
@@ -188,12 +189,6 @@ typedef struct
 {
 	FMC_Bank5_6_TypeDef* reg;
 }STM32446FMC_Bank5_6obj;
-// SYSCFG
-typedef struct
-{
-	SYSCFG_TypeDef* reg;
-	void (*enable)(void);
-}STM32446SYSCFGobj;
 // I2C -> I2C1
 typedef struct
 {
@@ -362,7 +357,9 @@ typedef struct
 		STM32446GpioHobj gpioh;
 	#endif
 
-	STM32446SYSCFGobj syscfg;
+	#if defined(_STM32446SYSCFG_H_)
+		STM32446SYSCFGobj syscfg;
+	#endif
 
 	#if defined(_STM32446PWR_H_)
 		STM32446PWRobj pwr;
