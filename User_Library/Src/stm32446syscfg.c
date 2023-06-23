@@ -22,36 +22,95 @@ uint32_t syscfg_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t 
 /***********************************************/
 /****** LINK Procedure & Function Header *******/
 /***********************************************/
-void SYSCFGgroup1_inic( uint8_t parameter );
-
-
-
+SYSCFG_memrmp SYSCFG_memrmp_inic(void);
+SYSCFG_pmc SYSCFG_pmc_inic(void);
+SYSCFG_exticr1 SYSCFG_exticr1_inic(void);
+SYSCFG_exticr2 SYSCFG_exticr2_inic(void);
+SYSCFG_exticr3 SYSCFG_exticr3_inic(void);
+SYSCFG_exticr4 SYSCFG_exticr4_inic(void);
+SYSCFG_cmpcr SYSCFG_cmpcr_inic(void);
+SYSCFG_cfgr SYSCFG_cfgr_inic(void);
 /***********************************************/
 /******* Procedure & Function Definition *******/
 /***********************************************/
-void syscfg_link(void){}
+void SYSCFG_memrmp_swp_fmc(uint8_t value)
+{
+
+}
+
+
 
 
 
 /***********************************************/
 /**** LINK Procedure & Function Definition *****/
 /***********************************************/
-void SYSCFGgroup1_inic( uint8_t parameter )
+SYSCFG_memrmp SYSCFG_memrmp_inic(void)
 {
-	syscfg_link();
+	SYSCFG_memrmp memrmp;
 
+	return memrmp;
 }
+SYSCFG_pmc SYSCFG_pmc_inic(void)
+{
+	SYSCFG_pmc pmc;
 
+	return pmc;
+}
+SYSCFG_exticr1 SYSCFG_exticr1_inic(void)
+{
+	SYSCFG_exticr1 exticr1;
 
+	return exticr1;
+}
+SYSCFG_exticr2 SYSCFG_exticr2_inic(void)
+{
+	SYSCFG_exticr2 exticr2;
+
+	return exticr2;
+}
+SYSCFG_exticr3 SYSCFG_exticr3_inic(void)
+{
+	SYSCFG_exticr3 exticr3;
+
+	return exticr3;
+}
+SYSCFG_exticr4 SYSCFG_exticr4_inic(void)
+{
+	SYSCFG_exticr4 exticr4;
+
+	return exticr4;
+}
+SYSCFG_cmpcr SYSCFG_cmpcr_inic(void)
+{
+	SYSCFG_cmpcr cmpcr;
+
+	return cmpcr;
+}
+SYSCFG_cfgr SYSCFG_cfgr_inic(void)
+{
+	SYSCFG_cfgr cfgr;
+
+	return cfgr;
+}
 /************************************************/
-/*** SYSCFG Procedure & Function Definition ***/
+/**** SYSCFG Procedure & Function Definition ****/
 /************************************************/
 STM32446SYSCFGobj STM32446SYSCFG_inic(void)
 {
 	STM32446SYSCFGobj syscfg;
-
-	syscfg.group1 = SYSCFGgroup1_inic;
-
+	syscfg.reg = SYSCFG;
+	/*** LINK ***/
+	syscfg.memrmp = SYSCFG_memrmp_inic();
+	syscfg.pmc = SYSCFG_pmc_inic();
+	syscfg.exticr1 = SYSCFG_exticr1_inic();
+	syscfg.exticr2 = SYSCFG_exticr2_inic();
+	syscfg.exticr3 = SYSCFG_exticr3_inic();
+	syscfg.exticr4 = SYSCFG_exticr4_inic();
+	syscfg.cmpcr = SYSCFG_cmpcr_inic();
+	syscfg.cfgr = SYSCFG_cfgr_inic();
+	/*** Oyher ***/
+	syscfg.clock = SYSCFG_Clock;
 	return syscfg;
 }
 /************************************************/
@@ -104,6 +163,7 @@ uint32_t syscfg_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t 
 	value = (value >> bit);
 	return value;
 }
+/************************************************/
 
 /*** EOF ***/
 
