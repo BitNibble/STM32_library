@@ -30,6 +30,10 @@ void STM32446RtcStopRead(void);
 void STM32446RtcWaitRead(void);
 void STM32446RtcSetTr(uint32_t value);
 void STM32446RtcSetDr(uint32_t value);
+uint8_t rtc_get_stsu(void);
+uint8_t rtc_get_st(void);
+uint8_t rtc_get_su(void);
+uint16_t rtc_get_ss(void);
 char rtc_bcd2dec(char num);
 char rtc_dec2bcd(char num);
 void rtc_lenable(unsigned int lclock);
@@ -247,6 +251,26 @@ void STM32446Rtctr2vec(char* rtc_vect)
 	}
 }
 
+uint8_t rtc_get_stsu(void)
+{ // BCD
+	uint32_t tr = RTC->TR;
+	return (uint8_t) (tr & 0x007F);
+}
+uint8_t rtc_get_st(void)
+{ // BCD
+	uint32_t tr = RTC->TR;
+	return (uint8_t) (tr >> 4) & 0x07;
+}
+uint8_t rtc_get_su(void)
+{ // BCD
+	uint32_t tr = RTC->TR;
+	return (uint8_t) tr & 0x0F;
+}
+uint16_t rtc_get_ss(void)
+{
+	return RTC->SSR;
+}
+
 /*** RTC Procedure & Function Definition ***/
 STM32446RTCobj rtc_inic(void)
 {
@@ -266,6 +290,8 @@ STM32446RTCobj rtc_inic(void)
 	stm32446_rtc.tr2vec = STM32446Rtctr2vec;
 	stm32446_rtc.BckWrite = STM32446RtcBckWrite;
 	stm32446_rtc.BckRead = STM32446RtcBckRead;
+	stm32446_rtc.get_stsu = rtc_get_stsu;
+	stm32446_rtc.get_ss = rtc_get_ss;
 	return stm32446_rtc;
 }
 

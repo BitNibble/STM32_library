@@ -39,7 +39,8 @@ typedef struct
 	void (*tr2vec)(char* rtc_vect);
 	void (*BckWrite)(uint8_t n, uint8_t data);
 	uint8_t (*BckRead)(uint8_t n);
-
+	uint8_t (*get_stsu)(void);
+	uint16_t (*get_ss)(void);
 }STM32446RTCobj;
 
 STM32446RTCobj rtc_inic(void);
