@@ -47,6 +47,18 @@ void SYSCFG_pmc_adcxdc2(uint8_t value)
 {
 	syscfg_setreg(&SYSCFG->PMC, 3, 16, value);
 }
+void SYSCFG_pmc_adc1dc2(uint8_t bool)
+{
+	syscfg_setreg(&SYSCFG->PMC, 1, 16, bool);
+}
+void SYSCFG_pmc_adc2dc2(uint8_t bool)
+{
+	syscfg_setreg(&SYSCFG->PMC, 1, 17, bool);
+}
+void SYSCFG_pmc_adc3dc2(uint8_t bool)
+{
+	syscfg_setreg(&SYSCFG->PMC, 1, 18, bool);
+}
 // exticr1
 void SYSCFG_exticr1_exti3(uint8_t value)
 {
@@ -147,6 +159,9 @@ SYSCFG_pmc SYSCFG_pmc_inic(void)
 {
 	SYSCFG_pmc pmc;
 	pmc.adcxdc2 = SYSCFG_pmc_adcxdc2;
+	pmc.adc1dc2 = SYSCFG_pmc_adc1dc2;
+	pmc.adc2dc2 = SYSCFG_pmc_adc2dc2;
+	pmc.adc3dc2 = SYSCFG_pmc_adc3dc2;
 	return pmc;
 }
 SYSCFG_exticr1 SYSCFG_exticr1_inic(void)

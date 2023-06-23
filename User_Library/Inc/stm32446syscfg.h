@@ -24,6 +24,9 @@ typedef struct
 typedef struct
 {
 	void (*adcxdc2)(uint8_t value);
+	void (*adc1dc2)(uint8_t bool);
+	void (*adc2dc2)(uint8_t bool);
+	void (*adc3dc2)(uint8_t bool);
 }SYSCFG_pmc;
 typedef struct
 {
@@ -95,6 +98,9 @@ void SYSCFG_memrmp_swp_fmc(uint8_t value);
 void SYSCFG_memrmp_mem_mode(uint8_t value);
 // pmc
 void SYSCFG_pmc_adcxdc2(uint8_t value);
+void SYSCFG_pmc_adc1dc2(uint8_t bool);
+void SYSCFG_pmc_adc2dc2(uint8_t bool);
+void SYSCFG_pmc_adc3dc2(uint8_t bool);
 // exticr1
 void SYSCFG_exticr1_exti3(uint8_t value);
 void SYSCFG_exticr1_exti2(uint8_t value);
