@@ -444,13 +444,18 @@ void STM32446Adc1Nvic(uint8_t bool)
 void STM32446Adc1Inic(void)
 {
 	// ADC Clock
-	// void STM32446Adc1IClock(1); // DACEN: DAC interface clock enable
-	// STM32446Adc1Clock(1) // ADC1EN: ADC1 clock enable
+	 STM32446Adc1IClock(1); // DACEN: DAC interface clock enable
+	 STM32446Adc1Clock(1); // ADC1EN: ADC1 clock enable
 	// ADC CONFIG
+	 STM32446ADC1_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
+	STM32446ADC1_cr1_discnum(1);
+	//STM32446ADC1_cr1_scan(1);
 	STM32446ADC1_cr2_eocs(1); // EOCS: End of conversion selection
 	STM32446ADC_ccr_adcpre(3); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
+	STM32446ADC1_smpr2_smp0(7); // SMPx[2:0]: Channel x sampling time selection
 	STM32446ADC1_smpr1_smp18(7); // SMPx[2:0]: Channel x sampling time selection
-	STM32446ADC1_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
+	STM32446ADC1_sqr1_l(1); // 0 -> read one channel, 1 -> read two channels
+	STM32446ADC1_sqr3_sq2(0); // SQ2[4:0]: 2st conversion in regular sequence
 	STM32446ADC1_sqr3_sq1(18); // SQ1[4:0]: 1st conversion in regular sequence
 }
 void STM32446Adc1VBAT(void) // vbat overrides temperature
@@ -837,11 +842,7 @@ void STM32446ADC2_jsqr_jl(uint8_t value)
 }
 void STM32446ADC2_jsqr_jsq4(uint8_t value)
 {
-	adc_setreg(&ADC2->JSQR, 4, 16, value);
-}
-void STM32446ADC2_jsqr_jsq4_0(uint8_t bool)
-{
-	adc_setreg(&ADC2->JSQR, 1, 15, bool);
+	adc_setreg(&ADC2->JSQR, 5, 15, value);
 }
 void STM32446ADC2_jsqr_jsq3(uint8_t value)
 {
@@ -899,9 +900,9 @@ void STM32446Adc2Inic(void)
 	// ADC CONFIG
 	STM32446ADC2_cr2_eocs(1); // EOCS: End of conversion selection
 	STM32446ADC_ccr_adcpre(3); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
-	STM32446ADC2_smpr1_smp18(7); // SMPx[2:0]: Channel x sampling time selection
+	STM32446ADC2_smpr1_smp10(7); // SMPx[2:0]: Channel x sampling time selection
 	STM32446ADC2_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
-	STM32446ADC2_sqr3_sq1(18); // SQ1[4:0]: 1st conversion in regular sequence
+	STM32446ADC2_sqr3_sq1(10); // SQ1[4:0]: 1st conversion in regular sequence
 }
 void STM32446Adc2VBAT(void) // vbat overrides temperature
 {
@@ -1344,9 +1345,9 @@ void STM32446Adc3Inic(void)
 	// ADC CONFIG
 	STM32446ADC3_cr2_eocs(1); // EOCS: End of conversion selection
 	STM32446ADC_ccr_adcpre(3); // ADCPRE: ADC prescaler, 11: PCLK2 divided by 8
-	STM32446ADC3_smpr1_smp18(7); // SMPx[2:0]: Channel x sampling time selection
+	STM32446ADC3_smpr1_smp15(7); // SMPx[2:0]: Channel x sampling time selection
 	STM32446ADC3_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
-	STM32446ADC3_sqr3_sq1(18); // SQ1[4:0]: 1st conversion in regular sequence
+	STM32446ADC3_sqr3_sq1(15); // SQ1[4:0]: 1st conversion in regular sequence
 }
 void STM32446Adc3VBAT(void) // vbat overrides temperature
 {
