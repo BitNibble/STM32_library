@@ -38,6 +38,11 @@ void STM32446CRC_reset(void)
 {
 	CRC->CR = 1;
 }
+void STM32446CRC_clock(uint8_t bool)
+{
+	if(bool){ RCC->AHB1ENR |= (1 << 12); }
+	else{ RCC->AHB1ENR &= ~(1 << 12); }
+}
 /*** INIC Procedure & Function Definition ***/
 STM32446CRCobj crc_inic(void)
 {

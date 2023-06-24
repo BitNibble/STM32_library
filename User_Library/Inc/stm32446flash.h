@@ -100,10 +100,13 @@ typedef struct
 	void (*keyr)(uint32_t);
 	void (*optkeyr)(uint32_t);
 	/*** Other ***/
+	void (*nvic)(uint8_t bool);
 }STM32446FLASHobj;
 
 STM32446FLASHobj flash_inic(void);
 
+/*** Procedure & Function Header ***/
+void STM32446FLASH_nvic(uint8_t bool);
 /*** FLASH Bit Mapping Header ***/
 // ACR
 void STM32446FLASH_acr_dcrst(uint8_t bool);
@@ -155,7 +158,11 @@ void STM32446FLASH_keyr_key(uint32_t value);
 // OPTKEYR
 void STM32446FLASH_optkeyr_optkey(uint32_t value);
 
+/*** INTERRRUPT HEADER ***/
+void FLASH_IRQHandler(void);
+
 #endif
+
 
 /*** EOF ***/
 

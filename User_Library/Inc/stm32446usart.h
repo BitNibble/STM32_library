@@ -93,7 +93,8 @@ typedef struct
 	void (*dr)(uint32_t data);
 	uint32_t (*get_dr)(void);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
+
 	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 }STM32446USART1obj;
 // USART -> USART2
@@ -110,7 +111,7 @@ typedef struct
 	void (*dr)(uint32_t data);
 	uint32_t (*get_dr)(void);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
 	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 }STM32446USART2obj;
 // USART -> USART3
@@ -127,7 +128,7 @@ typedef struct
 	void (*dr)(uint32_t data);
 	uint32_t (*get_dr)(void);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
 	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 }STM32446USART3obj;
 // USART -> UART4
@@ -144,7 +145,7 @@ typedef struct
 	void (*dr)(uint32_t data);
 	uint32_t (*get_dr)(void);
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
 	void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 }STM32446USART4obj;
 // USART -> UART5
@@ -162,7 +163,7 @@ typedef struct
 		void (*dr)(uint32_t data);
 		uint32_t (*get_dr)(void);
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 	#endif
 }STM32446USART5obj;
@@ -181,7 +182,7 @@ typedef struct
 		void (*dr)(uint32_t data);
 		uint32_t (*get_dr)(void);
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		void (*parameter)( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 	#endif
 }STM32446USART6obj;
@@ -256,7 +257,7 @@ void STM32446Usart1_eie(uint8_t bool);
 void STM32446Usart1_gt(uint8_t value);
 void STM32446Usart1_psc(uint8_t value);
 // Other
-void STM32446Usart1Clock( void );
+void STM32446Usart1Clock( uint8_t bool );
 void STM32446Usart1Inic( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 /*** USART2 Bit Mapping Header ***/
@@ -324,7 +325,7 @@ void STM32446Usart2_eie(uint8_t bool);
 void STM32446Usart2_gt(uint8_t value);
 void STM32446Usart2_psc(uint8_t value);
 // Other
-void STM32446Usart2Clock( void );
+void STM32446Usart2Clock( uint8_t bool );
 void STM32446Usart2Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 /*** USART3 Bit Mapping Header ***/
 // SR
@@ -391,7 +392,7 @@ void STM32446Usart3_eie(uint8_t bool);
 void STM32446Usart3_gt(uint8_t value);
 void STM32446Usart3_psc(uint8_t value);
 // Other
-void STM32446Usart3Clock( void );
+void STM32446Usart3Clock( uint8_t bool );
 void STM32446Usart3Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 /*** UART4 Bit Mapping Header ***/
 // SR
@@ -458,7 +459,7 @@ void STM32446Uart4_eie(uint8_t bool);
 void STM32446Uart4_gt(uint8_t value);
 void STM32446Uart4_psc(uint8_t value);
 // Other
-void STM32446Uart4Clock( void );
+void STM32446Uart4Clock( uint8_t bool );
 void STM32446Uart4Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 /*** UART5 Bit Mapping Header ***/
 // SR
@@ -525,7 +526,7 @@ void STM32446Uart5_eie(uint8_t bool);
 void STM32446Uart5_gt(uint8_t value);
 void STM32446Uart5_psc(uint8_t value);
 // Other
-void STM32446Uart5Clock( void );
+void STM32446Uart5Clock( uint8_t bool );
 void STM32446Uart5Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
 /*** USART6 Bit Mapping Header ***/
 // SR
@@ -592,8 +593,16 @@ void STM32446Usart6_eie(uint8_t bool);
 void STM32446Usart6_gt(uint8_t value);
 void STM32446Usart6_psc(uint8_t value);
 // Other
-void STM32446Usart6Clock( void );
+void STM32446Usart6Clock( uint8_t bool );
 void STM32446Usart6Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate );
+
+/*** INTERRUPT HEADER ***/
+void USART1_IRQHandler(void);
+void USART2_IRQHandler(void);
+void USART3_IRQHandler(void);
+void UART4_IRQHandler(void);
+void UART5_IRQHandler(void);
+void USART6_IRQHandler(void);
 
 #endif
 

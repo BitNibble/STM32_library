@@ -41,12 +41,14 @@ typedef struct
 	uint8_t (*BckRead)(uint8_t n);
 	uint8_t (*get_stsu)(void);
 	uint16_t (*get_ss)(void);
+	void (*nvic)(uint8_t value);
 }STM32446RTCobj;
 
 STM32446RTCobj rtc_inic(void);
 
 /*** RTC Procedure & Function Header ***/
 void STM32446RtcClock(uint8_t bool);
+void STM32446RtcNvic(uint8_t value);
 void STM32446RtcInic(uint8_t clock);
 void STM32446RtcBckWrite(uint8_t n, uint8_t data);
 uint8_t STM32446RtcBckRead(uint8_t n);
@@ -59,6 +61,10 @@ void STM32446RtcMonth(uint8_t month);
 void STM32446RtcWeekDay(uint8_t weekday);
 void STM32446Rtcdr2vec(char* rtc_vect);
 void STM32446Rtctr2vec(char* rtc_vect);
+
+/*** INTERRUPT ***/
+void RTC_WKUP_IRQHandler(void);
+void RTC_Alarm_IRQHandler(void);
 
 #endif
 

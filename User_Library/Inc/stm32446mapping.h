@@ -417,6 +417,19 @@ typedef struct
 
 STM32446 STM32446enable(void);
 
+/*** INTERRUPT HEADER ***/
+void Reset_IRQHandler(void);
+void NMI_IRQHandler(void);
+void HardFault_IRQHandler(void);
+void MemManage_IRQHandler(void);
+void BusFault_IRQHandler(void);
+void UsageFault_IRQHandler(void);
+void SVCall_IRQHandler(void);
+void PendSV_IRQHandler(void);
+void Systick_IRQHandler(void);
+void FPU_IRQHandler(void);
+void SysTick_Handler(void);
+
 #endif
 
 /***EOF***/

@@ -63,9 +63,10 @@ STM32446USART_CR3 stm32446_usart6_cr3_inic(void);
 STM32446USART_GTPR stm32446_usart6_gtpr_inic(void);
 /*** USART Procedure & Function Definition ***/
 /*** USART1 ***/
-void STM32446Usart1Clock( void )
+void STM32446Usart1Clock( uint8_t bool )
 {
-	RCC->APB2ENR |= (1 << 4); // USART1EN: USART1 clock enable
+	if(bool){ RCC->APB2ENR |= (1 << 4); } // USART1EN: USART1 clock enable
+	else{ RCC->APB2ENR &= ~(1 << 4); } // USART1EN: USART1 clock disable
 }
 void STM32446Usart1Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
@@ -345,9 +346,10 @@ void STM32446Usart1_psc(uint8_t value)
 	usart_setreg(&USART1->GTPR, 8, 0, value);
 }
 /*** USART2 ***/
-void STM32446Usart2Clock( void )
+void STM32446Usart2Clock( uint8_t bool )
 {
-	RCC->APB1ENR |= (1 << 17); // USART2EN: USART2 clock enable
+	if(bool){ RCC->APB1ENR |= (1 << 17); } // USART2EN: USART2 clock enable
+	else{ RCC->APB1ENR &= ~(1 << 17); } // USART2EN: USART2 clock disable
 }
 void STM32446Usart2Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
@@ -626,9 +628,10 @@ void STM32446Usart2_psc(uint8_t value)
 	usart_setreg(&USART2->GTPR, 8, 0, value);
 }
 /*** USART3 ***/
-void STM32446Usart3Clock( void )
+void STM32446Usart3Clock( uint8_t bool )
 {
-	RCC->APB1ENR |= (1 << 18); // USART3EN: USART3 clock enable
+	if(bool){ RCC->APB1ENR |= (1 << 18); } // USART3EN: USART3 clock enable
+	else{ RCC->APB1ENR &= ~(1 << 18); } // USART3EN: USART3 clock disable
 }
 void STM32446Usart3Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.
@@ -907,9 +910,11 @@ void STM32446Usart3_psc(uint8_t value)
 	usart_setreg(&USART3->GTPR, 8, 0, value);
 }
 /*** UART4 ***/
-void STM32446Uart4Clock( void )
+void STM32446Uart4Clock( uint8_t bool )
 {
-	RCC->APB1ENR |= (1 << 19); // UART4EN: UART4 clock enable
+	if(bool){ RCC->APB1ENR |= (1 << 19); } // UART4EN: USART4 clock enable
+	else{ RCC->APB1ENR &= ~(1 << 19); } // UART4EN: USART4 clock disable
+
 }
 void STM32446Uart4Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the uart parameters, using real values.
@@ -1188,9 +1193,10 @@ void STM32446Uart4_psc(uint8_t value)
 	usart_setreg(&UART4->GTPR, 8, 0, value);
 }
 /*** UART5 ***/
-void STM32446Uart5Clock( void )
+void STM32446Uart5Clock( uint8_t bool )
 {
-	RCC->APB1ENR |= (1 << 20); // UART5EN: UART5 clock enable
+	if(bool){ RCC->APB1ENR |= (1 << 20); } // UART5EN: USART5 clock enable
+	else{ RCC->APB1ENR &= ~(1 << 20); } // UART5EN: USART5 clock disable
 }
 void STM32446Uart5Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the uart parameters, using real values.
@@ -1469,9 +1475,10 @@ void STM32446Uart5_psc(uint8_t value)
 	usart_setreg(&UART5->GTPR, 8, 0, value);
 }
 /*** USART6 ***/
-void STM32446Usart6Clock( void )
+void STM32446Usart6Clock( uint8_t bool )
 {
-	RCC->APB2ENR |= (1 << 5); // USART6EN: USART6 clock enable
+	if(bool){ RCC->APB2ENR |= (1 << 5); } // USART6EN: USART6 clock enable
+	else{ RCC->APB2ENR &= ~(1 << 5); } // USART6EN: USART6 clock disable
 }
 void STM32446Usart6Parameter( uint8_t wordlength, uint8_t samplingmode, double stopbits, uint32_t baudrate )
 // Sets the usart parameters, using real values.

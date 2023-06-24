@@ -1434,6 +1434,12 @@ void STM32446RCC_DCKCFGR2_fmpi2c1sel(uint8_t value)
 {
 	rcc_setreg(&RCC->DCKCFGR2, 2, 22, value);
 }
+/*** Other ***/
+void STM32446RCC_nvic(uint8_t bool)
+{
+	if(bool){ rcc_setbit(NVIC->ISER, 1, 5, 1); }
+	else{ rcc_setbit(NVIC->ICER, 1, 5, 1); }
+}
 /*** Auxiliar ***/
 STM32446RCC_cr stm32446_rcc_cr_inic(void)
 {
@@ -1948,6 +1954,8 @@ STM32446RCCobj rcc_inic(void)
 	stm32446_rcc.hselect = STM32446RccHSelect;
 	stm32446_rcc.lenable = STM32446RccLEnable;
 	stm32446_rcc.lselect = STM32446RccLSelect;
+	/*** Nvic ***/
+	stm32446_rcc.nvic = STM32446RCC_nvic;
 	return stm32446_rcc;
 }
 /*** File Procedure & Function Definition ***/

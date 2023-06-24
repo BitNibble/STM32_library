@@ -22,9 +22,10 @@ uint32_t gpio_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bi
 STM32446GpioFunc stm32446_gpio_func_inic(void);
 /*** GPIO Procedure & Function Definition ***/
 /*** GPIOA ***/
-void STM32446GpioAclock( void )
+void STM32446GpioAclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 0);
+	if(bool){ RCC->AHB1ENR |= (1 << 0); }
+	else{ RCC->AHB1ENR &= ~(1 << 0); }
 }
 void STM32446GpioAmoder( unsigned int data, unsigned int pin )
 {
@@ -71,9 +72,10 @@ void STM32446GpioAafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOB ***/
-void STM32446GpioBclock( void )
+void STM32446GpioBclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 1);
+	if(bool){ RCC->AHB1ENR |= (1 << 1); }
+	else{ RCC->AHB1ENR &= ~(1 << 1); }
 }
 void STM32446GpioBmoder( unsigned int data, unsigned int pin )
 {
@@ -120,9 +122,10 @@ void STM32446GpioBafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOC ***/
-void STM32446GpioCclock( void )
+void STM32446GpioCclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 2);
+	if(bool){ RCC->AHB1ENR |= (1 << 2); }
+	else{ RCC->AHB1ENR &= ~(1 << 2); }
 }
 void STM32446GpioCmoder( unsigned int data, unsigned int pin )
 {
@@ -169,9 +172,10 @@ void STM32446GpioCafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOD ***/
-void STM32446GpioDclock( void )
+void STM32446GpioDclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 3);
+	if(bool){ RCC->AHB1ENR |= (1 << 3); }
+	else{ RCC->AHB1ENR &= ~(1 << 3); }
 }
 void STM32446GpioDmoder( unsigned int data, unsigned int pin )
 {
@@ -218,9 +222,10 @@ void STM32446GpioDafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOE ***/
-void STM32446GpioEclock( void )
+void STM32446GpioEclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 4);
+	if(bool){ RCC->AHB1ENR |= (1 << 4); }
+	else{ RCC->AHB1ENR &= ~(1 << 4); }
 }
 void STM32446GpioEmoder( unsigned int data, unsigned int pin )
 {
@@ -267,9 +272,10 @@ void STM32446GpioEafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOF ***/
-void STM32446GpioFclock( void )
+void STM32446GpioFclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 5);
+	if(bool){ RCC->AHB1ENR |= (1 << 5); }
+	else{ RCC->AHB1ENR &= ~(1 << 5); }
 }
 void STM32446GpioFmoder( unsigned int data, unsigned int pin )
 {
@@ -316,9 +322,10 @@ void STM32446GpioFafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOG ***/
-void STM32446GpioGclock( void )
+void STM32446GpioGclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 6);
+	if(bool){ RCC->AHB1ENR |= (1 << 6); }
+	else{ RCC->AHB1ENR &= ~(1 << 6); }
 }
 void STM32446GpioGmoder( unsigned int data, unsigned int pin )
 {
@@ -365,9 +372,10 @@ void STM32446GpioGafr( unsigned int data, unsigned int pin )
 	}
 }
 /*** GPIOH ***/
-void STM32446GpioHclock( void )
+void STM32446GpioHclock( uint8_t bool )
 {
-	RCC->AHB1ENR |= (1 << 7);
+	if(bool){ RCC->AHB1ENR |= (1 << 7); }
+	else{ RCC->AHB1ENR &= ~(1 << 7); }
 }
 void STM32446GpioHmoder( unsigned int data, unsigned int pin )
 {

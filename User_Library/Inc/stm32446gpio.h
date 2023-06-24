@@ -34,7 +34,7 @@ typedef struct
 	void (*reset)( unsigned int data );
 	void (*set)( unsigned int data );
 	/*** Other ***/
-	void (*clock)(void);
+	void (*clock)(uint8_t bool);
 	STM32446GpioFunc func;
 
 }STM32446GpioAobj;
@@ -51,7 +51,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioBobj;
@@ -68,7 +68,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioCobj;
@@ -85,7 +85,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioDobj;
@@ -102,7 +102,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioEobj;
@@ -119,7 +119,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioFobj;
@@ -136,7 +136,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioGobj;
@@ -153,7 +153,7 @@ typedef struct
 		void (*reset)( unsigned int data );
 		void (*set)( unsigned int data );
 		/*** Other ***/
-		void (*clock)(void);
+		void (*clock)(uint8_t bool);
 		STM32446GpioFunc func;
 	#endif
 }STM32446GpioHobj;
@@ -165,56 +165,56 @@ STM32446GpioDobj gpiod_inic(void);
 STM32446GpioEobj gpioe_inic(void);
 STM32446GpioHobj gpioh_inic(void);
 /***** GPIO Procedure & Funtion Header ******/
-void STM32446GpioAclock( void );
+void STM32446GpioAclock( uint8_t bool );
 void STM32446GpioAmoder( unsigned int data, unsigned int pin );
 void STM32446GpioAospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioApupdr( unsigned int data, unsigned int pin );
 void STM32446GpioAreset( unsigned int data );
 void STM32446GpioAset( unsigned int data );
 void STM32446GpioAafr( unsigned int data, unsigned int pin );
-void STM32446GpioBclock( void );
+void STM32446GpioBclock( uint8_t bool );
 void STM32446GpioBmoder( unsigned int data, unsigned int pin );
 void STM32446GpioBospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioBpupdr( unsigned int data, unsigned int pin );
 void STM32446GpioBreset( unsigned int data );
 void STM32446GpioBset( unsigned int data );
 void STM32446GpioBafr( unsigned int data, unsigned int pin );
-void STM32446GpioCclock( void );
+void STM32446GpioCclock( uint8_t bool );
 void STM32446GpioCmoder( unsigned int data, unsigned int pin );
 void STM32446GpioCospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioCpupdr( unsigned int data, unsigned int pin );
 void STM32446GpioCreset( unsigned int data );
 void STM32446GpioCset( unsigned int data );
 void STM32446GpioCafr( unsigned int data, unsigned int pin );
-void STM32446GpioDclock( void );
+void STM32446GpioDclock( uint8_t bool );
 void STM32446GpioDmoder( unsigned int data, unsigned int pin );
 void STM32446GpioDospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioDpupdr( unsigned int data, unsigned int pin );
 void STM32446GpioDreset( unsigned int data );
 void STM32446GpioDset( unsigned int data );
 void STM32446GpioDafr( unsigned int data, unsigned int pin );
-void STM32446GpioEclock( void );
+void STM32446GpioEclock( uint8_t bool );
 void STM32446GpioEmoder( unsigned int data, unsigned int pin );
 void STM32446GpioEospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioEpupdr( unsigned int data, unsigned int pin );
 void STM32446GpioEreset( unsigned int data );
 void STM32446GpioEset( unsigned int data );
 void STM32446GpioEafr( unsigned int data, unsigned int pin );
-void STM32446GpioFclock( void );
+void STM32446GpioFclock( uint8_t bool );
 void STM32446GpioFmoder( unsigned int data, unsigned int pin );
 void STM32446GpioFospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioFpupdr( unsigned int data, unsigned int pin );
 void STM32446GpioFreset( unsigned int data );
 void STM32446GpioFset( unsigned int data );
 void STM32446GpioFafr( unsigned int data, unsigned int pin );
-void STM32446GpioGclock( void );
+void STM32446GpioGclock( uint8_t bool );
 void STM32446GpioGmoder( unsigned int data, unsigned int pin );
 void STM32446GpioGospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioGpupdr( unsigned int data, unsigned int pin );
 void STM32446GpioGreset( unsigned int data );
 void STM32446GpioGset( unsigned int data );
 void STM32446GpioGafr( unsigned int data, unsigned int pin );
-void STM32446GpioHclock( void );
+void STM32446GpioHclock( uint8_t bool );
 void STM32446GpioHmoder( unsigned int data, unsigned int pin );
 void STM32446GpioHospeedr( unsigned int data, unsigned int pin );
 void STM32446GpioHpupdr( unsigned int data, unsigned int pin );

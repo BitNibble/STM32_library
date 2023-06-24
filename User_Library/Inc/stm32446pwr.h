@@ -60,11 +60,13 @@ typedef struct
 	STM32446PWR_cr cr;
 	STM32446PWR_csr csr;
 	/*** Other ***/
+	void (*clock)(uint8_t bool);
 }STM32446PWRobj;
 
 STM32446PWRobj pwr_inic(void);
 
 /*** PWR Bit Mapping Header ***/
+void STM32446PWR_clock(uint8_t bool);
 // CR
 void STM32446PWR_cr_fissr(uint8_t bool);
 void STM32446PWR_cr_fmssr(uint8_t bool);

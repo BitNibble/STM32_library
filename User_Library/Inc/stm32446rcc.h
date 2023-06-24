@@ -479,10 +479,13 @@ typedef struct
 	void (*lenable)(uint8_t lclock);
 	void (*lselect)(uint8_t lclock);
 	void (*prescaler)(uint16_t ahbpre, uint8_t ppre1, uint8_t ppre2, uint8_t rtcpre);
+	void (*nvic)(uint8_t bool);
 }STM32446RCCobj;
 
 STM32446RCCobj rcc_inic(void);
 
+/*** Procedure & Function Header ***/
+void STM32446RCC_nvic(uint8_t bool);
 /*** RCC Procedure & Function Header ***/
 // PLL
 void STM32446PLLDivision(uint8_t pllsrc, uint8_t pllm, uint16_t plln, uint8_t pllp, uint8_t pllq, uint8_t pllr);
@@ -805,6 +808,9 @@ void STM32446RCC_DCKCFGR2_sdiosel(uint8_t bool);
 void STM32446RCC_DCKCFGR2_ck48msel(uint8_t bool);
 void STM32446RCC_DCKCFGR2_cecsel(uint8_t bool);
 void STM32446RCC_DCKCFGR2_fmpi2c1sel(uint8_t value);
+
+/*** INTERRUPT HEADER ***/
+void RCC_IRQHandler(void);
 
 #endif
 

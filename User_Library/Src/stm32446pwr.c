@@ -142,6 +142,12 @@ uint8_t STM32446PWR_csr_wuf(void)
 {
 	return pwr_readreg(PWR->CSR, 1, 0);
 }
+/*** Other ***/
+void STM32446PWR_clock(uint8_t bool)
+{
+	if(bool){ RCC->APB1ENR |= (1 << 28); }
+	else{ RCC->APB1ENR &= ~(1 << 28); }
+}
 /*** Auxiliar ***/
 STM32446PWR_cr stm32446_pwr_cr_inic(void)
 {
@@ -190,6 +196,7 @@ STM32446PWRobj pwr_inic(void)
 {
 	STM32446PWRobj stm32446_pwr;
 	stm32446_pwr.reg = PWR;
+	stm32446_pwr.clock = STM32446PWR_clock;
 	/*** PWR Bit Mapping Link ***/
 	stm32446_pwr.cr = stm32446_pwr_cr_inic();
 	stm32446_pwr.csr = stm32446_pwr_csr_inic();

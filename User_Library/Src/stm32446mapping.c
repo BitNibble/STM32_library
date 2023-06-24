@@ -54,8 +54,6 @@ void SystickInic(void);
 void STM32446delay_ms(uint32_t ms);
 void STM32446delay_10us(uint32_t ten_us);
 void STM32446delay_us(uint32_t us);
-// INTERRUPT
-void SysTick_Handler(void);
 /******* STM32F446RE Procedure & Function Definition *******/
 STM32446 STM32446enable(void){
 	STM32446 stm32446;
@@ -160,88 +158,6 @@ STM32446 STM32446enable(void){
 	SystickInic(); // Polling delay source.
 
 	return stm32446;
-}
-
-/*** File Procedure & Function Definition ***/
-uint32_t STM32446_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
-{
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t value = reg;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value &= (mask << bit);
-	value = (value >> bit);
-	return value;
-}
-void STM32446_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
-{
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t value = data;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value &= mask;
-	value = (value << bit);
-	*reg = value;
-}
-void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
-{
-	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
-	uint32_t value = data;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value &= mask;
-	*reg &= ~(mask << bit);
-	*reg |= (value << bit);
-}
-void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
-{
-	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
-	uint32_t value = data;
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value &= mask;
-	*(reg + n ) &= ~(mask << bit);
-	*(reg + n ) |= (value << bit);
-}
-uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
-{
-	uint32_t n = 0;
-	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
-	uint32_t value = *(reg + n );
-	uint32_t mask = (unsigned int)((1 << size_block) - 1);
-	value &= (mask << bit);
-	value = (value >> bit);
-	return value;
-}
-void STM32446RegSetBits( unsigned int* reg, int n_bits, ... )
-{
-	uint8_t i;
-	if(n_bits > 0 && n_bits < 33){ // Filter input
-		va_list list;
-		va_start(list, n_bits);
-		for(i = 0; i < n_bits; i++){
-			*reg |= (unsigned int)(1 << va_arg(list, int));
-		}
-		va_end(list);
-	}
-}
-void STM32446RegResetBits( unsigned int* reg, int n_bits, ... )
-{
-	uint8_t i;
-	if(n_bits > 0 && n_bits < 33){ // Filter input
-		va_list list;
-		va_start(list, n_bits);
-		for(i = 0; i < n_bits; i++){
-			*reg &= (unsigned int)~((1 << va_arg(list, int)) << 16);
-		}
-		va_end(list);
-	}
-}
-void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n )
-{
-	const unsigned int n_bits = sizeof(data) * 8;
-	const unsigned int mask = (unsigned int) (pow(2, size_block) - 1);
-	unsigned int index = (block_n * size_block) / n_bits;
-	data &= mask;
-	vec[index] &= ~( mask << ((block_n * size_block) - (index * n_bits)) );
-	vec[index] |= ( data << ((block_n * size_block) - (index * n_bits)) );
 }
 /*** Query ***/
 STM32446CLOCK_prescaler CLOCK_prescaler_inic(void)
@@ -527,6 +443,87 @@ void STM32446delay_us(uint32_t us)
 	// Disable the SysTick timer
 	SysTick->CTRL &= (uint32_t) ~(1 << 0);
 }
+/*** File Procedure & Function Definition ***/
+uint32_t STM32446_readreg(uint32_t reg, uint32_t size_block, uint32_t bit)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = reg;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= (mask << bit);
+	value = (value >> bit);
+	return value;
+}
+void STM32446_writereg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	value = (value << bit);
+	*reg = value;
+}
+void STM32446_setreg(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	if(bit > 31){ bit = 0;} if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	*reg &= ~(mask << bit);
+	*reg |= (value << bit);
+}
+void STM32446_setbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit, uint32_t data)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = data;
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= mask;
+	*(reg + n ) &= ~(mask << bit);
+	*(reg + n ) |= (value << bit);
+}
+uint32_t STM32446_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit)
+{
+	uint32_t n = 0;
+	if(bit > 31){ n = bit/32; bit = bit - (n * 32); } if(size_block > 32){ size_block = 32;}
+	uint32_t value = *(reg + n );
+	uint32_t mask = (unsigned int)((1 << size_block) - 1);
+	value &= (mask << bit);
+	value = (value >> bit);
+	return value;
+}
+void STM32446RegSetBits( unsigned int* reg, int n_bits, ... )
+{
+	uint8_t i;
+	if(n_bits > 0 && n_bits < 33){ // Filter input
+		va_list list;
+		va_start(list, n_bits);
+		for(i = 0; i < n_bits; i++){
+			*reg |= (unsigned int)(1 << va_arg(list, int));
+		}
+		va_end(list);
+	}
+}
+void STM32446RegResetBits( unsigned int* reg, int n_bits, ... )
+{
+	uint8_t i;
+	if(n_bits > 0 && n_bits < 33){ // Filter input
+		va_list list;
+		va_start(list, n_bits);
+		for(i = 0; i < n_bits; i++){
+			*reg &= (unsigned int)~((1 << va_arg(list, int)) << 16);
+		}
+		va_end(list);
+	}
+}
+void STM32446VecSetup( volatile uint32_t vec[], const unsigned int size_block, unsigned int data, unsigned int block_n )
+{
+	const unsigned int n_bits = sizeof(data) * 8;
+	const unsigned int mask = (unsigned int) (pow(2, size_block) - 1);
+	unsigned int index = (block_n * size_block) / n_bits;
+	data &= mask;
+	vec[index] &= ~( mask << ((block_n * size_block) - (index * n_bits)) );
+	vec[index] |= ( data << ((block_n * size_block) - (index * n_bits)) );
+}
 /*** File Interrupt Definition ***/
 void SysTick_Handler(void)
 { // count down to zero systick interrupt and reload.
@@ -550,9 +547,9 @@ void SysTick_Handler(void)
 1º Make struct
 2º Make SUB struct with vars
 3º Make Function pointers
-3º Make Function that returns SUB struct with initialised vars
-4º Make Functions that initialises struct links
-5º Make Function that returns the struct with the above functions
+4º Make Function that returns SUB struct with initialised vars
+5º Make Functions that initialises SUB struct links
+6º Make Function that returns the struct with the above functions
 *********/
 
 

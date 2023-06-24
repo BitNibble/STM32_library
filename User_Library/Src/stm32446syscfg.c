@@ -145,6 +145,13 @@ void SYSCFG_cfgr_fmpi2c1_scl(uint8_t bool)
 {
 	syscfg_setreg(&SYSCFG->CFGR, 1, 0, bool);
 }
+/*** Other ***/
+void SYSCFG_Clock(uint8_t bool)
+{
+	if(bool){ RCC->AHB2ENR |= (1 << 14); }
+	else{ RCC->AHB2ENR &= ~(1 << 14); }
+
+}
 /***********************************************/
 /**** LINK Procedure & Function Definition *****/
 /***********************************************/

@@ -43,9 +43,28 @@ void rtc_lselect(uint8_t lclock);
 /*** Procedure & Function Definition ***/
 void STM32446RtcClock(uint8_t bool)
 {
-	rtc_setreg(&RCC->BDCR, 1, 15, bool); // RTCEN: RTC clock enable
+	if(bool){ RCC->BDCR |= (1 <<  15); } // RTCEN: RTC clock enable
+	else{ RCC->BDCR &= ~(1 <<  15); } // RTCEN: RTC clock disable
 }
-
+void STM32446RtcNvic(uint8_t value)
+{ // 3, 41
+	switch(value){
+		case 0b01:
+			rtc_setbit(NVIC->ISER, 1, 3, 1);
+		break;
+		case 0b10:
+			rtc_setbit(NVIC->ISER, 1, 41, 1);
+		break;
+		case 0b101:
+			rtc_setbit(NVIC->ICER, 1, 3, 1);
+		break;
+		case 0b110:
+			rtc_setbit(NVIC->ICER, 1, 41, 1);
+		break;
+	default:
+	break;
+	}
+}
 void STM32446RtcInic(uint8_t clock)
 { // RM0390 pg657
 	rtc_lenable(clock);
@@ -278,6 +297,7 @@ STM32446RTCobj rtc_inic(void)
 	stm32446_rtc.reg = RTC;
 	/*** Link ***/
 	stm32446_rtc.clock = STM32446RtcClock;
+	stm32446_rtc.nvic = STM32446RtcNvic;
 	stm32446_rtc.inic = STM32446RtcInic;
 	stm32446_rtc.Day = STM32446RtcDay;
 	stm32446_rtc.Month = STM32446RtcMonth;

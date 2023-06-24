@@ -1575,7 +1575,7 @@ STM32446TIM9_CCER stm32446_tim9_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim9_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM9 INIC Procedure & Function Definition ***/
+/*** TIM9 Procedure & Function Definition ***/
 STM32446TIM9obj tim9_inic(void)
 {
 	STM32446TIM9obj stm32446_tim;
@@ -1661,7 +1661,7 @@ STM32446TIM10_CCER stm32446_tim10_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim10_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM10 INIC Procedure & Function Definition***/
+/*** TIM10 Procedure & Function Definition***/
 STM32446TIM10obj tim10_inic(void)
 {
 	STM32446TIM10obj stm32446_tim;
@@ -1685,7 +1685,7 @@ STM32446TIM10obj tim10_inic(void)
 	stm32446_tim.or = STM32446Tim10_or;
 	return stm32446_tim;
 }
-/*** TIM11 INIC Procedure & Function Definition***/
+/*** TIM11 AUX Procedure & Function Definition***/
 STM32446TIM11_CR1 stm32446_tim11_cr1_inic(void)
 {
 	STM32446TIM11_CR1 stm32446_tim_cr1;
@@ -1746,7 +1746,7 @@ STM32446TIM11_CCER stm32446_tim11_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim11_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM11 INIC Procedure & Function Definition***/
+/*** TIM11 Procedure & Function Definition***/
 STM32446TIM11obj tim11_inic(void)
 {
 	STM32446TIM11obj stm32446_tim;
@@ -1860,7 +1860,7 @@ STM32446TIM12_CCER stm32446_tim12_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim12_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM12 INIC Procedure & Function Definition***/
+/*** TIM12 Procedure & Function Definition***/
 STM32446TIM12obj tim12_inic(void)
 {
 	STM32446TIM12obj stm32446_tim;
@@ -1946,7 +1946,7 @@ STM32446TIM13_CCER stm32446_tim13_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim13_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM13 INIC Procedure & Function Definition***/
+/*** TIM13 Procedure & Function Definition***/
 STM32446TIM13obj tim13_inic(void)
 {
 	STM32446TIM13obj stm32446_tim;
@@ -2031,7 +2031,7 @@ STM32446TIM14_CCER stm32446_tim14_ccer_inic(void)
 	stm32446_tim_ccer.cc1e = STM32446Tim14_cc1e;
 	return stm32446_tim_ccer;
 }
-/*** TIM14 INIC Procedure & Function Definition ***/
+/*** TIM14 Procedure & Function Definition ***/
 STM32446TIM14obj tim14_inic(void)
 {
 	STM32446TIM14obj stm32446_tim;

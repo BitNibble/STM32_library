@@ -777,6 +777,10 @@ uint16_t STM32446Tim5_get_dmab(void);
 void STM32446Tim5_ti4_rmp(uint8_t value);
 
 /*** INTERRUPT HEADER ***/
+void TIM2_IRQHandler(void);
+void TIM3_IRQHandler(void);
+void TIM4_IRQHandler(void);
+void TIM5_IRQHandler(void);
 
 #endif
 

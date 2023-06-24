@@ -200,6 +200,12 @@ void STM32446FLASH_optcr_optlock(uint8_t bool)
 {
 	flash_setreg(&FLASH->OPTCR, 1, 0, bool);
 }
+/*** Other ***/
+void STM32446FLASH_nvic(uint8_t bool)
+{
+	if(bool){ flash_setbit(NVIC->ISER, 1, 4, 1); }
+	else{ flash_setbit(NVIC->ICER, 1, 4, 1); }
+}
 /*** FLASH Auxiliar ***/
 STM32446FLASH_acr stm32446_flash_acr_inic(void)
 {

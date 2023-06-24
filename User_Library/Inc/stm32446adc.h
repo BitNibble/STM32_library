@@ -187,7 +187,7 @@ typedef struct
 	double (*read)(void);
 	void (*restart)(void);
 	void (*stop)(void);
-}STM32446ADC1single;
+}STM32446ADC1single, STM32446ADC2single, STM32446ADC3single;
 /*** ADC TypeDef ***/
 // ADC -> ADC1
 typedef struct
@@ -217,7 +217,9 @@ typedef struct
 	uint16_t (*dr)(void);
 	/*** Other ***/
 	STM32446ADC1single single;
-	void (*clock)(void);
+	void (*iclock)(uint8_t bool);
+	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t bool);
 }STM32446ADC1obj;
 // ADC -> ADC2
 typedef struct
@@ -245,7 +247,10 @@ typedef struct
 		uint16_t (*jdr3)(void);
 		uint16_t (*jdr4)(void);
 		uint16_t (*dr)(void);
-		void (*clock)(void);
+		STM32446ADC2single single;
+		void (*iclock)(uint8_t bool);
+		void (*clock)(uint8_t bool);
+		void (*nvic)(uint8_t bool);
 	#endif
 }STM32446ADC2obj;
 // ADC -> ADC3
@@ -274,7 +279,10 @@ typedef struct
 		uint16_t (*jdr3)(void);
 		uint16_t (*jdr4)(void);
 		uint16_t (*dr)(void);
-		void (*clock)(void);
+		STM32446ADC3single single;
+		void (*iclock)(uint8_t bool);
+		void (*clock)(uint8_t bool);
+		void (*nvic)(uint8_t bool);
 	#endif
 }STM32446ADC3obj;
 // INIC
@@ -283,7 +291,9 @@ STM32446ADC2obj adc2_inic(void);
 STM32446ADC3obj adc3_inic(void);
 /***** ADC1 Procedure & Function Header ******/
 /*** ADC1 ***/
-void STM32446Adc1Clock(void);
+void STM32446Adc1IClock(uint8_t bool);
+void STM32446Adc1Clock(uint8_t bool);
+void STM32446Adc1Nvic(uint8_t bool);
 void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);
 void STM32446Adc1TEMP(void);
@@ -338,7 +348,6 @@ void STM32446ADC1_smpr1_smp18(uint8_t value);
 void STM32446ADC1_smpr1_smp17(uint8_t value);
 void STM32446ADC1_smpr1_smp16(uint8_t value);
 void STM32446ADC1_smpr1_smp15(uint8_t value);
-void STM32446ADC1_smpr1_smp15_0(uint8_t bool);
 void STM32446ADC1_smpr1_smp14(uint8_t value);
 void STM32446ADC1_smpr1_smp13(uint8_t value);
 void STM32446ADC1_smpr1_smp12(uint8_t value);
@@ -350,7 +359,6 @@ void STM32446ADC1_smpr2_smp8(uint8_t value);
 void STM32446ADC1_smpr2_smp7(uint8_t value);
 void STM32446ADC1_smpr2_smp6(uint8_t value);
 void STM32446ADC1_smpr2_smp5(uint8_t bool);
-void STM32446ADC1_smpr2_smp5_0(uint8_t bool);
 void STM32446ADC1_smpr2_smp4(uint8_t value);
 void STM32446ADC1_smpr2_smp3(uint8_t value);
 void STM32446ADC1_smpr2_smp2(uint8_t value);
@@ -366,7 +374,6 @@ void STM32446ADC1_ltr(uint16_t value);
 // SQR1
 void STM32446ADC1_sqr1_l(uint8_t value);
 void STM32446ADC1_sqr1_sq16(uint8_t value);
-void STM32446ADC1_sqr1_sq16_0(uint8_t bool);
 void STM32446ADC1_sqr1_sq15(uint8_t value);
 void STM32446ADC1_sqr1_sq14(uint8_t value);
 void STM32446ADC1_sqr1_sq13(uint8_t value);
@@ -374,7 +381,6 @@ void STM32446ADC1_sqr1_sq13(uint8_t value);
 void STM32446ADC1_sqr2_sq12(uint8_t value);
 void STM32446ADC1_sqr2_sq11(uint8_t value);
 void STM32446ADC1_sqr2_sq10(uint8_t value);
-void STM32446ADC1_sqr2_sq10_0(uint8_t bool);
 void STM32446ADC1_sqr2_sq9(uint8_t value);
 void STM32446ADC1_sqr2_sq8(uint8_t value);
 void STM32446ADC1_sqr2_sq7(uint8_t value);
@@ -382,14 +388,12 @@ void STM32446ADC1_sqr2_sq7(uint8_t value);
 void STM32446ADC1_sqr3_sq6(uint8_t value);
 void STM32446ADC1_sqr3_sq5(uint8_t value);
 void STM32446ADC1_sqr3_sq4(uint8_t value);
-void STM32446ADC1_sqr3_sq4_0(uint8_t bool);
 void STM32446ADC1_sqr3_sq3(uint8_t value);
 void STM32446ADC1_sqr3_sq2(uint8_t value);
 void STM32446ADC1_sqr3_sq1(uint8_t value);
 // JSQR
 void STM32446ADC1_jsqr_jl(uint8_t value);
 void STM32446ADC1_jsqr_jsq4(uint8_t value);
-void STM32446ADC1_jsqr_jsq4_0(uint8_t bool);
 void STM32446ADC1_jsqr_jsq3(uint8_t value);
 void STM32446ADC1_jsqr_jsq2(uint8_t value);
 void STM32446ADC1_jsqr_jsq1(uint8_t value);
@@ -400,7 +404,16 @@ uint16_t STM32446ADC1_jdr3(void);
 uint16_t STM32446ADC1_jdr4(void);
 uint16_t STM32446ADC1_dr(void);
 /*** ADC2 ***/
-void STM32446Adc2Clock(void);
+void STM32446Adc2IClock(uint8_t bool);
+void STM32446Adc2Clock(uint8_t bool);
+void STM32446Adc2Nvic(uint8_t bool);
+void STM32446Adc2Inic(void);
+void STM32446Adc2VBAT(void);
+void STM32446Adc2TEMP(void);
+void STM32446Adc2Start(void);
+double STM32446Adc2Read(void);
+void STM32446Adc2Restart(void);
+void STM32446Adc2Stop(void);
 /*** ADC2 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC2_sr_ovr(void);
@@ -448,7 +461,6 @@ void STM32446ADC2_smpr1_smp18(uint8_t value);
 void STM32446ADC2_smpr1_smp17(uint8_t value);
 void STM32446ADC2_smpr1_smp16(uint8_t value);
 void STM32446ADC2_smpr1_smp15(uint8_t value);
-void STM32446ADC2_smpr1_smp15_0(uint8_t bool);
 void STM32446ADC2_smpr1_smp14(uint8_t value);
 void STM32446ADC2_smpr1_smp13(uint8_t value);
 void STM32446ADC2_smpr1_smp12(uint8_t value);
@@ -460,7 +472,6 @@ void STM32446ADC2_smpr2_smp8(uint8_t value);
 void STM32446ADC2_smpr2_smp7(uint8_t value);
 void STM32446ADC2_smpr2_smp6(uint8_t value);
 void STM32446ADC2_smpr2_smp5(uint8_t bool);
-void STM32446ADC2_smpr2_smp5_0(uint8_t bool);
 void STM32446ADC2_smpr2_smp4(uint8_t value);
 void STM32446ADC2_smpr2_smp3(uint8_t value);
 void STM32446ADC2_smpr2_smp2(uint8_t value);
@@ -476,7 +487,6 @@ void STM32446ADC2_ltr(uint16_t value);
 // SQR1
 void STM32446ADC2_sqr1_l(uint8_t value);
 void STM32446ADC2_sqr1_sq16(uint8_t value);
-void STM32446ADC2_sqr1_sq16_0(uint8_t bool);
 void STM32446ADC2_sqr1_sq15(uint8_t value);
 void STM32446ADC2_sqr1_sq14(uint8_t value);
 void STM32446ADC2_sqr1_sq13(uint8_t value);
@@ -484,7 +494,6 @@ void STM32446ADC2_sqr1_sq13(uint8_t value);
 void STM32446ADC2_sqr2_sq12(uint8_t value);
 void STM32446ADC2_sqr2_sq11(uint8_t value);
 void STM32446ADC2_sqr2_sq10(uint8_t value);
-void STM32446ADC2_sqr2_sq10_0(uint8_t bool);
 void STM32446ADC2_sqr2_sq9(uint8_t value);
 void STM32446ADC2_sqr2_sq8(uint8_t value);
 void STM32446ADC2_sqr2_sq7(uint8_t value);
@@ -492,14 +501,12 @@ void STM32446ADC2_sqr2_sq7(uint8_t value);
 void STM32446ADC2_sqr3_sq6(uint8_t value);
 void STM32446ADC2_sqr3_sq5(uint8_t value);
 void STM32446ADC2_sqr3_sq4(uint8_t value);
-void STM32446ADC2_sqr3_sq4_0(uint8_t bool);
 void STM32446ADC2_sqr3_sq3(uint8_t value);
 void STM32446ADC2_sqr3_sq2(uint8_t value);
 void STM32446ADC2_sqr3_sq1(uint8_t value);
 // JSQR
 void STM32446ADC2_jsqr_jl(uint8_t value);
 void STM32446ADC2_jsqr_jsq4(uint8_t value);
-void STM32446ADC2_jsqr_jsq4_0(uint8_t bool);
 void STM32446ADC2_jsqr_jsq3(uint8_t value);
 void STM32446ADC2_jsqr_jsq2(uint8_t value);
 void STM32446ADC2_jsqr_jsq1(uint8_t value);
@@ -510,7 +517,16 @@ uint16_t STM32446ADC2_jdr3(void);
 uint16_t STM32446ADC2_jdr4(void);
 uint16_t STM32446ADC2_dr(void);
 /*** ADC3 ***/
-void STM32446Adc3Clock(void);
+void STM32446Adc3IClock(uint8_t bool);
+void STM32446Adc3Clock(uint8_t bool);
+void STM32446Adc3Nvic(uint8_t bool);
+void STM32446Adc3Inic(void);
+void STM32446Adc3VBAT(void);
+void STM32446Adc3TEMP(void);
+void STM32446Adc3Start(void);
+double STM32446Adc3Read(void);
+void STM32446Adc3Restart(void);
+void STM32446Adc3Stop(void);
 /*** ADC3 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC3_sr_ovr(void);
@@ -558,7 +574,6 @@ void STM32446ADC3_smpr1_smp18(uint8_t value);
 void STM32446ADC3_smpr1_smp17(uint8_t value);
 void STM32446ADC3_smpr1_smp16(uint8_t value);
 void STM32446ADC3_smpr1_smp15(uint8_t value);
-void STM32446ADC3_smpr1_smp15_0(uint8_t bool);
 void STM32446ADC3_smpr1_smp14(uint8_t value);
 void STM32446ADC3_smpr1_smp13(uint8_t value);
 void STM32446ADC3_smpr1_smp12(uint8_t value);
@@ -570,7 +585,6 @@ void STM32446ADC3_smpr2_smp8(uint8_t value);
 void STM32446ADC3_smpr2_smp7(uint8_t value);
 void STM32446ADC3_smpr2_smp6(uint8_t value);
 void STM32446ADC3_smpr2_smp5(uint8_t bool);
-void STM32446ADC3_smpr2_smp5_0(uint8_t bool);
 void STM32446ADC3_smpr2_smp4(uint8_t value);
 void STM32446ADC3_smpr2_smp3(uint8_t value);
 void STM32446ADC3_smpr2_smp2(uint8_t value);
@@ -586,7 +600,6 @@ void STM32446ADC3_ltr(uint16_t value);
 // SQR1
 void STM32446ADC3_sqr1_l(uint8_t value);
 void STM32446ADC3_sqr1_sq16(uint8_t value);
-void STM32446ADC3_sqr1_sq16_0(uint8_t bool);
 void STM32446ADC3_sqr1_sq15(uint8_t value);
 void STM32446ADC3_sqr1_sq14(uint8_t value);
 void STM32446ADC3_sqr1_sq13(uint8_t value);
@@ -594,7 +607,6 @@ void STM32446ADC3_sqr1_sq13(uint8_t value);
 void STM32446ADC3_sqr2_sq12(uint8_t value);
 void STM32446ADC3_sqr2_sq11(uint8_t value);
 void STM32446ADC3_sqr2_sq10(uint8_t value);
-void STM32446ADC3_sqr2_sq10_0(uint8_t bool);
 void STM32446ADC3_sqr2_sq9(uint8_t value);
 void STM32446ADC3_sqr2_sq8(uint8_t value);
 void STM32446ADC3_sqr2_sq7(uint8_t value);
@@ -602,14 +614,12 @@ void STM32446ADC3_sqr2_sq7(uint8_t value);
 void STM32446ADC3_sqr3_sq6(uint8_t value);
 void STM32446ADC3_sqr3_sq5(uint8_t value);
 void STM32446ADC3_sqr3_sq4(uint8_t value);
-void STM32446ADC3_sqr3_sq4_0(uint8_t bool);
 void STM32446ADC3_sqr3_sq3(uint8_t value);
 void STM32446ADC3_sqr3_sq2(uint8_t value);
 void STM32446ADC3_sqr3_sq1(uint8_t value);
 // JSQR
 void STM32446ADC3_jsqr_jl(uint8_t value);
 void STM32446ADC3_jsqr_jsq4(uint8_t value);
-void STM32446ADC3_jsqr_jsq4_0(uint8_t bool);
 void STM32446ADC3_jsqr_jsq3(uint8_t value);
 void STM32446ADC3_jsqr_jsq2(uint8_t value);
 void STM32446ADC3_jsqr_jsq1(uint8_t value);
@@ -649,6 +659,9 @@ void STM32446ADC_ccr_delay(uint8_t value);
 void STM32446ADC_ccr_multi(uint8_t value);
 // CDR
 uint32_t STM32446ADC_cdr(void);
+
+/*** INTERRUPT HEADER ***/
+void ADC_IRQHandler(void);
 
 #endif
 

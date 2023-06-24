@@ -83,12 +83,12 @@ typedef struct
 	SYSCFG_cfgr cfgr;
 	/*** Other ***/
 	void (*clock)(uint8_t bool);
+	void (*nvic)(uint8_t value);
 }STM32446SYSCFGobj;
 /*************************************/
 /************ INIC SYSCFG ************/
 /*************************************/
 STM32446SYSCFGobj STM32446SYSCFG_inic(void);
-
 /***********************************************/
 /********* Procedure & Function Header *********/
 /***********************************************/
@@ -129,6 +129,16 @@ void SYSCFG_cfgr_fmpi2c1_sda(uint8_t bool);
 void SYSCFG_cfgr_fmpi2c1_scl(uint8_t bool);
 /***********************************************/
 /*** INTERRUPT HEADER ***/
+void PVD_IRQHandler(void);
+void TAMP_STAMP_IRQHandler(void);
+void RTC_WKUP_IRQHandler(void);
+void EXTI0_IRQHandler(void);
+void EXTI1_IRQHandler(void);
+void EXTI2_IRQHandler(void);
+void EXTI3_IRQHandler(void);
+void EXTI4_IRQHandler(void);
+void EXTI9_5_IRQHandler(void);
+void EXTI15_10_IRQHandler(void);
 
 #endif
 
