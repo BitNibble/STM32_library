@@ -13,6 +13,7 @@ Comment:
 #include "stm32446adc.h"
 
 static double STM32446temperature;
+static uint32_t time_out;
 
 /*** File Procedure & Function Header ***/
 uint32_t adc_readreg(uint32_t reg, uint32_t size_block, uint32_t bit);
@@ -447,7 +448,6 @@ void STM32446Adc1Inic(void)
 	 STM32446Adc1IClock(1); // DACEN: DAC interface clock enable
 	 STM32446Adc1Clock(1); // ADC1EN: ADC1 clock enable
 	// ADC CONFIG
-	 STM32446ADC1_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
 	STM32446ADC1_cr1_discnum(1);
 	//STM32446ADC1_cr1_scan(1);
 	STM32446ADC1_cr2_eocs(1); // EOCS: End of conversion selection
@@ -457,6 +457,8 @@ void STM32446Adc1Inic(void)
 	STM32446ADC1_sqr1_l(1); // 0 -> read one channel, 1 -> read two channels
 	STM32446ADC1_sqr3_sq2(0); // SQ2[4:0]: 2st conversion in regular sequence
 	STM32446ADC1_sqr3_sq1(18); // SQ1[4:0]: 1st conversion in regular sequence
+	STM32446ADC1_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
+	STM32446Adc1Start();
 }
 void STM32446Adc1VBAT(void) // vbat overrides temperature
 {
@@ -473,25 +475,7 @@ void STM32446Adc1Start()
 	STM32446ADC1_cr2_adon(1); // ADON: A/D Converter ON / OFF
 	//
 	STM32446ADC1_cr2_swstart(1); // SWSTART: Start conversion of regular channels
-}
-double STM32446Adc1Read(void)
-{
-	if(STM32446ADC_csr_eoc1()){ // EOC1: End of conversion of ADC1
-		STM32446temperature = STM32446ADC1_dr();
-		STM32446ADC1_sr_clear_strt(); // STRT: Regular channel start flag
-	}
-	return STM32446temperature;
-}
-void STM32446Adc1Restart(void)
-{
-	if(STM32446ADC_csr_strt1()) // STRT1: Regular channel Start flag of ADC1
-		;
-	else
-		STM32446ADC1_cr2_swstart(1); // SWSTART: Start conversion of regular channels;
-}
-void STM32446Adc1Stop(void)
-{
-	STM32446ADC1_cr2_adon(0); // ADON: A/D Converter ON / OFF
+	for(time_out = 200; time_out; time_out-- );
 }
 STM32446ADC1single stm32446_adc1_single_inic(void)
 {
@@ -500,9 +484,6 @@ STM32446ADC1single stm32446_adc1_single_inic(void)
 	stm32446_adc_single.vbat = STM32446Adc1VBAT;
 	stm32446_adc_single.temp = STM32446Adc1TEMP;
 	stm32446_adc_single.start = STM32446Adc1Start;
-	stm32446_adc_single.read = STM32446Adc1Read;
-	stm32446_adc_single.restart = STM32446Adc1Restart;
-	stm32446_adc_single.stop = STM32446Adc1Stop;
 	return stm32446_adc_single;
 }
 /*** ADC2 Bit Mapping ***/
