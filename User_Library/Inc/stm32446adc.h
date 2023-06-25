@@ -184,9 +184,6 @@ typedef struct
 	void (*vbat)(void);
 	void (*temp)(void);
 	void (*start)(void);
-	double (*read)(void);
-	void (*restart)(void);
-	void (*stop)(void);
 }STM32446ADC1single, STM32446ADC2single, STM32446ADC3single;
 /*** ADC TypeDef ***/
 // ADC -> ADC1
@@ -298,9 +295,6 @@ void STM32446Adc1Inic(void);
 void STM32446Adc1VBAT(void);
 void STM32446Adc1TEMP(void);
 void STM32446Adc1Start(void);
-double STM32446Adc1Read(void);
-void STM32446Adc1Restart(void);
-void STM32446Adc1Stop(void);
 /*** ADC1 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC1_sr_ovr(void);
@@ -408,12 +402,7 @@ void STM32446Adc2IClock(uint8_t bool);
 void STM32446Adc2Clock(uint8_t bool);
 void STM32446Adc2Nvic(uint8_t bool);
 void STM32446Adc2Inic(void);
-void STM32446Adc2VBAT(void);
-void STM32446Adc2TEMP(void);
 void STM32446Adc2Start(void);
-double STM32446Adc2Read(void);
-void STM32446Adc2Restart(void);
-void STM32446Adc2Stop(void);
 /*** ADC2 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC2_sr_ovr(void);
@@ -521,12 +510,7 @@ void STM32446Adc3IClock(uint8_t bool);
 void STM32446Adc3Clock(uint8_t bool);
 void STM32446Adc3Nvic(uint8_t bool);
 void STM32446Adc3Inic(void);
-void STM32446Adc3VBAT(void);
-void STM32446Adc3TEMP(void);
 void STM32446Adc3Start(void);
-double STM32446Adc3Read(void);
-void STM32446Adc3Restart(void);
-void STM32446Adc3Stop(void);
 /*** ADC3 Bit Mapping Header ***/
 // SR
 uint8_t STM32446ADC3_sr_ovr(void);

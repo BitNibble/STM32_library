@@ -12,7 +12,6 @@ Comment:
 #include "stm32446mapping.h"
 #include "stm32446adc.h"
 
-static double STM32446temperature;
 static uint32_t time_out;
 
 /*** File Procedure & Function Header ***/
@@ -885,15 +884,6 @@ void STM32446Adc2Inic(void)
 	STM32446ADC2_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
 	STM32446ADC2_sqr3_sq1(10); // SQ1[4:0]: 1st conversion in regular sequence
 }
-void STM32446Adc2VBAT(void) // vbat overrides temperature
-{
-	STM32446ADC_ccr_vbate(1); // VBATE: VBAT enable
-}
-void STM32446Adc2TEMP(void)
-{
-	// Temperature (in degrees) = {(VSENSE V25) / Avg_Slope} + 25
-	STM32446ADC_ccr_tsvrefe(1); // TSVREFE: Temperature sensor and VREFINT enable
-}
 void STM32446Adc2Start()
 {
 	// turn on select source and start reading
@@ -901,35 +891,11 @@ void STM32446Adc2Start()
 	//
 	STM32446ADC2_cr2_swstart(1); // SWSTART: Start conversion of regular channels
 }
-double STM32446Adc2Read(void)
-{
-	if(STM32446ADC_csr_eoc2()){ // EOC2: End of conversion of ADC2
-		STM32446temperature = STM32446ADC2_dr();
-		STM32446ADC2_sr_clear_strt(); // STRT: Regular channel start flag
-	}
-	return STM32446temperature;
-}
-void STM32446Adc2Restart(void)
-{
-	if(STM32446ADC_csr_strt2()) // STRT2: Regular channel Start flag of ADC2
-		;
-	else
-		STM32446ADC2_cr2_swstart(1); // SWSTART: Start conversion of regular channels;
-}
-void STM32446Adc2Stop(void)
-{
-	STM32446ADC2_cr2_adon(0); // ADON: A/D Converter ON / OFF
-}
 STM32446ADC2single stm32446_adc2_single_inic(void)
 {
 	STM32446ADC2single stm32446_adc_single;
 	stm32446_adc_single.inic = STM32446Adc2Inic;
-	stm32446_adc_single.vbat = STM32446Adc2VBAT;
-	stm32446_adc_single.temp = STM32446Adc2TEMP;
 	stm32446_adc_single.start = STM32446Adc2Start;
-	stm32446_adc_single.read = STM32446Adc2Read;
-	stm32446_adc_single.restart = STM32446Adc2Restart;
-	stm32446_adc_single.stop = STM32446Adc2Stop;
 	return stm32446_adc_single;
 }
 /*** ADC3 Bit Mapping ***/
@@ -1330,15 +1296,6 @@ void STM32446Adc3Inic(void)
 	STM32446ADC3_cr1_discen(1); // DISCEN: Discontinuous mode on regular channels
 	STM32446ADC3_sqr3_sq1(15); // SQ1[4:0]: 1st conversion in regular sequence
 }
-void STM32446Adc3VBAT(void) // vbat overrides temperature
-{
-	STM32446ADC_ccr_vbate(1); // VBATE: VBAT enable
-}
-void STM32446Adc3TEMP(void)
-{
-	// Temperature (in degrees) = {(VSENSE V25) / Avg_Slope} + 25
-	STM32446ADC_ccr_tsvrefe(1); // TSVREFE: Temperature sensor and VREFINT enable
-}
 void STM32446Adc3Start()
 {
 	// turn on select source and start reading
@@ -1346,35 +1303,11 @@ void STM32446Adc3Start()
 	//
 	STM32446ADC3_cr2_swstart(1); // SWSTART: Start conversion of regular channels
 }
-double STM32446Adc3Read(void)
-{
-	if(STM32446ADC_csr_eoc3()){ // EOC3: End of conversion of ADC3
-		STM32446temperature = STM32446ADC3_dr();
-		STM32446ADC3_sr_clear_strt(); // STRT: Regular channel start flag
-	}
-	return STM32446temperature;
-}
-void STM32446Adc3Restart(void)
-{
-	if(STM32446ADC_csr_strt3()) // STRT3: Regular channel Start flag of ADC3
-		;
-	else
-		STM32446ADC3_cr2_swstart(1); // SWSTART: Start conversion of regular channels;
-}
-void STM32446Adc3Stop(void)
-{
-	STM32446ADC3_cr2_adon(0); // ADON: A/D Converter ON / OFF
-}
 STM32446ADC3single stm32446_adc3_single_inic(void)
 {
 	STM32446ADC3single stm32446_adc_single;
 	stm32446_adc_single.inic = STM32446Adc3Inic;
-	stm32446_adc_single.vbat = STM32446Adc3VBAT;
-	stm32446_adc_single.temp = STM32446Adc3TEMP;
 	stm32446_adc_single.start = STM32446Adc3Start;
-	stm32446_adc_single.read = STM32446Adc3Read;
-	stm32446_adc_single.restart = STM32446Adc3Restart;
-	stm32446_adc_single.stop = STM32446Adc3Stop;
 	return stm32446_adc_single;
 }
 /*** COMMON ***/
