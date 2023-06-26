@@ -38,20 +38,20 @@ Comment:
 #endif
 /*** Module Library ***/
 // Comment out modules not being used
-#include "stm32446flash.h"
+//#include "stm32446flash.h"
 //#include "stm32446crc.h"
-#include "stm32446pwr.h"
+//#include "stm32446pwr.h"
 #include "stm32446rcc.h"
 #include "stm32446nvic.h"
-#include "stm32446sram.h"
+//#include "stm32446sram.h"
 #include "stm32446gpio.h"
-#include "stm32446syscfg.h"
+//#include "stm32446syscfg.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
-#include "stm32446tim1and8.h"
-#include "stm32446tim2to5.h"
-#include "stm32446tim6and7.h"
+//#include "stm32446tim1and8.h"
+//#include "stm32446tim2to5.h"
+//#include "stm32446tim6and7.h"
 #include "stm32446tim9to14.h"
 #include "function.h"
 /************ STM32F446RE ************/
@@ -152,18 +152,12 @@ typedef struct
 {
 	DMA_Stream_TypeDef* reg;
 }STM32446DMAStream;
-// DMA -> DMA1
+// DMA
 typedef struct
 {
 	DMA_TypeDef* reg;
 	STM32446DMAStream stream[8];
-}STM32446DMA1obj;
-// DMA -> DMA2
-typedef struct
-{
-	DMA_TypeDef* reg;
-	STM32446DMAStream stream[8];
-}STM32446DMA2obj;
+}STM32446DMAobj, STM32446DMA1obj, STM32446DMA2obj;
 // EXTI
 typedef struct
 {

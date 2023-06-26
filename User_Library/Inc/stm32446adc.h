@@ -51,6 +51,7 @@ typedef struct
 typedef struct
 {
 	void (*swstart)(uint8_t bool);
+	uint8_t (*read_swstart)(void);
 	void (*exten)(uint8_t value);
 	void (*extsel)(uint8_t value);
 	void (*jswstart)(uint8_t bool);
@@ -326,6 +327,7 @@ void STM32446ADC1_cr1_eocie(uint8_t bool);
 void STM32446ADC1_cr1_awdch(uint8_t value);
 // CR2
 void STM32446ADC1_cr2_swstart(uint8_t bool);
+uint8_t STM32446ADC1_cr2_read_swstart(void);
 void STM32446ADC1_cr2_exten(uint8_t value);
 void STM32446ADC1_cr2_extsel(uint8_t value);
 void STM32446ADC1_cr2_jswstart(uint8_t bool);
@@ -434,6 +436,7 @@ void STM32446ADC2_cr1_eocie(uint8_t bool);
 void STM32446ADC2_cr1_awdch(uint8_t value);
 // CR2
 void STM32446ADC2_cr2_swstart(uint8_t bool);
+uint8_t STM32446ADC2_cr2_read_swstart(void);
 void STM32446ADC2_cr2_exten(uint8_t value);
 void STM32446ADC2_cr2_extsel(uint8_t value);
 void STM32446ADC2_cr2_jswstart(uint8_t bool);
@@ -542,6 +545,7 @@ void STM32446ADC3_cr1_eocie(uint8_t bool);
 void STM32446ADC3_cr1_awdch(uint8_t value);
 // CR2
 void STM32446ADC3_cr2_swstart(uint8_t bool);
+uint8_t STM32446ADC3_cr2_read_swstart(void);
 void STM32446ADC3_cr2_exten(uint8_t value);
 void STM32446ADC3_cr2_extsel(uint8_t value);
 void STM32446ADC3_cr2_jswstart(uint8_t bool);

@@ -1372,7 +1372,7 @@ STM32446TIM1_SR stm32446_tim1_sr_inic(void)
 	stm32446_tim_sr.clear_comif = STM32446Tim1_clear_comif;
 	stm32446_tim_sr.cc4if = STM32446Tim1_cc4if;
 	stm32446_tim_sr.clear_cc4if = STM32446Tim1_clear_cc4if;
-	stm32446_tim_sr.cc3if = STM32446Tim2_cc3if;
+	stm32446_tim_sr.cc3if = STM32446Tim1_cc3if;
 	stm32446_tim_sr.clear_cc3if = STM32446Tim1_clear_cc3if;
 	stm32446_tim_sr.cc2if = STM32446Tim1_cc2if;
 	stm32446_tim_sr.clear_cc2if = STM32446Tim1_clear_cc2if;
