@@ -46,6 +46,7 @@ Comment:
 //#include "stm32446sram.h"
 #include "stm32446gpio.h"
 //#include "stm32446syscfg.h"
+#include "stm32446dma.h"
 #include "stm32446adc.h"
 #include "stm32446rtc.h"
 #include "stm32446usart.h"
@@ -147,17 +148,6 @@ typedef struct
 {
 	DCMI_TypeDef* reg;
 }STM32446DCMIobj;
-// DMA_Stream
-typedef struct
-{
-	DMA_Stream_TypeDef* reg;
-}STM32446DMAStream;
-// DMA
-typedef struct
-{
-	DMA_TypeDef* reg;
-	STM32446DMAStream stream[8];
-}STM32446DMAobj, STM32446DMA1obj, STM32446DMA2obj;
 // EXTI
 typedef struct
 {

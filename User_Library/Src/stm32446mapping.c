@@ -77,12 +77,13 @@ STM32446 STM32446enable(void){
 	#if defined(_STM32446CRC_H_)
 		stm32446.crc = crc_inic();
 	#endif
+	#if defined(_STM32446DMA_H_)
 	// DMA1
-	stm32446.dma1.reg = DMA1;
-	stm32446.dma1.stream[0].reg = DMA1_Stream0;
+		stm32446.dma1 = dma1_inic();
 	// DMA2
-	stm32446.dma2.reg = DMA2;
-	stm32446.dma2.stream[0].reg = DMA2_Stream0;
+		//stm32446.dma2.reg = DMA2;
+		//stm32446.dma2.stream[0].reg = DMA2_Stream0;
+	#endif
 	// FLASH
 	#if defined(_STM32446FLASH_H_)
 		stm32446.flash = flash_inic();
