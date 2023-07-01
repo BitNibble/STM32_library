@@ -2908,7 +2908,6 @@ STM32446DMA_STREAM_fcr stm32446_dma2_stream7_fcr_inic(void)
 /*** FUNC ***/
 void dma2_circ_cfg(volatile long unsigned int* p_addr, volatile long unsigned int* m_addr, uint8_t stream_n, uint8_t channel_n, uint16_t quant_d, uint8_t p_size, uint8_t m_size, uint8_t priority, uint8_t dir)
 {
-	dma_setreg(&RCC->AHB1ENR, 1, 22, 1);
 	// Filter to Default
 	if(stream_n > 7){ stream_n = 0;}
 	if(channel_n > 7){ channel_n = 0;}

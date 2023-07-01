@@ -92,6 +92,7 @@ typedef struct
 /*************************************/
 // INIC
 STM32446DMA1obj dma1_inic(void);
+STM32446DMA2obj dma2_inic(void);
 /***** DMA Procedure & Function Header ******/
 /*** DMA ***/
 void STM32446Dma1Clock(uint8_t bool);

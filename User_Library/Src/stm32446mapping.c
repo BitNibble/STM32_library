@@ -81,8 +81,7 @@ STM32446 STM32446enable(void){
 	// DMA1
 		stm32446.dma1 = dma1_inic();
 	// DMA2
-		//stm32446.dma2.reg = DMA2;
-		//stm32446.dma2.stream[0].reg = DMA2_Stream0;
+		stm32446.dma2 = dma2_inic();
 	#endif
 	// FLASH
 	#if defined(_STM32446FLASH_H_)
