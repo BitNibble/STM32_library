@@ -527,7 +527,23 @@ void STM32446DMA2_stream7_fcr_fth(uint8_t value);
 void dma2_circ_cfg(volatile long unsigned int* p_addr, volatile long unsigned int* m_addr, uint8_t stream_n, uint8_t channel_n, uint16_t quant_d, uint8_t p_size, uint8_t m_size, uint8_t priority, uint8_t dir);
 
 /*** INTERRUPT HEADER ***/
-void DMA_IRQHandler(void);
+void DMA1_Stream0_IRQHandler(void);
+void DMA1_Stream1_IRQHandler(void);
+void DMA1_Stream2_IRQHandler(void);
+void DMA1_Stream3_IRQHandler(void);
+void DMA1_Stream4_IRQHandler(void);
+void DMA1_Stream5_IRQHandler(void);
+void DMA1_Stream6_IRQHandler(void);
+void DMA1_Stream7_IRQHandler(void);
+void DMA2_Stream0_IRQHandler(void);
+void DMA2_Stream1_IRQHandler(void);
+void DMA2_Stream2_IRQHandler(void);
+void DMA2_Stream3_IRQHandler(void);
+void DMA2_Stream4_IRQHandler(void);
+void DMA2_Stream5_IRQHandler(void);
+void DMA2_Stream6_IRQHandler(void);
+void DMA2_Stream7_IRQHandler(void);
+
 
 #endif
 

@@ -6,7 +6,7 @@ License: GNU General Public License
 Hardware: STM32-446
 Date: 27062023
 Comment:
-	
+
 *******************************************************************************/
 /*** File Library ***/
 #include "stm32446mapping.h"
@@ -23,38 +23,102 @@ uint32_t dma_getsetbit(volatile uint32_t* reg, uint32_t size_block, uint32_t bit
 /*** REG INIC ***/
 STM32446DMA_sr stm32446_dma1_sr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream0_cr_inic(void);
+void stm32446_dma1_stream0_ndt(uint16_t value);
+void stm32446_dma1_stream0_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream0_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream0_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream0_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream1_cr_inic(void);
+void stm32446_dma1_stream1_ndt(uint16_t value);
+void stm32446_dma1_stream1_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream1_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream1_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream1_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream2_cr_inic(void);
+void stm32446_dma1_stream2_ndt(uint16_t value);
+void stm32446_dma1_stream2_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream2_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream2_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream2_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream3_cr_inic(void);
+void stm32446_dma1_stream3_ndt(uint16_t value);
+void stm32446_dma1_stream3_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream3_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream3_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream3_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream4_cr_inic(void);
+void stm32446_dma1_stream4_ndt(uint16_t value);
+void stm32446_dma1_stream4_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream4_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream4_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream4_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream5_cr_inic(void);
+void stm32446_dma1_stream5_ndt(uint16_t value);
+void stm32446_dma1_stream5_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream5_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream5_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream5_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream6_cr_inic(void);
+void stm32446_dma1_stream6_ndt(uint16_t value);
+void stm32446_dma1_stream6_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream6_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream6_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream6_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma1_stream7_cr_inic(void);
+void stm32446_dma1_stream7_ndt(uint16_t value);
+void stm32446_dma1_stream7_par(volatile long unsigned int periferal_addr);
+void stm32446_dma1_stream7_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma1_stream7_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma1_stream7_fcr_inic(void);
 STM32446DMA_func stm32446_dma1_func_inic(void);
 STM32446DMA_sr stm32446_dma2_sr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream0_cr_inic(void);
+void stm32446_dma2_stream0_ndt(uint16_t value);
+void stm32446_dma2_stream0_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream0_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream0_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream0_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream1_cr_inic(void);
+void stm32446_dma2_stream1_ndt(uint16_t value);
+void stm32446_dma2_stream1_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream1_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream1_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream1_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream2_cr_inic(void);
+void stm32446_dma2_stream2_ndt(uint16_t value);
+void stm32446_dma2_stream2_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream2_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream2_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream2_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream3_cr_inic(void);
+void stm32446_dma2_stream3_ndt(uint16_t value);
+void stm32446_dma2_stream3_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream3_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream3_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream3_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream4_cr_inic(void);
+void stm32446_dma2_stream4_ndt(uint16_t value);
+void stm32446_dma2_stream4_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream4_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream4_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream4_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream5_cr_inic(void);
+void stm32446_dma2_stream5_ndt(uint16_t value);
+void stm32446_dma2_stream5_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream5_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream5_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream5_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream6_cr_inic(void);
+void stm32446_dma2_stream6_ndt(uint16_t value);
+void stm32446_dma2_stream6_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream6_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream6_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream6_fcr_inic(void);
 STM32446DMA_STREAM_cr stm32446_dma2_stream7_cr_inic(void);
+void stm32446_dma2_stream7_ndt(uint16_t value);
+void stm32446_dma2_stream7_par(volatile long unsigned int periferal_addr);
+void stm32446_dma2_stream7_m0a(volatile long unsigned int mem0_addr);
+void stm32446_dma2_stream7_m1a(volatile long unsigned int mem1_addr);
 STM32446DMA_STREAM_fcr stm32446_dma2_stream7_fcr_inic(void);
 STM32446DMA_func stm32446_dma2_func_inic(void);
 /*******************************************/
