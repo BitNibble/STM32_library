@@ -72,9 +72,9 @@ typedef struct
 	/*** Bit Mapping ***/
 	STM32446DMA_STREAM_cr cr;
 	void (*ndt)(uint16_t value);
-	void (*par)(uint32_t periferal_addr);
-	void (*m0ar)(uint32_t mem0_addr);
-	void (*m1ar)(uint32_t mem1_addr);
+	void (*par)(volatile long unsigned int periferal_addr);
+	void (*m0a)(volatile long unsigned int mem0_addr);
+	void (*m1a)(volatile long unsigned int mem1_addr);
 	STM32446DMA_STREAM_fcr fcr;
 }STM32446DMAStream;
 // DMA

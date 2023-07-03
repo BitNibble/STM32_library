@@ -504,6 +504,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream0_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream0_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA1 STREAM0 Function ***/
+void stm32446_dma1_stream0_ndt(uint16_t value)
+{
+	DMA1_Stream0->NDTR = value;
+}
+void stm32446_dma1_stream0_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream0->PAR = periferal_addr;
+}
+void stm32446_dma1_stream0_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream0->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream0_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream0->M1AR = mem1_addr;
+}
 // DMA1 STREAM1 CR
 void STM32446DMA1_stream1_cr_chsel(uint8_t value)
 {
@@ -606,6 +623,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream1_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA1_stream1_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream1_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA1 STREAM1 Function ***/
+void stm32446_dma1_stream1_ndt(uint16_t value)
+{
+	DMA1_Stream1->NDTR = value;
+}
+void stm32446_dma1_stream1_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream1->PAR = periferal_addr;
+}
+void stm32446_dma1_stream1_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream1->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream1_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream1->M1AR = mem1_addr;
 }
 // DMA1 STREAM2 CR
 void STM32446DMA1_stream2_cr_chsel(uint8_t value)
@@ -710,6 +744,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream2_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream2_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA1 STREAM2 Function ***/
+void stm32446_dma1_stream2_ndt(uint16_t value)
+{
+	DMA1_Stream2->NDTR = value;
+}
+void stm32446_dma1_stream2_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream2->PAR = periferal_addr;
+}
+void stm32446_dma1_stream2_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream2->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream2_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream2->M1AR = mem1_addr;
+}
 // DMA1 STREAM3 CR
 void STM32446DMA1_stream3_cr_chsel(uint8_t value)
 {
@@ -812,6 +863,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream3_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA1_stream3_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream3_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA1 STREAM3 Function ***/
+void stm32446_dma1_stream3_ndt(uint16_t value)
+{
+	DMA1_Stream3->NDTR = value;
+}
+void stm32446_dma1_stream3_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream3->PAR = periferal_addr;
+}
+void stm32446_dma1_stream3_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream3->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream3_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream3->M1AR = mem1_addr;
 }
 // DMA1 STREAM4 CR
 void STM32446DMA1_stream4_cr_chsel(uint8_t value)
@@ -916,6 +984,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream4_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream4_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA1 STREAM4 Function ***/
+void stm32446_dma1_stream4_ndt(uint16_t value)
+{
+	DMA1_Stream4->NDTR = value;
+}
+void stm32446_dma1_stream4_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream4->PAR = periferal_addr;
+}
+void stm32446_dma1_stream4_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream4->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream4_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream4->M1AR = mem1_addr;
+}
 // DMA1 STREAM5 CR
 void STM32446DMA1_stream5_cr_chsel(uint8_t value)
 {
@@ -1018,6 +1103,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream5_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA1_stream5_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream5_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA1 STREAM5 Function ***/
+void stm32446_dma1_stream5_ndt(uint16_t value)
+{
+	DMA1_Stream5->NDTR = value;
+}
+void stm32446_dma1_stream5_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream5->PAR = periferal_addr;
+}
+void stm32446_dma1_stream5_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream5->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream5_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream5->M1AR = mem1_addr;
 }
 // DMA1 STREAM6 CR
 void STM32446DMA1_stream6_cr_chsel(uint8_t value)
@@ -1122,6 +1224,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream6_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream6_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA1 STREAM6 Function ***/
+void stm32446_dma1_stream6_ndt(uint16_t value)
+{
+	DMA1_Stream6->NDTR = value;
+}
+void stm32446_dma1_stream6_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream6->PAR = periferal_addr;
+}
+void stm32446_dma1_stream6_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream6->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream6_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream6->M1AR = mem1_addr;
+}
 // DMA1 STREAM7 CR
 void STM32446DMA1_stream7_cr_chsel(uint8_t value)
 {
@@ -1224,6 +1343,23 @@ STM32446DMA_STREAM_cr stm32446_dma1_stream7_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA1_stream7_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA1_stream7_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA1 STREAM7 Function ***/
+void stm32446_dma1_stream7_ndt(uint16_t value)
+{
+	DMA1_Stream7->NDTR = value;
+}
+void stm32446_dma1_stream7_par(volatile long unsigned int periferal_addr)
+{
+	DMA1_Stream7->PAR = periferal_addr;
+}
+void stm32446_dma1_stream7_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA1_Stream7->M0AR = mem0_addr;
+}
+void stm32446_dma1_stream7_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA1_Stream7->M1AR = mem1_addr;
 }
 // DMA1 STREAM0 FCR
 void STM32446DMA1_stream0_fcr_feie(uint8_t bool)
@@ -1507,20 +1643,52 @@ STM32446DMA1obj dma1_inic(void)
 	stm32446_dma.sr = stm32446_dma1_sr_inic();
 	stm32446_dma.stream[0].cr = stm32446_dma1_stream0_cr_inic();
 	stm32446_dma.stream[0].fcr = stm32446_dma1_stream0_fcr_inic();
+	stm32446_dma.stream[0].ndt = stm32446_dma1_stream0_ndt;
+	stm32446_dma.stream[0].par = stm32446_dma1_stream0_par;
+	stm32446_dma.stream[0].m0a = stm32446_dma1_stream0_m0a;
+	stm32446_dma.stream[0].m1a = stm32446_dma1_stream0_m1a;
 	stm32446_dma.stream[1].cr = stm32446_dma1_stream1_cr_inic();
 	stm32446_dma.stream[1].fcr = stm32446_dma1_stream1_fcr_inic();
+	stm32446_dma.stream[1].ndt = stm32446_dma1_stream1_ndt;
+	stm32446_dma.stream[1].par = stm32446_dma1_stream1_par;
+	stm32446_dma.stream[1].m0a = stm32446_dma1_stream1_m0a;
+	stm32446_dma.stream[1].m1a = stm32446_dma1_stream1_m1a;
 	stm32446_dma.stream[2].cr = stm32446_dma1_stream2_cr_inic();
 	stm32446_dma.stream[2].fcr = stm32446_dma1_stream2_fcr_inic();
+	stm32446_dma.stream[2].ndt = stm32446_dma1_stream2_ndt;
+	stm32446_dma.stream[2].par = stm32446_dma1_stream2_par;
+	stm32446_dma.stream[2].m0a = stm32446_dma1_stream2_m0a;
+	stm32446_dma.stream[2].m1a = stm32446_dma1_stream2_m1a;
 	stm32446_dma.stream[3].cr = stm32446_dma1_stream3_cr_inic();
 	stm32446_dma.stream[3].fcr = stm32446_dma1_stream3_fcr_inic();
+	stm32446_dma.stream[3].ndt = stm32446_dma1_stream3_ndt;
+	stm32446_dma.stream[3].par = stm32446_dma1_stream3_par;
+	stm32446_dma.stream[3].m0a = stm32446_dma1_stream3_m0a;
+	stm32446_dma.stream[3].m1a = stm32446_dma1_stream3_m1a;
 	stm32446_dma.stream[4].cr = stm32446_dma1_stream4_cr_inic();
 	stm32446_dma.stream[4].fcr = stm32446_dma1_stream4_fcr_inic();
+	stm32446_dma.stream[4].ndt = stm32446_dma1_stream4_ndt;
+	stm32446_dma.stream[4].par = stm32446_dma1_stream4_par;
+	stm32446_dma.stream[4].m0a = stm32446_dma1_stream4_m0a;
+	stm32446_dma.stream[4].m1a = stm32446_dma1_stream4_m1a;
 	stm32446_dma.stream[5].cr = stm32446_dma1_stream5_cr_inic();
 	stm32446_dma.stream[5].fcr = stm32446_dma1_stream5_fcr_inic();
+	stm32446_dma.stream[5].ndt = stm32446_dma1_stream5_ndt;
+	stm32446_dma.stream[5].par = stm32446_dma1_stream5_par;
+	stm32446_dma.stream[5].m0a = stm32446_dma1_stream5_m0a;
+	stm32446_dma.stream[5].m1a = stm32446_dma1_stream5_m1a;
 	stm32446_dma.stream[6].cr = stm32446_dma1_stream6_cr_inic();
 	stm32446_dma.stream[6].fcr = stm32446_dma1_stream6_fcr_inic();
+	stm32446_dma.stream[6].ndt = stm32446_dma1_stream6_ndt;
+	stm32446_dma.stream[6].par = stm32446_dma1_stream6_par;
+	stm32446_dma.stream[6].m0a = stm32446_dma1_stream6_m0a;
+	stm32446_dma.stream[6].m1a = stm32446_dma1_stream6_m1a;
 	stm32446_dma.stream[7].cr = stm32446_dma1_stream7_cr_inic();
 	stm32446_dma.stream[7].fcr = stm32446_dma1_stream7_fcr_inic();
+	stm32446_dma.stream[7].ndt = stm32446_dma1_stream7_ndt;
+	stm32446_dma.stream[7].par = stm32446_dma1_stream7_par;
+	stm32446_dma.stream[7].m0a = stm32446_dma1_stream7_m0a;
+	stm32446_dma.stream[7].m1a = stm32446_dma1_stream7_m1a;
 	/*** Other ***/
 	stm32446_dma.func = stm32446_dma1_func_inic();
 	stm32446_dma.clock = STM32446Dma1Clock;
@@ -1960,6 +2128,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream0_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream0_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA2 STREAM0 Function ***/
+void stm32446_dma2_stream0_ndt(uint16_t value)
+{
+	DMA2_Stream0->NDTR = value;
+}
+void stm32446_dma2_stream0_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream0->PAR = periferal_addr;
+}
+void stm32446_dma2_stream0_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream0->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream0_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream0->M1AR = mem1_addr;
+}
 // DMA2 STREAM1 CR
 void STM32446DMA2_stream1_cr_chsel(uint8_t value)
 {
@@ -2062,6 +2247,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream1_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA2_stream1_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream1_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA2 STREAM1 Function ***/
+void stm32446_dma2_stream1_ndt(uint16_t value)
+{
+	DMA2_Stream1->NDTR = value;
+}
+void stm32446_dma2_stream1_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream1->PAR = periferal_addr;
+}
+void stm32446_dma2_stream1_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream1->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream1_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream1->M1AR = mem1_addr;
 }
 // DMA2 STREAM2 CR
 void STM32446DMA2_stream2_cr_chsel(uint8_t value)
@@ -2166,6 +2368,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream2_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream2_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA2 STREAM2 Function ***/
+void stm32446_dma2_stream2_ndt(uint16_t value)
+{
+	DMA2_Stream2->NDTR = value;
+}
+void stm32446_dma2_stream2_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream2->PAR = periferal_addr;
+}
+void stm32446_dma2_stream2_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream2->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream2_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream2->M1AR = mem1_addr;
+}
 // DMA2 STREAM3 CR
 void STM32446DMA2_stream3_cr_chsel(uint8_t value)
 {
@@ -2268,6 +2487,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream3_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA2_stream3_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream3_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA2 STREAM3 Function ***/
+void stm32446_dma2_stream3_ndt(uint16_t value)
+{
+	DMA2_Stream3->NDTR = value;
+}
+void stm32446_dma2_stream3_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream3->PAR = periferal_addr;
+}
+void stm32446_dma2_stream3_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream3->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream3_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream3->M1AR = mem1_addr;
 }
 // DMA2 STREAM4 CR
 void STM32446DMA2_stream4_cr_chsel(uint8_t value)
@@ -2372,6 +2608,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream4_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream4_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA2 STREAM4 Function ***/
+void stm32446_dma2_stream4_ndt(uint16_t value)
+{
+	DMA2_Stream4->NDTR = value;
+}
+void stm32446_dma2_stream4_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream4->PAR = periferal_addr;
+}
+void stm32446_dma2_stream4_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream4->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream4_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream4->M1AR = mem1_addr;
+}
 // DMA2 STREAM5 CR
 void STM32446DMA2_stream5_cr_chsel(uint8_t value)
 {
@@ -2474,6 +2727,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream5_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA2_stream5_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream5_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA2 STREAM5 Function ***/
+void stm32446_dma2_stream5_ndt(uint16_t value)
+{
+	DMA2_Stream5->NDTR = value;
+}
+void stm32446_dma2_stream5_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream5->PAR = periferal_addr;
+}
+void stm32446_dma2_stream5_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream5->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream5_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream5->M1AR = mem1_addr;
 }
 // DMA2 STREAM6 CR
 void STM32446DMA2_stream6_cr_chsel(uint8_t value)
@@ -2578,6 +2848,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream6_cr_inic(void)
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream6_cr_en;
 	return stm32446_dma_stream_cr;
 }
+/*** Inic DMA2 STREAM6 Function ***/
+void stm32446_dma2_stream6_ndt(uint16_t value)
+{
+	DMA2_Stream6->NDTR = value;
+}
+void stm32446_dma2_stream6_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream6->PAR = periferal_addr;
+}
+void stm32446_dma2_stream6_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream6->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream6_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream6->M1AR = mem1_addr;
+}
 // DMA2 STREAM7 CR
 void STM32446DMA2_stream7_cr_chsel(uint8_t value)
 {
@@ -2680,6 +2967,23 @@ STM32446DMA_STREAM_cr stm32446_dma2_stream7_cr_inic(void)
 	stm32446_dma_stream_cr.dmeie = STM32446DMA2_stream7_cr_dmeie;
 	stm32446_dma_stream_cr.en = STM32446DMA2_stream7_cr_en;
 	return stm32446_dma_stream_cr;
+}
+/*** Inic DMA2 STREAM7 Function ***/
+void stm32446_dma2_stream7_ndt(uint16_t value)
+{
+	DMA2_Stream7->NDTR = value;
+}
+void stm32446_dma2_stream7_par(volatile long unsigned int periferal_addr)
+{
+	DMA2_Stream7->PAR = periferal_addr;
+}
+void stm32446_dma2_stream7_m0a(volatile long unsigned int mem0_addr)
+{
+	DMA2_Stream7->M0AR = mem0_addr;
+}
+void stm32446_dma2_stream7_m1a(volatile long unsigned int mem1_addr)
+{
+	DMA2_Stream7->M1AR = mem1_addr;
 }
 // DMA2 STREAM0 FCR
 void STM32446DMA2_stream0_fcr_feie(uint8_t bool)
@@ -2958,24 +3262,56 @@ STM32446DMA2obj dma2_inic(void)
 	STM32446DMA2obj stm32446_dma;
 	stm32446_dma.reg = DMA2;
 	stm32446_dma.stream[0].reg = DMA2_Stream0;
-	/*** DMA1 Bit Mapping Link ***/
+	/*** DMA2 Bit Mapping Link ***/
 	stm32446_dma.sr = stm32446_dma2_sr_inic();
 	stm32446_dma.stream[0].cr = stm32446_dma2_stream0_cr_inic();
 	stm32446_dma.stream[0].fcr = stm32446_dma2_stream0_fcr_inic();
+	stm32446_dma.stream[0].ndt = stm32446_dma2_stream0_ndt;
+	stm32446_dma.stream[0].par = stm32446_dma2_stream0_par;
+	stm32446_dma.stream[0].m0a = stm32446_dma2_stream0_m0a;
+	stm32446_dma.stream[0].m1a = stm32446_dma2_stream0_m1a;
 	stm32446_dma.stream[1].cr = stm32446_dma2_stream1_cr_inic();
 	stm32446_dma.stream[1].fcr = stm32446_dma2_stream1_fcr_inic();
+	stm32446_dma.stream[1].ndt = stm32446_dma2_stream1_ndt;
+	stm32446_dma.stream[1].par = stm32446_dma2_stream1_par;
+	stm32446_dma.stream[1].m0a = stm32446_dma2_stream1_m0a;
+	stm32446_dma.stream[1].m1a = stm32446_dma2_stream1_m1a;
 	stm32446_dma.stream[2].cr = stm32446_dma2_stream2_cr_inic();
 	stm32446_dma.stream[2].fcr = stm32446_dma2_stream2_fcr_inic();
+	stm32446_dma.stream[2].ndt = stm32446_dma2_stream2_ndt;
+	stm32446_dma.stream[2].par = stm32446_dma2_stream2_par;
+	stm32446_dma.stream[2].m0a = stm32446_dma2_stream2_m0a;
+	stm32446_dma.stream[2].m1a = stm32446_dma2_stream2_m1a;
 	stm32446_dma.stream[3].cr = stm32446_dma2_stream3_cr_inic();
 	stm32446_dma.stream[3].fcr = stm32446_dma2_stream3_fcr_inic();
+	stm32446_dma.stream[3].ndt = stm32446_dma2_stream3_ndt;
+	stm32446_dma.stream[3].par = stm32446_dma2_stream3_par;
+	stm32446_dma.stream[3].m0a = stm32446_dma2_stream3_m0a;
+	stm32446_dma.stream[3].m1a = stm32446_dma2_stream3_m1a;
 	stm32446_dma.stream[4].cr = stm32446_dma2_stream4_cr_inic();
 	stm32446_dma.stream[4].fcr = stm32446_dma2_stream4_fcr_inic();
+	stm32446_dma.stream[4].ndt = stm32446_dma2_stream4_ndt;
+	stm32446_dma.stream[4].par = stm32446_dma2_stream4_par;
+	stm32446_dma.stream[4].m0a = stm32446_dma2_stream4_m0a;
+	stm32446_dma.stream[4].m1a = stm32446_dma2_stream4_m1a;
 	stm32446_dma.stream[5].cr = stm32446_dma2_stream5_cr_inic();
 	stm32446_dma.stream[5].fcr = stm32446_dma2_stream5_fcr_inic();
+	stm32446_dma.stream[5].ndt = stm32446_dma2_stream5_ndt;
+	stm32446_dma.stream[5].par = stm32446_dma2_stream5_par;
+	stm32446_dma.stream[5].m0a = stm32446_dma2_stream5_m0a;
+	stm32446_dma.stream[5].m1a = stm32446_dma2_stream5_m1a;
 	stm32446_dma.stream[6].cr = stm32446_dma2_stream6_cr_inic();
 	stm32446_dma.stream[6].fcr = stm32446_dma2_stream6_fcr_inic();
+	stm32446_dma.stream[6].ndt = stm32446_dma2_stream6_ndt;
+	stm32446_dma.stream[6].par = stm32446_dma2_stream6_par;
+	stm32446_dma.stream[6].m0a = stm32446_dma2_stream6_m0a;
+	stm32446_dma.stream[6].m1a = stm32446_dma2_stream6_m1a;
 	stm32446_dma.stream[7].cr = stm32446_dma2_stream7_cr_inic();
 	stm32446_dma.stream[7].fcr = stm32446_dma2_stream7_fcr_inic();
+	stm32446_dma.stream[7].ndt = stm32446_dma2_stream7_ndt;
+	stm32446_dma.stream[7].par = stm32446_dma2_stream7_par;
+	stm32446_dma.stream[7].m0a = stm32446_dma2_stream7_m0a;
+	stm32446_dma.stream[7].m1a = stm32446_dma2_stream7_m1a;
 	/*** Other ***/
 	stm32446_dma.func = stm32446_dma2_func_inic();
 	stm32446_dma.clock = STM32446Dma2Clock;
